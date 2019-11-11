@@ -1,6 +1,9 @@
 <?php
 
-Route::get('/','IndexWebController@Index');
+Route::get('/', function () {
+    return view('web/index');
+});
+//Route::get('/','IndexWebController@Index');
 
 // ESCUELAS
 Route::get('WebAdministracion','IndexWebController@Administracion');
