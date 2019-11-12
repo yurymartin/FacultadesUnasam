@@ -19,10 +19,8 @@ class GaleriaController extends Controller
     public function index1()
     {
         if(accesoUser([1,2])){
-
             $idtipouser=Auth::user()->tipouser_id;
             $tipouser=Tipouser::find($idtipouser);
-
             $modulo="galeria";
             return view('galeria.index',compact('tipouser','modulo'));
         }

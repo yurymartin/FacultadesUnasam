@@ -104,6 +104,8 @@ desired effect
 @elseif($modulo=="evento")
 @include('evento.vue')
 
+@elseif($modulo=="facultades")
+@include('facultades.vue')
 @endif
 
 <script type="text/javascript">

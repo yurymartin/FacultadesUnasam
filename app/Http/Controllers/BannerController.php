@@ -22,7 +22,6 @@ class BannerController extends Controller
 
             $idtipouser=Auth::user()->tipouser_id;
             $tipouser=Tipouser::find($idtipouser);
-
             $modulo="banner";
             return view('banner.index',compact('tipouser','modulo'));
         }
