@@ -1,0 +1,1 @@
+<?php /**PATH C:\Users\Yuri Martin\Desktop\webFacultades\resources\views/vendor/adminlte/layouts/partials/controlsidebar.blade.php ENDPATH**/ ?>

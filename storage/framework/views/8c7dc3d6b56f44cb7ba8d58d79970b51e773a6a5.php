@@ -4,9 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" type="text/css" href="{{asset('web/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('web/css/stilo.css')}}">
-    <link href="{{asset('web/css/raleway.css')}}" rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('web/css/bootstrap.min.css')); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('web/css/stilo.css')); ?>">
+    <link href="<?php echo e(asset('web/css/raleway.css')); ?>" rel='stylesheet' type='text/css'>
 
     <meta name="author" content="UNASAM, Universidad Nacional Santiago Antunez de Mayolo">
     <meta name="description"
@@ -17,45 +17,45 @@
 
     <title>UNASAM</title>
 
-    <link rel="icon" type="image/png" href="{{asset('web/img/unasamicono.png')}}" />
-    <link rel="stylesheet" type="text/css" href="{{asset('web/scroll/css/perfect-scrollbar.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('web/css/stylesgalery.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('web/css/admin.css')}}">
-    <link rel="stylesheet" href="{{asset('web/fullcalendar/font-awesome.min.css')}}">
+    <link rel="icon" type="image/png" href="<?php echo e(asset('web/img/unasamicono.png')); ?>" />
+    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('web/scroll/css/perfect-scrollbar.css')); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('web/css/stylesgalery.css')); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('web/css/admin.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('web/fullcalendar/font-awesome.min.css')); ?>">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="{{asset('web/fullcalendar/ionicons.min.css')}}">
+    <link rel="stylesheet" href="<?php echo e(asset('web/fullcalendar/ionicons.min.css')); ?>">
     <!-- fullCalendar 2.2.5-->
-    <link rel="stylesheet" href="{{asset('web/fullcalendar/fullcalendar.min.css')}}">
-    <link rel="stylesheet" href="{{asset('web/fullcalendar/fullcalendar.print.css')}}" media="print">
+    <link rel="stylesheet" href="<?php echo e(asset('web/fullcalendar/fullcalendar.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('web/fullcalendar/fullcalendar.print.css')); ?>" media="print">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{asset('web/fullcalendar/AdminLTE.min.css')}}">
+    <link rel="stylesheet" href="<?php echo e(asset('web/fullcalendar/AdminLTE.min.css')); ?>">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
            folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="{{asset('web/fullcalendar/_all-skins.min.css')}}">
+    <link rel="stylesheet" href="<?php echo e(asset('web/fullcalendar/_all-skins.min.css')); ?>">
 
-    <link rel="stylesheet" type="text/css" href="{{asset('web/ejes/jquery-ui.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('web/ejes/jquery-ui.min.css')); ?>">
 
 
-    <link rel="stylesheet" type="text/css" href="{{asset('web/css/font-awesome/css/font-awesome.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('web/css/prettyPhoto.css')}}">
+    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('web/css/font-awesome/css/font-awesome.css')); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('web/css/prettyPhoto.css')); ?>">
 
-    <link rel="stylesheet" type="text/css" href="{{asset('web/css/footer.css')}}">
+    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('web/css/footer.css')); ?>">
 
-    <link rel="stylesheet" type="text/css" href="{{asset('web/css/contenido.css')}}">
+    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('web/css/contenido.css')); ?>">
 
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v5.0">
     </script>
-    <script src="{{asset('web/js/jquery.js')}}"></script>
-    <script src="{{asset('web/js/bootstrap.js')}}"></script>
-    <script type="text/javascript" src="{{asset('web/js/jquery.prettyPhoto.js')}}"></script>
-    <script src="{{asset('web/scroll/js/perfect-scrollbar.jquery.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('web/ejes/jquery.svg.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('web/ejes/jquery.svgdom.min.js')}}"></script>
-    <!--<script type="text/javascript" src="{{asset('web/ejes/jquery-ui.min.js')}}"></script>-->
-    <script type="text/javascript" src="{{asset('web/js/jqFancyTransitions.1.8.js')}}"></script>
+    <script src="<?php echo e(asset('web/js/jquery.js')); ?>"></script>
+    <script src="<?php echo e(asset('web/js/bootstrap.js')); ?>"></script>
+    <script type="text/javascript" src="<?php echo e(asset('web/js/jquery.prettyPhoto.js')); ?>"></script>
+    <script src="<?php echo e(asset('web/scroll/js/perfect-scrollbar.jquery.min.js')); ?>"></script>
+    <script type="text/javascript" src="<?php echo e(asset('web/ejes/jquery.svg.min.js')); ?>"></script>
+    <script type="text/javascript" src="<?php echo e(asset('web/ejes/jquery.svgdom.min.js')); ?>"></script>
+    <!--<script type="text/javascript" src="<?php echo e(asset('web/ejes/jquery-ui.min.js')); ?>"></script>-->
+    <script type="text/javascript" src="<?php echo e(asset('web/js/jqFancyTransitions.1.8.js')); ?>"></script>
 
-    <script type="text/javascript" src="{{asset('web/fullcalendar/moment.js')}}"></script>
-    <script type="text/javascript" src="{{asset('web/fullcalendar/fullcalendar.min.js')}}"></script>
+    <script type="text/javascript" src="<?php echo e(asset('web/fullcalendar/moment.js')); ?>"></script>
+    <script type="text/javascript" src="<?php echo e(asset('web/fullcalendar/fullcalendar.min.js')); ?>"></script>
 </head>
 
 <body style="background: #f6f6f6;">
@@ -68,31 +68,31 @@
                         <div id="icos" style="float:left;">
                             <a href="https://www.facebook.com/UNASAMOFICIAL/" target="_blank"
                                 style="padding:5px; display:inline-block;"> <img
-                                    src="{{asset('img/imagen/icos/ico01p.png')}}" class="img-responsive" alt="..."
+                                    src="<?php echo e(asset('img/imagen/icos/ico01p.png')); ?>" class="img-responsive" alt="..."
                                     style="height: 20px;" data-toggle="tooltip" data-placement="top"
                                     title="Facebook Oficial">
                             </a>
                             <a href="https://www.youtube.com/channel/UCHUxOdDI4zrMgghSpTDxttw" target="_blank"
                                 style="padding:5px; display:inline-block;"> <img
-                                    src="{{asset('img/imagen/icos/ico02p.png')}}" class="img-responsive" alt="..."
+                                    src="<?php echo e(asset('img/imagen/icos/ico02p.png')); ?>" class="img-responsive" alt="..."
                                     style="height: 20px;" data-toggle="tooltip" data-placement="top"
                                     title="Youtube Oficial">
                             </a>
                             <a href="https://www.google.com.pe/maps/place/Unasam/@-9.5161573,-77.5257068,17z/data=!4m12!1m6!3m5!1s0x91a90d038b59076d:0x92819ea87f16be34!2sUNASAM+Facultad+de+Derecho!8m2!3d-9.5363618!4d-77.5234601!3m4!1s0x0000000000000000:0xf366faa38220b74b!8m2!3d-9.5176121!4d-77.5245802"
                                 target="_blank" style="padding:5px; display:inline-block;" data-toggle="tooltip"
                                 data-placement="top" title="Ubicación"> <img
-                                    src="{{asset('img/imagen/icos/ico03p.png')}}" class="img-responsive" alt="..."
+                                    src="<?php echo e(asset('img/imagen/icos/ico03p.png')); ?>" class="img-responsive" alt="..."
                                     style="height: 20px;">
                             </a>
                             <a href="https://login.microsoftonline.com/common/oauth2/authorize?client_id=4345a7b9-9a63-4910-a426-35363201d503&amp;response_mode=form_post&amp;response_type=code+id_token&amp;scope=openid+profile&amp;state=OpenIdConnect.AuthenticationProperties%3dWDm-fp2bkrKUM07N6-0rNiv7qAfDexIvl4fCKgy9oW_uLqfRgdiDNM-a0snpG3aawMWKRxB-w7BTmqScmiYVb9h4_-hBcOYrDCC9Y37kQ060D7347QCddXqh23sLIHXd&amp;nonce=636522267011711837.YWMzY2Q0NDItODAxMi00NjJjLWJhYjEtZjQ1ZmVhYzU1YmI4ZDVjYjcxYmMtMDRkYS00ZjYwLWJjMjAtMjRkNmIwNGFiZmJh&amp;redirect_uri=https%3a%2f%2fwww.office.com%2f&amp;ui_locales=es-ES&amp;mkt=es-ES&amp;client-request-id=a55211ac-31da-4c79-8b14-ba31b726271a"
                                 target="_blank" style="padding:5px; display:inline-block;" data-toggle="tooltip"
                                 data-placement="top" title="Correo Electrónico Institucional"> <img
-                                    src="{{asset('img/imagen/icos/ico05p.png')}}" class="img-responsive" alt="..."
+                                    src="<?php echo e(asset('img/imagen/icos/ico05p.png')); ?>" class="img-responsive" alt="..."
                                     style="height: 20px;">
                             </a>
                             <a href="http://ogtise.unasam.edu.pe/verDirectorio" target="_blank"
                                 style="padding:5px; display:inline-block;" data-toggle="tooltip" data-placement="top"
-                                title="Directorio de Anexos Oficial"> <img src="{{asset('img/imagen/icos/ico06p.png')}}"
+                                title="Directorio de Anexos Oficial"> <img src="<?php echo e(asset('img/imagen/icos/ico06p.png')); ?>"
                                     class="img-responsive" alt="..." style="height: 20px;">
                             </a>
                         </div>
@@ -104,7 +104,7 @@
                         <div style="float:right;" id="botonesArriva">
 
 
-                            <a href="{{ URL::to('WebPagosVirtuales') }}"><button type="button" class="btn btn-info"
+                            <a href="<?php echo e(URL::to('WebPagosVirtuales')); ?>"><button type="button" class="btn btn-info"
                                     style="font-size:13px; padding: 2px 5px 2px 5px; margin-top: 5px; "><i
                                         class="fa fa-money" aria-hidden="true"></i> Pagos Virtuales</button></a>
 
@@ -117,7 +117,7 @@
                                     style="font-size:13px;padding: 2px 5px 2px 5px; margin-top: 5px; "><i
                                         class="fa fa-university" aria-hidden="true"></i> Campus Virtual</button></a>
 
-                            <a href="{{ URL::to('login') }}" target="_blank"><button type="button" class="btn btn-info"
+                            <a href="<?php echo e(URL::to('login')); ?>" target="_blank"><button type="button" class="btn btn-info"
                                     style="font-size:13px;padding: 2px 5px 2px 5px; margin-top: 5px; "><span
                                         class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                                     Acceso</button></a>
@@ -125,7 +125,7 @@
                             <div class="btn btn-default"
                                 style="    margin-left: 10px;background-color: white;font-weight: bold; display:inline-block; float:right; padding: 0px; color: #56545d;">
                                 <a href="http://www.unasam.edu.pe/web-backup/portal.php" target="_blank"><img
-                                        src="{{asset('img/imagen/trans.png')}}" class="img img-responsive"
+                                        src="<?php echo e(asset('img/imagen/trans.png')); ?>" class="img img-responsive"
                                         style="height: 30px;"></a>
                             </div>
                         </div>
@@ -174,10 +174,10 @@
                                             <span class="icon-bar"></span>
                                             <span class="icon-bar"></span>
                                         </button>
-                                        <a href="{{ URL::to('/') }}">
+                                        <a href="<?php echo e(URL::to('/')); ?>">
                                             <img class="img-responsive"
                                                 style="max-height: 75px; padding-bottom: 5px; padding-top: 5px;"
-                                                src="{{asset('img/imagen/logofinal.jpg')}}">
+                                                src="<?php echo e(asset('img/imagen/logofinal.jpg')); ?>">
                                         </a>
                                     </div>
                                     <div class="collapse navbar-collapse" id="menu" style="margin-top: 0em;">
@@ -190,7 +190,7 @@
                                                         Somos?</label><br>
                                                 </a>
                                                 <ul class="dropdown-menu" style="background: #084B8A;">
-                                                    <li><a href="{{ URL::to('WebMisionVision') }}" class="linke">Misión
+                                                    <li><a href="<?php echo e(URL::to('WebMisionVision')); ?>" class="linke">Misión
                                                             y Visión</a></li>
 
 
@@ -201,19 +201,19 @@
                                                         <ul class="dropdown-menu"
                                                             style="background: #084B8A; color: #D8D8D8;">
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebPilares') }}">Pilares
+                                                                    href="<?php echo e(URL::to('WebPilares')); ?>">Pilares
                                                                     Fundamentales</a></li>
-                                                            <li><a class="linke" href="{{ URL::to('WebEjes') }}">Ejes
+                                                            <li><a class="linke" href="<?php echo e(URL::to('WebEjes')); ?>">Ejes
                                                                     Estratégicos
                                                                     de
                                                                     Gestión</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebPoliticas') }}">Políticas
+                                                                    href="<?php echo e(URL::to('WebPoliticas')); ?>">Políticas
                                                                     Institucionales de Gestión</a></li>
                                                         </ul>
                                                     </li>
 
-                                                    <li><a href="{{ URL::to('WebOrganigrama') }}"
+                                                    <li><a href="<?php echo e(URL::to('WebOrganigrama')); ?>"
                                                             class="linke">Organigrama
                                                             Institucional</a></li>
                                                     <li>
@@ -223,19 +223,19 @@
                                                         <ul class="dropdown-menu"
                                                             style="background: #084B8A; color: #D8D8D8;">
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebRectorado') }}">Rector</a>
+                                                                    href="<?php echo e(URL::to('WebRectorado')); ?>">Rector</a>
                                                             </li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebVicerrectoradoAcademico') }}">Vicerrector
+                                                                    href="<?php echo e(URL::to('WebVicerrectoradoAcademico')); ?>">Vicerrector
                                                                     Académico</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebVicerrectoradoInv') }}">Vicerrector
+                                                                    href="<?php echo e(URL::to('WebVicerrectoradoInv')); ?>">Vicerrector
                                                                     de Investigación</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebAsambleaUniversitaria') }}">Asamblea
+                                                                    href="<?php echo e(URL::to('WebAsambleaUniversitaria')); ?>">Asamblea
                                                                     Universitaria</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebConsejoUniversitario') }}">Consejo
+                                                                    href="<?php echo e(URL::to('WebConsejoUniversitario')); ?>">Consejo
                                                                     Universitario</a></li>
                                                         </ul>
                                                     </li>
@@ -246,15 +246,15 @@
                                                         <ul class="dropdown-menu"
                                                             style="background: #084B8A; color: #D8D8D8;">
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebControlInstitucional') }}">Órgano
+                                                                    href="<?php echo e(URL::to('WebControlInstitucional')); ?>">Órgano
                                                                     de
                                                                     Control
                                                                     Institucional</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebProcuraduria') }}">Procuraduría
+                                                                    href="<?php echo e(URL::to('WebProcuraduria')); ?>">Procuraduría
                                                                     Universitaria</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebSecretariaGeneral') }}">Secretaria
+                                                                    href="<?php echo e(URL::to('WebSecretariaGeneral')); ?>">Secretaria
                                                                     General</a></li>
 
                                                         </ul>
@@ -267,17 +267,17 @@
                                                         <ul class="dropdown-menu"
                                                             style="background: #084B8A; color: #D8D8D8;">
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebDirGeneralAdministracion') }}">Dirección
+                                                                    href="<?php echo e(URL::to('WebDirGeneralAdministracion')); ?>">Dirección
                                                                     General
                                                                     de Administración</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebDirAcadEstGenerales') }}">Dirección
+                                                                    href="<?php echo e(URL::to('WebDirAcadEstGenerales')); ?>">Dirección
                                                                     Académica de Estudios Generales</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebDirInvestigacion') }}">Dirección
+                                                                    href="<?php echo e(URL::to('WebDirInvestigacion')); ?>">Dirección
                                                                     del Instituto de Investigación</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebDirCentrosInvestigacion') }}">Dirección
+                                                                    href="<?php echo e(URL::to('WebDirCentrosInvestigacion')); ?>">Dirección
                                                                     General
                                                                     de Centros de Investigación y
                                                                     Experimentación</a>
@@ -295,45 +295,45 @@
                                                         <ul class="dropdown-menu"
                                                             style="background: #084B8A; color: #D8D8D8;">
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebPlanificacionPresupuesto') }}">Planificación
+                                                                    href="<?php echo e(URL::to('WebPlanificacionPresupuesto')); ?>">Planificación
                                                                     y
                                                                     Presupuesto</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebAsesoriaJuridica') }}">Asesoría
+                                                                    href="<?php echo e(URL::to('WebAsesoriaJuridica')); ?>">Asesoría
                                                                     Jurídica</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebImagenInstitucional') }}">Imagen
+                                                                    href="<?php echo e(URL::to('WebImagenInstitucional')); ?>">Imagen
                                                                     Institucional</a></li>
                                                             <li><a class="linke" href="http://ogtise.unasam.edu.pe/"
                                                                     target="_blank">Tecnologías
                                                                     de
                                                                     Información, Sistemas y Estadística</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebDesarrolloFisico') }}">Desarrollo
+                                                                    href="<?php echo e(URL::to('WebDesarrolloFisico')); ?>">Desarrollo
                                                                     Físico</a>
                                                             </li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebResponsabilidadSocial') }}">Responsabilidad
+                                                                    href="<?php echo e(URL::to('WebResponsabilidadSocial')); ?>">Responsabilidad
                                                                     Social Universitaria</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebCalidadUniversitaria') }}">Calidad
+                                                                    href="<?php echo e(URL::to('WebCalidadUniversitaria')); ?>">Calidad
                                                                     Universitaria</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebOficinaAdmision') }}">Admisión</a>
+                                                                    href="<?php echo e(URL::to('WebOficinaAdmision')); ?>">Admisión</a>
                                                             </li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebOficGeneralEstudios') }}">De
+                                                                    href="<?php echo e(URL::to('WebOficGeneralEstudios')); ?>">De
                                                                     Estudios</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebServiciosAcademicos') }}">Servicios
+                                                                    href="<?php echo e(URL::to('WebServiciosAcademicos')); ?>">Servicios
                                                                     Académicos y Publicaciones</a></li>
                                                         </ul>
                                                     </li>
 
-                                                    <li><a href="{{ URL::to('WebHistoria') }}" class="linke">Nuestra
+                                                    <li><a href="<?php echo e(URL::to('WebHistoria')); ?>" class="linke">Nuestra
                                                             Historia</a>
                                                     </li>
-                                                    <li><a href="{{ URL::to('WebHimno') }}" class="linke">Himno
+                                                    <li><a href="<?php echo e(URL::to('WebHimno')); ?>" class="linke">Himno
                                                             Institucional</a>
                                                     </li>
                                                 </ul>
@@ -355,10 +355,10 @@
                                                         <ul class="dropdown-menu"
                                                             style="background: #084B8A; color: #D8D8D8;">
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebIngAmbiental') }}">Ingeniería
+                                                                    href="<?php echo e(URL::to('WebIngAmbiental')); ?>">Ingeniería
                                                                     Ambiental</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebIngSanitaria') }}">Ingeniería
+                                                                    href="<?php echo e(URL::to('WebIngSanitaria')); ?>">Ingeniería
                                                                     Sanitaria</a></li>
                                                         </ul>
                                                     </li>
@@ -368,15 +368,15 @@
                                                         <ul class="dropdown-menu"
                                                             style="background: #084B8A; color: #D8D8D8;">
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebIngSistemas') }}">Ingeniería
+                                                                    href="<?php echo e(URL::to('WebIngSistemas')); ?>">Ingeniería
                                                                     de
                                                                     Sistemas e Informática</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebEstadistica') }}">Estadística
+                                                                    href="<?php echo e(URL::to('WebEstadistica')); ?>">Estadística
                                                                     e
                                                                     Informática</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebMatematica') }}">Matemática</a>
+                                                                    href="<?php echo e(URL::to('WebMatematica')); ?>">Matemática</a>
                                                             </li>
                                                         </ul>
                                                     </li>
@@ -386,10 +386,10 @@
                                                         <ul class="dropdown-menu"
                                                             style="background: #084B8A; color: #D8D8D8;">
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebEnfermeria') }}">Enfermería</a>
+                                                                    href="<?php echo e(URL::to('WebEnfermeria')); ?>">Enfermería</a>
                                                             </li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebObstetricia') }}">obstetricia</a>
+                                                                    href="<?php echo e(URL::to('WebObstetricia')); ?>">obstetricia</a>
                                                             </li>
                                                         </ul>
                                                     </li>
@@ -400,10 +400,10 @@
                                                         <ul class="dropdown-menu"
                                                             style="background: #084B8A; color: #D8D8D8;">
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebEconomia') }}">Economía</a>
+                                                                    href="<?php echo e(URL::to('WebEconomia')); ?>">Economía</a>
                                                             </li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebContabilidad') }}">Contabilidad</a>
+                                                                    href="<?php echo e(URL::to('WebContabilidad')); ?>">Contabilidad</a>
                                                             </li>
                                                         </ul>
                                                     </li>
@@ -414,10 +414,10 @@
                                                         <ul class="dropdown-menu"
                                                             style="background: #084B8A; color: #D8D8D8;">
                                                             <li><a class="linke"
-                                                                    href="{{URL('WebAdministracion')}}">Administración</a>
+                                                                    href="<?php echo e(URL('WebAdministracion')); ?>">Administración</a>
                                                             </li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebTurismo') }}">Turismo</a></li>
+                                                                    href="<?php echo e(URL::to('WebTurismo')); ?>">Turismo</a></li>
                                                         </ul>
                                                     </li>
                                                     <li><a href="javascript:void(0);"
@@ -426,10 +426,10 @@
                                                         <ul class="dropdown-menu"
                                                             style="background: #084B8A; color: #D8D8D8;">
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebIngAgricola') }}">Ingeniería
+                                                                    href="<?php echo e(URL::to('WebIngAgricola')); ?>">Ingeniería
                                                                     Agrícola</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebIngAgronomia') }}">Agronomía</a>
+                                                                    href="<?php echo e(URL::to('WebIngAgronomia')); ?>">Agronomía</a>
                                                             </li>
                                                         </ul>
                                                     </li>
@@ -439,10 +439,10 @@
                                                         <ul class="dropdown-menu"
                                                             style="background: #084B8A; color: #D8D8D8;">
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebIngCivil') }}">Ingeniería
+                                                                    href="<?php echo e(URL::to('WebIngCivil')); ?>">Ingeniería
                                                                     Civil</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebArquitectura') }}">Arquitectura
+                                                                    href="<?php echo e(URL::to('WebArquitectura')); ?>">Arquitectura
                                                                     y
                                                                     Urbanismo</a></li>
                                                         </ul>
@@ -455,7 +455,7 @@
                                                         <ul class="dropdown-menu"
                                                             style="background: #084B8A; color: #D8D8D8;">
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebIngMinas') }}">Ingeniería de
+                                                                    href="<?php echo e(URL::to('WebIngMinas')); ?>">Ingeniería de
                                                                     Minas</a></li>
                                                         </ul>
                                                     </li>
@@ -466,7 +466,7 @@
                                                         <ul class="dropdown-menu"
                                                             style="background: #084B8A; color: #D8D8D8;">
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebDerecho') }}">Derecho y
+                                                                    href="<?php echo e(URL::to('WebDerecho')); ?>">Derecho y
                                                                     Ciencias
                                                                     Políticas</a></li>
                                                         </ul>
@@ -482,11 +482,11 @@
                                                                     target="_blank">Portal
                                                                     Institucional</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebIngAlimentaria') }}">Ingeniería
+                                                                    href="<?php echo e(URL::to('WebIngAlimentaria')); ?>">Ingeniería
                                                                     de
                                                                     Industrias Alimentarias</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebIngIndustrial') }}">Ingeniería
+                                                                    href="<?php echo e(URL::to('WebIngIndustrial')); ?>">Ingeniería
                                                                     Industrial</a></li>
                                                         </ul>
                                                     </li>
@@ -498,24 +498,24 @@
                                                         <ul class="dropdown-menu"
                                                             style="background: #084B8A; color: #D8D8D8;">
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebComunicacion') }}">Ciencias de
+                                                                    href="<?php echo e(URL::to('WebComunicacion')); ?>">Ciencias de
                                                                     la
                                                                     Comunicación</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebArqueologia') }}">Arqueología</a>
+                                                                    href="<?php echo e(URL::to('WebArqueologia')); ?>">Arqueología</a>
                                                             </li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebMatematicaInformatica') }}">Matemática
+                                                                    href="<?php echo e(URL::to('WebMatematicaInformatica')); ?>">Matemática
                                                                     e
                                                                     Informática</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebLiteratura') }}">Comunicación
+                                                                    href="<?php echo e(URL::to('WebLiteratura')); ?>">Comunicación
                                                                     Lingüística y Literatura</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebEducacion') }}">Primaria y
+                                                                    href="<?php echo e(URL::to('WebEducacion')); ?>">Primaria y
                                                                     Educación Bilingüe Intercultural</a></li>
                                                             <li><a class="linke"
-                                                                    href="{{ URL::to('WebIngles') }}">Lengua
+                                                                    href="<?php echo e(URL::to('WebIngles')); ?>">Lengua
                                                                     Extranjera:
                                                                     Inglés</a></li>
                                                         </ul>
@@ -577,13 +577,13 @@
                                                             href="http://licenciamiento.unasam.edu.pe/">Licenciamiento</a>
                                                     </li>
                                                     <li><a class="linke"
-                                                            href="{{ URL::to('WebInstrumentosGestion') }}">Instrumentos de
+                                                            href="<?php echo e(URL::to('WebInstrumentosGestion')); ?>">Instrumentos de
                                                             Gestión</a></li>
                                                     <li><a class="linke" target="_blank"
                                                             href="http://transparenciainstitucional.unasam.edu.pe/#sec_concursos">Procesos
                                                             de Selección</a></li>
                                                     <li><a class="linke"
-                                                            href="{{ URL::to('WebConvocatoria') }}">Convocatorias
+                                                            href="<?php echo e(URL::to('WebConvocatoria')); ?>">Convocatorias
                                                             Contratación Docente</a></li>
                                                 </ul>
                                             </li>
@@ -599,7 +599,7 @@
     </div>
 
     <div>
-        @yield('contenido')
+        <?php echo $__env->yieldContent('contenido'); ?>
     </div>
 
     <div id="mymodal" class="modal fade" role="dialog" style="top: 15%;">
@@ -1128,7 +1128,7 @@
                     <div class="col-md-12">
                         <section class="row" style="padding-top: 10px;padding-bottom: 10px;     margin: 0 auto;">
                             <div class="col-md-1"><br>
-                                <img src="{{asset('img/imagen/logo2.png')}}" alt="" style="height: 100; float: right;">
+                                <img src="<?php echo e(asset('img/imagen/logo2.png')); ?>" alt="" style="height: 100; float: right;">
                             </div>
 
                             <div class="col-md-2">
@@ -1399,7 +1399,7 @@
     };
 
     jQuery('#svgejes').svg({
-        'loadURL': '{{asset('web/ejes/ejes2.svg')}}',
+        'loadURL': '<?php echo e(asset('web/ejes/ejes2.svg')); ?>',
         'onLoad': window.inicializarMapa
     }); 
 
@@ -1414,4 +1414,4 @@
 
 </body>
 
-</html>
+</html><?php /**PATH C:\Users\Yuri Martin\Desktop\webFacultades\resources\views/admin/layout/admin.blade.php ENDPATH**/ ?>

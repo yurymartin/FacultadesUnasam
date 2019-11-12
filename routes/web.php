@@ -3,6 +3,9 @@
 Route::get('/', function () {
     return view('web/index');
 });
+Route::get('/admin', function () {
+    return view('vendor/adminlte/layouts/app');
+});
 //Route::get('/','IndexWebController@Index');
 
 // ESCUELAS
@@ -103,7 +106,6 @@ Route::group(['middleware' => 'auth'], function () {
    
     Route::get('send','mailController@send');
     Route::get('sendSMS','SmsController@sendSms');
-    
    
     Route::get('usuarios','UserController@index1');
     Route::resource('usuario','UserController');

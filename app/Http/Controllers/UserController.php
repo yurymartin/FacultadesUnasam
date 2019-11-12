@@ -23,8 +23,6 @@ class UserController extends Controller
 
             $idtipouser=Auth::user()->tipouser_id;
             $tipouser=Tipouser::find($idtipouser);
-
-
             $modulo="usuario";
             return view('usuario.index',compact('tipouser','modulo'));
         }
@@ -42,7 +40,6 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $buscar=$request->busca;
-
         $usuarios = DB::table('users')
         ->join('tipousers', 'tipousers.id', '=', 'users.tipouser_id')
         ->join('personas', 'personas.id', '=', 'users.persona_id')
@@ -55,10 +52,7 @@ class UserController extends Controller
         ->orderBy('users.id')
         ->select('users.id as idUser','users.name as username','users.email','users.activo','users.borrado','personas.id as idPer','personas.nombres','personas.apellidos','personas.dni','personas.direccion','personas.genero','personas.telefono','tipousers.id as idtipouser','tipousers.nombre as tipouser')
         ->paginate(30);
-        
         $tipousers=Tipouser::orderBy('id')->get();
-
-
         return [
             'pagination'=>[
                 'total'=> $usuarios->total(),

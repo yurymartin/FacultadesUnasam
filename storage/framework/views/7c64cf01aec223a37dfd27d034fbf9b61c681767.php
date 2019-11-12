@@ -1,60 +1,56 @@
-@extends('adminlte::layouts.auth')
-@section('htmlheader_title')
+<?php $__env->startSection('htmlheader_title'); ?>
     Iniciar Sesión
-@endsection
-@section('content')
-    <body class="hold-transition login-page" style=" background-image: url('{{ asset('/img/fondo.jpg') }}');    background-size: cover;
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
+    <body class="hold-transition login-page" style=" background-image: url('<?php echo e(asset('/img/fondo.jpg')); ?>');    background-size: cover;
     background-repeat: no-repeat;
     height: 100%;">
     <div id="app" v-cloak>
         <div class="login-box" style="width: 400px;">
 
-{{--                 <div class="card2" style="text-align: center;margin-top: 50px;border-radius: 3px">
-                        <img class="" src="{{ asset('/img/logo.png') }}" style="padding-top: 7px;">
-        
-                    </div> --}}
+
 
             <div class="login-logo" style="background-color: rgba(0,0,0,0.5) !important;     border-radius: 10px;">
                 
-                <a href="{{ url('/home') }}" style="color:white;font-size:28px; display:inline-block;">
-                    <b> UNASAM</b> <br><img src="{{ asset('/img/unasam.png') }}" alt="" style="padding-top: 10px;width: 70px; display:inline-block;"> <br>Administración de las Paginas web de las Facultades</a>
+                <a href="<?php echo e(url('/home')); ?>" style="color:white;font-size:28px; display:inline-block;">
+                    <b> UNASAM</b> <br><img src="<?php echo e(asset('/img/unasam.png')); ?>" alt="" style="padding-top: 10px;width: 70px; display:inline-block;"> <br>Administración de las Paginas web de las Facultades</a>
             </div><!-- /.login-logo -->
 
-            @if (count($errors) > 0)
+            <?php if(count($errors) > 0): ?>
                 <div class="alert alert-danger">
                     <strong>Error!</strong> Tenemos algunos Algunos Problemas<br>
                     <ul style="margin-bottom: 0px;">
-                        @foreach ($errors->all() as $error)
-                        {{-- <li>{{ $error }}</li>  --}}
-                        @if($error=="The name field is required.")
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        
+                        <?php if($error=="The name field is required."): ?>
                         <li>El campo Usuario es necesario.</li>
-                        @endif
+                        <?php endif; ?>
 
-                        @if($error=="The password field is required.")
+                        <?php if($error=="The password field is required."): ?>
                         <li>El campo Contraseña es necesario.</li>
-                        @endif
+                        <?php endif; ?>
 
-                        @if($error=="These credentials do not match our records.")
+                        <?php if($error=="These credentials do not match our records."): ?>
                         <li>Estas credenciales no coinciden con nuestros registros.</li>
-                        @endif
+                        <?php endif; ?>
 
-                        @if($error=="usuarioActiv")
+                        <?php if($error=="usuarioActiv"): ?>
                         <li>El usuario del sistema se encuentra desactivado, comuncarse con el administrador del sistema.</li>
-                        @endif
+                        <?php endif; ?>
 
-                        @if($error=="alumnoSemestre")
+                        <?php if($error=="alumnoSemestre"): ?>
                         <li>El semestre al que pertenece el alumno se encuentra cerrado, comuniquese con el administrador del sistema.</li>
-                        @endif
+                        <?php endif; ?>
 
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
                 </div>
-            @endif
+            <?php endif; ?>
 
             <div class="login-box-body" style="background-color: rgba(0,0,0,0.5) !important;color: white;border-radius: 10px;">
                 <p class="login-box-msg" style="    font-size: 17px;"> Ingrese sus credenciales para iniciar sesión </p>
-                <form action="{{ url('/login') }}" method="post">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <form action="<?php echo e(url('/login')); ?>" method="post">
+                    <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
 
                     
                     
@@ -64,7 +60,7 @@
                     </div>
 
                     <div class="form-group has-feedback">
-                        <input type="password" class="form-control" placeholder="{{ trans('adminlte_lang::message.password') }}" name="password"/>
+                        <input type="password" class="form-control" placeholder="<?php echo e(trans('adminlte_lang::message.password')); ?>" name="password"/>
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
                     <div class="row">
@@ -84,16 +80,16 @@
                     </div>
                 </form>
 
-                {{-- @include('adminlte::auth.partials.social_login') --}}
+                
                 <br>
-                <a href="{{ url('#') }}">Olvidé mi Contraseña</a><br>
-                {{-- <a href="{{ url('/register') }}" class="text-center">{{ trans('adminlte_lang::message.registermember') }}</a> --}}
+                <a href="<?php echo e(url('#')); ?>">Olvidé mi Contraseña</a><br>
+                
 
             </div><!-- /.login-box-body -->
 
         </div><!-- /.login-box -->
     </div>
-    @include('adminlte::layouts.partials.scripts_auth')
+    <?php echo $__env->make('adminlte::layouts.partials.scripts_auth', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <script>
       $(function () {
@@ -109,4 +105,5 @@
     </script>
     </body>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('adminlte::layouts.auth', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Yuri Martin\Desktop\webFacultades\resources\views/vendor/adminlte/auth/login.blade.php ENDPATH**/ ?>
