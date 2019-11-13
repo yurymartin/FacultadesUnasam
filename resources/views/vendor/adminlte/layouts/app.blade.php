@@ -106,6 +106,10 @@ desired effect
 
 @elseif($modulo=="facultades")
 @include('facultades.vue')
+
+@elseif($modulo=="departamentoacademicos")
+@include('departamentoacademicos.vue')
+
 @endif
 
 <script type="text/javascript">

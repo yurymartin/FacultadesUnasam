@@ -3,7 +3,7 @@
 el: '#app',
 data:{
        titulo:"Mantenimiento",
-       subtitulo: "Gestión de Facultades",
+       subtitulo: "Gestión de Departamentos Academicos",
        subtitulo2: "Principal",
 
    subtitle2:false,
@@ -44,10 +44,10 @@ data:{
 
    divprincipal:false,
 
-   facultades: [],
+   Departamentos: [],
    errors:[],
 
-   fillFacultad:{'id':'', 'nombre':'', 'codigo':'','activo':'','departamentoacad_id':''},
+   fillDepartamento:{'id':'', 'nombre':'', 'Descripcion':'','activo':''},
 
    pagination: {
    'total': 0,
@@ -74,7 +74,7 @@ data:{
 
 },
 created:function () {
-   this.getFacultades(this.thispage);
+   this.getDepartamentos(this.thispage);
 },
 mounted: function () {
    this.divloader0=false;
@@ -112,19 +112,19 @@ computed:{
 },
 
 methods: {
-    getFacultades: function (page) {
+    getDepartamentos: function (page) {
        var busca=this.buscar;
-       var url = 'facultad?page='+page+'&busca='+busca;
+       var url = 'departamento?page='+page+'&busca='+busca;
 
        axios.get(url).then(response=>{
-            this.facultades= response.data.facultades.data;
+            this.departamentos= response.data.departamentos.data;
             this.pagination= response.data.pagination;
-            console.log(this.facultades);
+            console.log(this.departamentos);
             this.$nextTick(function () {
-                this.recorrerFacultades();
+                this.recorrerDepartamentos();
             })
 
-           if(this.facultades.length == 0 && this.thispage != '1'){
+           if(this.departamentos.length == 0 && this.thispage != '1'){
                var a = parseInt(this.thispage) ;
                a--;
                this.thispage=a.toString();
@@ -134,11 +134,11 @@ methods: {
    },
    changePage:function (page) {
        this.pagination.current_page=page;
-       this.getFacultades(page);
+       this.getDepartamentos(page);
        this.thispage=page;
    },
    buscarBtn: function () {
-       this.getFacultades();
+       this.getDepartamentos();
        this.thispage='1';
    },
    nuevo:function () {
@@ -173,7 +173,7 @@ methods: {
             this.imagen = event.target.files[0];
         }
     },
-    recorrerFacultades:function () { 
+    recorrerDepartamentos:function () { 
             $.each($(".txtimg"), function( index, value ) {
              //  var valor=$(this).attr("id");
              var idusar=$(this).val();
@@ -209,7 +209,7 @@ methods: {
 
         
                 if(String(response.data.result)=='1'){
-                    this.getFacultad(this.thispage);
+                    this.getDepartamentos(this.thispage);
                     this.errors=[];
                     this.cerrarFormNuevo();
                     toastr.success(response.data.msj);
@@ -241,7 +241,7 @@ methods: {
                 axios.delete(url).then(response=>{//eliminamos
 
                 if(response.data.result=='1'){
-                    app.getFacultad(app.thispage);//listamos
+                    app.getDepartamentos(app.thispage);//listamos
                     toastr.success(response.data.msj);//mostramos mensaje
                 }else{
                     // $('#'+response.data.selector).focus();
@@ -254,14 +254,13 @@ methods: {
                }).catch(swal.noop);  
    },
 
-   editfacultad:function (facultad) {
+   editfacultad:function (departamento) {
 
-        this.fillFacultad.id=facultad.id;
-        this.fillFacultad.titulo=facultad.tituloFacultad;
-        this.fillFacultad.descripcion=facultad.descrFacultad;            
-        this.fillFacultad.imagen=facultad.ruta;
-        this.fillFacultad.estado=facultad.activo;
-        this.imagen=null;
+        this.fillDepartamento.id=departamento.id;
+        this.fillDepartamento.titulo=departamento.tituloFacultad;
+        this.fillDepartamento.descripcion=departamento.descrFacultad;            
+        this.fillDepartamento.imagen=departamento.ruta;
+        this.fillDepartamento.estado=departamento.activo;
 
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
@@ -296,7 +295,7 @@ methods: {
            this.divloaderEdit=false;
            
            if(response.data.result=='1'){   
-           this.getFacultad(this.thispage);
+           this.getDepartamentos(this.thispage);
            this.fillLocal={'id':'', 'titulo':'', 'descripcion':'','imagen':'','estado':''};
            this.errors=[];
            $("#modalEditar").modal('hide');
@@ -328,7 +327,7 @@ methods: {
                 var url = 'facultad/altabaja/'+facultad.id+'/0';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
-                           app.getFacultad(app.thispage);//listamos
+                           app.getDepartamentos(app.thispage);//listamos
                            toastr.success(response.data.msj);//mostramos mensaje
                        }else{
                           // $('#'+response.data.selector).focus();
@@ -357,7 +356,7 @@ methods: {
                        axios.get(url).then(response=>{//eliminamos
 
                        if(response.data.result=='1'){
-                           app.getFacultad(app.thispage);//listamos
+                           app.getDepartamentos(app.thispage);//listamos
                            toastr.success(response.data.msj);//mostramos mensaje
                        }else{
                           // $('#'+response.data.selector).focus();

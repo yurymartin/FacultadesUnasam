@@ -1,7 +1,7 @@
 @extends('vendor.adminlte.layouts.app')
 
 @section('htmlheader_title')
-Gestion de Facultades
+Gestion de Departamento Academico
 @endsection
 
 <style type="text/css">
@@ -19,7 +19,7 @@ Gestion de Facultades
 		@include('vendor.adminlte.layouts.partials.loaders')
 		@if(accesoUser([1,2]))	
 		<template v-if="divprincipal" id="divprincipal">
-			@include('facultades.principal')
+			@include('departamentoacademicos.principal')
 		</template>
 		@endif
 	</div>

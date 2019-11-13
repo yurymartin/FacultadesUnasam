@@ -6,7 +6,7 @@
 
         <div class="no-print user-panel-unasam">
             <div class="no-print image" style="text-align: center;">
-                <img src="{{asset('/img/unasam.png')}}" alt="User Image" style="margin-top: 15px;height: 120px;" />
+                <img src="{{asset('/img/unasam.png')}}" alt="User Image" style="margin-top: 15px;height: 80px;" />
                 <ul class="no-print sidebar-menu">
                     <li class="no-print stroke treeview"
                         style="font-family: Monotype Corsiva;font-size: 21px;color: #f9c52c;margin-top: 5px;">"Una Nueva
@@ -41,7 +41,12 @@
             <li v-bind:class="classMenu0"><a href="{{ url('home') }}"><i class='fa fa-home'></i> <span>Inicio</span></a>
             </li>
             @if(accesoUser([1,2,3]))
-            <li v-bind:class="classMenu0"><a href="{{ url('facultades') }}"><i class='fa fa-home'></i> <span>Facultades</span></a>
+            <li v-bind:class="classMenu0"><a href="{{ url('departamentos') }}"><i class='fa fa-home'></i>
+                    <span>Departamentos Academicos</span></a>
+            @endif
+            @if(accesoUser([1,2,3]))
+            <li v-bind:class="classMenu0"><a href="{{ url('facultades') }}"><i class='fa fa-home'></i>
+                    <span>Facultades</span></a>
             @endif
             @if(accesoUser([1,2,3]))
             <li class="treeview" v-bind:class="classMenu1">

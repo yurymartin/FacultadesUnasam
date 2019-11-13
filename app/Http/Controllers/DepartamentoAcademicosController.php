@@ -49,7 +49,7 @@ class DepartamentoAcademicosController extends Controller
                 'from' => $departamentos->firstItem(),
                 'to' => $departamentos->lastItem(),
             ],
-            'departamento' => $departamentos
+            'departamentos' => $departamentos
         ];
     }
 

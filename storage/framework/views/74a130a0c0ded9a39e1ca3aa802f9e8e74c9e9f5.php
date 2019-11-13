@@ -1,7 +1,7 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de Galeria</h3>
-    <a style="float: right;" type="button" class="btn btn-default" href="{{URL::to('home')}}"><i class="fa fa-reply-all"
+    <h3 class="box-title">Gestión de facultades</h3>
+    <a style="float: right;" type="button" class="btn btn-default" href="<?php echo e(URL::to('home')); ?>"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
   </div>
@@ -9,7 +9,7 @@
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
-          class="fa fa-plus-square-o" aria-hidden="true"></i> Nueva Fotografía</button>
+          class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Facultad</button>
     </div>
 
   </div>
@@ -18,7 +18,7 @@
 
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
-    <h3 class="box-title" id="tituloAgregar">Nueva Fotografía</h3>
+    <h3 class="box-title" id="tituloAgregar">Nuevo Facultad</h3>
   </div>
 
   <form v-on:submit.prevent="create">
@@ -26,32 +26,22 @@
 
       <div class="col-md-12">
         <div class="form-group">
-          <label for="txttitulo" class="col-sm-2 control-label">Titulo de la Fotografía:*</label>
+          <label for="txttitulo" class="col-sm-2 control-label">Nombre del Facultad:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Fotografía"
+            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Facultad"
               maxlength="200" autofocus v-model="newTitulo">
           </div>
         </div>
       </div>
 
-      <div class="col-md-12" style="padding-top: 15px;">
-        <div class="form-group">
+
+
+      <div class="col-md-12">
+        <div class="form-group" style="padding-top: 15px;">
           <label for="txtdescripcion" class="col-sm-2 control-label">Descripción:*</label>
           <div class="col-sm-8">
-            <!-- <input type="text" class="form-control" id="txtdesc" placeholder="Descripción" > -->
-            {{--   <textarea class="form-control" name='txtdescripcion' id="txtdescripcion" rows="7" placeholder="Ingrese..."
-                      required v-model="newDescripcion"></textarea> --}}
-            <CKEDITOR v-model="newDescripcion" name="txtdescripcion" id="txtdescripcion" rows="12">
-            </CKEDITOR>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12" style="padding-top: 15px;">
-        <div class="form-group">
-          <label for="txtfecha" class="col-sm-2 control-label">Fecha de la Fotografía:*</label>
-          <div class="col-sm-8">
-            <input type="date" class="form-control" id="txtfecha" name="txtfecha" v-model="newFecha">
+            <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion" placeholder="Descripcion"
+              maxlength="500" v-model="newDescripcion">
           </div>
         </div>
       </div>
@@ -114,7 +104,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Fotografías</h3>
+    <h3 class="box-title">Listado de Departamentos Academicos</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -136,42 +126,35 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Titulo</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 25%;">Descripción</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Fecha</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Fotografía</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Estado</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Departamento Academico</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Descripciòn</th>
+          
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
-        <tr v-for="galeria, key in galerias">
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{key+pagination.from}}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ galeria.tituloFoto }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;" v-html="galeria.descrFoto"></td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ galeria.fechaFoto }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: center;vertical-align: middle;">
-            <img :src="getImg(galeria)" alt="" class="img img-responsive">
-          </td>
+        <tr v-for="departamento, key in departamentos">
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{key+pagination.from}}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
-              <span class="label label-success" v-if="galeria.activo=='1'">Activo</span>
-              <span class="label label-warning" v-if="galeria.activo=='0'">Inactivo</span>
+              <span class="label label-success" v-if="departamento.activo=='1'">Activo</span>
+              <span class="label label-warning" v-if="departamento.activo=='0'">Inactivo</span>
             </center>
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
-              <a href="#" v-if="galeria.activo=='1'" class="btn bg-navy btn-sm"
-                v-on:click.prevent="bajagaleria(galeria)" data-placement="top" data-toggle="tooltip"
-                title="Desactivar galeria"><i class="fa fa-arrow-circle-down"></i></a>
+              <a href="#" v-if="departamento.activo=='1'" class="btn bg-navy btn-sm"
+                v-on:click.prevent="bajafacultad(departamento)" data-placement="top" data-toggle="tooltip"
+                title="Desactivar departamento"><i class="fa fa-arrow-circle-down"></i></a>
 
-              <a href="#" v-if="galeria.activo=='0'" class="btn btn-success btn-sm"
-                v-on:click.prevent="altagaleria(galeria)" data-placement="top" data-toggle="tooltip"
-                title="Activar galeria"><i class="fa fa-check-circle"></i></a>
+              <a href="#" v-if="departamento.activo=='0'" class="btn btn-success btn-sm"
+                v-on:click.prevent="altafacultad(departamento)" data-placement="top" data-toggle="tooltip"
+                title="Activar departamento"><i class="fa fa-check-circle"></i></a>
 
 
-              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editgaleria(galeria)" data-placement="top"
-                data-toggle="tooltip" title="Editar galeria"><i class="fa fa-edit"></i></a>
-              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrargaleria(galeria)" data-placement="top"
-                data-toggle="tooltip" title="Borrar galeria"><i class="fa fa-trash"></i></a>
+              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editfacultad(departamento)"
+                data-placement="top" data-toggle="tooltip" title="Editar departamento"><i class="fa fa-edit"></i></a>
+              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarfacultad(departamento)"
+                data-placement="top" data-toggle="tooltip" title="Borrar departamento"><i class="fa fa-trash"></i></a>
             </center>
           </td>
         </tr>
@@ -183,7 +166,7 @@
   <!-- /.box-body -->
   <div style="padding: 15px;">
     <div>
-      <h5>Registros por Página: @{{ pagination.per_page }}</h5>
+      <h5>Registros por Página: {{ pagination.per_page }}</h5>
     </div>
     <nav aria-label="Page navigation example">
       <ul class="pagination">
@@ -200,7 +183,7 @@
         </li>
         <li class="page-item" v-for="page in pagesNumber" v-bind:class="[page=== isActived ? 'active' : '']">
           <a class="page-link" href="#" @click.prevent="changePage(page)">
-            <span>@{{ page }}</span>
+            <span>{{ page }}</span>
           </a>
         </li>
         <li class="page-item" v-if="pagination.current_page< pagination.last_page">
@@ -216,12 +199,12 @@
       </ul>
     </nav>
     <div>
-      <h5>Registros Totales: @{{ pagination.total }}</h5>
+      <h5>Registros Totales: {{ pagination.total }}</h5>
     </div>
   </div>
 </div>
 
-<form method="post" v-on:submit.prevent="updateGaleria(fillGaleria.id)">
+<form method="post" v-on:submit.prevent="updateFacultad(fillFacultad.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document" id="modaltamanio">
@@ -230,7 +213,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
               style="font-size: 35px;">&times;</span></button>
           <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR
-            FOTOGRAFÍA</h4>
+            BANNER</h4>
 
         </div>
         <div class="modal-body">
@@ -242,36 +225,24 @@
 
                 <div class="col-md-12">
                   <div class="form-group">
-                    <label for="txttituloE" class="col-sm-2 control-label">Titulo de la Fotografía:*</label>
+                    <label for="txttituloE" class="col-sm-2 control-label">Nombre del Facultad:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="txttituloE" name="txttituloE" placeholder="Fotografía"
-                        maxlength="450" autofocus v-model="fillGaleria.titulo">
+                      <input type="text" class="form-control" id="txttituloE" name="txttituloE" placeholder="Facultad"
+                        maxlength="200" autofocus v-model="fillFacultad.titulo">
                     </div>
                   </div>
                 </div>
-          
-                <div class="col-md-12" style="padding-top: 15px;">
-                  <div class="form-group">
+
+                <div class="col-md-12">
+                  <div class="form-group" style="padding-top: 15px;">
                     <label for="txtdescripcionE" class="col-sm-2 control-label">Descripción:*</label>
                     <div class="col-sm-8">
-                      <!-- <input type="text" class="form-control" id="txtdesc" placeholder="Descripción" > -->
-                      {{--   <textarea class="form-control" name='txtdescripcionE' id="txtdescripcionE" rows="7" placeholder="Ingrese..."
-                                required v-model="newDescripcion"></textarea> --}}
-                      <CKEDITOR name="txtdescripcionE" id="txtdescripcionE" rows="12">
-                      </CKEDITOR>
+                      <input type="text" class="form-control" id="txtdescripcionE" name="txtdescripcionE"
+                        placeholder="Descripcion" maxlength="500" v-model="fillFacultad.descripcion">
                     </div>
                   </div>
                 </div>
-          
-                <div class="col-md-12" style="padding-top: 15px;">
-                  <div class="form-group">
-                    <label for="txtfechaE" class="col-sm-2 control-label">Fecha de la Fotografía:*</label>
-                    <div class="col-sm-8">
-                      <input type="date" class="form-control" id="txtfechaE" name="txtfechaE" v-model="fillGaleria.fecha">
-                    </div>
-                  </div>
-                </div>
-             
+
                 <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
                     <label for="archivo" class="col-sm-2 control-label">Imagen :*</label>
@@ -286,7 +257,7 @@
                   <div class="form-group">
                     <label for="cbuestadoE" class="col-sm-2 control-label">Estado:*</label>
                     <div class="col-sm-4">
-                      <select class="form-control" id="cbuestadoE" name="cbuestadoE" v-model="fillGaleria.estado">
+                      <select class="form-control" id="cbuestadoE" name="cbuestadoE" v-model="fillFacultad.estado">
                         <option value="1">Activado</option>
                         <option value="0">Desactivado</option>
                       </select>
@@ -325,4 +296,4 @@
       </div>
     </div>
   </div>
-</form>
+</form><?php /**PATH C:\Users\Yuri Martin\Desktop\webFacultades\resources\views/departamentoacademicos/principal.blade.php ENDPATH**/ ?>

@@ -3,15 +3,15 @@
 el: '#app',
 data:{
        titulo:"Mantenimiento",
-       subtitulo: "Gestión de Fotografías",
+       subtitulo: "Gestión de Departamentos Academicos",
        subtitulo2: "Principal",
 
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'{{ $tipouser->nombre }}',
-   userPerfil:'{{ Auth::user()->name }}',
-   mailPerfil:'{{ Auth::user()->email }}',
+   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
+   userPerfil:'<?php echo e(Auth::user()->name); ?>',
+   mailPerfil:'<?php echo e(Auth::user()->email); ?>',
 
    
    divloader0:true,
@@ -44,10 +44,10 @@ data:{
 
    divprincipal:false,
 
-   galerias: [],
+   Departamentos: [],
    errors:[],
 
-   fillGaleria:{'id':'', 'titulo':'', 'descripcion':'','fecha':'','imagen':'','estado':''},
+   fillDepartamento:{'id':'', 'nombre':'', 'Descripcion':'','activo':''},
 
    pagination: {
    'total': 0,
@@ -67,7 +67,6 @@ data:{
 
    newTitulo:'',
    newDescripcion:'',
-   newFecha:'',
    newEstado:'1',
    imagen : null,
 
@@ -75,7 +74,7 @@ data:{
 
 },
 created:function () {
-   this.getGaleria(this.thispage);
+   this.getDepartamentos(this.thispage);
 },
 mounted: function () {
    this.divloader0=false;
@@ -113,22 +112,19 @@ computed:{
 },
 
 methods: {
-    getImg(galeria){
-        
-        var img = "img/galerias/"+ galeria.ruta;
-
-        return img;
-    },
-   getGaleria: function (page) {
+    getDepartamentos: function (page) {
        var busca=this.buscar;
-       var url = 'galeria?page='+page+'&busca='+busca;
-        
+       var url = 'departamento?page='+page+'&busca='+busca;
 
        axios.get(url).then(response=>{
-            this.galerias= response.data.galerias.data;
+            this.departamentos= response.data.departamentos.data;
             this.pagination= response.data.pagination;
+            console.log(this.departamentos);
+            this.$nextTick(function () {
+                this.recorrerDepartamentos();
+            })
 
-           if(this.galerias.length==0 && this.thispage!='1'){
+           if(this.departamentos.length == 0 && this.thispage != '1'){
                var a = parseInt(this.thispage) ;
                a--;
                this.thispage=a.toString();
@@ -138,11 +134,11 @@ methods: {
    },
    changePage:function (page) {
        this.pagination.current_page=page;
-       this.getGaleria(page);
+       this.getDepartamentos(page);
        this.thispage=page;
    },
    buscarBtn: function () {
-       this.getGaleria();
+       this.getDepartamentos();
        this.thispage='1';
    },
    nuevo:function () {
@@ -163,7 +159,6 @@ methods: {
 
         this.newTitulo = '';
         this.newDescripcion = '';
-        this.newFecha = '';
         this.newEstado = '1';
         this.imagen = null;
 
@@ -178,9 +173,17 @@ methods: {
             this.imagen = event.target.files[0];
         }
     },
+    recorrerDepartamentos:function () { 
+            $.each($(".txtimg"), function( index, value ) {
+             //  var valor=$(this).attr("id");
+             var idusar=$(this).val();
+
+             $("#ImgPerfilNuevoE"+idusar).attr("src","<?php echo e(asset('/img/banners/')); ?>"+"/"+$("#txt"+idusar).val());
+         });
+    },
     create:function () { 
 
-       var url='galeria';
+       var url='facultad';
        $("#btnGuardar").attr('disabled', true);
        $("#btnCancel").attr('disabled', true);
        $("#btnClose").attr('disabled', true);
@@ -189,10 +192,9 @@ methods: {
 
        var data = new  FormData();
 
-            data.append('titulo', this.newTitulo);
-            data.append('descripcion', this.newDescripcion);
-            data.append('fecha', this.newFecha);
-            data.append('imagen', this.imagen);
+            data.append('nombre', this.newTitulo);
+            data.append('codigo', this.newDescripcion);
+            data.append('activo', this.imagen);
             data.append('estado', this.newEstado);
 
             
@@ -204,9 +206,10 @@ methods: {
                 $("#btnCancel").removeAttr("disabled");
                 $("#btnClose").removeAttr("disabled");
                 this.divloaderNuevo=false;
+
         
                 if(String(response.data.result)=='1'){
-                    this.getGaleria(this.thispage);
+                    this.getDepartamentos(this.thispage);
                     this.errors=[];
                     this.cerrarFormNuevo();
                     toastr.success(response.data.msj);
@@ -220,11 +223,11 @@ methods: {
                 //this.errors=error.response.data
             })
    },
-   borrargaleria:function (galeria) {
+   borrarfacultad:function (facultad) {
     
         swal.fire({
              title: '¿Estás seguro?',
-             text: "¿Desea eliminar la Fotografía Seleccionada? -- Nota: este proceso no se podrá revertir.",
+             text: "¿Desea eliminar la Facultad Seleccionado? -- Nota: este proceso no se podrá revertir.",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -234,11 +237,11 @@ methods: {
 
             if (result.value) {
 
-                var url = 'galeria/'+galeria.id;
+                var url = 'facultad/'+facultad.id;
                 axios.delete(url).then(response=>{//eliminamos
 
                 if(response.data.result=='1'){
-                    app.getGaleria(app.thispage);//listamos
+                    app.getDepartamentos(app.thispage);//listamos
                     toastr.success(response.data.msj);//mostramos mensaje
                 }else{
                     // $('#'+response.data.selector).focus();
@@ -251,17 +254,13 @@ methods: {
                }).catch(swal.noop);  
    },
 
-   editgaleria:function (galeria) {
+   editfacultad:function (departamento) {
 
-        this.fillGaleria.id=galeria.id;
-        this.fillGaleria.titulo=galeria.tituloFoto;         
-        this.fillGaleria.fecha=galeria.fechaFoto;            
-        this.fillGaleria.imagen=galeria.ruta;
-        this.fillGaleria.estado=galeria.activo;
-        this.imagen=null;
-
-        CKEDITOR.instances['txtdescripcionE'].setData(galeria.descrFoto);
-
+        this.fillDepartamento.id=departamento.id;
+        this.fillDepartamento.titulo=departamento.tituloFacultad;
+        this.fillDepartamento.descripcion=departamento.descrFacultad;            
+        this.fillDepartamento.imagen=departamento.ruta;
+        this.fillDepartamento.estado=departamento.activo;
 
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
@@ -269,24 +268,21 @@ methods: {
         })
             
    },
-   updateGaleria:function (id) {
+   updateFacultad:function (id) {
 
         var data = new FormData();
 
-        this.fillGaleria.v2 =CKEDITOR.instances['txtdescripcionE'].getData(); 
-
-        data.append('idGaleria', this.fillGaleria.id);
-        data.append('editTitulo', this.fillGaleria.titulo);
-        data.append('editDescr', this.fillGaleria.v2); 
-        data.append('editFecha', this.fillGaleria.fecha); 
-        data.append('editEstado', this.fillGaleria.estado);
+        data.append('idFacultad', this.fillFacultad.id);
+        data.append('editTitulo', this.fillFacultad.titulo);
+        data.append('editDescripcion', this.fillFacultad.descripcion);
+        data.append('editEstado', this.fillFacultad.estado);
         data.append('imagen', this.imagen);
-        data.append('oldImagen', this.fillGaleria.imagen);
+        data.append('oldImagen', this.fillFacultad.imagen);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
         
-        var url = "galeria/" + id;
+        var url = "facultad/" + id;
 
         $("#btnSaveE").attr('disabled', true);
         $("#btnCloseE").attr('disabled', true);
@@ -299,9 +295,8 @@ methods: {
            this.divloaderEdit=false;
            
            if(response.data.result=='1'){   
-           this.getGaleria(this.thispage);
-           this.fillGaleria={'id':'', 'titulo':'', 'descripcion':'', 'fecha':'','imagen':'','estado':''};
-
+           this.getDepartamentos(this.thispage);
+           this.fillLocal={'id':'', 'titulo':'', 'descripcion':'','imagen':'','estado':''};
            this.errors=[];
            $("#modalEditar").modal('hide');
            toastr.success(response.data.msj);
@@ -315,11 +310,11 @@ methods: {
            this.errors=error.response.data
        })
     },
-    bajagaleria:function (galeria) {
+    bajafacultad:function (facultad) {
 
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea desactivar la Fotografía seleccionada.",
+             text: "Desea desactivar la Facultad seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -329,10 +324,10 @@ methods: {
 
             if (result.value) {
 
-                var url = 'galeria/altabaja/'+galeria.id+'/0';
+                var url = 'facultad/altabaja/'+facultad.id+'/0';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
-                           app.getGaleria(app.thispage);//listamos
+                           app.getDepartamentos(app.thispage);//listamos
                            toastr.success(response.data.msj);//mostramos mensaje
                        }else{
                           // $('#'+response.data.selector).focus();
@@ -343,11 +338,11 @@ methods: {
                }).catch(swal.noop);  
 
    },
-   altagaleria:function (galeria) {
+   altafacultad:function (facultad) {
 
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea activar la Fotografía seleccionada.",
+             text: "Desea activar la Facultad seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -357,11 +352,11 @@ methods: {
 
             if (result.value) {
 
-                var url = 'galeria/altabaja/'+galeria.id+'/1';
+                var url = 'facultad/altabaja/'+facultad.id+'/1';
                        axios.get(url).then(response=>{//eliminamos
 
                        if(response.data.result=='1'){
-                           app.getGaleria(app.thispage);//listamos
+                           app.getDepartamentos(app.thispage);//listamos
                            toastr.success(response.data.msj);//mostramos mensaje
                        }else{
                           // $('#'+response.data.selector).focus();
@@ -376,4 +371,4 @@ methods: {
    },
 }
 });
-</script>
+</script><?php /**PATH C:\Users\Yuri Martin\Desktop\webFacultades\resources\views/departamentoacademicos/vue.blade.php ENDPATH**/ ?>

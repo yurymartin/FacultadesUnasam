@@ -104,7 +104,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Facultades</h3>
+    <h3 class="box-title">Listado de Departamentos Academicos</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -126,43 +126,37 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Facultad</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Codigo</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Departamento Academico</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Descripciòn</th>
           {{-- <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha</th> --}}
-          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Departamento</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
-        <tr v-for="facultad, key in facultades">
+        <tr v-for="departamento, key in departamentos">
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{key+pagination.from}}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ facultad.nombre }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ facultad.codigo }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ facultad.departamentoacad_id}}</td>
-          {{-- <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ facultad.fecha }}</td> --}}
-
-          {{-- <td style="font-size: 12px; padding: 5px;text-align: center">
-            {{-- <template v-if="facultad.ruta.length > 0"> --}}
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ departamento.nombre }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ departamento.descripcion }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
-              <span class="label label-success" v-if="facultad.activo=='1'">Activo</span>
-              <span class="label label-warning" v-if="facultad.activo=='0'">Inactivo</span>
+              <span class="label label-success" v-if="departamento.activo=='1'">Activo</span>
+              <span class="label label-warning" v-if="departamento.activo=='0'">Inactivo</span>
             </center>
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
-              <a href="#" v-if="facultad.activo=='1'" class="btn bg-navy btn-sm"
-                v-on:click.prevent="bajafacultad(facultad)" data-placement="top" data-toggle="tooltip"
-                title="Desactivar facultad"><i class="fa fa-arrow-circle-down"></i></a>
+              <a href="#" v-if="departamento.activo=='1'" class="btn bg-navy btn-sm"
+                v-on:click.prevent="bajafacultad(departamento)" data-placement="top" data-toggle="tooltip"
+                title="Desactivar departamento"><i class="fa fa-arrow-circle-down"></i></a>
 
-              <a href="#" v-if="facultad.activo=='0'" class="btn btn-success btn-sm"
-                v-on:click.prevent="altafacultad(facultad)" data-placement="top" data-toggle="tooltip"
-                title="Activar facultad"><i class="fa fa-check-circle"></i></a>
+              <a href="#" v-if="departamento.activo=='0'" class="btn btn-success btn-sm"
+                v-on:click.prevent="altafacultad(departamento)" data-placement="top" data-toggle="tooltip"
+                title="Activar departamento"><i class="fa fa-check-circle"></i></a>
 
 
-              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editfacultad(facultad)"
-                data-placement="top" data-toggle="tooltip" title="Editar facultad"><i class="fa fa-edit"></i></a>
-              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarfacultad(facultad)"
-                data-placement="top" data-toggle="tooltip" title="Borrar facultad"><i class="fa fa-trash"></i></a>
+              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editfacultad(departamento)"
+                data-placement="top" data-toggle="tooltip" title="Editar departamento"><i class="fa fa-edit"></i></a>
+              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarfacultad(departamento)"
+                data-placement="top" data-toggle="tooltip" title="Borrar departamento"><i class="fa fa-trash"></i></a>
             </center>
           </td>
         </tr>
