@@ -3,15 +3,15 @@
 el: '#app',
 data:{
        titulo:"Mantenimiento",
-       subtitulo: "Gestión de Departamentos Academicos",
+       subtitulo: "Gestión de Facultades",
        subtitulo2: "Principal",
 
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'{{ $tipouser->nombre }}',
-   userPerfil:'{{ Auth::user()->name }}',
-   mailPerfil:'{{ Auth::user()->email }}',
+   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
+   userPerfil:'<?php echo e(Auth::user()->name); ?>',
+   mailPerfil:'<?php echo e(Auth::user()->email); ?>',
 
    
    divloader0:true,
@@ -44,11 +44,10 @@ data:{
 
    divprincipal:false,
 
-   departamentos: [],
+   facultades: [],
    errors:[],
 
-   fillDepartamento:{'id':'', 'nombre':'', 'Descripcion':'','activo':''},
-   fillFacultad:{'id':'', 'nombre':'', 'Descripcion':'','activo':''},
+   fillFacultad:{'id':'', 'nombre':'', 'codigo':'','activo':'','departamentoacad_id':''},
 
    pagination: {
    'total': 0,
@@ -75,7 +74,7 @@ data:{
 
 },
 created:function () {
-   this.getDepartamentos(this.thispage);
+   this.getFacultades(this.thispage);
 },
 mounted: function () {
    this.divloader0=false;
@@ -113,19 +112,19 @@ computed:{
 },
 
 methods: {
-    getDepartamentos: function (page) {
+    getFacultades: function (page) {
        var busca=this.buscar;
-       var url = 'departamento?page='+page+'&busca='+busca;
+       var url = 'facultad?page='+page+'&busca='+busca;
 
        axios.get(url).then(response=>{
-            this.departamentos= response.data.departamentos.data;
+            this.facultades= response.data.facultades.data;
             this.pagination= response.data.pagination;
-            console.log(this.departamentos);
+            console.log(this.facultades);
             this.$nextTick(function () {
-                this.recorrerDepartamentos();
+                this.recorrerFacultades();
             })
 
-           if(this.departamentos.length == 0 && this.thispage != '1'){
+           if(this.facultades.length == 0 && this.thispage != '1'){
                var a = parseInt(this.thispage) ;
                a--;
                this.thispage=a.toString();
@@ -135,11 +134,11 @@ methods: {
    },
    changePage:function (page) {
        this.pagination.current_page=page;
-       this.getDepartamentos(page);
+       this.getFacultades(page);
        this.thispage=page;
    },
    buscarBtn: function () {
-       this.getDepartamentos();
+       this.getFacultades();
        this.thispage='1';
    },
    nuevo:function () {
@@ -174,12 +173,12 @@ methods: {
             this.imagen = event.target.files[0];
         }
     },
-    recorrerDepartamentos:function () { 
+    recorrerFacultades:function () { 
             $.each($(".txtimg"), function( index, value ) {
              //  var valor=$(this).attr("id");
              var idusar=$(this).val();
 
-             $("#ImgPerfilNuevoE"+idusar).attr("src","{{ asset('/img/banners/')}}"+"/"+$("#txt"+idusar).val());
+             $("#ImgPerfilNuevoE"+idusar).attr("src","<?php echo e(asset('/img/banners/')); ?>"+"/"+$("#txt"+idusar).val());
          });
     },
     create:function () { 
@@ -210,7 +209,7 @@ methods: {
 
         
                 if(String(response.data.result)=='1'){
-                    this.getDepartamentos(this.thispage);
+                    this.getFacultad(this.thispage);
                     this.errors=[];
                     this.cerrarFormNuevo();
                     toastr.success(response.data.msj);
@@ -242,7 +241,7 @@ methods: {
                 axios.delete(url).then(response=>{//eliminamos
 
                 if(response.data.result=='1'){
-                    app.getDepartamentos(app.thispage);//listamos
+                    app.getFacultad(app.thispage);//listamos
                     toastr.success(response.data.msj);//mostramos mensaje
                 }else{
                     // $('#'+response.data.selector).focus();
@@ -255,13 +254,14 @@ methods: {
                }).catch(swal.noop);  
    },
 
-   editfacultad:function (departamento) {
+   editfacultad:function (facultad) {
 
-        this.fillDepartamento.id=departamento.id;
-        this.fillDepartamento.titulo=departamento.tituloFacultad;
-        this.fillDepartamento.descripcion=departamento.descrFacultad;            
-        this.fillDepartamento.imagen=departamento.ruta;
-        this.fillDepartamento.estado=departamento.activo;
+        this.fillFacultad.id=facultad.id;
+        this.fillFacultad.titulo=facultad.tituloFacultad;
+        this.fillFacultad.descripcion=facultad.descrFacultad;            
+        this.fillFacultad.imagen=facultad.ruta;
+        this.fillFacultad.estado=facultad.activo;
+        this.imagen=null;
 
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
@@ -296,7 +296,7 @@ methods: {
            this.divloaderEdit=false;
            
            if(response.data.result=='1'){   
-           this.getDepartamentos(this.thispage);
+           this.getFacultad(this.thispage);
            this.fillLocal={'id':'', 'titulo':'', 'descripcion':'','imagen':'','estado':''};
            this.errors=[];
            $("#modalEditar").modal('hide');
@@ -328,7 +328,7 @@ methods: {
                 var url = 'facultad/altabaja/'+facultad.id+'/0';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
-                           app.getDepartamentos(app.thispage);//listamos
+                           app.getFacultad(app.thispage);//listamos
                            toastr.success(response.data.msj);//mostramos mensaje
                        }else{
                           // $('#'+response.data.selector).focus();
@@ -357,7 +357,7 @@ methods: {
                        axios.get(url).then(response=>{//eliminamos
 
                        if(response.data.result=='1'){
-                           app.getDepartamentos(app.thispage);//listamos
+                           app.getFacultad(app.thispage);//listamos
                            toastr.success(response.data.msj);//mostramos mensaje
                        }else{
                           // $('#'+response.data.selector).focus();
@@ -372,4 +372,4 @@ methods: {
    },
 }
 });
-</script>
+</script><?php /**PATH D:\Roger\Aplicaciones\webFacultades2019\resources\views/facultades/vue.blade.php ENDPATH**/ ?>

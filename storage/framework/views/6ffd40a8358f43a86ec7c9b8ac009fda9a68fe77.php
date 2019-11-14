@@ -9,9 +9,9 @@ data:{
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'{{ $tipouser->nombre }}',
-   userPerfil:'{{ Auth::user()->name }}',
-   mailPerfil:'{{ Auth::user()->email }}',
+   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
+   userPerfil:'<?php echo e(Auth::user()->name); ?>',
+   mailPerfil:'<?php echo e(Auth::user()->email); ?>',
 
    
    divloader0:true,
@@ -179,7 +179,7 @@ methods: {
              //  var valor=$(this).attr("id");
              var idusar=$(this).val();
 
-             $("#ImgPerfilNuevoE"+idusar).attr("src","{{ asset('/img/banners/')}}"+"/"+$("#txt"+idusar).val());
+             $("#ImgPerfilNuevoE"+idusar).attr("src","<?php echo e(asset('/img/banners/')); ?>"+"/"+$("#txt"+idusar).val());
          });
     },
     create:function () { 
@@ -372,4 +372,4 @@ methods: {
    },
 }
 });
-</script>
+</script><?php /**PATH D:\Roger\Aplicaciones\webFacultades2019\resources\views/departamentoacademicos/vue.blade.php ENDPATH**/ ?>
