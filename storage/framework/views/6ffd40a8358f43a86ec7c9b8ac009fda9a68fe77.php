@@ -9,9 +9,9 @@ data:{
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'{{ $tipouser->nombre }}',
-   userPerfil:'{{ Auth::user()->name }}',
-   mailPerfil:'{{ Auth::user()->email }}',
+   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
+   userPerfil:'<?php echo e(Auth::user()->name); ?>',
+   mailPerfil:'<?php echo e(Auth::user()->email); ?>',
 
    
    divloader0:true,
@@ -47,7 +47,8 @@ data:{
    departamentos: [],
    errors:[],
 
-   fillDepartamento:{'id':'', 'nombre':'', 'descripcion':''},
+   fillDepartamento:{'id':'', 'nombre':'', 'Descripcion':'','activo':''},
+   fillFacultad:{'id':'', 'nombre':'', 'Descripcion':'','activo':''},
 
    pagination: {
    'total': 0,
@@ -67,9 +68,9 @@ data:{
 
    newTitulo:'',
    newDescripcion:'',
-   newEstado:'',
-   newBorrado:'0',
-  
+   newEstado:'1',
+   imagen : null,
+
 
 
 },
@@ -119,6 +120,11 @@ methods: {
        axios.get(url).then(response=>{
             this.departamentos= response.data.departamentos.data;
             this.pagination= response.data.pagination;
+            console.log(this.departamentos);
+            this.$nextTick(function () {
+                this.recorrerDepartamentos();
+            })
+
            if(this.departamentos.length == 0 && this.thispage != '1'){
                var a = parseInt(this.thispage) ;
                a--;
@@ -155,13 +161,30 @@ methods: {
         this.newTitulo = '';
         this.newDescripcion = '';
         this.newEstado = '1';
-        this.newBorrado = '0';
+        this.imagen = null;
 
        $(".form-control").css("border","1px solid #d2d6de");
    },
+   getImage(event){
+        if (!event.target.files.length)
+        {
+            this.imagen=null;
+        }
+        else{
+            this.imagen = event.target.files[0];
+        }
+    },
+    recorrerDepartamentos:function () { 
+            $.each($(".txtimg"), function( index, value ) {
+             //  var valor=$(this).attr("id");
+             var idusar=$(this).val();
+
+             $("#ImgPerfilNuevoE"+idusar).attr("src","<?php echo e(asset('/img/banners/')); ?>"+"/"+$("#txt"+idusar).val());
+         });
+    },
     create:function () { 
 
-       var url='departamento';
+       var url='facultad';
        $("#btnGuardar").attr('disabled', true);
        $("#btnCancel").attr('disabled', true);
        $("#btnClose").attr('disabled', true);
@@ -171,18 +194,21 @@ methods: {
        var data = new  FormData();
 
             data.append('nombre', this.newTitulo);
-            data.append('descripcion', this.newDescripcion);
-            data.append('activo', this.newEstado);
-            data.append('borrado', this.newBorrado);
+            data.append('codigo', this.newDescripcion);
+            data.append('activo', this.imagen);
+            data.append('estado', this.newEstado);
+
             
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-            
+
             axios.post(url,data,config).then(response=>{
+
                 $("#btnGuardar").removeAttr("disabled");
                 $("#btnCancel").removeAttr("disabled");
                 $("#btnClose").removeAttr("disabled");
                 this.divloaderNuevo=false;
-                
+
+        
                 if(String(response.data.result)=='1'){
                     this.getDepartamentos(this.thispage);
                     this.errors=[];
@@ -198,10 +224,11 @@ methods: {
                 //this.errors=error.response.data
             })
    },
-   borrardepartamento:function (departamento) {
+   borrarfacultad:function (facultad) {
+    
         swal.fire({
              title: '¿Estás seguro?',
-             text: "¿Desea eliminar el departamento academico Seleccionado? -- Nota: este proceso no se podrá revertir.",
+             text: "¿Desea eliminar la Facultad Seleccionado? -- Nota: este proceso no se podrá revertir.",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -211,7 +238,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'departamento/'+departamento.id;
+                var url = 'facultad/'+facultad.id;
                 axios.delete(url).then(response=>{//eliminamos
 
                 if(response.data.result=='1'){
@@ -225,31 +252,38 @@ methods: {
                 }
 
                    
-               }).catch(swal.noop);     
+               }).catch(swal.noop);  
    },
 
-   editdepartamento:function (departamento) {
+   editfacultad:function (departamento) {
 
         this.fillDepartamento.id=departamento.id;
-        this.fillDepartamento.nombre=departamento.nombre;
-        this.fillDepartamento.descripcion=departamento.descripcion;            
+        this.fillDepartamento.titulo=departamento.tituloFacultad;
+        this.fillDepartamento.descripcion=departamento.descrFacultad;            
+        this.fillDepartamento.imagen=departamento.ruta;
+        this.fillDepartamento.estado=departamento.activo;
 
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
-                $("#txttitulo").focus();
+                $("#txttituloE").focus();
         })
             
    },
-   updatedepartamento:function (id) {
+   updateFacultad:function (id) {
+
         var data = new FormData();
-        data.append('id', this.fillDepartamento.id);
-        data.append('nombre', this.fillDepartamento.nombre);
-        data.append('descripcion', this.fillDepartamento.descripcion);
+
+        data.append('idFacultad', this.fillFacultad.id);
+        data.append('editTitulo', this.fillFacultad.titulo);
+        data.append('editDescripcion', this.fillFacultad.descripcion);
+        data.append('editEstado', this.fillFacultad.estado);
+        data.append('imagen', this.imagen);
+        data.append('oldImagen', this.fillFacultad.imagen);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
         
-        var url = "departamento/" + id;
+        var url = "facultad/" + id;
 
         $("#btnSaveE").attr('disabled', true);
         $("#btnCloseE").attr('disabled', true);
@@ -263,7 +297,7 @@ methods: {
            
            if(response.data.result=='1'){   
            this.getDepartamentos(this.thispage);
-           this.fillLocal={'id':'', 'nombre':'', 'descripcion':''};
+           this.fillLocal={'id':'', 'titulo':'', 'descripcion':'','imagen':'','estado':''};
            this.errors=[];
            $("#modalEditar").modal('hide');
            toastr.success(response.data.msj);
@@ -277,11 +311,11 @@ methods: {
            this.errors=error.response.data
        })
     },
-    bajadepartamento:function (departamento) {
+    bajafacultad:function (facultad) {
 
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea desactivar el departamento academico seleccionado",
+             text: "Desea desactivar la Facultad seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -291,7 +325,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'departamento/altabaja/'+departamento.id+'/0';
+                var url = 'facultad/altabaja/'+facultad.id+'/0';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
                            app.getDepartamentos(app.thispage);//listamos
@@ -305,11 +339,11 @@ methods: {
                }).catch(swal.noop);  
 
    },
-   altadepartamento:function (departamento) {
+   altafacultad:function (facultad) {
 
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea activar el departamento academico seleccionado",
+             text: "Desea activar la Facultad seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -319,7 +353,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'departamento/altabaja/'+departamento.id+'/1';
+                var url = 'facultad/altabaja/'+facultad.id+'/1';
                        axios.get(url).then(response=>{//eliminamos
 
                        if(response.data.result=='1'){
@@ -338,4 +372,4 @@ methods: {
    },
 }
 });
-</script>
+</script><?php /**PATH D:\Roger\Aplicaciones\webFacultades2019\resources\views/departamentoacademicos/vue.blade.php ENDPATH**/ ?>
