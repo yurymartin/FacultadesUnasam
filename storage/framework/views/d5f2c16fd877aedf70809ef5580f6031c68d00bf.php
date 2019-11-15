@@ -65,10 +65,11 @@ data:{
 
    thispage:'1',
 
-   newTitulo:'',
-   newDescripcion:'',
-   newEstado:'1',
-   imagen : null,
+   newNombre:'',
+   newCodigo:'',
+   newEstado:'',
+   newBorrado:'0',
+   departamentoacad_id: '',
 
 
 
@@ -119,9 +120,9 @@ methods: {
        axios.get(url).then(response=>{
             this.facultades= response.data.facultades.data;
             this.pagination= response.data.pagination;
-            console.log(this.facultades);
+            this.departamentos= response.data.departamentos;
             this.$nextTick(function () {
-                this.recorrerFacultades();
+                //this.recorrerFacultades();
             })
 
            if(this.facultades.length == 0 && this.thispage != '1'){
@@ -147,20 +148,18 @@ methods: {
        //$('#txtespecialidad').focus();
        this.$nextTick(function () {
        this.cancelFormNuevo();
-     })
-       
+     }) 
    },
    cerrarFormNuevo: function () {
        this.divNuevo=false;
        this.cancelFormNuevo();
    },
    cancelFormNuevo: function () {
-       $('#txttitulo').focus();
+       $('#nombre').focus();
 
-        this.newTitulo = '';
-        this.newDescripcion = '';
+        this.newNombre = '';
+        this.newCodigo = '';
         this.newEstado = '1';
-        this.imagen = null;
 
        $(".form-control").css("border","1px solid #d2d6de");
    },
@@ -173,16 +172,34 @@ methods: {
             this.imagen = event.target.files[0];
         }
     },
-    recorrerFacultades:function () { 
-            $.each($(".txtimg"), function( index, value ) {
-             //  var valor=$(this).attr("id");
-             var idusar=$(this).val();
+    seltipo:function(){
 
-             $("#ImgPerfilNuevoE"+idusar).attr("src","<?php echo e(asset('/img/banners/')); ?>"+"/"+$("#txt"+idusar).val());
-         });
+    if(this.departamentoacad_id==3){
+        $("#cbdepartamento").select2();
+        $('#cbdepartamento').val('0').trigger('change');
+        this.$nextTick(function () {
+        $("#cbdepartamento").select2();
+        $('#cbdepartamento').val('0').trigger('change');
+    })
+    }
+    $('#txtnom').focus();
     },
-    create:function () { 
 
+    seltipoE:function(){
+
+    if(this.fillFacultad.departamentoacad_id==3){
+    $("#cbdepartamento").select2();
+    $('#cbdepartamento').val('0').trigger('change');
+    this.$nextTick(function () {
+    $("#cbdepartamento").select2();
+    $('#cbdepartamento').val('0').trigger('change');
+    })
+    }
+    $('#txtnom').focus();
+    },
+    create:function () {
+
+       this.departamentoacad_id=$("#cbdepartamento").val();
        var url='facultad';
        $("#btnGuardar").attr('disabled', true);
        $("#btnCancel").attr('disabled', true);
@@ -192,36 +209,36 @@ methods: {
 
        var data = new  FormData();
 
-            data.append('nombre', this.newTitulo);
-            data.append('codigo', this.newDescripcion);
-            data.append('activo', this.imagen);
-            data.append('estado', this.newEstado);
+            data.append('nombre', this.newNombre);
+            data.append('codigo', this.newCodigo);
+            data.append('activo', this.newEstado);
+            data.append('borrado', this.newBorrado);
+            data.append('departamentoacad_id', this.departamentoacad_id);
 
+        const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             
-            const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-
             axios.post(url,data,config).then(response=>{
+           //console.log(response.data);
 
-                $("#btnGuardar").removeAttr("disabled");
-                $("#btnCancel").removeAttr("disabled");
-                $("#btnClose").removeAttr("disabled");
-                this.divloaderNuevo=false;
+           $("#btnGuardar").removeAttr("disabled");
+           $("#btnCancel").removeAttr("disabled");
+           $("#btnClose").removeAttr("disabled");
+           this.divloaderNuevo=false;
 
-        
-                if(String(response.data.result)=='1'){
-                    this.getFacultad(this.thispage);
-                    this.errors=[];
-                    this.cerrarFormNuevo();
-                    toastr.success(response.data.msj);
-                }else{
-                    $('#'+response.data.selector).focus();
-                    $('#'+response.data.selector).css( "border", "1px solid red" );
-                    toastr.error(response.data.msj);
-                }
-
-            }).catch(error=>{
-                //this.errors=error.response.data
-            })
+   
+           if(String(response.data.result)=='1'){
+               this.getFacultades(this.thispage);
+               this.errors=[];
+               this.cerrarFormNuevo();
+               toastr.success(response.data.msj);
+           }else{
+               $('#'+response.data.selector).focus();
+               $('#'+response.data.selector).css( "border", "1px solid red" );
+               toastr.error(response.data.msj);
+           }
+       }).catch(error=>{
+           //this.errors=error.response.data
+       })
    },
    borrarfacultad:function (facultad) {
     
@@ -241,7 +258,7 @@ methods: {
                 axios.delete(url).then(response=>{//eliminamos
 
                 if(response.data.result=='1'){
-                    app.getFacultad(app.thispage);//listamos
+                    app.getFacultades(app.thispage);//listamos
                     toastr.success(response.data.msj);//mostramos mensaje
                 }else{
                     // $('#'+response.data.selector).focus();
@@ -257,18 +274,19 @@ methods: {
    editfacultad:function (facultad) {
 
         this.fillFacultad.id=facultad.id;
-        this.fillFacultad.titulo=facultad.tituloFacultad;
-        this.fillFacultad.descripcion=facultad.descrFacultad;            
-        this.fillFacultad.imagen=facultad.ruta;
-        this.fillFacultad.estado=facultad.activo;
-        this.imagen=null;
-
-        $("#modalEditar").modal('show');
+        this.fillFacultad.nombre=facultad.nombre;
+        this.fillFacultad.codigo=facultad.codigo;            
+        this.fillFacultad.activo=facultad.activo;
+        this.fillFacultad.departamentoacad_id=facultad.iddepart;
+      
         this.$nextTick(function () {
-                $("#txttituloE").focus();
-        })
+        $("#cbdepartamentoE").val( fillFacultad.departamentoacad_id);
             
-   },
+    });
+       $("#boxTitulo").text('Facultad: '+facultad.nombre);
+       $("#modalEditar").modal('show');
+       $("#txtfacE").focus();
+    },
    updateFacultad:function (id) {
 
         var data = new FormData();
@@ -328,7 +346,7 @@ methods: {
                 var url = 'facultad/altabaja/'+facultad.id+'/0';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
-                           app.getFacultad(app.thispage);//listamos
+                           app.getFacultades(app.thispage);//listamos
                            toastr.success(response.data.msj);//mostramos mensaje
                        }else{
                           // $('#'+response.data.selector).focus();
@@ -357,7 +375,7 @@ methods: {
                        axios.get(url).then(response=>{//eliminamos
 
                        if(response.data.result=='1'){
-                           app.getFacultad(app.thispage);//listamos
+                           app.getFacultades(app.thispage);//listamos
                            toastr.success(response.data.msj);//mostramos mensaje
                        }else{
                           // $('#'+response.data.selector).focus();

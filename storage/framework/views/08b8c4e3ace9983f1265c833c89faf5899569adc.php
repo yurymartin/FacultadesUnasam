@@ -9,53 +9,35 @@
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
-          class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Facultad</button>
+          class="fa fa-plus-square-o" aria-hidden="true"></i>Nuevo Facultad</button>
     </div>
-
   </div>
-
 </div>
 
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
     <h3 class="box-title" id="tituloAgregar">Nuevo Facultad</h3>
   </div>
-
   <form v-on:submit.prevent="create">
     <div class="box-body">
-
       <div class="col-md-12">
         <div class="form-group">
           <label for="txttitulo" class="col-sm-2 control-label">Nombre del Facultad:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Facultad"
-              maxlength="200" autofocus v-model="newTitulo">
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Facultad" maxlength="200"
+              autofocus v-model="newNombre">
           </div>
         </div>
       </div>
-
-
-
       <div class="col-md-12">
         <div class="form-group" style="padding-top: 15px;">
-          <label for="txtdescripcion" class="col-sm-2 control-label">Descripción:*</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion" placeholder="Descripcion"
-              maxlength="500" v-model="newDescripcion">
+          <label for="txtcodigo" class="col-sm-2 control-label">Codigo:*</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo" maxlength="500"
+              v-model="newCodigo">
           </div>
         </div>
       </div>
-
-      <div class="col-md-12" style="padding-top: 15px;">
-        <div class="form-group">
-          <label for="archivo" class="col-sm-2 control-label">Imagen :*</label>
-          <div class="col-sm-8" style="padding-top: 10px;">
-            <input name="archivo" type="file" id="archivo" class="archivo form-control" @change="getImage"
-              accept=".png, .jpg, .jpeg, .gif, .jpe, .PNG, .JPG, .JPEG, .GIF, .JPE" />
-          </div>
-        </div>
-      </div>
-
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
           <label for="cbuestado" class="col-sm-2 control-label">Estado:*</label>
@@ -67,7 +49,19 @@
           </div>
         </div>
       </div>
-
+      <div class="col-md-12" style="padding-top: 15px;">
+        <div class="form-group">
+          <label for="cbdepartamento" class="col-sm-2 control-label">Departamento Academico:*</label>
+          <div class="col-sm-8">
+            <select name="cbdepartamento" id="cbdepartamento" class="form-control" v-model="departamentoacad_id"
+              @change="seltipo">
+              <option disabled value="0">Seleccione un Departamento Academico</option>
+              <option v-for="departamento, key in departamentos" v-bind:value="departamento.id">{{departamento.nombre}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- /.box-body -->
@@ -137,7 +131,7 @@
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{key+pagination.from}}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ facultad.nombre }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ facultad.codigo }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ facultad.departamentoacad_id}}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ facultad.nombredepar}}</td>
           
 
           
@@ -157,9 +151,9 @@
                 v-on:click.prevent="altafacultad(facultad)" data-placement="top" data-toggle="tooltip"
                 title="Activar facultad"><i class="fa fa-check-circle"></i></a>
 
-
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editfacultad(facultad)"
                 data-placement="top" data-toggle="tooltip" title="Editar facultad"><i class="fa fa-edit"></i></a>
+
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarfacultad(facultad)"
                 data-placement="top" data-toggle="tooltip" title="Borrar facultad"><i class="fa fa-trash"></i></a>
             </center>
@@ -235,36 +229,38 @@
                     <label for="txttituloE" class="col-sm-2 control-label">Nombre del Facultad:*</label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="txttituloE" name="txttituloE" placeholder="Facultad"
-                        maxlength="200" autofocus v-model="fillFacultad.titulo">
+                        maxlength="200" autofocus v-model="fillFacultad.nombre">
                     </div>
                   </div>
                 </div>
 
                 <div class="col-md-12">
                   <div class="form-group" style="padding-top: 15px;">
-                    <label for="txtdescripcionE" class="col-sm-2 control-label">Descripción:*</label>
+                    <label for="txtdescripcionE" class="col-sm-2 control-label">Codigo:*</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="codigoE" name="codigoE" placeholder="Descripcion"
+                        maxlength="500" v-model="fillFacultad.codigo">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group" style="padding-top: 15px;">
+                    <label for="cbdepartamentoE" class="col-sm-2 control-label">Departamento Academico:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="txtdescripcionE" name="txtdescripcionE"
-                        placeholder="Descripcion" maxlength="500" v-model="fillFacultad.descripcion">
+                      <select name="cbdepartamentoE" id="cbdepartamentoE" class="form-control"
+                        v-model="fillFacultad.departamentoacad_id">
+                        <option disabled value="0">Seleccione un Departamento Academico</option>
+                        <option v-for="departamento, key in departamentos" v-bind:value="departamento.id">{{departamento.nombre}}
+                        </option>
+                      </select>
                     </div>
                   </div>
                 </div>
-
-                <div class="col-md-12" style="padding-top: 15px;">
-                  <div class="form-group">
-                    <label for="archivo" class="col-sm-2 control-label">Imagen :*</label>
-                    <div class="col-sm-8" style="padding-top: 10px;">
-                      <input name="archivo" type="file" id="archivo" class="archivo form-control" @change="getImage"
-                        accept=".png, .jpg, .jpeg, .gif, .jpe, .PNG, .JPG, .JPEG, .GIF, .JPE" />
-                    </div>
-                  </div>
-                </div>
-
                 <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
                     <label for="cbuestadoE" class="col-sm-2 control-label">Estado:*</label>
                     <div class="col-sm-4">
-                      <select class="form-control" id="cbuestadoE" name="cbuestadoE" v-model="fillFacultad.estado">
+                      <select class="form-control" id="cbuestadoE" name="cbuestadoE" v-model="fillFacultad.activo">
                         <option value="1">Activado</option>
                         <option value="0">Desactivado</option>
                       </select>

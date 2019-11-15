@@ -110,8 +110,6 @@ class PersonaController extends Controller
             $escuela_id=null;
         }
 
-
-
         $result='1';
         $msj='';
         $selector='';

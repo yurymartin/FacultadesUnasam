@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DepartamentoAcademicos;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -26,7 +27,7 @@ class FacultadesController extends Controller
         } else {
             return view('adminlte::home');
         }
-    }   
+    }
     /**
      * Display a listing of the resource.
      *
@@ -37,14 +38,22 @@ class FacultadesController extends Controller
     {
 
         $buscar = $request->busca;
-        $facultades = Facultades::where('borrado', '0')
+        $facultades = DB::table('facultades as f')
+            ->join('departamentoacademicos as da', 'da.id', '=', 'f.departamentoacad_id')
+            ->where('f.borrado', '0')
             ->where(function ($query) use ($buscar) {
-                $query->where('nombre', 'like', '%' . $buscar . '%');
-                $query->orWhere('codigo', 'like', '%' . $buscar . '%');
-                $query->orWhere('borrado', 'like', '%' . $buscar . '%');
+                $query->where('f.nombre', 'like', '%' . $buscar . '%');
+                $query->orWhere('f.codigo', 'like', '%' . $buscar . '%');
+                $query->orWhere('da.nombre', 'like', '%' . $buscar . '%');
             })
-            ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->orderBy('f.nombre')
+            ->orderBy('f.codigo')
+            ->select('f.id', 'f.nombre', 'f.codigo', 'f.activo', 'da.nombre as nombredepar', 'da.id as iddepart')
+            ->paginate(30);
+
+
+        $departamentos = DepartamentoAcademicos::get();
+
         return [
             'pagination' => [
                 'total' => $facultades->total(),
@@ -54,7 +63,8 @@ class FacultadesController extends Controller
                 'from' => $facultades->firstItem(),
                 'to' => $facultades->lastItem(),
             ],
-            'facultades' => $facultades
+            'facultades' => $facultades,
+            'departamentos' => $departamentos,
         ];
     }
 
@@ -76,7 +86,57 @@ class FacultadesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $nombre = $request->nombre;
+        $codigo = $request->codigo;
+        $activo = $request->activo;
+        $departamentoacad_id = $request->departamentoacad_id;
+
+        $result = '1';
+        $msj = '';
+        $selector = '';
+
+        $input1  = array('nombre' => $nombre);
+        $reglas1 = array('nombre' => 'required');
+
+        $input2  = array('codigo' => $codigo);
+        $reglas2 = array('codigo' => 'required');
+
+
+        $validator1 = Validator::make($input1, $reglas1);
+        $validator2 = Validator::make($input2, $reglas2);
+
+
+
+        if ($validator1->fails()) {
+            $result = '0';
+            $msj = 'Complete el nombre del nombre de la facultad';
+            $selector = 'nombre';
+        } elseif ($validator2->fails()) {
+            $result = '0';
+            $msj = 'Ingrese el codigo de la facultad';
+            $selector = 'codigo';
+        } elseif ($departamentoacad_id <= 0) {
+            $result = '0';
+            $msj = 'Seleccione el departamento academico';
+            $selector = 'cbdepartamento';
+        } else {
+
+            $Facultad = new Facultades();
+            $Facultad->nombre = $nombre;
+            $Facultad->codigo = $codigo;
+            $Facultad->activo = $activo;
+            $Facultad->borrado = '0';
+            $Facultad->departamentoacad_id = $departamentoacad_id;
+            $Facultad->save();
+            $msj = 'Nueva Facultad registrada con éxito';
+        }
+
+
+
+
+        //Areaunasam::create($request->all());
+
+        return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
 
     /**
@@ -113,6 +173,25 @@ class FacultadesController extends Controller
         //
     }
 
+    public function altabaja($id,$activo)
+    {
+        $result='1';
+        $msj='';
+        $selector='';
+
+        $update = Facultades::findOrFail($id);
+        $update->activo=$activo;    
+        $update->save();
+
+        if(strval($activo)=="0"){
+            $msj='La facultad fue Desactivada exitosamente';
+        }elseif(strval($activo)=="1"){
+            $msj='La facultad fue Activada exitosamente';
+        }
+
+        return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
+
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -121,6 +200,21 @@ class FacultadesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $result = '1';
+        $msj = '1';
+        $consulta1 = DB::table('escuelas as e')
+            ->join('facultades as f', 'e.facultad_id', '=', 'f.id')
+            ->where('f.id', $id)->count();
+        if ($consulta1 > 0) {
+            $result = '0';
+            $msj='No se puede eliminar la facultad porque tiene datos enlazados con otras entidades';
+        } else {
+            $borrar = Facultades::findOrFail($id);
+            $borrar->borrado = '1';
+            $borrar->save();
+            $msj = 'Facultad fue eliminada exitosamente';
+        }
+
+        return response()->json(["result" => $result, 'msj' => $msj]);
     }
 }

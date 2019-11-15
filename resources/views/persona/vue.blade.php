@@ -218,7 +218,14 @@ $('#txtnom').focus();
        $("#btnClose").attr('disabled', true);
        this.divloaderNuevo=true;
        $(".form-control").css("border","1px solid #d2d6de");
-       axios.post(url,{tipopersona_id:this.tipopersona_id, escuela_id:this.escuela_id, activo:this.activo, direccion:this.direccion, codigo_alumno:this.codigo_alumno, dni_ruc:this.dni_ruc, nombre:this.nombre}).then(response=>{
+       axios.post(url,{
+        tipopersona_id:this.tipopersona_id,
+        escuela_id:this.escuela_id,
+        activo:this.activo,
+        direccion:this.direccion,
+        codigo_alumno:this.codigo_alumno,
+        dni_ruc:this.dni_ruc, 
+        nombre:this.nombre}).then(response=>{
            //console.log(response.data);
 
            $("#btnGuardar").removeAttr("disabled");

@@ -1,7 +1,7 @@
 @extends('vendor.adminlte.layouts.app')
 
 @section('htmlheader_title')
-Gestion de Departamento Academico
+Gestion de Departamento Academicos
 @endsection
 
 <style type="text/css">

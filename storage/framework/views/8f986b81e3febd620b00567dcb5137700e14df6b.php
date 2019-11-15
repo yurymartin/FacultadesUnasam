@@ -1,5 +1,5 @@
 <?php $__env->startSection('htmlheader_title'); ?>
-Gestion de Departamento Academico
+Gestion de Departamento Academicos
 <?php $__env->stopSection(); ?>
 
 <style type="text/css">

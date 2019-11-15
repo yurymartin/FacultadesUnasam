@@ -71,7 +71,40 @@ class DepartamentoAcademicosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $nombre=$request->nombre;
+        $descripcion=$request->descripcion;
+        $activo=$request->activo;
+        $borrado=0;
+
+        $result='1';
+        $msj='';
+        $selector='';
+
+        $input1  = array('nombre' => $nombre);
+        $reglas1 = array('nombre' => 'required');
+
+
+        $validator1 = Validator::make($input1, $reglas1);
+
+
+        if ($validator1->fails()) {
+            $result='0';
+            $msj='Ingrese el Nombre del departamento';
+            $selector='txttitulo';
+        }
+       
+        else{
+
+            $newDepartamento = new DepartamentoAcademicos();
+            $newDepartamento->nombre=$nombre;
+            $newDepartamento->descripcion=$descripcion;
+            $newDepartamento->activo=$activo;
+            $newDepartamento->borrado='0';
+            $newDepartamento->save();
+            $msj='Nueva Departamento Academico registrado con éxito';
+        }
+
+        return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
     }
 
     /**
@@ -105,9 +138,58 @@ class DepartamentoAcademicosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $nombre=$request->nombre;
+        $descripcion=$request->descripcion;
+        $borrado=0;
+
+        $result='1';
+        $msj='';
+        $selector='';
+
+        $input1  = array('nombre' => $nombre);
+        $reglas1 = array('nombre' => 'required');
+
+
+        $validator1 = Validator::make($input1, $reglas1);
+
+
+        if ($validator1->fails()) {
+            $result='0';
+            $msj='Ingrese el Nombre del departamento';
+            $selector='txttitulo';
+        }
+       
+        else{
+
+            $newDepartamento =DepartamentoAcademicos::findOrFail($id);
+            $newDepartamento->nombre=$nombre;
+            $newDepartamento->descripcion=$descripcion;
+            $newDepartamento->save();
+
+            $msj='Nueva Departamento Academico fue modificado con éxito';
+        }
+        return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
     }
 
+    public function altabaja($id,$activo)
+    {
+        $result='1';
+        $msj='';
+        $selector='';
+
+        $update = DepartamentoAcademicos::findOrFail($id);
+        $update->activo=$activo;
+        $update->save();
+
+        if(strval($activo)=="0"){
+            $msj='El Departamento Academico fue Desactivada exitosamente';
+        }elseif(strval($activo)=="1"){
+            $msj='El Departamento Academico fue Activada exitosamente';
+        }
+
+        return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
+
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -116,6 +198,28 @@ class DepartamentoAcademicosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $result='1';
+        $msj='1';
+
+        $consulta1=DB::table('facultades as f')
+                    ->join('departamentoacademicos as da', 'f.departamentoacad_id', '=', 'da.id')
+                    ->where('da.id',$id)->count();
+
+        if($consulta1>0) {
+            $result='0';
+            $msj='No se puede eliminar el departamento porque tiene datos enlazados con otras entidades';
+        }else{
+        
+        $borrar = DepartamentoAcademicos::findOrFail($id);
+        //$task->delete();
+
+        $borrar->borrado='1';
+
+        $borrar->save();
+
+        $msj='Departamento Academico eliminado exitosamente';
+     }
+
+        return response()->json(["result"=>$result,'msj'=>$msj]);
     }
 }

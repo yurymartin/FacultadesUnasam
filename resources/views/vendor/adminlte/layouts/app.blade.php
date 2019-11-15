@@ -39,7 +39,6 @@ desired effect
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" style="background-image: url(../img/fondo_gris2.gif);">
-
         @include('adminlte::layouts.partials.contentheader')
 
         <!-- Main content -->
@@ -68,43 +67,7 @@ desired effect
 </html>
 
 
-@if($modulo=="inicioAdmin")
-@include('inicio.vueAdmin')
-
-@elseif($modulo=="usuario")
-@include('usuario.vue')
-
-@elseif($modulo=="banner")
-@include('banner.vue')
-
-@elseif($modulo=="agendarectoral")
-@include('agendarectoral.vue')
-
-@elseif($modulo=="noticia")
-@include('noticia.vue')
-
-@elseif($modulo=="videoyoutube")
-@include('videoyoutube.vue')
-
-@elseif($modulo=="videofb")
-@include('videofb.vue')
-
-@elseif($modulo=="instrumento")
-@include('instrumento.vue')
-
-@elseif($modulo=="convocatoria")
-@include('convocatoria.vue')
-
-@elseif($modulo=="galeria")
-@include('galeria.vue')
-
-@elseif($modulo=="calendario")
-@include('calendario.vue')
-
-@elseif($modulo=="evento")
-@include('evento.vue')
-
-@elseif($modulo=="facultades")
+@if($modulo=="facultades")
 @include('facultades.vue')
 
 @elseif($modulo=="departamentoacademicos")
