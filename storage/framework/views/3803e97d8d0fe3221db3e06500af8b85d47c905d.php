@@ -49,59 +49,46 @@
                     <span>Facultades</span></a>
             <?php endif; ?>
             <?php if(accesoUser([1,2,3])): ?>
-            <li class="treeview" v-bind:class="classMenu1">
-                <a href="#"><i class='fa fa-list-alt'></i> <span>Contenido Web</span> <i
+            <li class="treeview" v-bind:class="classMenu2">
+                <a href="#"><i class='fa fa-list-alt'></i> <span>Docentes</span> <i
+                        class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li><a href="gradoacademicos"><i class='fa fa-gg'></i>Grados Academicos</a></li>
+                    <li><a href="catdocentes"><i class='fa fa-gg'></i>Categoria Docentes</a></li>
+                    <li><a href="docentes"><i class='fa fa-gg'></i>Docentes</a></li>
+                </ul>
+            </li>
+            <?php endif; ?>
+            <?php if(accesoUser([1,2,3])): ?>
+            <li class="treeview" v-bind:class="classMenu2">
+                <a href="#"><i class='fa fa-list-alt'></i> <span>Contenido Web Facultad</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="banners"><i class='fa fa-gg'></i> Gestión de Banners</a></li>
-                    <li><a href="agendarectorals"><i class='fa fa-gg'></i> Gestión de Agendas</a></li>
                     <li><a href="eventos"><i class='fa fa-gg'></i> Gestión de Eventos</a></li>
                     <li><a href="noticias"><i class='fa fa-gg'></i> Gestión de Noticias</a></li>
                     <li><a href="galerias"><i class='fa fa-gg'></i> Gestión de Galerias</a></li>
+                    <li><a href="documentos"><i class='fa fa-gg'></i> Gestión de Documentos</a></li>
                 </ul>
             </li>
             <?php endif; ?>
-
             <?php if(accesoUser([1,2,3])): ?>
             <li class="treeview" v-bind:class="classMenu2">
-                <a href="#"><i class='fa fa-youtube'></i> <span>Videos</span> <i
+                <a href="#"><i class='fa fa-list-alt'></i> <span>Contenido Web Escuelas</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="videofbs"><i class='fa fa-gg'></i> Gestión de Videos de FB</a></li>
-                    <li><a href="videoyoutubes"><i class='fa fa-gg'></i> Gestión de Videos de Youtube</a></li>
+                    <li><a href="banners"><i class='fa fa-gg'></i> Gestión de Banners</a></li>
+                    <li><a href="eventos"><i class='fa fa-gg'></i> Gestión de Eventos</a></li>
+                    <li><a href="noticias"><i class='fa fa-gg'></i> Gestión de Noticias</a></li>
+                    <li><a href="galerias"><i class='fa fa-gg'></i> Gestión de Galerias</a></li>
+                    <li><a href="documentos"><i class='fa fa-gg'></i> Gestión de Documentos</a></li>
+                    <li><a href="documentos"><i class='fa fa-gg'></i> Gestión de Mallas Curriculares</a></li>
+                    <li><a href="documentos"><i class='fa fa-gg'></i> Gestión de Mallas Curriculares</a></li>
+                    
                 </ul>
             </li>
             <?php endif; ?>
 
-            <?php if(accesoUser([1,2,3])): ?>
-            <li class="treeview" v-bind:class="classMenu3">
-                <a href="#"><i class='fa fa-file-pdf-o'></i> <span>Documentos</span> <i
-                        class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                    <li><a href="instrumentos"><i class='fa fa-gg'></i> Gestión de Instrumentos</a></li>
-                </ul>
-            </li>
-            <?php endif; ?>
-
-            <?php if(accesoUser([1,2,3])): ?>
-            <li class="treeview" v-bind:class="classMenu4">
-                <a href="#"><i class='fa fa-file'></i> <span>Convocatorias</span> <i
-                        class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                    <li><a href="convocatorias"><i class='fa fa-gg'></i> Gestión de Convocatorias</a></li>
-                </ul>
-            </li>
-            <?php endif; ?>
-
-            <?php if(accesoUser([1,2,3])): ?>
-            <li class="treeview" v-bind:class="classMenu5">
-                <a href="#"><i class='fa fa-calendar'></i> <span>Calendarios</span> <i
-                        class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                    <li><a href="calendarios"><i class='fa fa-gg'></i> Gestión de Calendarios</a></li>
-                </ul>
-            </li>
-            <?php endif; ?>
 
             <?php if(accesoUser([1])): ?>
             <li class="treeview" v-bind:class="classMenu6">

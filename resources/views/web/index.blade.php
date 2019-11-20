@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="main-slideshow" style="height: 500px">
+            <div class="main-slideshow" style="height: 500px; margin: 0px;">
                 <div class="flexslider">
                     <ul class="slides">
                         <li>

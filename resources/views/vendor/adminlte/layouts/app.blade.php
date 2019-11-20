@@ -73,6 +73,14 @@ desired effect
 @elseif($modulo=="departamentoacademicos")
 @include('departamentoacademicos.vue')
 
+@elseif($modulo=="cargos")
+@include('cargo.vue')
+
+@elseif($modulo=="escuelas")
+@include('escuelas.vue')
+
+@elseif($modulo=="bannersescuelas")
+@include('bannerescuela.vue')
 @elseif($modulo=="categoriadocentes")
 @include('categoriadocentes.vue')
 

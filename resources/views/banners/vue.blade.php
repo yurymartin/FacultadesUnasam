@@ -127,10 +127,6 @@ methods: {
             this.banners= response.data.banners.data;
             this.pagination= response.data.pagination;
 
-            this.$nextTick(function () {
-                    this.recorrerBanner();
-            })
-
            if(this.banners.length==0 && this.thispage!='1'){
                var a = parseInt(this.thispage) ;
                a--;
@@ -180,14 +176,6 @@ methods: {
         else{
             this.imagen = event.target.files[0];
         }
-    },
-    recorrerBanner:function () { 
-            $.each($(".txtimg"), function( index, value ) {
-             //  var valor=$(this).attr("id");
-             var idusar=$(this).val();
-
-             $("#ImgPerfilNuevoE"+idusar).attr("src","{{ asset('/img/bannersFacultad/')}}"+"/"+$("#txt"+idusar).val());
-         });
     },
     create:function () { 
 

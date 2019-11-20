@@ -116,7 +116,7 @@ class BannersController extends Controller
             else{
                 $extension=$img->getClientOriginalExtension();
                 $nuevoNombre=$aux.".".$extension;
-                $subir = Storage::disk('bannersFacultades')->put($nuevoNombre, \File::get($img));
+                $subir = Storage::disk('bannersF')->put($nuevoNombre, \File::get($img));
 
                 if($subir){
                     $imagen=$nuevoNombre;
@@ -133,7 +133,7 @@ class BannersController extends Controller
         
         if($segureImg==1){ 
 
-            Storage::disk('bannersFacultades')->delete($imagen);
+            Storage::disk('bannersF')->delete($imagen);
 
         }else{
             $newBanner = new BannersFacultades();

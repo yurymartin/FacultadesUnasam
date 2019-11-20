@@ -39,7 +39,6 @@ desired effect
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" style="background-image: url(../img/fondo_gris2.gif);">
-
         <?php echo $__env->make('adminlte::layouts.partials.contentheader', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
         <!-- Main content -->
@@ -68,47 +67,23 @@ desired effect
 </html>
 
 
-<?php if($modulo=="inicioAdmin"): ?>
-<?php echo $__env->make('inicio.vueAdmin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-<?php elseif($modulo=="usuario"): ?>
-<?php echo $__env->make('usuario.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-<?php elseif($modulo=="banner"): ?>
-<?php echo $__env->make('banner.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-<?php elseif($modulo=="agendarectoral"): ?>
-<?php echo $__env->make('agendarectoral.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-<?php elseif($modulo=="noticia"): ?>
-<?php echo $__env->make('noticia.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-<?php elseif($modulo=="videoyoutube"): ?>
-<?php echo $__env->make('videoyoutube.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-<?php elseif($modulo=="videofb"): ?>
-<?php echo $__env->make('videofb.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-<?php elseif($modulo=="instrumento"): ?>
-<?php echo $__env->make('instrumento.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-<?php elseif($modulo=="convocatoria"): ?>
-<?php echo $__env->make('convocatoria.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-<?php elseif($modulo=="galeria"): ?>
-<?php echo $__env->make('galeria.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-<?php elseif($modulo=="calendario"): ?>
-<?php echo $__env->make('calendario.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-<?php elseif($modulo=="evento"): ?>
-<?php echo $__env->make('evento.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-<?php elseif($modulo=="facultades"): ?>
+<?php if($modulo=="facultades"): ?>
 <?php echo $__env->make('facultades.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 <?php elseif($modulo=="departamentoacademicos"): ?>
 <?php echo $__env->make('departamentoacademicos.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="categoriadocentes"): ?>
+<?php echo $__env->make('categoriadocentes.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="gradoacademicos"): ?>
+<?php echo $__env->make('gradoacademicos.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="docentes"): ?>
+<?php echo $__env->make('docentes.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="banners"): ?>
+<?php echo $__env->make('banners.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 <?php endif; ?>
 
