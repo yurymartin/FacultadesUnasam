@@ -48,7 +48,7 @@ class FacultadesController extends Controller
             })
             ->orderBy('f.nombre')
             ->orderBy('f.codigo')
-            ->select('f.id', 'f.nombre', 'f.codigo', 'f.activo', 'da.nombre as nombredepar', 'da.id as iddepart')
+            ->select('f.id', 'f.nombre', 'f.codigo', 'f.activo')
             ->paginate(30);
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CategoriaDocentes;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Docentes;
@@ -49,8 +50,7 @@ class DocentesController extends Controller
             ->select('d.id','p.dni', 'p.nombres', 'p.apellidos', 'p.foto', 'ga.grado', 'cd.categoria','d.tituloprofe', 'd.fechaingreso','d.activo')
             ->paginate(30);
 
-        $categoriadocentes = DB::table('categoriadocentes')
-            ->where('borrado', '0')
+        $categoriadocentes = CategoriaDocentes::where('borrado', '0')
             ->get();
         $gradoacademicos = DB::table('gradoacademicos')
             ->where('borrado', '0')
