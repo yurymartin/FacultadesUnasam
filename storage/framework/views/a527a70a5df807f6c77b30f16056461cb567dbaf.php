@@ -5,9 +5,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html lang="es">
 
-@section('htmlheader')
-    @include('adminlte::layouts.partials.htmlheader')
-@show
+<?php $__env->startSection('htmlheader'); ?>
+    <?php echo $__env->make('adminlte::layouts.partials.htmlheader', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->yieldSection(); ?>
 
 <!--
 BODY TAG OPTIONS:
@@ -33,55 +33,55 @@ desired effect
 <div id="app" v-cloak>
     <div class="wrapper">
 
-    @include('adminlte::layouts.partials.mainheader')
+    <?php echo $__env->make('adminlte::layouts.partials.mainheader', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-    @include('adminlte::layouts.partials.sidebar')
+    <?php echo $__env->make('adminlte::layouts.partials.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" style="background-image: url(../img/fondo_gris2.gif);">
-        @include('adminlte::layouts.partials.contentheader')
+        <?php echo $__env->make('adminlte::layouts.partials.contentheader', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
         <!-- Main content -->
         <section class="content">
             <!-- Your Page Content Here -->
-            @yield('main-content')
+            <?php echo $__env->yieldContent('main-content'); ?>
         </section><!-- /.content -->
 
     </div><!-- /.content-wrapper -->
 
-    @include('adminlte::layouts.partials.controlsidebar')
+    <?php echo $__env->make('adminlte::layouts.partials.controlsidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-    @include('adminlte::layouts.partials.footer')
+    <?php echo $__env->make('adminlte::layouts.partials.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 </div><!-- ./wrapper -->
 </div>
 
 
 
-@section('scripts')
-    @include('adminlte::layouts.partials.scripts')
-@show
+<?php $__env->startSection('scripts'); ?>
+    <?php echo $__env->make('adminlte::layouts.partials.scripts', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->yieldSection(); ?>
 
 
 </body>
 </html>
 
 
-@if($modulo=="facultades")
-@include('facultades.vue')
+<?php if($modulo=="facultades"): ?>
+<?php echo $__env->make('facultades.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-@elseif($modulo=="departamentoacademicos")
-@include('departamentoacademicos.vue')
+<?php elseif($modulo=="departamentoacademicos"): ?>
+<?php echo $__env->make('departamentoacademicos.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-@elseif($modulo=="cargos")
-@include('cargo.vue')
+<?php elseif($modulo=="cargos"): ?>
+<?php echo $__env->make('cargo.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-@elseif($modulo=="escuelas")
-@include('escuelas.vue')
+<?php elseif($modulo=="escuelas"): ?>
+<?php echo $__env->make('escuelas.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-@elseif($modulo=="bannersescuelas")
-@include('bannerescuela.vue')
-@endif
+<?php elseif($modulo=="bannersescuelas"): ?>
+<?php echo $__env->make('bannerescuela.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php endif; ?>
 
 <script type="text/javascript">
 
@@ -188,4 +188,4 @@ function pad (n, length) {
     return n;
 }
 
-    </script>
+    </script><?php /**PATH C:\Users\USUARIO\Desktop\webFacultades\resources\views/vendor/adminlte/layouts/app.blade.php ENDPATH**/ ?>

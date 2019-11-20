@@ -161,4 +161,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('facultades', 'FacultadesController@index1');
     Route::resource('facultad', 'FacultadesController');
     Route::get('facultad/altabaja/{id}/{var}', 'FacultadesController@altabaja');
+    /* --------------------------------------------------- PACHAS --------------------------------------*/
+    Route::get('cargos', 'CargoController@index1');
+    Route::resource('cargo', 'CargoController');
+    Route::get('cargo/altabaja/{id}/{var}', 'CargoController@altabaja');
+
+    Route::get('escuelas', 'EscuelaController@index1');
+    Route::resource('escuela', 'EscuelaController');
+    Route::get('escuela/altabaja/{id}/{var}', 'EscuelaController@altabaja');
+
+    Route::get('bannersescuelas', 'BannerEscuelaController@index1');
+    Route::resource('banner', 'BannerEscuelaController');
+    Route::get('banner/altabaja/{id}/{var}', 'BannerEscuelaController@altabaja');
+
 });

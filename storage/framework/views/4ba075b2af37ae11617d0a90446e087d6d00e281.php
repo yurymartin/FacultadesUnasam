@@ -6,7 +6,7 @@
 
         <div class="no-print user-panel-unasam">
             <div class="no-print image" style="text-align: center;">
-                <img src="{{asset('/img/unasam.png')}}" alt="User Image" style="margin-top: 15px;height: 80px;" />
+                <img src="<?php echo e(asset('/img/unasam.png')); ?>" alt="User Image" style="margin-top: 15px;height: 80px;" />
                 <ul class="no-print sidebar-menu">
                     <li class="no-print stroke treeview"
                         style="font-family: Monotype Corsiva;font-size: 21px;color: #f9c52c;margin-top: 5px;">"Una Nueva
@@ -18,19 +18,19 @@
         <hr style="border-top: 1px solid #4d4d4d;">
 
         <!-- Sidebar user panel (optional) -->
-        @if (! Auth::guest())
+        <?php if(! Auth::guest()): ?>
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="{{ Gravatar::get($user->email) }}" class="img-circle" alt="User Image" />
+                <img src="<?php echo e(Gravatar::get($user->email)); ?>" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
                 <p style="overflow: hidden;text-overflow: ellipsis;max-width: 160px;" data-toggle="tooltip"
-                    title="{{ Auth::user()->name }}">{{ Auth::user()->name }}</p>
+                    title="<?php echo e(Auth::user()->name); ?>"><?php echo e(Auth::user()->name); ?></p>
                 <!-- Status -->
-                <a href="#"><i class="fa fa-circle text-success"></i> {{ trans('adminlte_lang::message.online') }}</a>
+                <a href="#"><i class="fa fa-circle text-success"></i> <?php echo e(trans('adminlte_lang::message.online')); ?></a>
             </div>
         </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" data-widget="tree">
@@ -38,29 +38,29 @@
             <!-- Optionally, you can add icons to the links -->
 
 
-            <li v-bind:class="classMenu0"><a href="{{ url('home') }}"><i class='fa fa-home'></i> <span>Inicio</span></a>
+            <li v-bind:class="classMenu0"><a href="<?php echo e(url('home')); ?>"><i class='fa fa-home'></i> <span>Inicio</span></a>
             </li>
-            @if(accesoUser([1,2,3]))
-            <li v-bind:class="classMenu0"><a href="{{ url('departamentos') }}"><i class='fa fa-home'></i>
+            <?php if(accesoUser([1,2,3])): ?>
+            <li v-bind:class="classMenu0"><a href="<?php echo e(url('departamentos')); ?>"><i class='fa fa-home'></i>
                     <span>Departamentos Academicos</span></a>
-            @endif
-            @if(accesoUser([1,2,3]))
-            <li v-bind:class="classMenu0"><a href="{{ url('facultades') }}"><i class='fa fa-home'></i>
+            <?php endif; ?>
+            <?php if(accesoUser([1,2,3])): ?>
+            <li v-bind:class="classMenu0"><a href="<?php echo e(url('facultades')); ?>"><i class='fa fa-home'></i>
                     <span>Facultades</span></a>
-            @endif
-            @if(accesoUser([1,2,3]))
-            <li v-bind:class="classMenu0"><a href="{{ url('cargos') }}"><i class='fa fa-home'></i>
+            <?php endif; ?>
+            <?php if(accesoUser([1,2,3])): ?>
+            <li v-bind:class="classMenu0"><a href="<?php echo e(url('cargos')); ?>"><i class='fa fa-home'></i>
                     <span>Cargos</span></a>
-            @endif
-            @if(accesoUser([1,2,3]))
-            <li v-bind:class="classMenu0"><a href="{{ url('escuelas') }}"><i class='fa fa-home'></i>
+            <?php endif; ?>
+            <?php if(accesoUser([1,2,3])): ?>
+            <li v-bind:class="classMenu0"><a href="<?php echo e(url('escuelas')); ?>"><i class='fa fa-home'></i>
                     <span>Escuelas</span></a>
-            @endif
-            @if(accesoUser([1,2,3]))
-            <li v-bind:class="classMenu0"><a href="{{ url('bannersescuelas') }}"><i class='fa fa-home'></i>
+            <?php endif; ?>
+            <?php if(accesoUser([1,2,3])): ?>
+            <li v-bind:class="classMenu0"><a href="<?php echo e(url('bannersescuelas')); ?>"><i class='fa fa-home'></i>
                     <span>Banners Escuela</span></a>
-            @endif
-            @if(accesoUser([1,2,3]))
+            <?php endif; ?>
+            <?php if(accesoUser([1,2,3])): ?>
             <li class="treeview" v-bind:class="classMenu1">
                 <a href="#"><i class='fa fa-list-alt'></i> <span>Contenido Web</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
@@ -72,9 +72,9 @@
                     <li><a href="galerias"><i class='fa fa-gg'></i> Gestión de Galerias</a></li>
                 </ul>
             </li>
-            @endif
+            <?php endif; ?>
 
-            @if(accesoUser([1,2,3]))
+            <?php if(accesoUser([1,2,3])): ?>
             <li class="treeview" v-bind:class="classMenu2">
                 <a href="#"><i class='fa fa-youtube'></i> <span>Videos</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
@@ -83,9 +83,9 @@
                     <li><a href="videoyoutubes"><i class='fa fa-gg'></i> Gestión de Videos de Youtube</a></li>
                 </ul>
             </li>
-            @endif
+            <?php endif; ?>
 
-            @if(accesoUser([1,2,3]))
+            <?php if(accesoUser([1,2,3])): ?>
             <li class="treeview" v-bind:class="classMenu3">
                 <a href="#"><i class='fa fa-file-pdf-o'></i> <span>Documentos</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
@@ -93,9 +93,9 @@
                     <li><a href="instrumentos"><i class='fa fa-gg'></i> Gestión de Instrumentos</a></li>
                 </ul>
             </li>
-            @endif
+            <?php endif; ?>
 
-            @if(accesoUser([1,2,3]))
+            <?php if(accesoUser([1,2,3])): ?>
             <li class="treeview" v-bind:class="classMenu4">
                 <a href="#"><i class='fa fa-file'></i> <span>Convocatorias</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
@@ -103,9 +103,9 @@
                     <li><a href="convocatorias"><i class='fa fa-gg'></i> Gestión de Convocatorias</a></li>
                 </ul>
             </li>
-            @endif
+            <?php endif; ?>
 
-            @if(accesoUser([1,2,3]))
+            <?php if(accesoUser([1,2,3])): ?>
             <li class="treeview" v-bind:class="classMenu5">
                 <a href="#"><i class='fa fa-calendar'></i> <span>Calendarios</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
@@ -113,9 +113,9 @@
                     <li><a href="calendarios"><i class='fa fa-gg'></i> Gestión de Calendarios</a></li>
                 </ul>
             </li>
-            @endif
+            <?php endif; ?>
 
-            @if(accesoUser([1]))
+            <?php if(accesoUser([1])): ?>
             <li class="treeview" v-bind:class="classMenu6">
                 <a href="#"><i class='fa fa-cogs'></i> <span>Configuraciones</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
@@ -123,12 +123,12 @@
                     <li><a href="usuarios"><i class='fa fa-gg'></i> Gestión de Usuarios</a></li>
                 </ul>
             </li>
-            @endif
+            <?php endif; ?>
 
 
 
-            {{-- <li><a href="#"><i class='fa fa-link'></i> <span>Link 1</span></a></li> --}}
+            
         </ul><!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->
-</aside>
+</aside><?php /**PATH C:\Users\USUARIO\Desktop\webFacultades\resources\views/vendor/adminlte/layouts/partials/sidebar.blade.php ENDPATH**/ ?>
