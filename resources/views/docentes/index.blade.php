@@ -1,7 +1,7 @@
 @extends('vendor.adminlte.layouts.app')
 
 @section('htmlheader_title')
-Gestión de Banners
+Gestión de Docentes
 @endsection
 
 <style type="text/css">
@@ -25,7 +25,7 @@ Gestión de Banners
 		@if(accesoUser([1,2]))
 
 		<template v-if="divprincipal" id="divprincipal">
-			@include('banner.principal')
+			@include('docentes.principal')
 		</template>
 		@endif
 

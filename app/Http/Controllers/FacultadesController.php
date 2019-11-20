@@ -52,7 +52,9 @@ class FacultadesController extends Controller
             ->paginate(30);
 
 
-        $departamentos = DepartamentoAcademicos::get();
+        $departamentos = DB::table('departamentoacademicos')
+        ->where('borrado', '0')
+        ->get();
 
         return [
             'pagination' => [
