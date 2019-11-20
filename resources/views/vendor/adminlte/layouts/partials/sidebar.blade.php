@@ -49,6 +49,32 @@
                     <span>Facultades</span></a>
             @endif
             @if(accesoUser([1,2,3]))
+            <li v-bind:class="classMenu0"><a href="{{ url('cargos') }}"><i class='fa fa-home'></i>
+                    <span>Cargos</span></a>
+            @endif
+            @if(accesoUser([1,2,3]))
+            <li v-bind:class="classMenu0"><a href="{{ url('escuelas') }}"><i class='fa fa-home'></i>
+                    <span>Escuelas</span></a>
+            @endif
+            @if(accesoUser([1,2,3]))
+            <li v-bind:class="classMenu0"><a href="{{ url('bannersescuelas') }}"><i class='fa fa-home'></i>
+                    <span>Banners Escuela</span></a>
+            @endif
+            @if(accesoUser([1,2,3]))
+            <li class="treeview" v-bind:class="classMenu1">
+                <a href="#"><i class='fa fa-list-alt'></i> <span>Contenido Web</span> <i
+                        class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li><a href="banners"><i class='fa fa-gg'></i> Gestión de Banners</a></li>
+                    <li><a href="agendarectorals"><i class='fa fa-gg'></i> Gestión de Agendas</a></li>
+                    <li><a href="eventos"><i class='fa fa-gg'></i> Gestión de Eventos</a></li>
+                    <li><a href="noticias"><i class='fa fa-gg'></i> Gestión de Noticias</a></li>
+                    <li><a href="galerias"><i class='fa fa-gg'></i> Gestión de Galerias</a></li>
+                </ul>
+            </li>
+            @endif
+
+            @if(accesoUser([1,2,3]))
             <li class="treeview" v-bind:class="classMenu2">
                 <a href="#"><i class='fa fa-list-alt'></i> <span>Docentes</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
