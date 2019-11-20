@@ -9,9 +9,9 @@ data:{
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'{{ $tipouser->nombre }}',
-   userPerfil:'{{ Auth::user()->name }}',
-   mailPerfil:'{{ Auth::user()->email }}',
+   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
+   userPerfil:'<?php echo e(Auth::user()->name); ?>',
+   mailPerfil:'<?php echo e(Auth::user()->email); ?>',
 
    
    divloader0:true,
@@ -115,7 +115,7 @@ computed:{
 
 methods: {
     getImg(banner){
-        var img = "{{ asset('/') }}img/bannersFacultades/"+ banner.imagen;
+        var img = "<?php echo e(asset('/')); ?>img/bannersFacultades/"+ banner.imagen;
         return img;
     },
    getBanner: function (page) {
@@ -364,4 +364,4 @@ methods: {
    },
 }
 });
-</script>
+</script><?php /**PATH D:\Roger\Aplicaciones\webFacultades2019\resources\views/banners/vue.blade.php ENDPATH**/ ?>

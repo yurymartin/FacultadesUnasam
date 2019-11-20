@@ -26,7 +26,7 @@ body,
 }
 
 .menu-toggle-btn {
-  background-color: #fecd0b;
+  background-color: #084B8A;
 }
 
 .search-form form input {
@@ -51,7 +51,7 @@ body,
 .social_icons li a,
 .footer-media-icons li a,
 .flex-direction-nav a {
-  background-color: #003a6a;
+  background-color: #084B8A;
 }
 
 .main-navigation,
@@ -80,7 +80,7 @@ blockquote,
 .social-icons li a:hover,
 .site-footer a:hover,
 .event-container .event-time {
-  color: #fecd0b;
+  color: #D8D8D8;
 }
 
 .main-menu li.active .sub-menu a:hover,
@@ -124,7 +124,7 @@ body,
 
 .menu-toggle-btn,
 .menu-toggle-btn:hover {
-  color: #003a6a;
+  color: #D8D8D8;
 }
 
 .main-menu a,
@@ -132,7 +132,10 @@ body,
 .main-menu li ul li:before,
 .site-header,
 .site-header a {
-  color: #8ab5d6;
+  color: #D8D8D8;
+  font-size: 12px;
+  font-weight: bold;
+  font-family: sans-serif;
 }
 
 .site-header a:hover {
@@ -149,7 +152,7 @@ body,
 }
 
 .site-footer a {
-  color: #8ab5d6;
+  color: #D8D8D8;
 }
 
 .footer-nav li:not(:first-child):before {
@@ -231,7 +234,7 @@ blockquote,
 body,
 .main-menu li ul,
 .tab-content > .tab-pane {
-  border-color: #fecd0b;
+  border-color: #084B8A;
 }
 
 .site-header,
@@ -240,7 +243,7 @@ body,
 }
 
 .bottom-footer {
-  border-color: #003a6a;
+  border-color: #084B8A;
 }
 
 .course-list dt,
