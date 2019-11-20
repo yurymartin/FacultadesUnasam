@@ -174,4 +174,20 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('banner', 'BannerEscuelaController');
     Route::get('banner/altabaja/{id}/{var}', 'BannerEscuelaController@altabaja');
 
+
+    Route::get('catdocentes', 'CategoriaDocentesController@index1');
+    Route::resource('catdocente', 'CategoriaDocentesController');
+    Route::get('catdocente/altabaja/{id}/{var}', 'CategoriaDocentesController@altabaja');
+
+    Route::get('gradoacademicos', 'GradoAcademicosController@index1');
+    Route::resource('gradoacademico', 'GradoAcademicosController');
+    Route::get('gradoacademico/altabaja/{id}/{var}', 'GradoAcademicosController@altabaja');
+
+    Route::get('docentes', 'DocentesController@index1');
+    Route::resource('docente', 'DocentesController');
+    Route::get('docente/altabaja/{id}/{var}', 'DocentesController@altabaja');
+
+    Route::get('banners', 'BannersController@index1');
+    Route::resource('banner', 'BannersController');
+    Route::get('banner/altabaja/{id}/{var}', 'BannersController@altabaja');
 });

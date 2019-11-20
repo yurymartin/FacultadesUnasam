@@ -3,15 +3,15 @@
 el: '#app',
 data:{
        titulo:"Mantenimiento",
-       subtitulo: "Gestión de Banners",
+       subtitulo: "Gestión de Categoria de docentes",
        subtitulo2: "Principal",
 
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'{{ $tipouser->nombre }}',
-   userPerfil:'{{ Auth::user()->name }}',
-   mailPerfil:'{{ Auth::user()->email }}',
+   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
+   userPerfil:'<?php echo e(Auth::user()->name); ?>',
+   mailPerfil:'<?php echo e(Auth::user()->email); ?>',
 
    
    divloader0:true,
@@ -44,10 +44,10 @@ data:{
 
    divprincipal:false,
 
-   banners: [],
+   catdocentes: [],
    errors:[],
 
-   fillBanner:{'id':'', 'titulo':'', 'descripcion':'','imagen':'','estado':''},
+   fillCatdocentes:{'id':'', 'categoria':''},
 
    pagination: {
    'total': 0,
@@ -65,16 +65,15 @@ data:{
 
    thispage:'1',
 
-   newTitulo:'',
-   newDescripcion:'',
-   newEstado:'1',
-   imagen : null,
-
+   newCategoria:'',
+   newEstado:'',
+   newBorrado:'0',
+  
 
 
 },
 created:function () {
-   this.getBanner(this.thispage);
+   this.getcatDocentes(this.thispage);
 },
 mounted: function () {
    this.divloader0=false;
@@ -112,20 +111,14 @@ computed:{
 },
 
 methods: {
-   getBanner: function (page) {
+    getcatDocentes: function (page) {
        var busca=this.buscar;
-       var url = 'banner?page='+page+'&busca='+busca;
-        
+       var url = 'catdocente?page='+page+'&busca='+busca;
 
        axios.get(url).then(response=>{
-            this.banners= response.data.banners.data;
+            this.catdocentes= response.data.catdocentes.data;
             this.pagination= response.data.pagination;
-
-            this.$nextTick(function () {
-                    this.recorrerBanner();
-            })
-
-           if(this.banners.length==0 && this.thispage!='1'){
+           if(this.catdocentes.length == 0 && this.thispage != '1'){
                var a = parseInt(this.thispage) ;
                a--;
                this.thispage=a.toString();
@@ -135,11 +128,11 @@ methods: {
    },
    changePage:function (page) {
        this.pagination.current_page=page;
-       this.getBanner(page);
+       this.getcatDocentes(page);
        this.thispage=page;
    },
    buscarBtn: function () {
-       this.getBanner();
+       this.getcatDocentes();
        this.thispage='1';
    },
    nuevo:function () {
@@ -158,33 +151,15 @@ methods: {
    cancelFormNuevo: function () {
        $('#txttitulo').focus();
 
-        this.newTitulo = '';
-        this.newDescripcion = '';
+        this.newCategoria = '';
         this.newEstado = '1';
-        this.imagen = null;
+        this.newBorrado = '0';
 
        $(".form-control").css("border","1px solid #d2d6de");
    },
-   getImage(event){
-        if (!event.target.files.length)
-        {
-            this.imagen=null;
-        }
-        else{
-            this.imagen = event.target.files[0];
-        }
-    },
-    recorrerBanner:function () { 
-            $.each($(".txtimg"), function( index, value ) {
-             //  var valor=$(this).attr("id");
-             var idusar=$(this).val();
-
-             $("#ImgPerfilNuevoE"+idusar).attr("src","{{ asset('/img/banners/')}}"+"/"+$("#txt"+idusar).val());
-         });
-    },
     create:function () { 
 
-       var url='banner';
+       var url='catdocente';
        $("#btnGuardar").attr('disabled', true);
        $("#btnCancel").attr('disabled', true);
        $("#btnClose").attr('disabled', true);
@@ -193,24 +168,20 @@ methods: {
 
        var data = new  FormData();
 
-            data.append('titulo', this.newTitulo);
-            data.append('descripcion', this.newDescripcion);
-            data.append('imagen', this.imagen);
-            data.append('estado', this.newEstado);
-
+            data.append('categoria', this.newCategoria);
+            data.append('activo', this.newEstado);
+            data.append('borrado', this.newBorrado);
             
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-
+            
             axios.post(url,data,config).then(response=>{
-
                 $("#btnGuardar").removeAttr("disabled");
                 $("#btnCancel").removeAttr("disabled");
                 $("#btnClose").removeAttr("disabled");
                 this.divloaderNuevo=false;
-
-        
+                
                 if(String(response.data.result)=='1'){
-                    this.getBanner(this.thispage);
+                    this.getcatDocentes(this.thispage);
                     this.errors=[];
                     this.cerrarFormNuevo();
                     toastr.success(response.data.msj);
@@ -224,11 +195,10 @@ methods: {
                 //this.errors=error.response.data
             })
    },
-   borrarbanner:function (banner) {
-    
+   borrarcategoria:function (catdocentes) {
         swal.fire({
              title: '¿Estás seguro?',
-             text: "¿Desea eliminar el Banner Seleccionado? -- Nota: este proceso no se podrá revertir.",
+             text: "¿Desea eliminar la categoria Seleccionado? -- Nota: este proceso no se podrá revertir.",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -238,11 +208,11 @@ methods: {
 
             if (result.value) {
 
-                var url = 'banner/'+banner.id;
+                var url = 'catdocente/'+catdocentes.id;
                 axios.delete(url).then(response=>{//eliminamos
 
                 if(response.data.result=='1'){
-                    app.getBanner(app.thispage);//listamos
+                    app.getcatDocentes(app.thispage);//listamos
                     toastr.success(response.data.msj);//mostramos mensaje
                 }else{
                     // $('#'+response.data.selector).focus();
@@ -252,39 +222,29 @@ methods: {
                 }
 
                    
-               }).catch(swal.noop);  
+               }).catch(swal.noop);     
    },
 
-   editbanner:function (banner) {
+   editcategoria:function (catdocentes) {
 
-        this.fillBanner.id=banner.id;
-        this.fillBanner.titulo=banner.tituloBanner;
-        this.fillBanner.descripcion=banner.descrBanner;            
-        this.fillBanner.imagen=banner.ruta;
-        this.fillBanner.estado=banner.activo;
-        this.imagen=null;
+        this.fillCatdocentes.id=catdocentes.id;
+        this.fillCatdocentes.categoria=catdocentes.categoria;           
 
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
-                $("#txttituloE").focus();
+                $("#txtcategoria").focus();
         })
             
    },
-   updateBanner:function (id) {
-
+   updatedepartamento:function (id) {
         var data = new FormData();
-
-        data.append('idBanner', this.fillBanner.id);
-        data.append('editTitulo', this.fillBanner.titulo);
-        data.append('editDescripcion', this.fillBanner.descripcion);
-        data.append('editEstado', this.fillBanner.estado);
-        data.append('imagen', this.imagen);
-        data.append('oldImagen', this.fillBanner.imagen);
+        data.append('id', this.fillCatdocentes.id);
+        data.append('categoria', this.fillCatdocentes.categoria);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
         
-        var url = "banner/" + id;
+        var url = "catdocente/" + id;
 
         $("#btnSaveE").attr('disabled', true);
         $("#btnCloseE").attr('disabled', true);
@@ -297,8 +257,8 @@ methods: {
            this.divloaderEdit=false;
            
            if(response.data.result=='1'){   
-           this.getBanner(this.thispage);
-           this.fillLocal={'id':'', 'titulo':'', 'descripcion':'','imagen':'','estado':''};
+           this.getcatDocentes(this.thispage);
+           this.fillLocal={'id':'', 'categoria':''};
            this.errors=[];
            $("#modalEditar").modal('hide');
            toastr.success(response.data.msj);
@@ -312,11 +272,11 @@ methods: {
            this.errors=error.response.data
        })
     },
-    bajabanner:function (banner) {
+    bajacategoria:function (catdocentes) {
 
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea desactivar el Banner seleccionado",
+             text: "Desea desactivar la categoria seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -326,10 +286,10 @@ methods: {
 
             if (result.value) {
 
-                var url = 'banner/altabaja/'+banner.id+'/0';
+                var url = 'catdocente/altabaja/'+catdocentes.id+'/0';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
-                           app.getBanner(app.thispage);//listamos
+                           app.getcatDocentes(app.thispage);//listamos
                            toastr.success(response.data.msj);//mostramos mensaje
                        }else{
                           // $('#'+response.data.selector).focus();
@@ -340,11 +300,11 @@ methods: {
                }).catch(swal.noop);  
 
    },
-   altabanner:function (banner) {
+   altacategoria:function (catdocentes) {
 
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea activar el Banner seleccionado",
+             text: "Desea activar la categoria seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -354,11 +314,11 @@ methods: {
 
             if (result.value) {
 
-                var url = 'banner/altabaja/'+banner.id+'/1';
+                var url = 'catdocente/altabaja/'+catdocentes.id+'/1';
                        axios.get(url).then(response=>{//eliminamos
 
                        if(response.data.result=='1'){
-                           app.getBanner(app.thispage);//listamos
+                           app.getcatDocentes(app.thispage);//listamos
                            toastr.success(response.data.msj);//mostramos mensaje
                        }else{
                           // $('#'+response.data.selector).focus();
@@ -373,4 +333,4 @@ methods: {
    },
 }
 });
-</script>
+</script><?php /**PATH C:\Users\yuri_\OneDrive\Desktop\webFacultades\resources\views/categoriadocentes/vue.blade.php ENDPATH**/ ?>

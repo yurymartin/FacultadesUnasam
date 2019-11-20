@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\DepartamentoAcademicos;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\CategoriaDocentes;
 use Validator;
 use Auth;
 use DB;
@@ -13,46 +13,46 @@ use App\Persona;
 use App\Tipouser;
 use App\User;
 
-class DepartamentoAcademicosController extends Controller
+class CategoriaDocentesController extends Controller
 {
-    public function index1()
-    {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "departamentoacademicos";
-            return view('departamentoacademicos.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
-    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    public function index1()
+    {
+        if (accesoUser([1, 2])) {
+            $idtipouser = Auth::user()->tipouser_id;
+            $tipouser = Tipouser::find($idtipouser);
+            $modulo = "categoriadocentes";
+            return view('categoriadocentes.index', compact('tipouser', 'modulo'));
+        } else {
+            return view('adminlte::home');
+        }
+    }
+
     public function index(Request $request)
     {
         $buscar = $request->busca;
-        $departamentos = DepartamentoAcademicos::where('borrado', '0')
+        $catdocentes = CategoriaDocentes::where('borrado', '0')
             ->where(function ($query) use ($buscar) {
-                $query->where('nombre', 'like', '%' . $buscar . '%');
+                $query->where('categoria', 'like', '%' . $buscar . '%');
             })
             ->orderBy('id', 'desc')
             ->paginate(10);
         return [
             'pagination' => [
-                'total' => $departamentos->total(),
-                'current_page' => $departamentos->currentPage(),
-                'per_page' => $departamentos->perPage(),
-                'last_page' => $departamentos->lastPage(),
-                'from' => $departamentos->firstItem(),
-                'to' => $departamentos->lastItem(),
+                'total' => $catdocentes->total(),
+                'current_page' => $catdocentes->currentPage(),
+                'per_page' => $catdocentes->perPage(),
+                'last_page' => $catdocentes->lastPage(),
+                'from' => $catdocentes->firstItem(),
+                'to' => $catdocentes->lastItem(),
             ],
-            'departamentos' => $departamentos
+            'catdocentes' => $catdocentes
         ];
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -71,8 +71,7 @@ class DepartamentoAcademicosController extends Controller
      */
     public function store(Request $request)
     {
-        $nombre=$request->nombre;
-        $descripcion=$request->descripcion;
+        $categoria=$request->categoria;
         $activo=$request->activo;
         $borrado=0;
 
@@ -80,8 +79,8 @@ class DepartamentoAcademicosController extends Controller
         $msj='';
         $selector='';
 
-        $input1  = array('nombre' => $nombre);
-        $reglas1 = array('nombre' => 'required');
+        $input1  = array('categoria' => $categoria);
+        $reglas1 = array('categoria' => 'required');
 
 
         $validator1 = Validator::make($input1, $reglas1);
@@ -89,19 +88,18 @@ class DepartamentoAcademicosController extends Controller
 
         if ($validator1->fails()) {
             $result='0';
-            $msj='Ingrese el Nombre del departamento';
-            $selector='txttitulo';
+            $msj='Ingrese la categoria de los docentes';
+            $selector='txtcategoria';
         }
        
         else{
 
-            $newDepartamento = new DepartamentoAcademicos();
-            $newDepartamento->nombre=$nombre;
-            $newDepartamento->descripcion=$descripcion;
-            $newDepartamento->activo=$activo;
-            $newDepartamento->borrado='0';
-            $newDepartamento->save();
-            $msj='Nueva Departamento Academico registrado con éxito';
+            $newCategoria = new CategoriaDocentes();
+            $newCategoria->categoria=$categoria;
+            $newCategoria->activo=$activo;
+            $newCategoria->borrado='0';
+            $newCategoria->save();
+            $msj='Nueva categoria registrada con éxito';
         }
 
         return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
@@ -126,9 +124,8 @@ class DepartamentoAcademicosController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -138,16 +135,15 @@ class DepartamentoAcademicosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $nombre=$request->nombre;
-        $descripcion=$request->descripcion;
+        $categoria=$request->categoria;
         $borrado=0;
 
         $result='1';
         $msj='';
         $selector='';
 
-        $input1  = array('nombre' => $nombre);
-        $reglas1 = array('nombre' => 'required');
+        $input1  = array('categoria' => $categoria);
+        $reglas1 = array('categoria' => 'required');
 
 
         $validator1 = Validator::make($input1, $reglas1);
@@ -155,16 +151,15 @@ class DepartamentoAcademicosController extends Controller
 
         if ($validator1->fails()) {
             $result='0';
-            $msj='Ingrese el Nombre del departamento';
-            $selector='txttitulo';
+            $msj='Ingrese la categoria de los docentes';
+            $selector='txtcategoria';
         }
        
         else{
 
-            $newDepartamento =DepartamentoAcademicos::findOrFail($id);
-            $newDepartamento->nombre=$nombre;
-            $newDepartamento->descripcion=$descripcion;
-            $newDepartamento->save();
+            $newCategoria =CategoriaDocentes::findOrFail($id);
+            $newCategoria->categoria=$categoria;
+            $newCategoria->save();
 
             $msj='Nueva Departamento Academico fue modificado con éxito';
         }
@@ -177,14 +172,14 @@ class DepartamentoAcademicosController extends Controller
         $msj='';
         $selector='';
 
-        $update = DepartamentoAcademicos::findOrFail($id);
+        $update = CategoriaDocentes::findOrFail($id);
         $update->activo=$activo;
         $update->save();
 
         if(strval($activo)=="0"){
-            $msj='El Departamento Academico fue Desactivada exitosamente';
+            $msj='La Categoria de Docente fue Desactivada exitosamente';
         }elseif(strval($activo)=="1"){
-            $msj='El Departamento Academico fue Activada exitosamente';
+            $msj='La Categoria de Docente fue Activada exitosamente';
         }
 
         return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
@@ -200,10 +195,10 @@ class DepartamentoAcademicosController extends Controller
     {
         $result='1';
         $msj='1';
-        $borrar = DepartamentoAcademicos::findOrFail($id);
+        $borrar = CategoriaDocentes::findOrFail($id);
         $borrar->borrado='1';
         $borrar->save();
-        $msj='Departamento Academico eliminado exitosamente';
+        $msj='La categoria fue eliminado exitosamente';
         return response()->json(["result"=>$result,'msj'=>$msj]);
     }
 }

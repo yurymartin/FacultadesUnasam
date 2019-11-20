@@ -83,6 +83,11 @@ return [
             'root' => public_path('img/banners'), // miproyecto.com/public/defaults/
             'visibility' => 'public',
          ],
+         'bannersF' => [
+            'driver' => 'local',
+            'root' => public_path('img/bannersFacultad'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
          'agendarectorals' => [
             'driver' => 'local',
             'root' => public_path('img/agendarectorals'), // miproyecto.com/public/defaults/

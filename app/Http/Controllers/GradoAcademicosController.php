@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\DepartamentoAcademicos;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
+use App\GradoAcademicos;
 use Validator;
 use Auth;
 use DB;
@@ -13,43 +14,45 @@ use App\Persona;
 use App\Tipouser;
 use App\User;
 
-class DepartamentoAcademicosController extends Controller
+class GradoAcademicosController extends Controller
 {
-    public function index1()
-    {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "departamentoacademicos";
-            return view('departamentoacademicos.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
-    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    public function index1()
+    {
+        if (accesoUser([1, 2])) {
+            $idtipouser = Auth::user()->tipouser_id;
+            $tipouser = Tipouser::find($idtipouser);
+            $modulo = "gradoacademicos";
+            return view('gradoacademicos.index', compact('tipouser', 'modulo'));
+        } else {
+            return view('adminlte::home');
+        }
+    }
+
     public function index(Request $request)
     {
         $buscar = $request->busca;
-        $departamentos = DepartamentoAcademicos::where('borrado', '0')
+        $gradoacademicos = GradoAcademicos::where('borrado', '0')
             ->where(function ($query) use ($buscar) {
-                $query->where('nombre', 'like', '%' . $buscar . '%');
+                $query->where('grado', 'like', '%' . $buscar . '%');
+                $query->where('abreviatura', 'like', '%' . $buscar . '%');
             })
             ->orderBy('id', 'desc')
             ->paginate(10);
         return [
             'pagination' => [
-                'total' => $departamentos->total(),
-                'current_page' => $departamentos->currentPage(),
-                'per_page' => $departamentos->perPage(),
-                'last_page' => $departamentos->lastPage(),
-                'from' => $departamentos->firstItem(),
-                'to' => $departamentos->lastItem(),
+                'total' => $gradoacademicos->total(),
+                'current_page' => $gradoacademicos->currentPage(),
+                'per_page' => $gradoacademicos->perPage(),
+                'last_page' => $gradoacademicos->lastPage(),
+                'from' => $gradoacademicos->firstItem(),
+                'to' => $gradoacademicos->lastItem(),
             ],
-            'departamentos' => $departamentos
+            'gradoacademicos' => $gradoacademicos
         ];
     }
 
@@ -71,8 +74,8 @@ class DepartamentoAcademicosController extends Controller
      */
     public function store(Request $request)
     {
-        $nombre=$request->nombre;
-        $descripcion=$request->descripcion;
+        $grado=$request->grado;
+        $abreviatura=$request->abreviatura;
         $activo=$request->activo;
         $borrado=0;
 
@@ -80,8 +83,8 @@ class DepartamentoAcademicosController extends Controller
         $msj='';
         $selector='';
 
-        $input1  = array('nombre' => $nombre);
-        $reglas1 = array('nombre' => 'required');
+        $input1  = array('grado' => $grado);
+        $reglas1 = array('grado' => 'required');
 
 
         $validator1 = Validator::make($input1, $reglas1);
@@ -89,19 +92,19 @@ class DepartamentoAcademicosController extends Controller
 
         if ($validator1->fails()) {
             $result='0';
-            $msj='Ingrese el Nombre del departamento';
-            $selector='txttitulo';
+            $msj='Ingrese el grado academico';
+            $selector='txtgrado';
         }
        
         else{
 
-            $newDepartamento = new DepartamentoAcademicos();
-            $newDepartamento->nombre=$nombre;
-            $newDepartamento->descripcion=$descripcion;
-            $newDepartamento->activo=$activo;
-            $newDepartamento->borrado='0';
-            $newDepartamento->save();
-            $msj='Nueva Departamento Academico registrado con éxito';
+            $newGrados = new GradoAcademicos();
+            $newGrados->grado=$grado;
+            $newGrados->abreviatura=$abreviatura;
+            $newGrados->activo=$activo;
+            $newGrados->borrado='0';
+            $newGrados->save();
+            $msj='Nuevo Grado Academico registrado con éxito';
         }
 
         return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
@@ -138,16 +141,16 @@ class DepartamentoAcademicosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $nombre=$request->nombre;
-        $descripcion=$request->descripcion;
+        $grado=$request->grado;
+        $abreviatura=$request->abreviatura;
         $borrado=0;
 
         $result='1';
         $msj='';
         $selector='';
 
-        $input1  = array('nombre' => $nombre);
-        $reglas1 = array('nombre' => 'required');
+        $input1  = array('grado' => $grado);
+        $reglas1 = array('grado' => 'required');
 
 
         $validator1 = Validator::make($input1, $reglas1);
@@ -155,18 +158,18 @@ class DepartamentoAcademicosController extends Controller
 
         if ($validator1->fails()) {
             $result='0';
-            $msj='Ingrese el Nombre del departamento';
-            $selector='txttitulo';
+            $msj='Ingrese el grado academico';
+            $selector='txtgrado';
         }
        
         else{
 
-            $newDepartamento =DepartamentoAcademicos::findOrFail($id);
-            $newDepartamento->nombre=$nombre;
-            $newDepartamento->descripcion=$descripcion;
-            $newDepartamento->save();
+            $newGrados =GradoAcademicos::findOrFail($id);
+            $newGrados->grado=$grado;
+            $newGrados->abreviatura=$abreviatura;
+            $newGrados->save();
 
-            $msj='Nueva Departamento Academico fue modificado con éxito';
+            $msj='El Grado Academico fue modificado con éxito';
         }
         return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
     }
@@ -177,19 +180,20 @@ class DepartamentoAcademicosController extends Controller
         $msj='';
         $selector='';
 
-        $update = DepartamentoAcademicos::findOrFail($id);
+        $update = GradoAcademicos::findOrFail($id);
         $update->activo=$activo;
         $update->save();
 
         if(strval($activo)=="0"){
-            $msj='El Departamento Academico fue Desactivada exitosamente';
+            $msj='El Grado Academico fue Desactivada exitosamente';
         }elseif(strval($activo)=="1"){
-            $msj='El Departamento Academico fue Activada exitosamente';
+            $msj='El Grado Academico fue Activada exitosamente';
         }
 
         return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
 
     }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -200,10 +204,26 @@ class DepartamentoAcademicosController extends Controller
     {
         $result='1';
         $msj='1';
-        $borrar = DepartamentoAcademicos::findOrFail($id);
+
+        $consulta1=DB::table('docentes as d')
+                    ->join('gradoacademicos as ga', 'd.gradoacademico_id', '=', 'ga.id')
+                    ->where('ga.id',$id)->count();
+
+        if($consulta1>0) {
+            $result='0';
+            $msj='No se puede eliminar el grado academico porque tiene datos enlazados con otras entidades';
+        }else{
+        
+        $borrar = GradoAcademicos::findOrFail($id);
+        //$task->delete();
+
         $borrar->borrado='1';
+
         $borrar->save();
-        $msj='Departamento Academico eliminado exitosamente';
+
+        $msj='El Grado Academico fue eliminado exitosamente';
+     }
+
         return response()->json(["result"=>$result,'msj'=>$msj]);
     }
 }
