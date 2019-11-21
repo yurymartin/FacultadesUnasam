@@ -81,6 +81,19 @@ desired effect
 
 <?php elseif($modulo=="bannersescuelas"): ?>
 <?php echo $__env->make('bannerescuela.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="categoriadocentes"): ?>
+<?php echo $__env->make('categoriadocentes.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="gradoacademicos"): ?>
+<?php echo $__env->make('gradoacademicos.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="docentes"): ?>
+<?php echo $__env->make('docentes.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="banners"): ?>
+<?php echo $__env->make('banners.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
 <?php endif; ?>
 
 <script type="text/javascript">

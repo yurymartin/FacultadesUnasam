@@ -171,8 +171,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('escuela/altabaja/{id}/{var}', 'EscuelaController@altabaja');
 
     Route::get('bannersescuelas', 'BannerEscuelaController@index1');
-    Route::resource('banner', 'BannerEscuelaController');
-    Route::get('banner/altabaja/{id}/{var}', 'BannerEscuelaController@altabaja');
+    Route::resource('bannerescuela', 'BannerEscuelaController');
+    Route::get('bannerescuela/altabaja/{id}/{var}', 'BannerEscuelaController@altabaja');
 
 
     Route::get('catdocentes', 'CategoriaDocentesController@index1');

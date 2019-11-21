@@ -3,15 +3,15 @@
 el: '#app',
 data:{
        titulo:"Mantenimiento",
-       subtitulo: "Gestión de Banners",
+       subtitulo: "Gestión de Grados Academicos",
        subtitulo2: "Principal",
 
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'{{ $tipouser->nombre }}',
-   userPerfil:'{{ Auth::user()->name }}',
-   mailPerfil:'{{ Auth::user()->email }}',
+   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
+   userPerfil:'<?php echo e(Auth::user()->name); ?>',
+   mailPerfil:'<?php echo e(Auth::user()->email); ?>',
 
    
    divloader0:true,
@@ -44,10 +44,10 @@ data:{
 
    divprincipal:false,
 
-   bannersescuelas: [],
+   gradoacademicos: [],
    errors:[],
 
-   fillBanner:{'id':'', 'titulo':'', 'descripcion':'','imagen':'','fechapublica':'','estado':'','escuela_id':''},
+   fillGrados:{'id':'', 'grado':'','abreviatura':''},
 
    pagination: {
    'total': 0,
@@ -65,19 +65,16 @@ data:{
 
    thispage:'1',
 
-   newTitulo:'',
-   newDescripcion:'',
-   newFechapublica:'',
-   newEstado:'1',
+   newGrado:'',
+   newAbreviatura:'',
+   newEstado:'',
    newBorrado:'0',
-   imagen : null,
-   escuela_id: '0',
-
+  
 
 
 },
 created:function () {
-   this.getBanner(this.thispage);
+   this.getGrados(this.thispage);
 },
 mounted: function () {
    this.divloader0=false;
@@ -115,19 +112,14 @@ computed:{
 },
 
 methods: {
-    getImg(banner){
-        var img = "{{ asset('/') }}img/bannersEscuelas/"+ banner.imagen;
-        return img;
-    },
-   getBanner: function (page) {
+    getGrados: function (page) {
        var busca=this.buscar;
-       var url = 'bannerescuela?page='+page+'&busca='+busca;
-        
+       var url = 'gradoacademico?page='+page+'&busca='+busca;
+
        axios.get(url).then(response=>{
-            this.bannersescuelas= response.data.bannersescuelas.data;
+            this.gradoacademicos= response.data.gradoacademicos.data;
             this.pagination= response.data.pagination;
-            this.escuelas = response.data.escuelas;
-           if(this.bannersescuelas.length==0 && this.thispage!='1'){
+           if(this.gradoacademicos.length == 0 && this.thispage != '1'){
                var a = parseInt(this.thispage) ;
                a--;
                this.thispage=a.toString();
@@ -137,11 +129,11 @@ methods: {
    },
    changePage:function (page) {
        this.pagination.current_page=page;
-       this.getBanner(page);
+       this.getGrados(page);
        this.thispage=page;
    },
    buscarBtn: function () {
-       this.getBanner();
+       this.getGrados();
        this.thispage='1';
    },
    nuevo:function () {
@@ -158,37 +150,18 @@ methods: {
        this.cancelFormNuevo();
    },
    cancelFormNuevo: function () {
-       $('#txttitulo').focus();
+       $('#txtgrado').focus();
 
-        this.newTitulo = '';
-        this.newDescripcion = '';
-        this.newFechapublica = '';
+        this.newGrado = '';
+        this.abreviatura = '';
         this.newEstado = '1';
-        this.imagen = null;
+        this.newBorrado = '0';
 
        $(".form-control").css("border","1px solid #d2d6de");
    },
-   getImage(event){
-        if (!event.target.files.length)
-        {
-            this.imagen=null;
-        }
-        else{
-            this.imagen = event.target.files[0];
-        }
-    },
-    seltipo: function () {
-            if (this.escuela_id == 3) {
-            $('#cbescuela').val('0').trigger('change');
-            this.$nextTick(function () {
-            $('#cbescuela').val('0').trigger('change');
-            })
-            }
-            $('#txtnom').focus();
-            },
     create:function () { 
 
-       var url='bannerescuela';
+       var url='gradoacademico';
        $("#btnGuardar").attr('disabled', true);
        $("#btnCancel").attr('disabled', true);
        $("#btnClose").attr('disabled', true);
@@ -197,25 +170,21 @@ methods: {
 
        var data = new  FormData();
 
-            data.append('titulo', this.newTitulo);
-            data.append('descripcion', this.newDescripcion);
-            data.append('imagen', this.imagen);
+            data.append('grado', this.newGrado);
+            data.append('abreviatura', this.newAbreviatura);
             data.append('activo', this.newEstado);
-            var newEscuela = $("#cbescuela").val();
-            data.append('escuela_id', newEscuela);
             data.append('borrado', this.newBorrado);
             
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+            
             axios.post(url,data,config).then(response=>{
-
                 $("#btnGuardar").removeAttr("disabled");
                 $("#btnCancel").removeAttr("disabled");
                 $("#btnClose").removeAttr("disabled");
                 this.divloaderNuevo=false;
                 
-                
                 if(String(response.data.result)=='1'){
-                    this.getBanner(this.thispage);
+                    this.getGrados(this.thispage);
                     this.errors=[];
                     this.cerrarFormNuevo();
                     toastr.success(response.data.msj);
@@ -229,11 +198,10 @@ methods: {
                 //this.errors=error.response.data
             })
    },
-   borrarbanner:function (banner) {
-    
+   borrargrados:function (gradoacademicos) {
         swal.fire({
              title: '¿Estás seguro?',
-             text: "¿Desea eliminar el Banner Seleccionado? -- Nota: este proceso no se podrá revertir.",
+             text: "¿Desea eliminar el grado academico Seleccionado? -- Nota: este proceso no se podrá revertir.",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -243,11 +211,11 @@ methods: {
 
             if (result.value) {
 
-                var url = 'bannerescuela/'+banner.id;
+                var url = 'gradoacademico/'+gradoacademicos.id;
                 axios.delete(url).then(response=>{//eliminamos
 
                 if(response.data.result=='1'){
-                    app.getBanner(app.thispage);//listamos
+                    app.getGrados(app.thispage);//listamos
                     toastr.success(response.data.msj);//mostramos mensaje
                 }else{
                     // $('#'+response.data.selector).focus();
@@ -257,43 +225,29 @@ methods: {
                 }
 
                    
-               }).catch(swal.noop);  
+               }).catch(swal.noop);     
    },
 
-   editbanner:function (banner) {
-
-        this.fillBanner.id=banner.id;
-        this.fillBanner.titulo=banner.titulo;
-        this.fillBanner.descripcion=banner.descripcion;            
-        this.fillBanner.imagen=banner.imagen;
-        this.fillBanner.estado=banner.activo;
-        this.fillBanner.escuela_id=banner.idescu;
-        
-        this.imagen=null;
-        console.log();
+   editgrados:function (gradoacademicos) {
+        this.fillGrados.id=gradoacademicos.id;
+        this.fillGrados.grado=gradoacademicos.grado;           
+        this.fillGrados.abreviatura=gradoacademicos.abreviatura;
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
-                $("#txttituloE").focus();
+                $("#txtgrado").focus();
         })
             
    },
-   updateBanner:function (id) {
-
+   updategrado:function (id) {
         var data = new FormData();
-
-        data.append('idBanner', this.fillBanner.id);
-        data.append('editTitulo', this.fillBanner.titulo);
-        data.append('editDescripcion', this.fillBanner.descripcion);
-        data.append('editEstado', this.fillBanner.estado);
-        data.append('imagen', this.imagen);
-        data.append('oldImagen', this.fillBanner.imagen);
-       var newEscuela = $("#cbescuela").val();
-            data.append('escuela_id', newEscuela);
+        data.append('id', this.fillGrados.id);
+        data.append('grado', this.fillGrados.grado);
+        data.append('abreviatura', this.fillGrados.abreviatura);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
         
-        var url = "bannerescuela/" + id;
+        var url = "gradoacademico/" + id;
 
         $("#btnSaveE").attr('disabled', true);
         $("#btnCloseE").attr('disabled', true);
@@ -306,8 +260,8 @@ methods: {
            this.divloaderEdit=false;
            
            if(response.data.result=='1'){   
-           this.getBanner(this.thispage);
-           this.fillLocal={'id':'', 'titulo':'', 'descripcion':'','imagen':'','estado':''};
+           this.getGrados(this.thispage);
+           this.fillLocal={'id':'', 'grado':'','abreviatura':''};
            this.errors=[];
            $("#modalEditar").modal('hide');
            toastr.success(response.data.msj);
@@ -321,10 +275,11 @@ methods: {
            this.errors=error.response.data
        })
     },
-    bajabanner:function (banner) {
+    bajagrados:function (gradoacademicos) {
+
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea desactivar el Banner seleccionado",
+             text: "Desea desactivar el grado academico",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -334,10 +289,10 @@ methods: {
 
             if (result.value) {
 
-                var url = 'bannerescuela/altabaja/'+banner.id+'/0';
+                var url = 'gradoacademico/altabaja/'+gradoacademicos.id+'/0';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
-                           app.getBanner(app.thispage);//listamos
+                           app.getGrados(app.thispage);//listamos
                            toastr.success(response.data.msj);//mostramos mensaje
                        }else{
                           // $('#'+response.data.selector).focus();
@@ -348,10 +303,11 @@ methods: {
                }).catch(swal.noop);  
 
    },
-   altabanner:function (banner) {
+   altagrados:function (gradoacademicos) {
+
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea activar el Banner seleccionado",
+             text: "Desea activar el grado academico seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -361,10 +317,11 @@ methods: {
 
             if (result.value) {
 
-                var url = 'bannerescuela/altabaja/'+banner.id+'/1';
+                var url = 'gradoacademico/altabaja/'+gradoacademicos.id+'/1';
                        axios.get(url).then(response=>{//eliminamos
+
                        if(response.data.result=='1'){
-                           app.getBanner(app.thispage);//listamos
+                           app.getGrados(app.thispage);//listamos
                            toastr.success(response.data.msj);//mostramos mensaje
                        }else{
                           // $('#'+response.data.selector).focus();
@@ -379,4 +336,4 @@ methods: {
    },
 }
 });
-</script>
+</script><?php /**PATH C:\Users\USUARIO\Desktop\webFacultades\resources\views/gradoacademicos/vue.blade.php ENDPATH**/ ?>

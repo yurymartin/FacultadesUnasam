@@ -5,9 +5,11 @@
             <div class="col-md-3" id="col1">
                 <div class="footer-widget">
                     <h4 class="footer-widget-title">Contáctenos</h4>
-                    <p>Av. Centenario Nro. 200</p>
-                    <p>Tlf: 043-640020 - Anexo 1402</p>
-                    <p>RUC: 20166550239</p>
+                    <ul class="list-links">
+                        <li><a href="#">Av. Centenario Nro. 200</a></li>
+                        <li><a href="#">Tlf: 043-640020 - Anexo 1402</a></li>
+                        <li><a href="#">RUC: 20166550239</a></li>
+                    </ul>
                 </div>
             </div>
             <div class="col-md-2" id="col2">

@@ -44,10 +44,10 @@ data:{
 
    divprincipal:false,
 
-   banners: [],
+   bannersescuelas: [],
    errors:[],
 
-   fillBanner:{'id':'', 'titulo':'', 'descripcion':'','imagen':'','fechapublica':'','estado':''},
+   fillBanner:{'id':'', 'titulo':'', 'descripcion':'','imagen':'','fechapublica':'','estado':'','escuela_id':''},
 
    pagination: {
    'total': 0,
@@ -67,8 +67,11 @@ data:{
 
    newTitulo:'',
    newDescripcion:'',
+   newFechapublica:'',
    newEstado:'1',
+   newBorrado:'0',
    imagen : null,
+   escuela_id: '0',
 
 
 
@@ -112,20 +115,19 @@ computed:{
 },
 
 methods: {
+    getImg(banner){
+        var img = "<?php echo e(asset('/')); ?>img/bannersEscuelas/"+ banner.imagen;
+        return img;
+    },
    getBanner: function (page) {
        var busca=this.buscar;
-       var url = 'banner?page='+page+'&busca='+busca;
+       var url = 'bannerescuela?page='+page+'&busca='+busca;
         
-
        axios.get(url).then(response=>{
-            this.banners= response.data.banners.data;
+            this.bannersescuelas= response.data.bannersescuelas.data;
             this.pagination= response.data.pagination;
-
-            this.$nextTick(function () {
-                    this.recorrerBanner();
-            })
-
-           if(this.banners.length==0 && this.thispage!='1'){
+            this.escuelas = response.data.escuelas;
+           if(this.bannersescuelas.length==0 && this.thispage!='1'){
                var a = parseInt(this.thispage) ;
                a--;
                this.thispage=a.toString();
@@ -160,6 +162,7 @@ methods: {
 
         this.newTitulo = '';
         this.newDescripcion = '';
+        this.newFechapublica = '';
         this.newEstado = '1';
         this.imagen = null;
 
@@ -174,17 +177,18 @@ methods: {
             this.imagen = event.target.files[0];
         }
     },
-    recorrerBanner:function () { 
-            $.each($(".txtimg"), function( index, value ) {
-             //  var valor=$(this).attr("id");
-             var idusar=$(this).val();
-
-             $("#ImgPerfilNuevoE"+idusar).attr("src","<?php echo e(asset('/img/banners/')); ?>"+"/"+$("#txt"+idusar).val());
-         });
-    },
+    seltipo: function () {
+            if (this.escuela_id == 3) {
+            $('#cbescuela').val('0').trigger('change');
+            this.$nextTick(function () {
+            $('#cbescuela').val('0').trigger('change');
+            })
+            }
+            $('#txtnom').focus();
+            },
     create:function () { 
 
-       var url='banner';
+       var url='bannerescuela';
        $("#btnGuardar").attr('disabled', true);
        $("#btnCancel").attr('disabled', true);
        $("#btnClose").attr('disabled', true);
@@ -196,19 +200,20 @@ methods: {
             data.append('titulo', this.newTitulo);
             data.append('descripcion', this.newDescripcion);
             data.append('imagen', this.imagen);
-            data.append('estado', this.newEstado);
-
+            data.append('activo', this.newEstado);
+            var newEscuela = $("#cbescuela").val();
+            data.append('escuela_id', newEscuela);
+            data.append('borrado', this.newBorrado);
             
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-
             axios.post(url,data,config).then(response=>{
 
                 $("#btnGuardar").removeAttr("disabled");
                 $("#btnCancel").removeAttr("disabled");
                 $("#btnClose").removeAttr("disabled");
                 this.divloaderNuevo=false;
-
-        
+                
+                
                 if(String(response.data.result)=='1'){
                     this.getBanner(this.thispage);
                     this.errors=[];
@@ -238,7 +243,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'banner/'+banner.id;
+                var url = 'bannerescuela/'+banner.id;
                 axios.delete(url).then(response=>{//eliminamos
 
                 if(response.data.result=='1'){
@@ -258,12 +263,14 @@ methods: {
    editbanner:function (banner) {
 
         this.fillBanner.id=banner.id;
-        this.fillBanner.titulo=banner.tituloBanner;
-        this.fillBanner.descripcion=banner.descrBanner;            
-        this.fillBanner.imagen=banner.ruta;
+        this.fillBanner.titulo=banner.titulo;
+        this.fillBanner.descripcion=banner.descripcion;            
+        this.fillBanner.imagen=banner.imagen;
         this.fillBanner.estado=banner.activo;
+        this.fillBanner.escuela_id=banner.idescu;
+        
         this.imagen=null;
-
+        console.log();
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
                 $("#txttituloE").focus();
@@ -280,11 +287,13 @@ methods: {
         data.append('editEstado', this.fillBanner.estado);
         data.append('imagen', this.imagen);
         data.append('oldImagen', this.fillBanner.imagen);
+       var newEscuela = $("#cbescuela").val();
+            data.append('escuela_id', newEscuela);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
         
-        var url = "banner/" + id;
+        var url = "bannerescuela/" + id;
 
         $("#btnSaveE").attr('disabled', true);
         $("#btnCloseE").attr('disabled', true);
@@ -313,7 +322,6 @@ methods: {
        })
     },
     bajabanner:function (banner) {
-
     swal.fire({
              title: '¿Estás seguro?',
              text: "Desea desactivar el Banner seleccionado",
@@ -326,7 +334,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'banner/altabaja/'+banner.id+'/0';
+                var url = 'bannerescuela/altabaja/'+banner.id+'/0';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
                            app.getBanner(app.thispage);//listamos
@@ -341,7 +349,6 @@ methods: {
 
    },
    altabanner:function (banner) {
-
     swal.fire({
              title: '¿Estás seguro?',
              text: "Desea activar el Banner seleccionado",
@@ -354,9 +361,8 @@ methods: {
 
             if (result.value) {
 
-                var url = 'banner/altabaja/'+banner.id+'/1';
+                var url = 'bannerescuela/altabaja/'+banner.id+'/1';
                        axios.get(url).then(response=>{//eliminamos
-
                        if(response.data.result=='1'){
                            app.getBanner(app.thispage);//listamos
                            toastr.success(response.data.msj);//mostramos mensaje

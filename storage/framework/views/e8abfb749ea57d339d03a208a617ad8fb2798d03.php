@@ -71,17 +71,25 @@
         </ul> <!-- /.social_icons -->
     </div> <!-- /.responsive_menu -->
 </div> <!-- /responsive_navigation -->
+
 <header class="site-header">
     <div class="container">
         <div class="row" style="padding-top: 0px;padding-bottom: 0px">
             <div class="col-md-4 header-left" id="header-left">
                 <p><i class="fa fa-phone"></i>043-640020 - Anexo 1402</p>
                 <p><i class="fa fa-envelope"></i> <a href="mailto:email@universe.com">email@universe.com</a></p>
+                <p>
+                    <a href="https://www.facebook.com/fcsec.edu.pe/ " data-toggle="tooltip" title="Facebook"><i
+                            class="fa fa-facebook"></i></a>
+                    <a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a>
+                    <a href="#" data-toggle="tooltip" title="Google+"><i class="fa fa-google-plus"></i></a>
+
+                </p>
             </div> <!-- /.header-left -->
             <div class="col-md-4" id="logo">
-                <div class="logo">
+                <div class="logo" style="text-align: center">
                     <a href="index.html" title="Universe" rel="home">
-                        <img src="images/FC.jpg" alt="Universe" width="120px" height="100px">
+                        <img src="images/FC.jpg" alt="Universe" style="max-height: 100px;">
                     </a>
                 </div> <!-- /.logo -->
             </div> <!-- /.col-md-4 -->
@@ -92,13 +100,13 @@
                     <li><a href="#">Acceso</a></li>
                 </ul>
                 <div>
-                    <a href="https://www.unasam.edu.pe"><img src="images/logofinal.jpg" alt="UNASAM"
+                    <a href="https://www.unasam.edu.pe"><img src="images/logolicenciada.png" alt="UNASAM"
                             style="width:58%"></a>
                 </div>
             </div> <!-- /.header-right -->
         </div>
     </div> <!-- /.container -->
-    <div class="nav-bar-main" role="navigation">
+    <div class="nav-bar-main" role="navigation" style="text-transform: uppercase;">
         <div class="container">
             <nav class="main-navigation clearfix visible-md visible-lg" role="navigation">
                 <ul class="main-menu sf-menu">
@@ -156,13 +164,6 @@
                     </li>
                     <li><a href="contacto">Contactenos</a></li>
                 </ul> <!-- /.main-menu -->
-
-                <ul class="social-icons pull-right">
-                    <li><a href="https://www.facebook.com/fcsec.edu.pe/ " data-toggle="tooltip" title="Facebook"><i
-                                class="fa fa-facebook"></i></a></li>
-                    <li><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-                    <li><a href="#" data-toggle="tooltip" title="Google+"><i class="fa fa-google-plus"></i></a></li>
-                </ul> <!-- /.social-icons -->
             </nav> <!-- /.main-navigation -->
         </div> <!-- /.container -->
     </div> <!-- /.nav-bar-main -->

@@ -1,7 +1,7 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Gestión de Banner</h3>
-    <a style="float: right;" type="button" class="btn btn-default" href="{{URL::to('home')}}"><i class="fa fa-reply-all"
+    <a style="float: right;" type="button" class="btn btn-default" href="<?php echo e(URL::to('home')); ?>"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
   </div>
@@ -45,7 +45,7 @@
           </div>
         </div>
       </div>
-
+      
 
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
@@ -56,19 +56,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12" style="padding-top: 15px;">
-        <div class="form-group">
-          <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>
-          <div class="col-sm-8">
-            <select name="cbescuela" id="cbescuela" class="form-control" v-model="escuela_id" @change="seltipo">
-              <option disabled value="0">Seleccione una Escula</option>
-              <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">
-                @{{escuela.nombre}}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
+      
 
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
@@ -140,24 +128,22 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Titulo</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Descripción</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Escuela</th>
-          {{-- <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha</th> --}}
+          <th style="border:1px solid #ddd;padding: 5px; width: 25%;">Titulo</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 35%;">Descripción</th>
+          
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Banner</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 7%;">Fecha</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
-        <tr v-for="banner, key in bannersescuelas">
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{key+pagination.from}}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ banner.titulo }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ banner.descripcion }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ banner.nombre }}</td>
+        <tr v-for="banner, key in banners">
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{key+pagination.from}}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ banner.titulo }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ banner.decripcion }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: center;vertical-align: middle;">
-            <img :src="getImg(banner)" alt="" class="img img-responsive" width="150px" height="50px">
+              <img :src="getImg(banner)" alt="" class="img img-responsive" width="150px" height="50px">
           </td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ banner.fechapublica }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ banner.fechapublica }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
               <span class="label label-success" v-if="banner.activo=='1'">Activo</span>
@@ -190,7 +176,7 @@
   <!-- /.box-body -->
   <div style="padding: 15px;">
     <div>
-      <h5>Registros por Página: @{{ pagination.per_page }}</h5>
+      <h5>Registros por Página: {{ pagination.per_page }}</h5>
     </div>
     <nav aria-label="Page navigation example">
       <ul class="pagination">
@@ -207,7 +193,7 @@
         </li>
         <li class="page-item" v-for="page in pagesNumber" v-bind:class="[page=== isActived ? 'active' : '']">
           <a class="page-link" href="#" @click.prevent="changePage(page)">
-            <span>@{{ page }}</span>
+            <span>{{ page }}</span>
           </a>
         </li>
         <li class="page-item" v-if="pagination.current_page< pagination.last_page">
@@ -223,7 +209,7 @@
       </ul>
     </nav>
     <div>
-      <h5>Registros Totales: @{{ pagination.total }}</h5>
+      <h5>Registros Totales: {{ pagination.total }}</h5>
     </div>
   </div>
 </div>
@@ -276,20 +262,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-12" style="padding-top: 15px;">
-                  <div class="form-group">
-                    <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>
-                    <div class="col-sm-8">
-                      <select name="cbescuela" id="cbescuela" class="form-control" v-model="fillBanner.escuela_id"
-                        @change="seltipo">
-                        <option disabled value="0">Seleccione una Escula</option>
-                        <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">
-                          @{{escuela.nombre}}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
+
                 <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
                     <label for="cbuestadoE" class="col-sm-2 control-label">Estado:*</label>
@@ -333,4 +306,4 @@
       </div>
     </div>
   </div>
-</form>
+</form><?php /**PATH C:\Users\USUARIO\Desktop\webFacultades\resources\views/banners/principal.blade.php ENDPATH**/ ?>
