@@ -118,6 +118,21 @@ return [
             'root' => public_path('img/eventos'), // miproyecto.com/public/defaults/
             'visibility' => 'public',
          ],
+         'personas' => [
+            'driver' => 'local',
+            'root' => public_path('img/personas'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
+         'DescripcionF' => [
+            'driver' => 'local',
+            'root' => public_path('img/descripcionFacultades'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
+         'DescripcionE' => [
+            'driver' => 'local',
+            'root' => public_path('img/descripcionEscuelas'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
 
     ],
 

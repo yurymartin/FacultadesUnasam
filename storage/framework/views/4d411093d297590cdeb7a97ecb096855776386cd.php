@@ -139,7 +139,7 @@
         <tr v-for="banner, key in banners">
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{key+pagination.from}}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ banner.titulo }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ banner.decripcion }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ banner.descripcion }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: center;vertical-align: middle;">
               <img :src="getImg(banner)" alt="" class="img img-responsive" width="150px" height="50px">
           </td>

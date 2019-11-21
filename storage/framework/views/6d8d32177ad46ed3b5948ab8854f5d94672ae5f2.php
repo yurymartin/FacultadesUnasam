@@ -45,21 +45,11 @@
     divprincipal: false,
 
     docentes: [],
+    persona:[],
     errors: [],
 
-    fillDocente: {
-    'id': '',
-    'dni': '',
-    'nombres': '',
-    'apellidos': '',
-    'foto': '',
-    'curricula': '',
-    'tituloprofe': '',
-    'fechaingreso': '',
-    'estado': '',
-    'gradoacademico_id': '',
-    'categoriadocen_id': ''
-    },
+    fillPersona:{'idper':'', 'dni':'', 'nombres':'', 'apellidos':'', 'imagen':'', 'genero':''},
+    fillDocente:{'iddoc':'','curricula':'','tituloprofe': '','fechaingreso': '','estado': '','gradoacademico_id': '','categoriadocen_id': '','persona_id':''},
 
     pagination: {
     'total': 0,
@@ -80,49 +70,54 @@
     newDni: '',
     newNombres: '',
     newApellidos: '',
-    newGenero: '1',
-    newCurricula: '',
+    imagen: null,
+    newGenero: '',
+
+    newCurricula:'',
     newTitulo: '',
     newFecha: '',
     newEstado: '1',
-    newFoto: null,
+    newBorrado:'0',
     gradoacademico_id: '0',
     categoriadocente_id: '0',
+    persona_id: '0',
 
 
-    },
-    created: function () {
+},
+created: function () {
     this.getDocentes(this.thispage);
-    },
-    mounted: function () {
+},
+mounted: function () {
     this.divloader0 = false;
     this.divprincipal = true;
     $("#divtitulo").show('slow');
 
-    },
-    computed: {
+},
+computed: {
     isActived: function () {
-    return this.pagination.current_page;
+        return this.pagination.current_page;
     },
     pagesNumber: function () {
-    if (!this.pagination.to) {
-    return [];
-    }
+        if (!this.pagination.to) {
+            return [];
+        }
 
-    var from = this.pagination.current_page - this.offset
-    var from2 = this.pagination.current_page - this.offset
-    if (from < 1) { 
-        from=1; 
-    } var to=from2 + (this.offset * 2); 
-    if (to>= this.pagination.last_page) {
-        to = this.pagination.last_page;
+        var from = this.pagination.current_page - this.offset
+        var from2 = this.pagination.current_page - this.offset
+        if (from < 1) { 
+            from=1; 
+        } 
+        var to=from2 + (this.offset * 2); 
+        if (to>= this.pagination.last_page) {
+            to = this.pagination.last_page;
         }
 
         var pagesArray = [];
         while (from <= to) { 
             pagesArray.push(from); 
             from++; 
-        } return pagesArray; 
+        } 
+        return pagesArray; 
     } 
 }, 
 methods: { 
@@ -138,39 +133,38 @@ methods: {
             this.pagination = response.data.pagination;
             this.categoriadocentes = response.data.categoriadocentes;
             this.gradoacademicos = response.data.gradoacademicos;
-            if (this.docentes.length == 0 && this.thispage != '1') {
+            this.personas= response.data.personas;
+        if (this.docentes.length == 0 && this.thispage != '1') {
             var a = parseInt(this.thispage);
             a--;
             this.thispage = a.toString();
             this.changePage(this.thispage);
-            }
-            })
-            },
-            changePage: function (page) {
+        }
+        })
+        },
+    changePage: function (page) {
             this.pagination.current_page = page;
             this.getDocentes(page);
             this.thispage = page;
-            },
-            buscarBtn: function () {
+        },
+    buscarBtn: function () {
             this.getDocentes();
             this.thispage = '1';
-            },
-            nuevo: function () {
+        },
+    nuevo: function () {
             this.divNuevo = true;
             //$("#txtespecialidad").focus();
             //$('#txtespecialidad').focus();
             this.$nextTick(function () {
             this.cancelFormNuevo();
-            })
-
-            },
-            cerrarFormNuevo: function () {
+        })
+        },
+    cerrarFormNuevo: function () {
             this.divNuevo = false;
             this.cancelFormNuevo();
-            },
-            cancelFormNuevo: function () {
-            $('#txtNombre').focus();
-
+        },
+    cancelFormNuevo: function () {
+            $('#Nombress').focus();
             this.newDni = '';
             this.newNombres = '';
             this.newApellidos = '';
@@ -178,120 +172,112 @@ methods: {
             this.newFechaingreso = '';
             this.newEstado = '1';
             this.newGenero = '1';
-            this.newFoto = null;
+            this.imagen = null;
 
             $(".form-control").css("border", "1px solid #d2d6de");
-            },
-            getImage(event) {
+        },
+    getImage(event) {
             if (!event.target.files.length) {
-            this.newFoto = null;
-            } else {
-            this.newFoto = event.target.files[0];
+                this.imagen = null;
+            }else {
+                this.imagen = event.target.files[0];
             }
             },
-            seltipo: function () {
+    seltipo: function () {
             if (this.departamentoacad_id == 3) {
-            $('#cbcategoria').val('0').trigger('change');
-            this.$nextTick(function () {
-            $('#cbcategoria').val('0').trigger('change');
+                $('#cbcategoria').val('0').trigger('change');
+                this.$nextTick(function () {
+                $('#cbcategoria').val('0').trigger('change');
             })
             }
-            $('#txtnom').focus();
+                $('#txtnom').focus();
             },
 
-            seltipo1: function () {
+    seltipo1: function () {
             if (this.departamentoacad_id == 3) {
-            $('#cbGrado').val('0').trigger('change');
-            this.$nextTick(function () {
-            $('#cbGrado').val('0').trigger('change');
+                $('#cbGrado').val('0').trigger('change');
+                this.$nextTick(function () {
+                $('#cbGrado').val('0').trigger('change');
             })
             }
-            $('#txtnom').focus();
+                $('#txtnom').focus();
             },
 
-            recorrerBanner: function () {
+    recorrerBanner: function () {
             $.each($(".txtimg"), function (index, value) {
             // var valor=$(this).attr("id");
             var idusar = $(this).val();
-
-            $("#ImgPerfilNuevoE" + idusar).attr("src", "<?php echo e(asset('/img/banners/')); ?>" + "/" + $("#txt" + idusar).val());
+            $("#ImgPerfilNuevoE" + idusar).attr("src", "<?php echo e(asset('/img/personas/')); ?>" + "/" + $("#txt" + idusar).val());
             });
             },
-            create: function () {
-
-            var url = 'docente';
-            $("#btnGuardar").attr('disabled', true);
-            $("#btnCancel").attr('disabled', true);
-            $("#btnClose").attr('disabled', true);
-            this.divloaderNuevo = true;
-            $(".form-control").css("border", "1px solid #d2d6de");
-
+    create: function () {
+        var url = 'docente';
+        $("#btnGuardar").attr('disabled', true);
+        $("#btnCancel").attr('disabled', true);
+        $("#btnClose").attr('disabled', true);
+        this.divloaderNuevo = true;
+        $(".form-control").css("border", "1px solid #d2d6de");
             var data = new FormData();
+                data.append('dni', this.newDni);
+                data.append('nombres', this.newNombres);
+                data.append('apellidos', this.newApellidos);
+                data.append('imagen', this.imagen);
+                data.append('genero', this.newGenero);
 
-            data.append('nombres', this.newDescripcion);
-            data.append('nombres', this.newDescripcion);
-            data.append('apellidos', this.imagen);
-            data.append('foto', this.imagen);
-            data.append('genero', this.newGenero);
-            data.append('curricula', this.newEstado);
-            data.append('tituloprofe', this.newEstado);
-            data.append('fechaingreso', this.newEstado);
-            data.append('activo', this.newEstado);
-
-
-            const config = {
-            headers: {
-            'Content-Type': 'multipart/form-data'
-            }
-            };
-
-            axios.post(url, data, config).then(response => {
+                data.append('curricula', '');
+                data.append('tituloprofe', this.newTitulo);
+                data.append('fechaingreso', this.newFecha);
+                data.append('estado', this.newEstado);
+                data.append('borrado', this.newBorrado);
+                data.append('gradoacademico_id', this.gradoacademico_id);
+                data.append('categoriadocente_id', this.categoriadocente_id);
+                
+            const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+            axios.post(url,data,config).then(response=>{
 
             $("#btnGuardar").removeAttr("disabled");
             $("#btnCancel").removeAttr("disabled");
             $("#btnClose").removeAttr("disabled");
             this.divloaderNuevo = false;
 
-
             if (String(response.data.result) == '1') {
-            this.getBanner(this.thispage);
-            this.errors = [];
-            this.cerrarFormNuevo();
-            toastr.success(response.data.msj);
+                this.getDocentes(this.thispage);
+                this.errors = [];
+                this.cerrarFormNuevo();
+                toastr.success(response.data.msj);
             } else {
-            $('#' + response.data.sector).focus();
-            $('#' + response.data.selector).css("border", "1px solid red");
-            toastr.error(response.data.msj);
+                $('#' + response.data.sector).focus();
+                $('#' + response.data.selector).css("border", "1px solid red");
+                toastr.error(response.data.msj);
             }
-
             }).catch(error => {
-            //this.errors=error.response.data
+                //this.errors=error.response.data
             })
             },
-            borrardocente: function (docentes) {
+        borrardocente: function (docentes) {
 
             swal.fire({
-            title: '¿Estás seguro?',
-            text: "¿Desea eliminar el docente Seleccionado? -- Nota: este proceso no se podrá revertir.",
-            type: 'info',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, eliminar'
+                title: '¿Estás seguro?',
+                text: "¿Desea eliminar el docente Seleccionado? -- Nota: este proceso no se podrá revertir.",
+                type: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, eliminar'
             }).then((result) => {
 
-            if (result.value) {
+                if (result.value) {
 
-            var url = 'docente/' + docentes.id;
-            axios.delete(url).then(response => { //eliminamos
+                    var url = 'docente/' + docentes.id;
+                     axios.delete(url).then(response => { //eliminamos
 
-            if (response.data.result == '1') {
-            app.getDocentes(app.thispage); //listamos
-            toastr.success(response.data.msj); //mostramos mensaje
-            } else {
-            // $('#'+response.data.selector).focus();
-            toastr.error(response.data.msj);
-            }
+                if (response.data.result == '1') {
+                    app.getDocentes(app.thispage); //listamos
+                    toastr.success(response.data.msj); //mostramos mensaje
+                 } else {
+                    // $('#'+response.data.selector).focus();
+                    toastr.error(response.data.msj);
+                }
             })
             }
 
@@ -299,76 +285,89 @@ methods: {
             }).catch(swal.noop);
             },
 
-            editbanner: function (docente) {
+    editbanner: function (docente) {
+        this.fillPersona.id = docente.idper;
+        this.fillPersona.dni = docente.dni;
+        this.fillPersona.nombres = docente.nombres;
+        this.fillPersona.apellidos = docente.apellidos;
+        this.fillPersona.genero = docente.genero;
+        this.imagen = null;
+        
+        this.fillDocente.id = docente.iddoc;
+        this.fillDocente.categoriadocen_id = docente.idcat;
+        this.fillDocente.gradoacademico_id = docente.idgrado;
+        this.fillDocente.curricula = '';
+        this.fillDocente.tituloprofe = docente.tituloprofe;
+        this.fillDocente.fechaingreso = docente.fechaingreso;
+        this.fillDocente.estado = docente.activo;
 
-            this.fillDocente.id = docente.id;
-            this.fillDocente.dni = docente.dni;
-            this.fillDocente.nombres = docente.nombres;
-            this.fillDocente.apellidos = docente.apellidos;
-            this.fillDocente.estado = docente.activo;
-            this.imagen = null;
-
-            $("#modalEditar").modal('show');
+        console.log(docente.idper+'-'+docente.iddoc);
+        
+        $("#modalEditar").modal('show');
             this.$nextTick(function () {
             $("#txttituloE").focus();
+        })
+    },
+    cerrarFormE: function(){
+
+            this.divEditUsuario=false;
+
+            this.$nextTick(function () {
+                this.fillPersona={'id':'', 'dni':'', 'nombres':'', 'apellidos':'', 'imagen':'', 'genero':''};
+                this.fillDocente={'id':'','curricula':'','tituloprofe': '','fechaingreso': '','estado': '','gradoacademico_id': '','categoriadocen_id': '','persona_id':''};
             })
 
-            },
-            updateBanner: function (id) {
+        },
+    updateBanner: function (idper,iddoc) {
+        var data = new FormData();
 
-            var data = new FormData();
+        data.append('idPersona', this.fillPersona.id);
+        data.append('idDocente', this.fillDocente.id);
 
-            data.append('id', this.fillDocente.id);
-            data.append('nombres', this.fillDocente.nombres);
-            data.append('apellidos', this.fillDocente.apellidos);
-            data.append('editEstado', this.fillDocente.estado);
-            data.append('imagen', this.imagen);
-            data.append('oldImagen', this.fillDocente.imagen);
-            data.append('_method', 'PUT');
+        data.append('id', this.fillPersona.id);
+        data.append('dni', this.fillPersona.dni);
+        data.append('nombres', this.fillPersona.nombres);
+        data.append('apellidos', this.fillPersona.apellidos);
+        data.append('oldImagen', this.fillDocente.imagen);
+        data.append('genero', this.fillPersona.genero);
 
-            const config = {
-            headers: {
-            'Content-Type': 'multipart/form-data'
-            }
-            };
+        data.append('curricul', '');        
+        data.append('tituloprofe', this.fillDocente.tituloprofe);
+        data.append('fechaingreso', this.fillDocente.fechaingreso);
+        data.append('estado', this.fillDocente.estado);   
+        data.append('gradoacademico_id', this.fillDocente.gradoacademico_id);   
+        data.append('categoriadocente_id', this.fillDocente.categoriadocen_id);   
 
-            var url = "docente/" + id;
+        data.append('_method', 'PUT');
 
+        const config = {headers: {'Content-Type': 'multipart/form-data'}};
+        var url = "docente/" + iddoc;
             $("#btnSaveE").attr('disabled', true);
             $("#btnCloseE").attr('disabled', true);
             this.divloaderEdit = true;
-
             axios.post(url, data, config).then(response => {
-
             $("#btnSaveE").removeAttr("disabled");
             $("#btnCancelE").removeAttr("disabled");
             this.divloaderEdit = false;
 
-            if (response.data.result == '1') {
+        if (response.data.result == '1') {
             this.getDocentes(this.thispage);
-            this.fillLocal = {
-            'id': '',
-            'titulo': '',
-            'descripcion': '',
-            'imagen': '',
-            'estado': ''
-            };
+            this.cerrarFormE();
             this.errors = [];
             $("#modalEditar").modal('hide');
             toastr.success(response.data.msj);
 
-            } else {
+        } else {
             $('#' + response.data.selector).focus();
             toastr.error(response.data.msj);
-            }
-
-            }).catch(error => {
+        }
+        }).catch(error => {
             this.errors = error.response.data
-            })
-            },
-            bajadocente: function (docentes) {
+        })
+    },
+bajadocente: function (docentes) {
 
-            swal.fire({
+        swal.fire({
             title: '¿Estás seguro?',
             text: "Desea desactivar el docente seleccionado",
             type: 'info',
@@ -376,54 +375,46 @@ methods: {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Si, Desactivar'
-            }).then((result) => {
-            if (result.value) {
+        }).then((result) => {
+        if (result.value) {
             var url = 'docente/altabaja/' + docentes.id + '/0';
             axios.get(url).then(response => { //eliminamos
-            if (response.data.result == '1') {
+        if (response.data.result == '1') {
             app.getDocentes(app.thispage); //listamos
             toastr.success(response.data.msj); //mostramos mensaje
-            } else {
+        } else {
             // $('#'+response.data.selector).focus();
             toastr.error(response.data.msj);
-            }
-            });
-            }
-            }).catch(swal.noop);
+        }
+    });
+}
+}).catch(swal.noop);
+},
 
-            },
-            altadocente: function (docentes) {
-
-            swal.fire({
-            title: '¿Estás seguro?',
-            text: "Desea activar el docente seleccionado",
-            type: 'info',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, Activar'
-            }).then((result) => {
-
-            if (result.value) {
-
-            var url = 'docente/altabaja/' + docentes.id + '/1';
-            axios.get(url).then(response => { //eliminamos
-
-            if (response.data.result == '1') {
-            app.getDocentes(app.thispage); //listamos
-            toastr.success(response.data.msj); //mostramos mensaje
-            } else {
-            // $('#'+response.data.selector).focus();
-            toastr.error(response.data.msj);
-            }
-            });
-            }
-
-
-            }).catch(swal.noop);
-
-            },
-            }
-            }); 
-            
-    </script><?php /**PATH C:\Users\yuri_\OneDrive\Desktop\webFacultades\resources\views/docentes/vue.blade.php ENDPATH**/ ?>
+altadocente: function (docentes) {
+    swal.fire({
+        title: '¿Estás seguro?',
+        text: "Desea activar el docente seleccionado",
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Activar'
+    }).then((result) => {
+    if (result.value) {
+        var url = 'docente/altabaja/' + docentes.id + '/1';
+        axios.get(url).then(response => { //eliminamos
+    if (response.data.result == '1') {
+        app.getDocentes(app.thispage); //listamos
+        toastr.success(response.data.msj); //mostramos mensaje
+    } else {
+        // $('#'+response.data.selector).focus();
+        toastr.error(response.data.msj);
+    }
+});
+}
+}).catch(swal.noop);
+},
+}
+}); 
+</script><?php /**PATH C:\Users\yuri_\OneDrive\Desktop\webFacultades\resources\views/docentes/vue.blade.php ENDPATH**/ ?>
