@@ -94,6 +94,12 @@ desired effect
 @elseif($modulo=="banners")
 @include('banners.vue')
 
+@elseif($modulo=="descripcionfacultades")
+@include('descripcionfacultades.vue')
+
+@elseif($modulo=="descripcionescuelas")
+@include('descripcionescuelas.vue')
+
 @endif
 
 <script type="text/javascript">

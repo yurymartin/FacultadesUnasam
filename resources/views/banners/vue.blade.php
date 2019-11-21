@@ -3,7 +3,7 @@
 el: '#app',
 data:{
        titulo:"Mantenimiento",
-       subtitulo: "Gestión de Banners",
+       subtitulo: "Gestión de Banners de Facultad",
        subtitulo2: "Principal",
 
    subtitle2:false,
@@ -194,30 +194,29 @@ methods: {
             data.append('activo', this.newEstado);
             data.append('borrado', this.newBorrado);
             
-            const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-            axios.post(url,data,config).then(response=>{
+        const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+        axios.post(url,data,config).then(response=>{
 
-                $("#btnGuardar").removeAttr("disabled");
-                $("#btnCancel").removeAttr("disabled");
-                $("#btnClose").removeAttr("disabled");
-                this.divloaderNuevo=false;
+        $("#btnGuardar").removeAttr("disabled");
+        $("#btnCancel").removeAttr("disabled");
+        $("#btnClose").removeAttr("disabled");
+        this.divloaderNuevo=false;
                 
                 
-                if(String(response.data.result)=='1'){
-                    this.getBanner(this.thispage);
-                    this.errors=[];
-                    this.cerrarFormNuevo();
-                    toastr.success(response.data.msj);
-                }else{
-                    $('#'+response.data.selector).focus();
-                    $('#'+response.data.selector).css( "border", "1px solid red" );
-                    toastr.error(response.data.msj);
-                }
-
-            }).catch(error=>{
+        if(String(response.data.result)=='1'){
+            this.getBanner(this.thispage);
+            this.errors=[];
+            this.cerrarFormNuevo();
+            toastr.success(response.data.msj);
+        }else{
+            $('#'+response.data.selector).focus();
+            $('#'+response.data.selector).css( "border", "1px solid red" );
+            toastr.error(response.data.msj);
+        }
+        }).catch(error=>{
                 //this.errors=error.response.data
-            })
-   },
+        })
+        },
    borrarbanner:function (banner) {
     
         swal.fire({
@@ -252,8 +251,8 @@ methods: {
    editbanner:function (banner) {
 
         this.fillBanner.id=banner.id;
-        this.fillBanner.titulo=banner.tituloBanner;
-        this.fillBanner.descripcion=banner.descrBanner;            
+        this.fillBanner.titulo=banner.titulo;
+        this.fillBanner.descripcion=banner.descripcion;            
         this.fillBanner.imagen=banner.imagen;
         this.fillBanner.estado=banner.activo;
         this.imagen=null;
@@ -268,10 +267,10 @@ methods: {
 
         var data = new FormData();
 
-        data.append('idBanner', this.fillBanner.id);
-        data.append('editTitulo', this.fillBanner.titulo);
-        data.append('editDescripcion', this.fillBanner.descripcion);
-        data.append('editEstado', this.fillBanner.estado);
+        data.append('id', this.fillBanner.id);
+        data.append('titulo', this.fillBanner.titulo);
+        data.append('descripcion', this.fillBanner.descripcion);
+        data.append('estado', this.fillBanner.estado);
         data.append('imagen', this.imagen);
         data.append('oldImagen', this.fillBanner.imagen);
         data.append('_method', 'PUT');

@@ -1,6 +1,5 @@
 <form method="post" v-on:submit.prevent="updateUsuario(fillPersona.id,filluser.id)">
   <div class="box-body" style="font-size: 14px;">
-
     <center>
       <h4>Datos Personales del Usuario</h4>
     </center>

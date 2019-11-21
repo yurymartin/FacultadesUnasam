@@ -18,6 +18,7 @@
   </div>
   <form v-on:submit.prevent="create">
     <div class="box-body">
+
       <div class="col-md-12">
         <div class="form-group">
           <label for="txttitulo" class="col-sm-2 control-label">Categoria*</label>
@@ -27,6 +28,7 @@
           </div>
         </div>
       </div>
+      
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
           <label for="cbuestado" class="col-sm-2 control-label">Estado:*</label>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\BannersFacultades;
 use Validator;
 use Auth;
@@ -38,7 +39,7 @@ class BannersController extends Controller
     {
 
         $buscar = $request->busca;
-        $banners = BannersFacultades::where('borrado', '0')
+        $banners = BannersFacultades::where('borrado','=','0')
             ->where(function ($query) use ($buscar) {
                 $query->where('titulo', 'like', '%' . $buscar . '%');
                 $query->orWhere('descripcion', 'like', '%' . $buscar . '%');
@@ -78,79 +79,72 @@ class BannersController extends Controller
      */
     public function store(Request $request)
     {
-        $titulo=$request->titulo;
-        $descripcion=$request->descripcion;
-        $img=$request->imagen;
-        $estado=$request->activo;
+        $titulo = $request->titulo;
+        $descripcion = $request->descripcion;
+        $img = $request->imagen;
+        $estado = $request->activo;
 
-        $result='1';
-        $msj='';
-        $selector='';
+        $result = '1';
+        $msj = '';
+        $selector = '';
 
-        $imagen="";
-        $segureImg=0;
+        $imagen = "";
+        $segureImg = 0;
 
-   
-        if ($img == 'null')
-        {
-            $result='0';
-            $msj='Debe de Ingresar una Imagen';
-            $selector='txttituloE';
 
-        }else{
+        if ($img == 'null') {
+            $result = '0';
+            $msj = 'Debe de Ingresar una Imagen';
+            $selector = 'txttituloE';
+        } else {
 
-        if ($request->hasFile('imagen')) {
+            if ($request->hasFile('imagen')) {
 
-            $aux=date('d-m-Y') . '-' . date('H-i-s');
-            $input  = array('image' => $img) ;
-            $reglas = array('image' => 'required|image|mimes:png,jpg,jpeg,gif,jpe,PNG,JPG,JPEG,GIF,JPE');
-            $validator = Validator::make($input, $reglas);
+                $aux = date('d-m-Y') . '-' . date('H-i-s');
+                $input  = array('image' => $img);
+                $reglas = array('image' => 'required|image|mimes:png,jpg,jpeg,gif,jpe,PNG,JPG,JPEG,GIF,JPE');
+                $validator = Validator::make($input, $reglas);
 
-            if ($validator->fails())
-            {
-                $segureImg=1;
-                $msj="El archivo ingresado como imagen no es una imagen válida, ingrese otro archivo o limpie el formulario";
-                $result='0';
-                $selector='archivo';
-            }
-            else{
-                $extension=$img->getClientOriginalExtension();
-                $nuevoNombre=$aux.".".$extension;
-                $subir = Storage::disk('bannersF')->put($nuevoNombre, \File::get($img));
+                if ($validator->fails()) {
+                    $segureImg = 1;
+                    $msj = "El archivo ingresado como imagen no es una imagen válida, ingrese otro archivo o limpie el formulario";
+                    $result = '0';
+                    $selector = 'archivo';
+                } else {
+                    $extension = $img->getClientOriginalExtension();
+                    $nuevoNombre = $aux . "." . $extension;
+                    $subir = Storage::disk('bannersF')->put($nuevoNombre, \File::get($img));
 
-                if($subir){
-                    $imagen=$nuevoNombre;
-                }
-                else{
-                    $msj="Error al subir la imagen, intentelo nuevamente luego";
-                    $segureImg=1;
-                    $result='0';
-                    $selector='archivo';
+                    if ($subir) {
+                        $imagen = $nuevoNombre;
+                    } else {
+                        $msj = "Error al subir la imagen, intentelo nuevamente luego";
+                        $segureImg = 1;
+                        $result = '0';
+                        $selector = 'archivo';
+                    }
                 }
             }
 
+            if ($segureImg == 1) {
+
+                Storage::disk('bannersF')->delete($imagen);
+            } else {
+                $newBanner = new BannersFacultades();
+                $newBanner->titulo = $titulo;
+                $newBanner->descripcion = $descripcion;
+                $newBanner->imagen = $imagen;
+                $newBanner->fechapublica = date('Y/m/d');
+                $newBanner->activo = $estado;
+                $newBanner->borrado = '0';
+
+                $newBanner->save();
+
+                $msj = 'Nuevo Banner registrado con éxito';
+            }
         }
-        
-        if($segureImg==1){ 
 
-            Storage::disk('bannersF')->delete($imagen);
-
-        }else{
-            $newBanner = new BannersFacultades();
-            $newBanner->titulo=$titulo;
-            $newBanner->descripcion=$descripcion;
-            $newBanner->imagen=$imagen;
-            $newBanner->fechapublica=date('Y/m/d');
-            $newBanner->activo=$estado;
-            $newBanner->borrado='0';
-
-            $newBanner->save();
-
-            $msj='Nuevo Banner registrado con éxito';
-        }
-    }
-
-        return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
+        return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
 
     /**
@@ -188,10 +182,10 @@ class BannersController extends Controller
         $msj = '';
         $selector = '';
 
-        $idBanner = $request->idBanner;
-        $editTitulo = $request->editTitulo;
-        $editDescripcion = $request->editDescripcion;
-        $editEstado = $request->editEstado;
+        $id = $request->id;
+        $titulo = $request->titulo;
+        $descripcion = $request->descripcion;
+        $estado = $request->estado;
         $img = $request->imagen;
 
         $imagen = "";
@@ -214,12 +208,12 @@ class BannersController extends Controller
             } else {
 
                 if (strlen($oldImagen) > 0) {
-                    Storage::disk('banners')->delete($oldImagen);
+                    Storage::disk('bannersF')->delete($oldImagen);
                 }
 
                 $extension = $img->getClientOriginalExtension();
                 $nuevoNombre = $aux . "." . $extension;
-                $subir = Storage::disk('banners')->put($nuevoNombre, \File::get($img));
+                $subir = Storage::disk('bannersF')->put($nuevoNombre, \File::get($img));
 
                 if ($subir) {
                     $imagen = $nuevoNombre;
@@ -233,23 +227,23 @@ class BannersController extends Controller
         }
 
         if ($segureImg == 1) {
-            Storage::disk('banners')->delete($imagen);
+            Storage::disk('bannersF')->delete($imagen);
         } else {
 
-            $editBanner = BannersFacultades::findOrFail($idBanner);
+            $editBanner = BannersFacultades::findOrFail($id);
 
             if (strlen($imagen) == 0) {
 
-                $editBanner->tituloBanner = $editTitulo;
-                $editBanner->descrBanner = $editDescripcion;
-                $editBanner->activo = $editEstado;
+                $editBanner->titulo = $titulo;
+                $editBanner->descripcion = $descripcion;
+                $editBanner->activo = $estado;
                 $editBanner->save();
             } else {
 
-                $editBanner->tituloBanner = $editTitulo;
-                $editBanner->descrBanner = $editDescripcion;
-                $editBanner->ruta = $imagen;
-                $editBanner->activo = $editEstado;
+                $editBanner->titulo = $titulo;
+                $editBanner->descripcion = $descripcion;
+                $editBanner->imagen = $imagen;
+                $editBanner->activo = $estado;
                 $editBanner->save();
             }
 
@@ -270,9 +264,8 @@ class BannersController extends Controller
         $result = '1';
         $msj = '1';
 
-        $borrarBanner = Banner::findOrFail($id);
+        $borrarBanner = BannersFacultades::findOrFail($id);
         $borrarBanner->borrado = '1';
-        $borrarBanner->user_id = Auth::user()->id;
         $borrarBanner->save();
 
         $msj = 'El Banner seleccionado fue eliminada exitosamente.';
@@ -289,7 +282,6 @@ class BannersController extends Controller
 
         $update = BannersFacultades::findOrFail($id);
         $update->activo = $estado;
-        $update->user_id = Auth::user()->id;
         $update->save();
 
         if (strval($estado) == "0") {
