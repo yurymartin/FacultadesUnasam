@@ -101,10 +101,10 @@
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="bannersescuelas"><i class='fa fa-gg'></i> Gestión de Banners</a></li>
-                    <li><a href="galerias"><i class='fa fa-gg'></i> Gestión de Galerias</a></li>
+                    <li><a href="galeriaescuelas"><i class='fa fa-gg'></i> Gestión de Galerias</a></li>
                     <li><a href="galerias"><i class='fa fa-gg'></i> Gestión de Videos</a></li>
                     <li><a href="documentos"><i class='fa fa-gg'></i> Gestión de Mallas Curriculares</a></li>
-                    <li><a href="documentos"><i class='fa fa-gg'></i> Libros </a></li>
+                    <li><a href="libros"><i class='fa fa-gg'></i> Libros </a></li>
                     
                 </ul>
             </li>

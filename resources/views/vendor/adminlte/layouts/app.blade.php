@@ -82,6 +82,12 @@ desired effect
 @elseif($modulo=="bannersescuelas")
 @include('bannerescuela.vue')
 
+@elseif($modulo=="galeriaescuelas")
+@include('galeriaescuela.vue')
+
+@elseif($modulo=="libros")
+@include('libroescuela.vue')
+
 @elseif($modulo=="categoriadocentes")
 @include('categoriadocentes.vue')
 

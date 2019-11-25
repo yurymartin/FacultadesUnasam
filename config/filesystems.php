@@ -93,6 +93,11 @@ return [
             'root' => public_path('img/bannersEscuelas'), // miproyecto.com/public/defaults/
             'visibility' => 'public',
          ],
+         'galeriaE' => [
+            'driver' => 'local',
+            'root' => public_path('img/galeriaEscuelas'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
          'agendarectorals' => [
             'driver' => 'local',
             'root' => public_path('img/agendarectorals'), // miproyecto.com/public/defaults/

@@ -121,7 +121,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('facultades', 'FacultadesController@index1');
     Route::resource('facultad', 'FacultadesController');
     Route::get('facultad/altabaja/{id}/{var}', 'FacultadesController@altabaja');
-<<<<<<< HEAD
     /* --------------------------------------------------- PACHAS --------------------------------------*/
     Route::get('cargos', 'CargoController@index1');
     Route::resource('cargo', 'CargoController');
@@ -135,8 +134,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('bannerescuela', 'BannerEscuelaController');
     Route::get('bannerescuela/altabaja/{id}/{var}', 'BannerEscuelaController@altabaja');
 
-=======
->>>>>>> 4af6068bb0fb92a17c4e081a764423250298daf0
 
     Route::get('catdocentes', 'CategoriaDocentesController@index1');
     Route::resource('catdocente', 'CategoriaDocentesController');
@@ -161,7 +158,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('descripcionescuelas', 'DescripcionEscuelasController@index1');
     Route::resource('descripcionescuela', 'DescripcionEscuelasController');
     Route::get('descripcionescuela/altabaja/{id}/{var}', 'DescripcionEscuelasController@altabaja');
-
+    
     /* --------------------------------------------------- PACHAS --------------------------------------*/
     Route::get('cargos', 'CargoController@index1');
     Route::resource('cargo', 'CargoController');
@@ -174,5 +171,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('bannersescuelas', 'BannerEscuelaController@index1');
     Route::resource('banner', 'BannerEscuelaController');
     Route::get('banner/altabaja/{id}/{var}', 'BannerEscuelaController@altabaja');
+
+    Route::get('galeriaescuelas', 'GalEscuelaController@index1');
+    Route::resource('galeriaescuela', 'GalEscuelaController');
+    Route::get('galeriaescuela/altabaja/{id}/{var}', 'GalEscuelaController@altabaja');
+
+    Route::get('libros', 'libroescuelaController@index1');
+    Route::resource('libroescuela', 'libroescuelaController');
+    Route::get('libroescuela/altabaja/{id}/{var}', 'libroescuelaController@altabaja');
 
 });

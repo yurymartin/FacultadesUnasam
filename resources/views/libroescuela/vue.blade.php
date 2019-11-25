@@ -3,15 +3,15 @@
 el: '#app',
 data:{
        titulo:"Mantenimiento",
-       subtitulo: "Gestión de Banners de Facultad",
+       subtitulo: "Gestión de Libros",
        subtitulo2: "Principal",
 
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
-   userPerfil:'<?php echo e(Auth::user()->name); ?>',
-   mailPerfil:'<?php echo e(Auth::user()->email); ?>',
+   tipouserPerfil:'{{ $tipouser->nombre }}',
+   userPerfil:'{{ Auth::user()->name }}',
+   mailPerfil:'{{ Auth::user()->email }}',
 
    
    divloader0:true,
@@ -44,10 +44,11 @@ data:{
 
    divprincipal:false,
 
-   banners: [],
+   libros: [],
+   escuelas: [],
    errors:[],
 
-   fillBanner:{'id':'', 'titulo':'', 'descripcion':'','imagen':'','fechapublica':'','estado':''},
+   fillBanner:{'id':'', 'titulo':'', 'descripcion':'','fechapublicacion':'','imagen':'','ruta':'','autor':'','estado':'','escuela_id':''},
 
    pagination: {
    'total': 0,
@@ -71,6 +72,7 @@ data:{
    newEstado:'1',
    newBorrado:'0',
    imagen : null,
+   escuela_id: '0',
 
 
 
@@ -114,20 +116,19 @@ computed:{
 },
 
 methods: {
-    getImg(banner){
-        var img = "<?php echo e(asset('/')); ?>img/bannersFacultades/"+ banner.imagen;
+    getImg(libro){
+        var img = "{{ asset('/') }}img/bannersEscuelas/"+ libro.imagen;
         return img;
     },
    getBanner: function (page) {
        var busca=this.buscar;
-       var url = 'banner?page='+page+'&busca='+busca;
+       var url = 'libroescuela?page='+page+'&busca='+busca;
         
-
        axios.get(url).then(response=>{
-            this.banners= response.data.banners.data;
+            this.libros= response.data.libros.data;
             this.pagination= response.data.pagination;
-
-           if(this.banners.length==0 && this.thispage!='1'){
+            this.escuelas = response.data.escuelas;
+           if(this.libros.length==0 && this.thispage!='1'){
                var a = parseInt(this.thispage) ;
                a--;
                this.thispage=a.toString();
@@ -177,9 +178,18 @@ methods: {
             this.imagen = event.target.files[0];
         }
     },
+    seltipo: function () {
+            if (this.escuela_id == 3) {
+            $('#cbescuela').val('0').trigger('change');
+            this.$nextTick(function () {
+            $('#cbescuela').val('0').trigger('change');
+            })
+            }
+            $('#txtnom').focus();
+            },
     create:function () { 
 
-       var url='banner';
+       var url='bannerescuela';
        $("#btnGuardar").attr('disabled', true);
        $("#btnCancel").attr('disabled', true);
        $("#btnClose").attr('disabled', true);
@@ -192,31 +202,34 @@ methods: {
             data.append('descripcion', this.newDescripcion);
             data.append('imagen', this.imagen);
             data.append('activo', this.newEstado);
+            var newEscuela = $("#cbescuela").val();
+            data.append('escuela_id', newEscuela);
             data.append('borrado', this.newBorrado);
             
-        const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-        axios.post(url,data,config).then(response=>{
+            const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+            axios.post(url,data,config).then(response=>{
 
-        $("#btnGuardar").removeAttr("disabled");
-        $("#btnCancel").removeAttr("disabled");
-        $("#btnClose").removeAttr("disabled");
-        this.divloaderNuevo=false;
+                $("#btnGuardar").removeAttr("disabled");
+                $("#btnCancel").removeAttr("disabled");
+                $("#btnClose").removeAttr("disabled");
+                this.divloaderNuevo=false;
                 
                 
-        if(String(response.data.result)=='1'){
-            this.getBanner(this.thispage);
-            this.errors=[];
-            this.cerrarFormNuevo();
-            toastr.success(response.data.msj);
-        }else{
-            $('#'+response.data.selector).focus();
-            $('#'+response.data.selector).css( "border", "1px solid red" );
-            toastr.error(response.data.msj);
-        }
-        }).catch(error=>{
+                if(String(response.data.result)=='1'){
+                    this.getBanner(this.thispage);
+                    this.errors=[];
+                    this.cerrarFormNuevo();
+                    toastr.success(response.data.msj);
+                }else{
+                    $('#'+response.data.selector).focus();
+                    $('#'+response.data.selector).css( "border", "1px solid red" );
+                    toastr.error(response.data.msj);
+                }
+
+            }).catch(error=>{
                 //this.errors=error.response.data
-        })
-        },
+            })
+   },
    borrarbanner:function (banner) {
     
         swal.fire({
@@ -231,7 +244,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'banner/'+banner.id;
+                var url = 'bannerescuela/'+banner.id;
                 axios.delete(url).then(response=>{//eliminamos
 
                 if(response.data.result=='1'){
@@ -255,8 +268,10 @@ methods: {
         this.fillBanner.descripcion=banner.descripcion;            
         this.fillBanner.imagen=banner.imagen;
         this.fillBanner.estado=banner.activo;
+        this.fillBanner.escuela_id=banner.idescu;
+        
         this.imagen=null;
-
+        console.log();
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
                 $("#txttituloE").focus();
@@ -267,17 +282,19 @@ methods: {
 
         var data = new FormData();
 
-        data.append('id', this.fillBanner.id);
-        data.append('titulo', this.fillBanner.titulo);
-        data.append('descripcion', this.fillBanner.descripcion);
-        data.append('estado', this.fillBanner.estado);
+        data.append('idBanner', this.fillBanner.id);
+        data.append('editTitulo', this.fillBanner.titulo);
+        data.append('editDescripcion', this.fillBanner.descripcion);
+        data.append('editEstado', this.fillBanner.estado);
         data.append('imagen', this.imagen);
         data.append('oldImagen', this.fillBanner.imagen);
+       var newEscuela = $("#cbescuela").val();
+            data.append('escuela_id', newEscuela);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
         
-        var url = "banner/" + id;
+        var url = "bannerescuela/" + id;
 
         $("#btnSaveE").attr('disabled', true);
         $("#btnCloseE").attr('disabled', true);
@@ -318,7 +335,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'banner/altabaja/'+banner.id+'/0';
+                var url = 'bannerescuela/altabaja/'+banner.id+'/0';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
                            app.getBanner(app.thispage);//listamos
@@ -345,7 +362,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'banner/altabaja/'+banner.id+'/1';
+                var url = 'bannerescuela/altabaja/'+banner.id+'/1';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
                            app.getBanner(app.thispage);//listamos
@@ -363,4 +380,4 @@ methods: {
    },
 }
 });
-</script><?php /**PATH C:\Users\USUARIO\Desktop\webFacultades\resources\views/banners/vue.blade.php ENDPATH**/ ?>
+</script>
