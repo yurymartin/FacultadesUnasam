@@ -126,17 +126,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('cargo', 'CargoController');
     Route::get('cargo/altabaja/{id}/{var}', 'CargoController@altabaja');
 
-    /* --------------------------------------------------- PACHAS --------------------------------------*/
-    
-    Route::get('escuelas', 'EscuelaController@index1');
-    Route::resource('escuela', 'EscuelaController');
-    Route::get('escuela/altabaja/{id}/{var}', 'EscuelaController@altabaja');
-
-    Route::get('bannersescuelas', 'BannerEscuelaController@index1');
-    Route::resource('bannerescuela', 'BannerEscuelaController');
-    Route::get('bannerescuela/altabaja/{id}/{var}', 'BannerEscuelaController@altabaja');
-
-
     Route::get('catdocentes', 'CategoriaDocentesController@index1');
     Route::resource('catdocente', 'CategoriaDocentesController');
     Route::get('catdocente/altabaja/{id}/{var}', 'CategoriaDocentesController@altabaja');
@@ -217,7 +206,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('alumno', 'AlumnosController');
     Route::get('alumno/altabaja/{id}/{var}', 'AlumnosController@altabaja');
 
-    
     /* --------------------------------------------------- PACHAS --------------------------------------*/
     Route::get('cargos', 'CargoController@index1');
     Route::resource('cargo', 'CargoController');
@@ -231,14 +219,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('banner', 'BannerEscuelaController');
     Route::get('banner/altabaja/{id}/{var}', 'BannerEscuelaController@altabaja');
     
-
     Route::get('galeriaescuelas', 'GalEscuelaController@index1');
     Route::resource('galeriaescuela', 'GalEscuelaController');
     Route::get('galeriaescuela/altabaja/{id}/{var}', 'GalEscuelaController@altabaja');
-
-    Route::get('libros', 'libroescuelaController@index1');
-    Route::resource('libroescuela', 'libroescuelaController');
-    Route::get('libroescuela/altabaja/{id}/{var}', 'libroescuelaController@altabaja');
 
     Route::get('mallaescuelas', 'MallaEscuelaController@index1');
     Route::resource('mallaescuela', 'MallaEscuelaController');
