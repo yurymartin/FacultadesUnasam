@@ -3,15 +3,15 @@
 el: '#app',
 data:{
        titulo:"Mantenimiento",
-       subtitulo: "Gestión de Banners de Facultad",
+       subtitulo: "Gestión de Comite Estudiantil",
        subtitulo2: "Principal",
 
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
-   userPerfil:'<?php echo e(Auth::user()->name); ?>',
-   mailPerfil:'<?php echo e(Auth::user()->email); ?>',
+   tipouserPerfil:'{{ $tipouser->nombre }}',
+   userPerfil:'{{ Auth::user()->name }}',
+   mailPerfil:'{{ Auth::user()->email }}',
 
    
    divloader0:true,
@@ -44,10 +44,11 @@ data:{
 
    divprincipal:false,
 
-   banners: [],
+   comiteestudiantil: [],
+   escuelas: [],
    errors:[],
 
-   fillBanner:{'id':'', 'titulo':'', 'descripcion':'','imagen':'','fechapublica':'','estado':''},
+   fillGalEcuela:{'id':'', 'imagen':'', 'descripcion':'','estado':'','escuela_id':''},
 
    pagination: {
    'total': 0,
@@ -67,10 +68,10 @@ data:{
 
    newTitulo:'',
    newDescripcion:'',
-   newFechapublica:'',
    newEstado:'1',
    newBorrado:'0',
    imagen : null,
+  
 
 
 
@@ -114,20 +115,18 @@ computed:{
 },
 
 methods: {
-    getImg(banner){
-        var img = "<?php echo e(asset('/')); ?>img/bannersFacultades/"+ banner.imagen;
+    getImg(comestudiantil){
+        var img = "{{ asset('/') }}img/ComiteEscuelas/"+ comestudiantil.imagen;
         return img;
     },
    getBanner: function (page) {
        var busca=this.buscar;
-       var url = 'banner?page='+page+'&busca='+busca;
+       var url = 'estudiantil?page='+page+'&busca='+busca;
         
-
        axios.get(url).then(response=>{
-            this.banners= response.data.banners.data;
+            this.comiteestudiantil= response.data.comiteestudiantil.data;
             this.pagination= response.data.pagination;
-
-           if(this.banners.length==0 && this.thispage!='1'){
+           if(this.comiteestudiantil.length==0 && this.thispage!='1'){
                var a = parseInt(this.thispage) ;
                a--;
                this.thispage=a.toString();
@@ -162,7 +161,6 @@ methods: {
 
         this.newTitulo = '';
         this.newDescripcion = '';
-        this.newFechapublica = '';
         this.newEstado = '1';
         this.imagen = null;
 
@@ -177,9 +175,10 @@ methods: {
             this.imagen = event.target.files[0];
         }
     },
+    
     create:function () { 
 
-       var url='banner';
+       var url='estudiantil';
        $("#btnGuardar").attr('disabled', true);
        $("#btnCancel").attr('disabled', true);
        $("#btnClose").attr('disabled', true);
@@ -194,34 +193,35 @@ methods: {
             data.append('activo', this.newEstado);
             data.append('borrado', this.newBorrado);
             
-        const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-        axios.post(url,data,config).then(response=>{
+            const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+            axios.post(url,data,config).then(response=>{
 
-        $("#btnGuardar").removeAttr("disabled");
-        $("#btnCancel").removeAttr("disabled");
-        $("#btnClose").removeAttr("disabled");
-        this.divloaderNuevo=false;
+                $("#btnGuardar").removeAttr("disabled");
+                $("#btnCancel").removeAttr("disabled");
+                $("#btnClose").removeAttr("disabled");
+                this.divloaderNuevo=false;
                 
                 
-        if(String(response.data.result)=='1'){
-            this.getBanner(this.thispage);
-            this.errors=[];
-            this.cerrarFormNuevo();
-            toastr.success(response.data.msj);
-        }else{
-            $('#'+response.data.selector).focus();
-            $('#'+response.data.selector).css( "border", "1px solid red" );
-            toastr.error(response.data.msj);
-        }
-        }).catch(error=>{
+                if(String(response.data.result)=='1'){
+                    this.getBanner(this.thispage);
+                    this.errors=[];
+                    this.cerrarFormNuevo();
+                    toastr.success(response.data.msj);
+                }else{
+                    $('#'+response.data.selector).focus();
+                    $('#'+response.data.selector).css( "border", "1px solid red" );
+                    toastr.error(response.data.msj);
+                }
+
+            }).catch(error=>{
                 //this.errors=error.response.data
-        })
-        },
-   borrarbanner:function (banner) {
+            })
+   },
+   borrarbanner:function (comestudiantil) {
     
         swal.fire({
              title: '¿Estás seguro?',
-             text: "¿Desea eliminar el Banner Seleccionado? -- Nota: este proceso no se podrá revertir.",
+             text: "¿Desea eliminar el Comite estudiantil Seleccionado? -- Nota: este proceso no se podrá revertir.",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -231,7 +231,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'banner/'+banner.id;
+                var url = 'estudiantil/'+comestudiantil.id;
                 axios.delete(url).then(response=>{//eliminamos
 
                 if(response.data.result=='1'){
@@ -248,36 +248,38 @@ methods: {
                }).catch(swal.noop);  
    },
 
-   editbanner:function (banner) {
+   editGalEscu:function (comestudiantil) {
 
-        this.fillBanner.id=banner.id;
-        this.fillBanner.titulo=banner.titulo;
-        this.fillBanner.descripcion=banner.descripcion;            
-        this.fillBanner.imagen=banner.imagen;
-        this.fillBanner.estado=banner.activo;
+        this.fillGalEcuela.id=comestudiantil.id;        
+        this.fillGalEcuela.titulo=comestudiantil.titulo;   
+        this.fillGalEcuela.descripcion=comestudiantil.descripcion; 
+        this.fillGalEcuela.imagen=comestudiantil.imagen;           
+        this.fillGalEcuela.estado=comestudiantil.activo;
+        this.fillGalEcuela.escuela_id=comestudiantil.idescu;
+        
         this.imagen=null;
-
+        console.log();
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
                 $("#txttituloE").focus();
         })
             
    },
-   updateBanner:function (id) {
+   updateGalEscuela:function (id) {
 
         var data = new FormData();
 
-        data.append('id', this.fillBanner.id);
-        data.append('titulo', this.fillBanner.titulo);
-        data.append('descripcion', this.fillBanner.descripcion);
-        data.append('estado', this.fillBanner.estado);
+        data.append('idComite', this.fillGalEcuela.id);        
+        data.append('editTitulo', this.fillGalEcuela.titulo);
+        data.append('editDescripcion', this.fillGalEcuela.descripcion);
         data.append('imagen', this.imagen);
-        data.append('oldImagen', this.fillBanner.imagen);
+        data.append('oldImagen', this.fillGalEcuela.imagen);
+        data.append('editEstado', this.fillGalEcuela.estado);        
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
         
-        var url = "banner/" + id;
+        var url = "estudiantil/" + id;
 
         $("#btnSaveE").attr('disabled', true);
         $("#btnCloseE").attr('disabled', true);
@@ -291,7 +293,7 @@ methods: {
            
            if(response.data.result=='1'){   
            this.getBanner(this.thispage);
-           this.fillLocal={'id':'', 'titulo':'', 'descripcion':'','imagen':'','estado':''};
+           this.fillLocal={'id':'','titulo':'', 'descripcion':'', 'imagen':'','estado':''};
            this.errors=[];
            $("#modalEditar").modal('hide');
            toastr.success(response.data.msj);
@@ -305,10 +307,10 @@ methods: {
            this.errors=error.response.data
        })
     },
-    bajabanner:function (banner) {
+    bajabanner:function (comestudiantil) {
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea desactivar el Banner seleccionado",
+             text: "Desea desactivar el Comite estudiantil seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -318,7 +320,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'banner/altabaja/'+banner.id+'/0';
+                var url = 'estudiantil/altabaja/'+comestudiantil.id+'/0';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
                            app.getBanner(app.thispage);//listamos
@@ -332,10 +334,10 @@ methods: {
                }).catch(swal.noop);  
 
    },
-   altabanner:function (banner) {
+   altabanner:function (comestudiantil) {
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea activar el Banner seleccionado",
+             text: "Desea activar el Comite estudiantil seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -345,7 +347,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'banner/altabaja/'+banner.id+'/1';
+                var url = 'estudiantil/altabaja/'+comestudiantil.id+'/1';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
                            app.getBanner(app.thispage);//listamos
@@ -363,4 +365,4 @@ methods: {
    },
 }
 });
-</script><?php /**PATH C:\Users\USUARIO\Desktop\webFacultades\resources\views/banners/vue.blade.php ENDPATH**/ ?>
+</script>

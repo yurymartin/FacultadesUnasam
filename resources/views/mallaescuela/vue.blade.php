@@ -3,15 +3,15 @@
 el: '#app',
 data:{
        titulo:"Mantenimiento",
-       subtitulo: "Gestión de Banners de Facultad",
+       subtitulo: "Gestión de Mallas",
        subtitulo2: "Principal",
 
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
-   userPerfil:'<?php echo e(Auth::user()->name); ?>',
-   mailPerfil:'<?php echo e(Auth::user()->email); ?>',
+   tipouserPerfil:'{{ $tipouser->nombre }}',
+   userPerfil:'{{ Auth::user()->name }}',
+   mailPerfil:'{{ Auth::user()->email }}',
 
    
    divloader0:true,
@@ -44,10 +44,11 @@ data:{
 
    divprincipal:false,
 
-   banners: [],
+   mallaescuelas: [],
+   escuelas: [],
    errors:[],
-
-   fillBanner:{'id':'', 'titulo':'', 'descripcion':'','imagen':'','fechapublica':'','estado':''},
+   
+   fillGalEcuela:{'id':'', 'imagen':'', 'numcurricula':'','fechaRegistro':'','estado':'','escuela_id':''},
 
    pagination: {
    'total': 0,
@@ -65,12 +66,12 @@ data:{
 
    thispage:'1',
 
-   newTitulo:'',
-   newDescripcion:'',
-   newFechapublica:'',
+   
+   newCurricula:'',
    newEstado:'1',
    newBorrado:'0',
    imagen : null,
+   escuela_id: '0',
 
 
 
@@ -114,20 +115,19 @@ computed:{
 },
 
 methods: {
-    getImg(banner){
-        var img = "<?php echo e(asset('/')); ?>img/bannersFacultades/"+ banner.imagen;
+    getImg(mallaE){
+        var img = "{{ asset('/') }}img/mallaEscuelas/"+ mallaE.imagen;
         return img;
     },
    getBanner: function (page) {
        var busca=this.buscar;
-       var url = 'banner?page='+page+'&busca='+busca;
+       var url = 'mallaescuela?page='+page+'&busca='+busca;
         
-
        axios.get(url).then(response=>{
-            this.banners= response.data.banners.data;
+            this.mallaescuelas= response.data.mallaescuelas.data;
             this.pagination= response.data.pagination;
-
-           if(this.banners.length==0 && this.thispage!='1'){
+            this.escuelas = response.data.escuelas;
+           if(this.mallaescuelas.length==0 && this.thispage!='1'){
                var a = parseInt(this.thispage) ;
                a--;
                this.thispage=a.toString();
@@ -159,9 +159,7 @@ methods: {
    },
    cancelFormNuevo: function () {
        $('#txttitulo').focus();
-
-        this.newTitulo = '';
-        this.newDescripcion = '';
+        this.newCurricula = '';
         this.newFechapublica = '';
         this.newEstado = '1';
         this.imagen = null;
@@ -177,9 +175,18 @@ methods: {
             this.imagen = event.target.files[0];
         }
     },
+    seltipo: function () {
+            if (this.escuela_id == 3) {
+            $('#cbescuela').val('0').trigger('change');
+            this.$nextTick(function () {
+            $('#cbescuela').val('0').trigger('change');
+            })
+            }
+            $('#txtnom').focus();
+            },
     create:function () { 
 
-       var url='banner';
+       var url='mallaescuela';
        $("#btnGuardar").attr('disabled', true);
        $("#btnCancel").attr('disabled', true);
        $("#btnClose").attr('disabled', true);
@@ -188,36 +195,38 @@ methods: {
 
        var data = new  FormData();
 
-            data.append('titulo', this.newTitulo);
-            data.append('descripcion', this.newDescripcion);
+            data.append('numcurricula', this.newCurricula);
             data.append('imagen', this.imagen);
             data.append('activo', this.newEstado);
+            data.append('escuela_id', this.escuela_id);
             data.append('borrado', this.newBorrado);
+            console.log(this.newCurricula);
             
-        const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-        axios.post(url,data,config).then(response=>{
+            const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+            axios.post(url,data,config).then(response=>{
 
-        $("#btnGuardar").removeAttr("disabled");
-        $("#btnCancel").removeAttr("disabled");
-        $("#btnClose").removeAttr("disabled");
-        this.divloaderNuevo=false;
+                $("#btnGuardar").removeAttr("disabled");
+                $("#btnCancel").removeAttr("disabled");
+                $("#btnClose").removeAttr("disabled");
+                this.divloaderNuevo=false;
                 
                 
-        if(String(response.data.result)=='1'){
-            this.getBanner(this.thispage);
-            this.errors=[];
-            this.cerrarFormNuevo();
-            toastr.success(response.data.msj);
-        }else{
-            $('#'+response.data.selector).focus();
-            $('#'+response.data.selector).css( "border", "1px solid red" );
-            toastr.error(response.data.msj);
-        }
-        }).catch(error=>{
+                if(String(response.data.result)=='1'){
+                    this.getBanner(this.thispage);
+                    this.errors=[];
+                    this.cerrarFormNuevo();
+                    toastr.success(response.data.msj);
+                }else{
+                    $('#'+response.data.selector).focus();
+                    $('#'+response.data.selector).css( "border", "1px solid red" );
+                    toastr.error(response.data.msj);
+                }
+
+            }).catch(error=>{
                 //this.errors=error.response.data
-        })
-        },
-   borrarbanner:function (banner) {
+            })
+   },
+   borrarbanner:function (mallaE) {
     
         swal.fire({
              title: '¿Estás seguro?',
@@ -231,7 +240,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'banner/'+banner.id;
+                var url = 'mallaescuela/'+mallaE.id;
                 axios.delete(url).then(response=>{//eliminamos
 
                 if(response.data.result=='1'){
@@ -248,36 +257,38 @@ methods: {
                }).catch(swal.noop);  
    },
 
-   editbanner:function (banner) {
+   editGalEscu:function (mallaE) {
 
-        this.fillBanner.id=banner.id;
-        this.fillBanner.titulo=banner.titulo;
-        this.fillBanner.descripcion=banner.descripcion;            
-        this.fillBanner.imagen=banner.imagen;
-        this.fillBanner.estado=banner.activo;
+        this.fillGalEcuela.id=mallaE.id;
+        this.fillGalEcuela.imagen=mallaE.imagen;
+        this.fillGalEcuela.numcurricula=mallaE.numcurricula;            
+        this.fillGalEcuela.estado=mallaE.activo;
+        this.fillGalEcuela.escuela_id=mallaE.idescu;
+        
         this.imagen=null;
-
+        console.log();
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
                 $("#txttituloE").focus();
         })
             
    },
-   updateBanner:function (id) {
+   updateGalEscuela:function (id) {
 
         var data = new FormData();
 
-        data.append('id', this.fillBanner.id);
-        data.append('titulo', this.fillBanner.titulo);
-        data.append('descripcion', this.fillBanner.descripcion);
-        data.append('estado', this.fillBanner.estado);
+        data.append('idmalla', this.fillGalEcuela.id);
         data.append('imagen', this.imagen);
-        data.append('oldImagen', this.fillBanner.imagen);
+        data.append('oldImagen', this.fillGalEcuela.imagen);
+        data.append('editDescripcion', this.fillGalEcuela.numcurricula);
+        data.append('editEstado', this.fillGalEcuela.estado);        
+       var newEscuela = $("#cbescuela").val();
+            data.append('escuela_id', newEscuela);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
         
-        var url = "banner/" + id;
+        var url = "mallaescuela/" + id;
 
         $("#btnSaveE").attr('disabled', true);
         $("#btnCloseE").attr('disabled', true);
@@ -291,7 +302,7 @@ methods: {
            
            if(response.data.result=='1'){   
            this.getBanner(this.thispage);
-           this.fillLocal={'id':'', 'titulo':'', 'descripcion':'','imagen':'','estado':''};
+           this.fillLocal={'id':'', 'imagen':'', 'numcurricula':'','estado':''};
            this.errors=[];
            $("#modalEditar").modal('hide');
            toastr.success(response.data.msj);
@@ -305,20 +316,19 @@ methods: {
            this.errors=error.response.data
        })
     },
-    bajabanner:function (banner) {
+    bajabanner:function (mallaE) {
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea desactivar el Banner seleccionado",
+             text: "Desea desactivar la malla seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
              cancelButtonColor: '#d33',
              confirmButtonText: 'Si, Desactivar'
            }).then((result) => {
-
             if (result.value) {
 
-                var url = 'banner/altabaja/'+banner.id+'/0';
+                var url = 'mallaescuela/altabaja/'+mallaE.id+'/0';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
                            app.getBanner(app.thispage);//listamos
@@ -332,7 +342,7 @@ methods: {
                }).catch(swal.noop);  
 
    },
-   altabanner:function (banner) {
+   altabanner:function (    ) {
     swal.fire({
              title: '¿Estás seguro?',
              text: "Desea activar el Banner seleccionado",
@@ -345,7 +355,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'banner/altabaja/'+banner.id+'/1';
+                var url = 'mallaescuela/altabaja/'+mallaE.id+'/1';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
                            app.getBanner(app.thispage);//listamos
@@ -363,4 +373,4 @@ methods: {
    },
 }
 });
-</script><?php /**PATH C:\Users\USUARIO\Desktop\webFacultades\resources\views/banners/vue.blade.php ENDPATH**/ ?>
+</script>

@@ -1,7 +1,7 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de Banner Facultades</h3>
-    <a style="float: right;" type="button" class="btn btn-default" href="<?php echo e(URL::to('home')); ?>"><i class="fa fa-reply-all"
+    <h3 class="box-title">Gestión de Libros</h3>
+    <a style="float: right;" type="button" class="btn btn-default" href="{{URL::to('home')}}"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
   </div>
@@ -9,7 +9,7 @@
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
-          class="fa fa-plus-square-o" aria-hidden="true"></i>Nuevo Banner</button>
+          class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Libro</button>
     </div>
 
   </div>
@@ -18,7 +18,7 @@
 
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
-    <h3 class="box-title" id="tituloAgregar">Nuevo Banner</h3>
+    <h3 class="box-title" id="tituloAgregar">Nuevo Libro</h3>
   </div>
 
   <form v-on:submit.prevent="create">
@@ -26,9 +26,9 @@
 
       <div class="col-md-12">
         <div class="form-group">
-          <label for="txttitulo" class="col-sm-2 control-label">Nombre del Banner:*</label>
+          <label for="txttitulo" class="col-sm-2 control-label">Titulo:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Banner" maxlength="200"
+            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Titulo" maxlength="200"
               autofocus v-model="newTitulo">
           </div>
         </div>
@@ -45,7 +45,7 @@
           </div>
         </div>
       </div>
-      
+
 
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
@@ -56,7 +56,40 @@
           </div>
         </div>
       </div>
-      
+
+      <div class="col-md-12">
+        <div class="form-group" style="padding-top: 15px;">
+          <label for="txtdescripcion" class="col-sm-2 control-label">Ruta:*</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion" placeholder="Ruta"
+              maxlength="500" v-model="newDescripcion">
+          </div>
+        </div>
+      </div>
+       
+      <div class="col-md-12">
+          <div class="form-group" style="padding-top: 15px;">
+            <label for="txtdescripcion" class="col-sm-2 control-label">Autor:*</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion" placeholder="Autor"
+                maxlength="500" v-model="newDescripcion">
+            </div>
+          </div>
+        </div>
+
+      <div class="col-md-12" style="padding-top: 15px;">
+        <div class="form-group">
+          <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>
+          <div class="col-sm-8">
+            <select name="cbescuela" id="cbescuela" class="form-control" v-model="escuela_id" @change="seltipo">
+              <option disabled value="0">Seleccione una Escula</option>
+              <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">
+                @{{escuela.nombre}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
 
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
@@ -106,7 +139,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Banner</h3>
+    <h3 class="box-title">Listado de Libros</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -127,36 +160,44 @@
     <table class="table table-hover table-bordered table-dark table-condensed table-striped">
       <tbody>
         <tr>
-          <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 25%;">Titulo</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 35%;">Descripción</th>
-          
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Banner</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 3%;">#</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Titulo</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Descripción</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">F. Publicación</th>
+          {{-- <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha</th> --}}
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Imagen</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 7%;">Ruta</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 12%;">Autor</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 12%;">Escuela</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
-        <tr v-for="banner, key in banners">
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{key+pagination.from}}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ banner.titulo }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ banner.descripcion }}</td>
+        <tr v-for="libro, key in libros">
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{key+pagination.from}}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ libro.titulo }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ libro.descripcion }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ libro.fechapublicacion }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: center;vertical-align: middle;">
-              <img :src="getImg(banner)" alt="" class="img img-responsive" width="150px" height="50px">
+            <img :src="getImg(libro)" alt="" class="img img-responsive" width="150px" height="50px">
           </td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ banner.fechapublica }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ libro.ruta }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ libro.autor }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ libro.nombre }}</td>
+          
+          
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
-              <span class="label label-success" v-if="banner.activo=='1'">Activo</span>
-              <span class="label label-warning" v-if="banner.activo=='0'">Inactivo</span>
+              <span class="label label-success" v-if="libro.activo=='1'">Activo</span>
+              <span class="label label-warning" v-if="libro.activo=='0'">Inactivo</span>
             </center>
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
-              <a href="#" v-if="banner.activo=='1'" class="btn bg-navy btn-sm" v-on:click.prevent="bajabanner(banner)"
+              <a href="#" v-if="libro.activo=='1'" class="btn bg-navy btn-sm" v-on:click.prevent="bajabanner(banner)"
                 data-placement="top" data-toggle="tooltip" title="Desactivar banner"><i
                   class="fa fa-arrow-circle-down"></i></a>
 
-              <a href="#" v-if="banner.activo=='0'" class="btn btn-success btn-sm"
+              <a href="#" v-if="libro.activo=='0'" class="btn btn-success btn-sm"
                 v-on:click.prevent="altabanner(banner)" data-placement="top" data-toggle="tooltip"
                 title="Activar banner"><i class="fa fa-check-circle"></i></a>
 
@@ -176,7 +217,7 @@
   <!-- /.box-body -->
   <div style="padding: 15px;">
     <div>
-      <h5>Registros por Página: {{ pagination.per_page }}</h5>
+      <h5>Registros por Página: @{{ pagination.per_page }}</h5>
     </div>
     <nav aria-label="Page navigation example">
       <ul class="pagination">
@@ -193,7 +234,7 @@
         </li>
         <li class="page-item" v-for="page in pagesNumber" v-bind:class="[page=== isActived ? 'active' : '']">
           <a class="page-link" href="#" @click.prevent="changePage(page)">
-            <span>{{ page }}</span>
+            <span>@{{ page }}</span>
           </a>
         </li>
         <li class="page-item" v-if="pagination.current_page< pagination.last_page">
@@ -209,7 +250,7 @@
       </ul>
     </nav>
     <div>
-      <h5>Registros Totales: {{ pagination.total }}</h5>
+      <h5>Registros Totales: @{{ pagination.total }}</h5>
     </div>
   </div>
 </div>
@@ -235,9 +276,9 @@
 
                 <div class="col-md-12">
                   <div class="form-group">
-                    <label for="txttituloE" class="col-sm-2 control-label">Nombre del Banner:*</label>
+                    <label for="txttituloE" class="col-sm-2 control-label">Titulo*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="txttituloE" name="txttituloE" placeholder="Banner"
+                      <input type="text" class="form-control" id="txttituloE" name="txttituloE" placeholder="Titulo"
                         maxlength="200" autofocus v-model="fillBanner.titulo">
                     </div>
                   </div>
@@ -262,7 +303,20 @@
                     </div>
                   </div>
                 </div>
-
+                <div class="col-md-12" style="padding-top: 15px;">
+                  <div class="form-group">
+                    <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>
+                    <div class="col-sm-8">
+                      <select name="cbescuela" id="cbescuela" class="form-control" v-model="fillBanner.escuela_id"
+                        @change="seltipo">
+                        <option disabled value="0">Seleccione una Escula</option>
+                        <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">
+                          @{{escuela.nombre}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
                 <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
                     <label for="cbuestadoE" class="col-sm-2 control-label">Estado:*</label>
@@ -306,4 +360,4 @@
       </div>
     </div>
   </div>
-</form><?php /**PATH C:\Users\USUARIO\Desktop\webFacultades\resources\views/banners/principal.blade.php ENDPATH**/ ?>
+</form>

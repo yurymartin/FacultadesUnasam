@@ -126,6 +126,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('cargo', 'CargoController');
     Route::get('cargo/altabaja/{id}/{var}', 'CargoController@altabaja');
 
+    /* --------------------------------------------------- PACHAS --------------------------------------*/
+    
     Route::get('escuelas', 'EscuelaController@index1');
     Route::resource('escuela', 'EscuelaController');
     Route::get('escuela/altabaja/{id}/{var}', 'EscuelaController@altabaja');
@@ -215,6 +217,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('alumno', 'AlumnosController');
     Route::get('alumno/altabaja/{id}/{var}', 'AlumnosController@altabaja');
 
+    
     /* --------------------------------------------------- PACHAS --------------------------------------*/
     Route::get('cargos', 'CargoController@index1');
     Route::resource('cargo', 'CargoController');
@@ -229,4 +232,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('banner/altabaja/{id}/{var}', 'BannerEscuelaController@altabaja');
     
 
+    Route::get('galeriaescuelas', 'GalEscuelaController@index1');
+    Route::resource('galeriaescuela', 'GalEscuelaController');
+    Route::get('galeriaescuela/altabaja/{id}/{var}', 'GalEscuelaController@altabaja');
+
+    Route::get('libros', 'libroescuelaController@index1');
+    Route::resource('libroescuela', 'libroescuelaController');
+    Route::get('libroescuela/altabaja/{id}/{var}', 'libroescuelaController@altabaja');
+
+    Route::get('mallaescuelas', 'MallaEscuelaController@index1');
+    Route::resource('mallaescuela', 'MallaEscuelaController');
+    Route::get('mallaescuela/altabaja/{id}/{var}', 'MallaEscuelaController@altabaja');
+
+    Route::get('comiteestudiantil', 'ComiteEstudiantilController@index1');
+    Route::resource('estudiantil', 'ComiteEstudiantilController');
+    Route::get('estudiantil/altabaja/{id}/{var}', 'ComiteEstudiantilController@altabaja');
 });

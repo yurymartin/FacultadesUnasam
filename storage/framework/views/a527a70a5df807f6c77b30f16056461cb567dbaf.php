@@ -82,6 +82,18 @@ desired effect
 <?php elseif($modulo=="bannersescuelas"): ?>
 <?php echo $__env->make('bannerescuela.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
+<?php elseif($modulo=="galeriaescuelas"): ?>
+<?php echo $__env->make('galeriaescuela.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="libros"): ?>
+<?php echo $__env->make('libroescuela.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="mallaescuelas"): ?>
+<?php echo $__env->make('mallaescuela.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="comiteestudiantil"): ?>
+<?php echo $__env->make('comiteestudiantil.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
 <?php elseif($modulo=="categoriadocentes"): ?>
 <?php echo $__env->make('categoriadocentes.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
@@ -93,6 +105,12 @@ desired effect
 
 <?php elseif($modulo=="banners"): ?>
 <?php echo $__env->make('banners.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="descripcionfacultades"): ?>
+<?php echo $__env->make('descripcionfacultades.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="descripcionescuelas"): ?>
+<?php echo $__env->make('descripcionescuelas.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 <?php endif; ?>
 
