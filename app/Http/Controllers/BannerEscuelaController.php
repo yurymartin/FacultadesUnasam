@@ -98,12 +98,23 @@ class BannerEscuelaController extends Controller
         $segureImg=0;
 
    
-        if ($img == 'null')
+        if ($titulo == null)
         {
             $result='0';
-            $msj='Debe de Ingresar una Imagen';
-            $selector='txttituloE';
-
+            $msj='Debe de Ingresar titulo';
+            $selector='txttitulo';
+        } else if ($descripcion == null) {
+            $result = '0';
+            $msj = 'Debe de Ingresar una descripción';
+            $selector = 'txtdescripcion';
+        } else if ($img == 'null') {
+            $result = '0';
+            $msj = 'Debe de Ingresar una imagen';
+            $selector = 'archivo';
+        } else if ($escuela_id == 0) {
+            $result = '0';
+            $msj = 'Debe seleccionar una escuela';
+            $selector = 'cbescuela';
         }else{
 
         if ($request->hasFile('imagen')) {

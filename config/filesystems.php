@@ -98,6 +98,16 @@ return [
             'root' => public_path('img/galeriaEscuelas'), // miproyecto.com/public/defaults/
             'visibility' => 'public',
          ],
+         'mallaE' => [
+            'driver' => 'local',
+            'root' => public_path('img/mallaEscuelas'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
+         'comiteE' => [
+            'driver' => 'local',
+            'root' => public_path('img/ComiteEscuelas'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
          'agendarectorals' => [
             'driver' => 'local',
             'root' => public_path('img/agendarectorals'), // miproyecto.com/public/defaults/

@@ -103,7 +103,7 @@
                     <li><a href="bannersescuelas"><i class='fa fa-gg'></i> Gestión de Banners</a></li>
                     <li><a href="galeriaescuelas"><i class='fa fa-gg'></i> Gestión de Galerias</a></li>
                     <li><a href="galerias"><i class='fa fa-gg'></i> Gestión de Videos</a></li>
-                    <li><a href="documentos"><i class='fa fa-gg'></i> Gestión de Mallas Curriculares</a></li>
+                    <li><a href="mallaescuelas"><i class='fa fa-gg'></i> Gestión de Mallas Curriculares</a></li>
                     <li><a href="libros"><i class='fa fa-gg'></i> Libros </a></li>
                     
                 </ul>
@@ -115,7 +115,7 @@
                 <a href="#"><i class='fa fa-list-alt'></i> <span>Autoridades</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="banners"><i class='fa fa-gg'></i>Cargos</a></li>
+                    <li><a href="cargos"><i class='fa fa-gg'></i>Cargos</a></li>
                     <li><a href="banners"><i class='fa fa-gg'></i>Autoridades</a></li>
                 </ul>
             </li>
@@ -126,7 +126,7 @@
                 <a href="#"><i class='fa fa-list-alt'></i> <span>Alumnos</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="banners"><i class='fa fa-gg'></i>Comites Estudiantiles</a></li>
+                    <li><a href="comiteestudiantil"><i class='fa fa-gg'></i>Comites Estudiantiles</a></li>
                     <li><a href="banners"><i class='fa fa-gg'></i>Alumnos</a></li>
                 </ul>
             </li>

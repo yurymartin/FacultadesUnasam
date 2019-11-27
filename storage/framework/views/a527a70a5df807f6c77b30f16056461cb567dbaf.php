@@ -88,6 +88,12 @@ desired effect
 <?php elseif($modulo=="libros"): ?>
 <?php echo $__env->make('libroescuela.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
+<?php elseif($modulo=="mallaescuelas"): ?>
+<?php echo $__env->make('mallaescuela.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="comiteestudiantil"): ?>
+<?php echo $__env->make('comiteestudiantil.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
 <?php elseif($modulo=="categoriadocentes"): ?>
 <?php echo $__env->make('categoriadocentes.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\MallaEscuela;
+use App\ComiteEstudiantil;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
@@ -12,9 +12,8 @@ use Storage;
 use App\Persona;
 use App\Tipouser;
 use App\User;
-use App\Escuela;
 
-class MallaEscuelaController extends Controller
+class ComiteEstudiantilController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,44 +23,33 @@ class MallaEscuelaController extends Controller
     public function index1()
     {
         if (accesoUser([1, 2])) {
-
             $idtipouser = Auth::user()->tipouser_id;
             $tipouser = Tipouser::find($idtipouser);
-            $modulo = "mallaescuelas";
-            return view('mallaescuela.index', compact('tipouser', 'modulo'));
+            $modulo = "comiteestudiantil";
+            return view('comiteestudiantil.index', compact('tipouser', 'modulo'));
         } else {
             return view('adminlte::home');
         }
     }
     public function index(Request $request)
     {
-
         $buscar = $request->busca;
-
-        $mallaescuelas = DB::table('mallas as m')
-            ->join('escuelas as e', 'e.id', '=', 'm.escuela_id')
-            ->select('m.id', 'm.imagen', 'm.numcurricula', 'm.fechaRegistro', 'm.activo', 'e.nombre','e.id as idescu')
-            ->where('m.borrado', '0')
+        $comiteestudiantil = ComiteEstudiantil::where('borrado', '0')
             ->where(function ($query) use ($buscar) {
-                $query->where('m.numcurricula', 'like', '%' . $buscar . '%');
-                $query->orWhere('m.borrado', 'like', '%' . $buscar . '%');
+                $query->where('titulo', 'like', '%' . $buscar . '%');
             })
-            ->orderBy('m.id', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(10);
-
-        $escuelas = Escuela::where('borrado', '0')
-            ->get();
-
         return [
             'pagination' => [
-                'total' => $mallaescuelas->total(),
-                'current_page' => $mallaescuelas->currentPage(),
-                'per_page' => $mallaescuelas->perPage(),
-                'last_page' => $mallaescuelas->lastPage(),
-                'from' => $mallaescuelas->lastItem(),
+                'total' => $comiteestudiantil->total(),
+                'current_page' => $comiteestudiantil->currentPage(),
+                'per_page' => $comiteestudiantil->perPage(),
+                'last_page' => $comiteestudiantil->lastPage(),
+                'from' => $comiteestudiantil->firstItem(),
+                'to' => $comiteestudiantil->lastItem(),
             ],
-            'mallaescuelas' => $mallaescuelas,
-            'escuelas' => $escuelas
+            'comiteestudiantil' => $comiteestudiantil
         ];
     }
     /**
@@ -82,8 +70,9 @@ class MallaEscuelaController extends Controller
      */
     public function store(Request $request)
     {
+        $titulo = $request->titulo;
+        $descripcion = $request->descripcion;
         $img = $request->imagen;
-        $numcurricula = $request->numcurricula;
         $estado = $request->activo;
         $escuela_id = $request->escuela_id;
 
@@ -95,18 +84,18 @@ class MallaEscuelaController extends Controller
         $segureImg = 0;
 
 
-        if ($img == 'null') {
+        if ($titulo == null) {
+            $result = '0';
+            $msj = 'Debe de Ingresar una Titulo';
+            $selector = 'txttitulo';
+        } else if ($descripcion == null) {
+            $result = '0';
+            $msj = 'Debe de Ingresar una descripcion';
+            $selector = 'txtdescripcion';
+        } else if ($img == 'null') {
             $result = '0';
             $msj = 'Debe de Ingresar una Imagen';
             $selector = 'archivo';
-        } else if ($numcurricula == null) {
-            $result = '0';
-            $msj = 'Debe de Ingresar el numero de la curricula';
-            $selector = 'txtcurricula';
-        } else if ($escuela_id == 0) {
-            $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
-            $selector = 'cbescuela';
         
         } else{
 
@@ -126,7 +115,7 @@ class MallaEscuelaController extends Controller
 
                     $extension = $img->getClientOriginalExtension();
                     $nuevoNombre = $aux . "." . $extension;
-                    $subir = Storage::disk('mallaE')->put($nuevoNombre, \File::get($img));
+                    $subir = Storage::disk('comiteE')->put($nuevoNombre, \File::get($img));
 
                     if ($subir) {
                         $imagen = $nuevoNombre;
@@ -141,13 +130,12 @@ class MallaEscuelaController extends Controller
 
             if ($segureImg == 1) {
 
-                Storage::disk('mallaE')->delete($imagen);
+                Storage::disk('comiteE')->delete($imagen);
             } else {
-                $newBanner = new MallaEscuela();
+                $newBanner = new ComiteEstudiantil();                
+                $newBanner->titulo = $titulo;
+                $newBanner->descripcion = $descripcion;
                 $newBanner->imagen = $imagen;
-                $newBanner->numcurricula = $numcurricula;
-                $newBanner->fechaRegistro = date('Y/m/d');
-                $newBanner->escuela_id = $escuela_id;
                 $newBanner->activo = $estado;
                 $newBanner->borrado = '0';
 
@@ -195,12 +183,13 @@ class MallaEscuelaController extends Controller
         $msj = '';
         $selector = '';
 
-        $idmalla = $request->idmalla;
+        $idComite = $request->idComite;
         $editTitulo = $request->editTitulo;
         $editDescripcion = $request->editDescripcion;
+        $img = $request->imagen;        
         $editEstado = $request->editEstado;
         $escuela_id=$request->escuela_id;
-        $img = $request->imagen;
+        
        
         $imagen = "";
         $segureImg = 0;
@@ -222,12 +211,12 @@ class MallaEscuelaController extends Controller
             } else {
 
                 if (strlen($oldImagen) > 0) {
-                    Storage::disk('mallaE')->delete($oldImagen);
+                    Storage::disk('comiteE')->delete($oldImagen);
                 }
 
                 $extension = $img->getClientOriginalExtension();
                 $nuevoNombre = $aux . "." . $extension;
-                $subir = Storage::disk('mallaE')->put($nuevoNombre, \File::get($img));
+                $subir = Storage::disk('comiteE')->put($nuevoNombre, \File::get($img));
 
                 if ($subir) {
                     $imagen = $nuevoNombre;
@@ -241,26 +230,24 @@ class MallaEscuelaController extends Controller
         }
 
         if ($segureImg == 1) {
-            Storage::disk('mallaE')->delete($imagen);
+            Storage::disk('comiteE')->delete($imagen);
         } else {
 
-            $editGalEscu = MallaEscuela::findOrFail($idmalla);
+            $editBanner = ComiteEstudiantil::findOrFail($idComite);
 
             if (strlen($imagen) == 0) {
 
-                
-                $editGalEscu->numcurricula = $editDescripcion;
-                $editGalEscu->activo = $editEstado;
-                $editGalEscu->escuela_id=$escuela_id;
-                $editGalEscu->save();
+                $editBanner->titulo = $editTitulo;
+                $editBanner->descripcion = $editDescripcion;
+                $editBanner->activo = $editEstado;
+                $editBanner->save();
             } else {
 
-                $editGalEscu->imagen = $imagen;
-                $editGalEscu->numcurricula = $editDescripcion;
-                $editGalEscu->activo = $editEstado;
-                $editGalEscu->fechapublica=date('Y/m/d');
-            $editGalEscu->escuela_id=$escuela_id;
-                $editGalEscu->save();
+                $editBanner->titulo = $editTitulo;
+                $editBanner->descripcion = $editDescripcion;
+                $editBanner->imagen = $imagen;
+                $editBanner->activo = $editEstado;
+                $editBanner->save();
             }
 
             $msj = 'El Banner fue modificada con éxito';
@@ -279,37 +266,33 @@ class MallaEscuelaController extends Controller
     {
         $result = '1';
         $msj = '1';
-        $consulta1 = DB::table('mallas as m')
-            ->join('escuelas as e', 'e.id', '=', 'm.escuela_id')
-            ->where('m.escuela_id', $id)
-            ->count();
-        if ($consulta1 > 0) {
-            $result = '0';
-            $msj='No se puede eliminar bannersescuelas enlazados con otras entidades';
-        } else {
-            $borrar = MallaEscuela::findOrFail($id);
-            $borrar->borrado = '1';
-            $borrar->save();
-            $msj = 'La malla fue eliminada exitosamente';
-        }
+
+
+        $borrar = ComiteEstudiantil::findOrFail($id);
+        //$task->delete();
+
+        $borrar->borrado = '1';
+
+        $borrar->save();
+
+        $msj = 'Comite estudiantil eliminado exitosamente';
 
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
-    public function altabaja($id, $estado)
+    public function altabaja($id, $activo)
     {
         $result = '1';
         $msj = '';
         $selector = '';
 
-        $update = MallaEscuela::findOrFail($id);
-        $update->activo = $estado;
-        
+        $update = ComiteEstudiantil::findOrFail($id);
+        $update->activo = $activo;
         $update->save();
 
-        if (strval($estado) == "0") {
-            $msj = 'La malla fue Desactivado exitosamente.';
-        } elseif (strval($estado) == "1") {
-            $msj = 'La malla fue Activado exitosamente.';
+        if (strval($activo) == "0") {
+            $msj = 'Comite estudiantil fue Desactivada exitosamente';
+        } elseif (strval($activo) == "1") {
+            $msj = 'Comite estudiantil fue Activada exitosamente';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
