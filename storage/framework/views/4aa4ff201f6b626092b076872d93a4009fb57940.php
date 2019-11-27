@@ -45,9 +45,10 @@ data:{
    divprincipal:false,
 
    facultades: [],
+   cant_filas: [],
    errors:[],
 
-   fillFacultad:{'id':'', 'nombre':'', 'codigo':'','activo':'','departamentoacad_id':''},
+   fillFacultad:{'id':'', 'nombre':'', 'abreviatura':'','activo':''},
 
    pagination: {
    'total': 0,
@@ -66,11 +67,8 @@ data:{
    thispage:'1',
 
    newNombre:'',
-   newCodigo:'',
+   newAbreviatura:'',
    newEstado:'',
-   newBorrado:'0',
-   departamentoacad_id: '',
-
 
 
 },
@@ -120,7 +118,8 @@ methods: {
        axios.get(url).then(response=>{
             this.facultades= response.data.facultades.data;
             this.pagination= response.data.pagination;
-            this.departamentos= response.data.departamentos;
+            this.cant_filas = response.data.cant_filas;
+
             this.$nextTick(function () {
                 //this.recorrerFacultades();
             })
@@ -143,12 +142,23 @@ methods: {
        this.thispage='1';
    },
    nuevo:function () {
-       this.divNuevo=true;
-       //$("#txtespecialidad").focus();
-       //$('#txtespecialidad').focus();
-       this.$nextTick(function () {
-       this.cancelFormNuevo();
-     }) 
+       if (this.cant_filas.filas == 0) {
+            this.divNuevo=true;
+            //$("#txtespecialidad").focus();
+            //$('#txtespecialidad').focus();
+            this.$nextTick(function () {
+            this.cancelFormNuevo();
+            })
+       } else {
+            this.divNuevo=false;
+            //$("#txtespecialidad").focus();
+            //$('#txtespecialidad').focus();
+            this.$nextTick(function () {
+            this.cancelFormNuevo();
+            toastr.error('YA SE CUENTA CON EL REGISTRO DE UNA FACULTAD');
+            })
+       }
+         
    },
    cerrarFormNuevo: function () {
        this.divNuevo=false;
@@ -158,48 +168,13 @@ methods: {
        $('#nombre').focus();
 
         this.newNombre = '';
-        this.newCodigo = '';
+        this.newAbreviatura = '';
         this.newEstado = '1';
 
        $(".form-control").css("border","1px solid #d2d6de");
    },
-   getImage(event){
-        if (!event.target.files.length)
-        {
-            this.imagen=null;
-        }
-        else{
-            this.imagen = event.target.files[0];
-        }
-    },
-    seltipo:function(){
-
-    if(this.departamentoacad_id==3){
-        $("#cbdepartamento").select2();
-        $('#cbdepartamento').val('0').trigger('change');
-        this.$nextTick(function () {
-        $("#cbdepartamento").select2();
-        $('#cbdepartamento').val('0').trigger('change');
-    })
-    }
-    $('#txtnom').focus();
-    },
-
-    seltipoE:function(){
-
-    if(this.fillFacultad.departamentoacad_id==3){
-    $("#cbdepartamento").select2();
-    $('#cbdepartamento').val('0').trigger('change');
-    this.$nextTick(function () {
-    $("#cbdepartamento").select2();
-    $('#cbdepartamento').val('0').trigger('change');
-    })
-    }
-    $('#txtnom').focus();
-    },
     create:function () {
 
-       this.departamentoacad_id=$("#cbdepartamento").val();
        var url='facultad';
        $("#btnGuardar").attr('disabled', true);
        $("#btnCancel").attr('disabled', true);
@@ -210,10 +185,8 @@ methods: {
        var data = new  FormData();
 
             data.append('nombre', this.newNombre);
-            data.append('codigo', this.newCodigo);
+            data.append('abreviatura', this.newAbreviatura);
             data.append('activo', this.newEstado);
-            data.append('borrado', this.newBorrado);
-            data.append('departamentoacad_id', this.departamentoacad_id);
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             
@@ -275,9 +248,7 @@ methods: {
 
         this.fillFacultad.id=facultad.id;
         this.fillFacultad.nombre=facultad.nombre;
-        this.fillFacultad.codigo=facultad.codigo;            
-        this.fillFacultad.activo=facultad.activo;
-        this.fillFacultad.departamentoacad_id=facultad.iddepart;
+        this.fillFacultad.abreviatura=facultad.abreviatura;  
       
         this.$nextTick(function () {
         $("#cbdepartamentoE").val( fillFacultad.departamentoacad_id);
@@ -289,14 +260,10 @@ methods: {
     },
    updateFacultad:function (id) {
 
-        var data = new FormData();
-
-        data.append('idFacultad', this.fillFacultad.id);
-        data.append('editTitulo', this.fillFacultad.titulo);
-        data.append('editDescripcion', this.fillFacultad.descripcion);
-        data.append('editEstado', this.fillFacultad.estado);
-        data.append('imagen', this.imagen);
-        data.append('oldImagen', this.fillFacultad.imagen);
+    var data = new FormData();
+        data.append('id', this.fillFacultad.id);
+        data.append('nombre', this.fillFacultad.nombre);
+        data.append('abreviatura', this.fillFacultad.abreviatura);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
@@ -314,8 +281,8 @@ methods: {
            this.divloaderEdit=false;
            
            if(response.data.result=='1'){   
-           this.getFacultad(this.thispage);
-           this.fillLocal={'id':'', 'titulo':'', 'descripcion':'','imagen':'','estado':''};
+           this.getFacultades(this.thispage);
+           this.fillLocal={'id':'', 'nombre':'','abreviatura':''};
            this.errors=[];
            $("#modalEditar").modal('hide');
            toastr.success(response.data.msj);

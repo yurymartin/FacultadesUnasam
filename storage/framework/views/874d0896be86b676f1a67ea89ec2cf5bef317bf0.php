@@ -1,6 +1,6 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de Banner de la Escuela</h3>
+    <h3 class="box-title">Gestión de Banner</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="<?php echo e(URL::to('home')); ?>"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
@@ -46,12 +46,26 @@
         </div>
       </div>
 
+
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
           <label for="archivo" class="col-sm-2 control-label">Imagen :*</label>
           <div class="col-sm-8" style="padding-top: 10px;">
             <input name="archivo" type="file" id="archivo" class="archivo form-control" @change="getImage"
               accept=".png, .jpg, .jpeg, .gif, .jpe, .PNG, .JPG, .JPEG, .GIF, .JPE" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12" style="padding-top: 15px;">
+        <div class="form-group">
+          <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>
+          <div class="col-sm-8">
+            <select name="cbescuela" id="cbescuela" class="form-control" v-model="escuela_id" @change="seltipo">
+              <option disabled value="0">Seleccione una Escula</option>
+              <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">
+                {{escuela.nombre}}
+              </option>
+            </select>
           </div>
         </div>
       </div>
@@ -126,35 +140,24 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Titulo</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 25%;">Descripción</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Titulo</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Descripción</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Escuela</th>
           
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Imagen</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Fecha de publicación</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Banner</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 7%;">Fecha</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
-        <tr v-for="banner, key in banners">
+        <tr v-for="banner, key in bannersescuelas">
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{key+pagination.from}}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ banner.tituloBanner }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ banner.descrBanner }}</td>
-          
-
-          <td style="font-size: 12px; padding: 5px;text-align: center">
-            <template v-if="banner.ruta.length > 0">
-              <img alt="..." v-bind:id="'ImgPerfilNuevoE'+banner.id" class="imgPerfilNuevo"
-                style="width: 300px; height: 150px;">
-              <input type="hidden" name="imgbanner" v-bind:id="'txt'+banner.id" v-bind:value="banner.ruta">
-              <input type="hidden" name="imgbanner" v-bind:id="'txtusar'+banner.id" v-bind:value="banner.id"
-                class="txtimg">
-              <script type="text/javascript">
-                var id={{ banner.id }};
-                    var ruta={{ banner.ruta }};
-                    $("#ImgPerfilNuevoE"+id).attr("src","<?php echo e(asset('/img/banners/')); ?>"+"/"+ruta);
-              </script>
-            </template>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ banner.titulo }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ banner.descripcion }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ banner.nombre }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: center;vertical-align: middle;">
+            <img :src="getImg(banner)" alt="" class="img img-responsive" width="150px" height="50px">
           </td>
-
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ banner.fechapublica }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
               <span class="label label-success" v-if="banner.activo=='1'">Activo</span>
@@ -273,7 +276,20 @@
                     </div>
                   </div>
                 </div>
-
+                <div class="col-md-12" style="padding-top: 15px;">
+                  <div class="form-group">
+                    <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>
+                    <div class="col-sm-8">
+                      <select name="cbescuela" id="cbescuela" class="form-control" v-model="fillBanner.escuela_id"
+                        @change="seltipo">
+                        <option disabled value="0">Seleccione una Escula</option>
+                        <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">
+                          {{escuela.nombre}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
                 <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
                     <label for="cbuestadoE" class="col-sm-2 control-label">Estado:*</label>

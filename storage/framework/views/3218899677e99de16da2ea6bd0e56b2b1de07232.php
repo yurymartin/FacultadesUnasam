@@ -121,7 +121,7 @@ methods: {
    getBanner: function (page) {
        var busca=this.buscar;
        var url = 'banner?page='+page+'&busca='+busca;
-        
+        console.log('ASDADA');
 
        axios.get(url).then(response=>{
             this.banners= response.data.banners.data;

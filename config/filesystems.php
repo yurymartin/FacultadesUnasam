@@ -138,6 +138,56 @@ return [
             'root' => public_path('img/descripcionEscuelas'), // miproyecto.com/public/defaults/
             'visibility' => 'public',
          ],
+         'CampoLaboral' => [
+            'driver' => 'local',
+            'root' => public_path('img/campolaboral'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
+         'InvestigacionP' => [
+            'driver' => 'local',
+            'root' => public_path('img/investigaciones'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
+         'InvestigacionD' => [
+            'driver' => 'local',
+            'root' => public_path('doc/investigaciones'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
+         'LibrosP' => [
+            'driver' => 'local',
+            'root' => public_path('img/libros'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
+         'LibrosD' => [
+            'driver' => 'local',
+            'root' => public_path('doc/libros'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
+         'EventoF' => [
+            'driver' => 'local',
+            'root' => public_path('img/eventoFacultad'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
+         'NoticiaF' => [
+            'driver' => 'local',
+            'root' => public_path('img/noticiaFacultad'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
+         'GaleriaF' => [
+            'driver' => 'local',
+            'root' => public_path('img/galeriaFacultad'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
+         'DocFacP' => [
+            'driver' => 'local',
+            'root' => public_path('img/documentoFacultades'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
+         'DocFacD' => [
+            'driver' => 'local',
+            'root' => public_path('doc/documentoFacultades'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
 
     ],
 

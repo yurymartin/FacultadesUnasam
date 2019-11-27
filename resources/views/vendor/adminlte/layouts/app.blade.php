@@ -91,14 +91,54 @@ desired effect
 @elseif($modulo=="docentes")
 @include('docentes.vue')
 
-@elseif($modulo=="banners")
-@include('banners.vue')
+@elseif($modulo=="bannersFacultad")
+@include('bannersFacultad.vue')
 
 @elseif($modulo=="descripcionfacultades")
 @include('descripcionfacultades.vue')
 
 @elseif($modulo=="descripcionescuelas")
 @include('descripcionescuelas.vue')
+
+@elseif($modulo=="nosotrosescuelas")
+@include('nosotrosescuelas.vue')
+
+@elseif($modulo=="campolaborales")
+@include('campolaborales.vue')
+
+@elseif($modulo=="perfiles")
+@include('perfiles.vue')
+
+@elseif($modulo=="investigaciones")
+@include('investigaciones.vue')
+
+@elseif($modulo=="temas")
+@include('temas.vue')
+
+@elseif($modulo=="libros")
+@include('libros.vue')
+
+@elseif($modulo=="eventoFacultades")
+@include('eventoFacultades.vue')
+
+@elseif($modulo=="noticiaFacultades")
+@include('noticiaFacultades.vue')
+
+@elseif($modulo=="galeriaFacultades")
+@include('galeriaFacultades.vue')
+
+@elseif($modulo=="videoFacultades")
+@include('videoFacultades.vue')
+
+@elseif($modulo=="documentoFacultades")
+@include('documentoFacultades.vue')
+
+@elseif($modulo=="autoridades")
+@include('autoridades.vue')
+
+@elseif($modulo=="alumnos")
+@include('alumnos.vue')
+
 
 @endif
 

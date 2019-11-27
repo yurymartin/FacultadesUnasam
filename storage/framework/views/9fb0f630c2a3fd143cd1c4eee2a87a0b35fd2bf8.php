@@ -256,14 +256,14 @@ methods: {
            $("#btnCancelE").removeAttr("disabled");
            this.divloaderEdit=false;
            
-           if(response.data.result=='1'){   
+        if(response.data.result=='1'){   
            this.getcatDocentes(this.thispage);
            this.fillLocal={'id':'', 'categoria':''};
            this.errors=[];
            $("#modalEditar").modal('hide');
            toastr.success(response.data.msj);
 
-           }else{
+        }else{
                $('#'+response.data.selector).focus();
                toastr.error(response.data.msj);
            }

@@ -31,10 +31,10 @@
       </div>
       <div class="col-md-12">
         <div class="form-group" style="padding-top: 15px;">
-          <label for="txtcodigo" class="col-sm-2 control-label">Codigo:*</label>
+          <label for="txtcodigo" class="col-sm-2 control-label">Abreviatura:*</label>
           <div class="col-sm-4">
-            <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo" maxlength="500"
-              v-model="newCodigo">
+            <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Abreviatura" maxlength="500"
+              v-model="newAbreviatura">
           </div>
         </div>
       </div>
@@ -49,19 +49,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12" style="padding-top: 15px;">
-        <div class="form-group">
-          <label for="cbdepartamento" class="col-sm-2 control-label">Departamento Academico:*</label>
-          <div class="col-sm-8">
-            <select name="cbdepartamento" id="cbdepartamento" class="form-control" v-model="departamentoacad_id"
-              @change="seltipo">
-              <option disabled value="0">Seleccione un Departamento Academico</option>
-              <option v-for="departamento, key in departamentos" v-bind:value="departamento.id">{{departamento.nombre}}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
+
     </div>
 
     <!-- /.box-body -->
@@ -121,20 +109,14 @@
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Facultad</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Codigo</th>
-          
-          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Departamento</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Abreviatura</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
         <tr v-for="facultad, key in facultades">
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{key+pagination.from}}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ facultad.nombre }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ facultad.codigo }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ facultad.nombredepar}}</td>
-          
-
-          
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ facultad.abreviatura }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
               <span class="label label-success" v-if="facultad.activo=='1'">Activo</span>
@@ -236,34 +218,10 @@
 
                 <div class="col-md-12">
                   <div class="form-group" style="padding-top: 15px;">
-                    <label for="txtdescripcionE" class="col-sm-2 control-label">Codigo:*</label>
+                    <label for="txtdescripcionE" class="col-sm-2 control-label">Abreviatura:*</label>
                     <div class="col-sm-4">
-                      <input type="text" class="form-control" id="codigoE" name="codigoE" placeholder="Descripcion"
-                        maxlength="500" v-model="fillFacultad.codigo">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-12">
-                  <div class="form-group" style="padding-top: 15px;">
-                    <label for="cbdepartamentoE" class="col-sm-2 control-label">Departamento Academico:*</label>
-                    <div class="col-sm-8">
-                      <select name="cbdepartamentoE" id="cbdepartamentoE" class="form-control"
-                        v-model="fillFacultad.departamentoacad_id">
-                        <option disabled value="0">Seleccione un Departamento Academico</option>
-                        <option v-for="departamento, key in departamentos" v-bind:value="departamento.id">{{departamento.nombre}}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-12" style="padding-top: 15px;">
-                  <div class="form-group">
-                    <label for="cbuestadoE" class="col-sm-2 control-label">Estado:*</label>
-                    <div class="col-sm-4">
-                      <select class="form-control" id="cbuestadoE" name="cbuestadoE" v-model="fillFacultad.activo">
-                        <option value="1">Activado</option>
-                        <option value="0">Desactivado</option>
-                      </select>
+                      <input type="text" class="form-control" id="codigoE" name="codigoE" placeholder="Abreviatura"
+                        maxlength="500" v-model="fillFacultad.abreviatura">
                     </div>
                   </div>
                 </div>

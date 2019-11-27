@@ -50,7 +50,7 @@
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="facultades"><i class='fa fa-gg'></i>Facultad</a></li>
-                    <li><a href="descripcionfacultad"><i class='fa fa-gg'></i>Descripcion de Facultad</a></li>
+                    <li><a href="descripcionfacultades"><i class='fa fa-gg'></i>Descripcion de Facultad</a></li>
                 </ul>
             </li>
             @endif
@@ -61,10 +61,22 @@
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="escuelas"><i class='fa fa-gg'></i>Escuelas Profesionales</a></li>
-                    <li><a href="descripcionescuelas"><i class='fa fa-gg'></i>Descripcion de Escuelas</a></li>
-                    <li><a href="gradoacademicos"><i class='fa fa-gg'></i>Sobre Nosotros</a></li>
-                    <li><a href="catdocentes"><i class='fa fa-gg'></i>Campo Laboral</a></li>
-                    <li><a href="catdocentes"><i class='fa fa-gg'></i>Perfil Profesional</a></li>
+                    <li><a href="descripcionescuelas"><i class='fa fa-gg'></i>Detalles de la Escuelas</a></li>
+                    <li><a href="nosotrosescuelas"><i class='fa fa-gg'></i>Descripcion de Escuelas</a></li>
+                    <li><a href="campolaborales"><i class='fa fa-gg'></i>Campo Laboral</a></li>
+                    <li><a href="perfiles"><i class='fa fa-gg'></i>Perfil Profesional</a></li>
+                </ul>
+            </li>
+            @endif
+
+            @if(accesoUser([1,2,3]))
+            <li class="treeview" v-bind:class="classMenu2">
+                <a href="#"><i class='fa fa-list-alt'></i> <span>Investigaciones y Libros</span> <i
+                        class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li><a href="temas"><i class='fa fa-gg'></i>Tema de Estudio</a></li>
+                    <li><a href="investigaciones"><i class='fa fa-gg'></i>Investigaciones</a></li>
+                    <li><a href="libros"><i class='fa fa-gg'></i>Libros</a></li>
                 </ul>
             </li>
             @endif
@@ -77,21 +89,21 @@
                     <li><a href="gradoacademicos"><i class='fa fa-gg'></i>Grados Academicos</a></li>
                     <li><a href="catdocentes"><i class='fa fa-gg'></i>Categoria Docentes</a></li>
                     <li><a href="docentes"><i class='fa fa-gg'></i>Docentes</a></li>
-                    <li><a href="docentes"><i class='fa fa-gg'></i>Investigacion</a></li>
                 </ul>
             </li>
             @endif
+
             @if(accesoUser([1,2,3]))
             <li class="treeview" v-bind:class="classMenu2">
                 <a href="#"><i class='fa fa-list-alt'></i> <span>Contenido Web Facultad</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="banners"><i class='fa fa-gg'></i> Gestión de Banners</a></li>
+                    <li><a href="bannersFacultades"><i class='fa fa-gg'></i> Gestión de Banners</a></li>
                     <li><a href="eventos"><i class='fa fa-gg'></i> Gestión de Eventos</a></li>
                     <li><a href="noticias"><i class='fa fa-gg'></i> Gestión de Noticias</a></li>
-                    <li><a href="galerias"><i class='fa fa-gg'></i> Gestión de Galerias</a></li>
-                    <li><a href="galerias"><i class='fa fa-gg'></i> Gestión de Videos</a></li>
-                    <li><a href="documentos"><i class='fa fa-gg'></i> Gestión de Documentos</a></li>
+                    <li><a href="galeriasfacultades"><i class='fa fa-gg'></i> Gestión de Galerias</a></li>
+                    <li><a href="videofacultades"><i class='fa fa-gg'></i> Gestión de Videos</a></li>
+                    <li><a href="documentofacultades"><i class='fa fa-gg'></i> Gestión de Documentos</a></li>
                 </ul>
             </li>
             @endif
@@ -102,10 +114,7 @@
                 <ul class="treeview-menu">
                     <li><a href="bannersescuelas"><i class='fa fa-gg'></i> Gestión de Banners</a></li>
                     <li><a href="galerias"><i class='fa fa-gg'></i> Gestión de Galerias</a></li>
-                    <li><a href="galerias"><i class='fa fa-gg'></i> Gestión de Videos</a></li>
-                    <li><a href="documentos"><i class='fa fa-gg'></i> Gestión de Mallas Curriculares</a></li>
-                    <li><a href="documentos"><i class='fa fa-gg'></i> Libros </a></li>
-                    
+                    <li><a href="documentos"><i class='fa fa-gg'></i> Gestión de Mallas Curriculares</a></li>                 
                 </ul>
             </li>
             @endif
@@ -115,8 +124,8 @@
                 <a href="#"><i class='fa fa-list-alt'></i> <span>Autoridades</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="banners"><i class='fa fa-gg'></i>Cargos</a></li>
-                    <li><a href="banners"><i class='fa fa-gg'></i>Autoridades</a></li>
+                    <li><a href="cargos"><i class='fa fa-gg'></i>Cargos</a></li>
+                    <li><a href="autoridades"><i class='fa fa-gg'></i>Autoridades</a></li>
                 </ul>
             </li>
             @endif
@@ -127,7 +136,7 @@
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="banners"><i class='fa fa-gg'></i>Comites Estudiantiles</a></li>
-                    <li><a href="banners"><i class='fa fa-gg'></i>Alumnos</a></li>
+                    <li><a href="alumnos"><i class='fa fa-gg'></i>Alumnos</a></li>
                 </ul>
             </li>
             @endif

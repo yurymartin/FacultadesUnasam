@@ -121,8 +121,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('facultades', 'FacultadesController@index1');
     Route::resource('facultad', 'FacultadesController');
     Route::get('facultad/altabaja/{id}/{var}', 'FacultadesController@altabaja');
-<<<<<<< HEAD
-    /* --------------------------------------------------- PACHAS --------------------------------------*/
+
     Route::get('cargos', 'CargoController@index1');
     Route::resource('cargo', 'CargoController');
     Route::get('cargo/altabaja/{id}/{var}', 'CargoController@altabaja');
@@ -135,8 +134,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('bannerescuela', 'BannerEscuelaController');
     Route::get('bannerescuela/altabaja/{id}/{var}', 'BannerEscuelaController@altabaja');
 
-=======
->>>>>>> 4af6068bb0fb92a17c4e081a764423250298daf0
 
     Route::get('catdocentes', 'CategoriaDocentesController@index1');
     Route::resource('catdocente', 'CategoriaDocentesController');
@@ -150,9 +147,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('docente', 'DocentesController');
     Route::get('docente/altabaja/{id}/{var}', 'DocentesController@altabaja');
 
-    Route::get('banners', 'BannersController@index1');
-    Route::resource('banner', 'BannersController');
-    Route::get('banner/altabaja/{id}/{var}', 'BannersController@altabaja');
+    Route::get('bannersFacultades', 'BannersController@index1');
+    Route::resource('bannersFacultad', 'BannersController');
+    Route::get('bannersFacultad/altabaja/{id}/{var}', 'BannersController@altabaja');
 
     Route::get('descripcionfacultades', 'DescripcionFacultadesController@index1');
     Route::resource('descripcionfacultad', 'DescripcionFacultadesController');
@@ -161,6 +158,62 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('descripcionescuelas', 'DescripcionEscuelasController@index1');
     Route::resource('descripcionescuela', 'DescripcionEscuelasController');
     Route::get('descripcionescuela/altabaja/{id}/{var}', 'DescripcionEscuelasController@altabaja');
+
+    Route::get('nosotrosescuelas', 'NosotrosEscuelasController@index1');
+    Route::resource('nosotrosescuela', 'NosotrosEscuelasController');
+    Route::get('nosotrosescuela/altabaja/{id}/{var}', 'NosotrosEscuelasController@altabaja');
+
+    Route::get('campolaborales', 'CampoLaboralesController@index1');
+    Route::resource('campolaboral', 'CampoLaboralesController');
+    Route::get('campolaboral/altabaja/{id}/{var}', 'CampoLaboralesController@altabaja');
+
+    Route::get('perfiles', 'PerfilesController@index1');
+    Route::resource('perfil', 'PerfilesController');
+    Route::get('perfil/altabaja/{id}/{var}', 'PerfilesController@altabaja');
+
+    Route::get('investigaciones', 'InvestigacionesController@index1');
+    Route::resource('investigacion', 'InvestigacionesController');
+    Route::get('investigacion/altabaja/{id}/{var}', 'InvestigacionesController@altabaja');
+
+    Route::get('temas', 'TemasController@index1');
+    Route::resource('tema', 'TemasController');
+    Route::get('tema/altabaja/{id}/{var}', 'TemasController@altabaja');
+
+    Route::get('libros', 'LibrosController@index1');
+    Route::resource('libro', 'LibrosController');
+    Route::get('libro/altabaja/{id}/{var}', 'LibrosController@altabaja');
+
+    Route::get('eventos', 'EventoFacultadesController@index1');
+    Route::resource('evento', 'EventoFacultadesController');
+    Route::get('evento/altabaja/{id}/{var}', 'EventoFacultadesController@altabaja');
+
+    Route::get('noticias', 'NoticiaFacultadesController@index1');
+    Route::resource('noticia', 'NoticiaFacultadesController');
+    Route::get('noticia/altabaja/{id}/{var}', 'NoticiaFacultadesController@altabaja');
+
+    Route::get('galeriasfacultades', 'GaleriaFacultadesController@index1');
+    Route::resource('galeriasfacultad', 'GaleriaFacultadesController');
+    Route::get('galeriasfacultad/altabaja/{id}/{var}', 'GaleriaFacultadesController@altabaja');
+
+    Route::get('videofacultades', 'VideoFacultadesController@index1');
+    Route::resource('videofacultad', 'VideoFacultadesController');
+    Route::get('videofacultad/altabaja/{id}/{var}', 'VideoFacultadesController@altabaja');
+
+    Route::get('documentofacultades', 'DocumentoFacultadescontroller@index1');
+    Route::resource('documentofacultad', 'DocumentoFacultadescontroller');
+    Route::get('documentofacultad/altabaja/{id}/{var}', 'DocumentoFacultadescontroller@altabaja');
+
+    Route::get('cargos', 'CargosController@index1');
+    Route::resource('cargo', 'CargosController');
+    Route::get('cargo/altabaja/{id}/{var}', 'CargosController@altabaja');
+
+    Route::get('autoridades', 'AutoridadesController@index1');
+    Route::resource('autoridad', 'AutoridadesController');
+    Route::get('autoridad/altabaja/{id}/{var}', 'AutoridadesController@altabaja');
+
+    Route::get('alumnos', 'AlumnosController@index1');
+    Route::resource('alumno', 'AlumnosController');
+    Route::get('alumno/altabaja/{id}/{var}', 'AlumnosController@altabaja');
 
     /* --------------------------------------------------- PACHAS --------------------------------------*/
     Route::get('cargos', 'CargoController@index1');
@@ -174,5 +227,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('bannersescuelas', 'BannerEscuelaController@index1');
     Route::resource('banner', 'BannerEscuelaController');
     Route::get('banner/altabaja/{id}/{var}', 'BannerEscuelaController@altabaja');
+    
 
 });

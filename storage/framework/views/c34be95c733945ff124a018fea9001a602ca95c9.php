@@ -81,6 +81,7 @@ desired effect
 
 <?php elseif($modulo=="bannersescuelas"): ?>
 <?php echo $__env->make('bannerescuela.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
 <?php elseif($modulo=="categoriadocentes"): ?>
 <?php echo $__env->make('categoriadocentes.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
@@ -90,14 +91,54 @@ desired effect
 <?php elseif($modulo=="docentes"): ?>
 <?php echo $__env->make('docentes.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-<?php elseif($modulo=="banners"): ?>
-<?php echo $__env->make('banners.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php elseif($modulo=="bannersFacultad"): ?>
+<?php echo $__env->make('bannersFacultad.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 <?php elseif($modulo=="descripcionfacultades"): ?>
 <?php echo $__env->make('descripcionfacultades.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 <?php elseif($modulo=="descripcionescuelas"): ?>
 <?php echo $__env->make('descripcionescuelas.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="nosotrosescuelas"): ?>
+<?php echo $__env->make('nosotrosescuelas.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="campolaborales"): ?>
+<?php echo $__env->make('campolaborales.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="perfiles"): ?>
+<?php echo $__env->make('perfiles.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="investigaciones"): ?>
+<?php echo $__env->make('investigaciones.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="temas"): ?>
+<?php echo $__env->make('temas.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="libros"): ?>
+<?php echo $__env->make('libros.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="eventoFacultades"): ?>
+<?php echo $__env->make('eventoFacultades.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="noticiaFacultades"): ?>
+<?php echo $__env->make('noticiaFacultades.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="galeriaFacultades"): ?>
+<?php echo $__env->make('galeriaFacultades.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="videoFacultades"): ?>
+<?php echo $__env->make('videoFacultades.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="documentoFacultades"): ?>
+<?php echo $__env->make('documentoFacultades.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="autoridades"): ?>
+<?php echo $__env->make('autoridades.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="alumnos"): ?>
+<?php echo $__env->make('alumnos.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
 
 <?php endif; ?>
 

@@ -23,8 +23,8 @@ class BannersController extends Controller
 
             $idtipouser = Auth::user()->tipouser_id;
             $tipouser = Tipouser::find($idtipouser);
-            $modulo = "banners";
-            return view('banners.index', compact('tipouser', 'modulo'));
+            $modulo = "bannersFacultad";
+            return view('bannersFacultad.index', compact('tipouser', 'modulo'));
         } else {
             return view('adminlte::home');
         }
@@ -39,7 +39,7 @@ class BannersController extends Controller
     {
 
         $buscar = $request->busca;
-        $banners = BannersFacultades::where('borrado','=','0')
+        $bannersFacultades = BannersFacultades::where('borrado', '=', '0')
             ->where(function ($query) use ($buscar) {
                 $query->where('titulo', 'like', '%' . $buscar . '%');
                 $query->orWhere('descripcion', 'like', '%' . $buscar . '%');
@@ -50,14 +50,14 @@ class BannersController extends Controller
 
         return [
             'pagination' => [
-                'total' => $banners->total(),
-                'current_page' => $banners->currentPage(),
-                'per_page' => $banners->perPage(),
-                'last_page' => $banners->lastPage(),
-                'from' => $banners->firstItem(),
-                'to' => $banners->lastItem(),
+                'total' => $bannersFacultades->total(),
+                'current_page' => $bannersFacultades->currentPage(),
+                'per_page' => $bannersFacultades->perPage(),
+                'last_page' => $bannersFacultades->lastPage(),
+                'from' => $bannersFacultades->firstItem(),
+                'to' => $bannersFacultades->lastItem(),
             ],
-            'banners' => $banners
+            'bannersFacultades' => $bannersFacultades
         ];
     }
 
@@ -143,7 +143,6 @@ class BannersController extends Controller
                 $msj = 'Nuevo Banner registrado con éxito';
             }
         }
-
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
 
@@ -182,7 +181,6 @@ class BannersController extends Controller
         $msj = '';
         $selector = '';
 
-        $id = $request->id;
         $titulo = $request->titulo;
         $descripcion = $request->descripcion;
         $estado = $request->estado;
@@ -233,13 +231,11 @@ class BannersController extends Controller
             $editBanner = BannersFacultades::findOrFail($id);
 
             if (strlen($imagen) == 0) {
-
                 $editBanner->titulo = $titulo;
                 $editBanner->descripcion = $descripcion;
                 $editBanner->activo = $estado;
                 $editBanner->save();
             } else {
-
                 $editBanner->titulo = $titulo;
                 $editBanner->descripcion = $descripcion;
                 $editBanner->imagen = $imagen;
