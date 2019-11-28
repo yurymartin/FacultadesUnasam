@@ -1,5 +1,5 @@
 <!-- This one in here is responsive menu for tablet and mobiles -->
-
+<link rel="stylesheet" href="{{ asset('web/css/bootstrap.min.css') }}">
 <div class="responsive-navigation visible-sm visible-xs">
     <a href="#" class="menu-toggle-btn">
         <i class="fa fa-bars"></i>
@@ -97,7 +97,7 @@
                 <ul class="small-links">
                     <li><a href="#">Eventos</a></li>
                     <li><a href="https://www.unasam.edu.pe">Visita UNASAM</a></li>
-                    <li><a href="#">Acceso</a></li>
+                    <li><a href="home">Acceso</a></li>
                 </ul>
                 <div>
                     <a href="https://www.unasam.edu.pe"><img src="images/logolicenciada.png" alt="UNASAM"

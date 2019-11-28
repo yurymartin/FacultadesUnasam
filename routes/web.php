@@ -1,104 +1,22 @@
 <?php
 
-Route::get('/', function () {
-    return view('web/index');
-});
-Route::get('/admin', function () {
-    return view('vendor/adminlte/layouts/app');
-});
+//Route::get('/', function () {
+//    return view('web/index');
+//});
+//Route::get('/admin', function () {
+//    return view('vendor/adminlte/layouts/app');
+//});
 //Route::get('/','IndexWebController@Index');
 
 // ESCUELAS
-Route::get('WebAdministracion', 'IndexWebController@Administracion');
-Route::get('WebArqueologia', 'IndexWebController@Arqueologia');
-Route::get('WebArquitectura', 'IndexWebController@Arquitectura');
-Route::get('WebContabilidad', 'IndexWebController@Contabilidad');
-Route::get('WebComunicacion', 'IndexWebController@Comunicacion');
-Route::get('WebDerecho', 'IndexWebController@Derecho');
-Route::get('WebEconomia', 'IndexWebController@Economia');
-Route::get('WebEducacion', 'IndexWebController@Educacion');
-Route::get('WebEnfermeria', 'IndexWebController@Enfermeria');
-Route::get('WebEstadistica', 'IndexWebController@Estadistica');
-Route::get('WebIngAgricola', 'IndexWebController@IngAgricola');
-Route::get('WebIngAgronomia', 'IndexWebController@IngAgronomia');
-Route::get('WebIngAlimentaria', 'IndexWebController@IngAlimentaria');
-Route::get('WebIngAmbiental', 'IndexWebController@IngAmbiental');
-Route::get('WebIngCivil', 'IndexWebController@IngCivil');
-Route::get('WebIngIndustrial', 'IndexWebController@IngIndustrial');
-Route::get('WebIngles', 'IndexWebController@Ingles');
-Route::get('WebIngMinas', 'IndexWebController@IngMinas');
-Route::get('WebIngSanitaria', 'IndexWebController@IngSanitaria');
-Route::get('WebIngSistemas', 'IndexWebController@IngSistemas');
-Route::get('WebLiteratura', 'IndexWebController@Literatura');
-Route::get('WebMatematica', 'IndexWebController@Matematica');
-Route::get('WebMatematicaInformatica', 'IndexWebController@MatematicaInformatica');
-Route::get('WebObstetricia', 'IndexWebController@Obstetricia');
-Route::get('WebTurismo', 'IndexWebController@Turismo');
-
-// ORGANOS DE GOBIERNO
-Route::get('WebAsambleaUniversitaria', 'IndexWebController@AsambleaUniversitaria');
-Route::get('WebConsejoUniversitario', 'IndexWebController@ConsejoUniversitario');
-Route::get('WebEjes', 'IndexWebController@Ejes');
-
-// OFICINAS
-Route::get('WebAsesoriaJuridica', 'IndexWebController@AsesoriaJuridica');
-Route::get('WebDirAcadEstGenerales', 'IndexWebController@DirAcadEstGenerales');
-Route::get('WebDirCentrosInvestigacion', 'IndexWebController@DirCentrosInvestigacion');
-Route::get('WebDirGeneralAdministracion', 'IndexWebController@DirGeneralAdministracion');
-Route::get('WebDirInvestigacion', 'IndexWebController@DireccionInvestigacion');
-Route::get('WebOficinaAdmision', 'IndexWebController@OficinaAdmision');
-Route::get('WebBienestarUniversitario', 'IndexWebController@BienestarUniversitario');
-Route::get('WebCalidadUniversitaria', 'IndexWebController@CalidadUniversitaria');
-Route::get('WebDesarrolloFisico', 'IndexWebController@DesarrolloFisico');
-Route::get('WebOficGeneralEstudios', 'IndexWebController@OficGeneralEstudios');
-Route::get('WebImagenInstitucional', 'IndexWebController@ImagenInstitucional');
-Route::get('WebCooperacionTecnica', 'IndexWebController@CooperacionTecnica');
-Route::get('WebPlanificacionPresupuesto', 'IndexWebController@PlanificacionPresupuesto');
-Route::get('WebProcuraduria', 'IndexWebController@Procuraduria');
-Route::get('WebResponsabilidadSocial', 'IndexWebController@ResponsabilidadSocial');
-Route::get('WebSecretariaGeneral', 'IndexWebController@SecretariaGeneral');
-Route::get('WebServiciosAcademicos', 'IndexWebController@ServiciosAcademicos');
-Route::get('WebTecnologiasInformacion', 'IndexWebController@TecnologiasInformacion');
-Route::get('WebControlInstitucional', 'IndexWebController@ControlInstitucional');
-Route::get('WebRectorado', 'IndexWebController@Rectorado');
-Route::get('WebVicerrectoradoAcademico', 'IndexWebController@VicerrectoradoAcademico');
-Route::get('WebVicerrectoradoInv', 'IndexWebController@VicerrectoradoInv');
-
-
-// AMBIENTES
-Route::get('WebAuditorio', 'IndexWebController@Auditorio');
-Route::get('WebBiblioteca', 'IndexWebController@Biblioteca');
-Route::get('WebComedor', 'IndexWebController@Comedor');
-
-// SERVICIOS
-Route::get('WebBecas', 'IndexWebController@Becas');
-Route::get('WebCentroMedico', 'IndexWebController@CentroMedico');
-Route::get('WebConvocatoria', 'IndexWebController@Convocatorias');
-
-//Otros
-Route::get('WebGaleria', 'IndexWebController@Galeria');
-Route::get('WebGimnasio', 'IndexWebController@Gimnasio');
-Route::get('WebHimno', 'IndexWebController@Himno');
-Route::get('WebHistoria', 'IndexWebController@Historia');
-Route::get('WebInstrumentosGestion', 'IndexWebController@InstrumentosGestion');
-Route::get('WebMisionVision', 'IndexWebController@MisionVision');
-Route::get('WebNoticias', 'IndexWebController@Noticias');
-Route::get('WebOrganigrama', 'IndexWebController@Organigrama');
-Route::get('WebPagosVirtuales', 'IndexWebController@PagosVirtuales');
-Route::get('WebPilares', 'IndexWebController@Pilares');
-Route::get('WebPoliticas', 'IndexWebController@Politicas');
-Route::get('WebServicios', 'IndexWebController@Servicios');
-Route::get('verNoticia/{idN}', 'IndexWebController@verNoticia');
-
-
-
-
-
-
+//Route::get('WebAdministracion', 'IndexWebController@Administracion');
 // Route::get('/', function () {
 //     //return view('welcome');
 //     return redirect('login');
 // });
+/*------------------------------------------------------------------------------------------------*/
+Route::resource('/', 'IndexWebController');
+/*------------------------------------------------------------------------------------------------*/
 
 
 
@@ -114,6 +32,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('mail', 'MailController');
     /* --------------------------------------------------- YURY --------------------------------------*/
+
+    Route::resource('home', 'HomeController');
     Route::get('departamentos', 'DepartamentoAcademicosController@index1');
     Route::resource('departamento', 'DepartamentoAcademicosController');
     Route::get('departamento/altabaja/{id}/{var}', 'DepartamentoAcademicosController@altabaja');

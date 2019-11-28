@@ -18,6 +18,7 @@
     <link href="{{ asset('web/css/bootstrap.css') }}" rel="stylesheet" media="screen">
     <link href="{{ asset('web/css/font-awesome.min.css') }}" rel="stylesheet" media="screen">
     <link href="{{ asset('web/css/animate.css') }}" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="{{ asset('web/css/font-awesome.min.css') }}">
 
     <link href="{{ asset('style.css') }}" rel="stylesheet" media="screen">
     <!-- Favicons -->
@@ -27,6 +28,7 @@
     <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
     <link rel="shortcut icon" href="images/ico/favicon.ico">
     <link rel="stylesheet" href="{{ asset('web/css/bootstrap.css') }}">
+    <!--link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     
 
     <!-- JavaScripts -->

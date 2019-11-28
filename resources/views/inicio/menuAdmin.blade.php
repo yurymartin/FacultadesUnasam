@@ -3,7 +3,6 @@
   <div class="small-box bg-aqua" style="box-shadow: 0px 10px 30px 0px #8d8686;">
     <div class="inner">
       <h3 style="font-size: 30px">Banners</h3>
-
       <p>Gestión de Banners</p>
     </div>
     <div class="icon" style="top: 7px;">

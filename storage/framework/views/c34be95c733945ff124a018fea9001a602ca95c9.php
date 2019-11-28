@@ -66,7 +66,6 @@ desired effect
 </body>
 </html>
 
-
 <?php if($modulo=="facultades"): ?>
 <?php echo $__env->make('facultades.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
@@ -151,6 +150,8 @@ desired effect
 <?php elseif($modulo=="alumnos"): ?>
 <?php echo $__env->make('alumnos.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
+<?php elseif($modulo=="inicioAdmin"): ?>
+<?php echo $__env->make('inicio.vueAdmin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 <?php endif; ?>
 

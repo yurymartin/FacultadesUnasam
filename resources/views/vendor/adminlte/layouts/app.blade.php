@@ -66,7 +66,6 @@ desired effect
 </body>
 </html>
 
-
 @if($modulo=="facultades")
 @include('facultades.vue')
 
@@ -151,6 +150,8 @@ desired effect
 @elseif($modulo=="alumnos")
 @include('alumnos.vue')
 
+@elseif($modulo=="inicioAdmin")
+@include('inicio.vueAdmin')
 
 @endif
 

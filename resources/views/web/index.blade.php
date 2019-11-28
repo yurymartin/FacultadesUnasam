@@ -6,33 +6,23 @@
             <div class="main-slideshow" style="height: 500px; margin: 0px;">
                 <div class="flexslider">
                     <ul class="slides">
+                        @foreach ($BannersFacultades as $BannersFacultad)
                         <li>
-                            <img src="images/slide1.jpg" style="height: 500px" />
+                            <img src="/img/bannersFacultades/{{$BannersFacultad->imagen}}" style="height: 500px"
+                                alt="{{$BannersFacultad->imagen}}">
                             <div class="slider-caption">
-                                <h2><a href="blog-single.html">When a Doctor’s Visit Is a Guilt Trip</a></h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+                                <h2><a href="blog-single.html">{{$BannersFacultad->titulo}}</a></h2>
+                                <p>{{$BannersFacultad->descripcion}}</p>
                             </div>
                         </li>
-                        <li>
-                            <img src="images/slide2.jpg" style="height: 500px" />
-                            <div class="slider-caption">
-                                <h2><a href="blog-single.html">Unlocking the scrolls of Herculaneum</a></h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-                            </div>
-                        </li>
-                        <li>
-                            <img src="images/slide3.jpg" style="height: 500px" />
-                            <div class="slider-caption">
-                                <h2><a href="blog-single.html">Corin Sworn wins Max Mara Art Prize</a></h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-                            </div>
-                        </li>
-                    </ul> <!-- /.slides -->
-                </div> <!-- /.flexslider -->
-            </div> <!-- /.main-slideshow -->
-        </div> <!-- /.col-md-12 -->
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
 <div class="container">
     <div class="row">
         <!-- Here begin Main Content -->
@@ -45,40 +35,19 @@
                             <h4 class="widget-title">Ultimas Noticias</h4>
                         </div> <!-- /.widget-main-title -->
                         <div class="widget-inner">
+                            @foreach ($noticias as $noticia)
                             <div class="blog-list-post clearfix">
                                 <div class="blog-list-thumb">
-                                    <a href="blog-single.html"><img src="images/blog/blog-small-thumb1.jpg" alt=""></a>
+                                    <a href="/img/noticiaFacultad/{{$noticia->imagen}}" class="fancybox"
+                                        rel="gallery1"><img src="/img/noticiaFacultad/{{$noticia->imagen}}" alt=""></a>
                                 </div>
                                 <div class="blog-list-details">
-                                    <h5 class="blog-list-title"><a href="blog-single.html">Graduate Open Day at the
-                                            Ruskin</a></h5>
-                                    <p class="blog-list-meta small-text"><span><a href="#">12 January 2014</a></span>
-                                        with <span><a href="#">3 comments</a></span></p>
+                                    <h5 class="blog-list-title"><a href="blog-single.html">{{$noticia->titulo}}</a></h5>
+                                    <p class="blog-list-meta small-text"><span><a
+                                                href="#">{{$noticia->descripcion}}</a></span></p>
                                 </div>
                             </div> <!-- /.blog-list-post -->
-                            <div class="blog-list-post clearfix">
-                                <div class="blog-list-thumb">
-                                    <a href="blog-single.html"><img src="images/blog/blog-small-thumb2.jpg" alt=""></a>
-                                </div>
-                                <div class="blog-list-details">
-                                    <h5 class="blog-list-title"><a href="blog-single.html">Visiting Artists: Giles
-                                            Bailey</a></h5>
-                                    <p class="blog-list-meta small-text"><span><a href="#">12 January 2014</a></span>
-                                        with <span><a href="#">3 comments</a></span></p>
-                                </div>
-                            </div> <!-- /.blog-list-post -->
-                            <div class="blog-list-post clearfix">
-                                <div class="blog-list-thumb">
-                                    <a href="blog-single.html"><img src="images/blog/blog-small-thumb3.jpg" alt=""></a>
-                                </div>
-                                <div class="blog-list-details">
-                                    <h5 class="blog-list-title"><a href="blog-single.html">Workshop: Theories of the
-                                            Image</a></h5>
-                                    <p class="blog-list-meta small-text"><span><a href="#">12 January 2014</a></span>
-                                        with <span><a href="#">3 comments</a></span></p>
-                                </div>
-                            </div> <!-- /.blog-list-post -->
-
+                            @endforeach
                         </div> <!-- /.widget-inner -->
                         <div class="container">
                             <a href="" class="btn btn-primary">Ver mas...</a>
@@ -94,38 +63,22 @@
                             <h4 class="widget-title">Eventos</h4>
                         </div> <!-- /.widget-main-title -->
                         <div class="widget-inner">
+                            @foreach ($eventos as $evento)
                             <div class="event-small-list clearfix">
-                                <div class="calendar-small">
-                                    <span class="s-month">Jan</span>
-                                    <span class="s-date">24</span>
+                                <div class="blog-list-thumb">
+                                    <a href="{{ asset('/img/eventoFacultad/'.$evento->imagen) }}" class="fancybox"
+                                        rel="gallery1"><img src="{{ asset('/img/eventoFacultad/'.$evento->imagen) }}"
+                                            alt=""></a>
                                 </div>
                                 <div class="event-small-details">
-                                    <h5 class="event-small-title"><a href="event-single.html">Nelson Mandela Memorial
-                                            Tribute</a></h5>
-                                    <p class="event-small-meta small-text">Cramton Auditorium 9:00 AM to 1:00 PM</p>
+                                    <h5 class="event-small-title"><a href="event-single.html">{{$evento->tittulo}}</a>
+                                    </h5>
+                                    <p class="event-small-meta small-text">{{$evento->descripcion}}</p>
+                                    <p class="event-small-meta small-text">Inicio: {{$evento->fechainicio}}</p>
+                                    <p class="event-small-meta small-text">Fin: {{$evento->fechafin}}</p>
                                 </div>
                             </div>
-                            <div class="event-small-list clearfix">
-                                <div class="calendar-small">
-                                    <span class="s-month">Jan</span>
-                                    <span class="s-date">24</span>
-                                </div>
-                                <div class="event-small-details">
-                                    <h5 class="event-small-title"><a href="event-single.html">OVADA Oxford Open</a></h5>
-                                    <p class="event-small-meta small-text">Posner Center 4:30 PM to 6:00 PM</p>
-                                </div>
-                            </div>
-                            <div class="event-small-list clearfix">
-                                <div class="calendar-small">
-                                    <span class="s-month">Jan</span>
-                                    <span class="s-date">24</span>
-                                </div>
-                                <div class="event-small-details">
-                                    <h5 class="event-small-title"><a href="event-single.html">Filming Objects And
-                                            Sculpture</a></h5>
-                                    <p class="event-small-meta small-text">A70 Cyert Hall 12:00 PM to 1:00 PM</p>
-                                </div>
-                            </div>
+                            @endforeach
                         </div> <!-- /.widget-inner -->
                         <div class="container">
                             <a href="" class="btn btn-primary">Ver mas...</a>
@@ -171,10 +124,15 @@
                         <div class="widget-inner">
                             <div class="our-campus clearfix">
                                 <ul>
-                                    <li><img src="images/campus/campus-logo1.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo2.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo3.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo4.jpg" alt=""></li>
+                                    @foreach ($carrerasprofesionales as $carrerasprofesional)
+                                    <li>
+                                        <a class="fancybox"
+                                            href="/img/descripcionEscuelas/{{$carrerasprofesional->logo}}">
+                                            <img src="/img/descripcionEscuelas/{{$carrerasprofesional->logo}}" alt=""
+                                                width="170px" height="113px">
+                                        </a>
+                                    </li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
@@ -192,33 +150,32 @@
                     <h4 class="widget-title">Autoridades</h4>
                 </div>
                 <div class="widget-inner">
+                    @foreach ($decano as $deca)
                     <div class="prof-list-item clearfix">
                         <div class="prof-thumb">
-                            <img src="images/prof/prof1.jpg" alt="Profesor Name">
+                            <a href="{{ asset('/img/personas/'.$deca->foto)}}" class="fancybox" rel="gallery1"><img
+                                    src="{{ asset('/img/personas/'.$deca->foto)}}"
+                                    alt="{{$deca->nombres.' '.$deca->apellidos}}"></a>
                         </div> <!-- /.prof-thumb -->
                         <div class="prof-details">
-                            <h5 class="prof-name-list">Prof. Betty Hunt</h5>
-                            <p class="small-text">Sed ut lectus ac lacus molestie posuere non tincidunt arcu.</p>
+                            <h5 class="prof-name-list">{{$deca->nombres.' '.$deca->apellidos}}</h5>
+                            <p class="small-text">{{$deca->cargo}}</p>
                         </div> <!-- /.prof-details -->
                     </div> <!-- /.prof-list-item -->
+                    @endforeach
+                    @foreach ($autoridades as $autoridad)
                     <div class="prof-list-item clearfix">
                         <div class="prof-thumb">
-                            <img src="images/prof/prof2.jpg" alt="Profesor Name">
+                            <a href="{{ asset('/img/personas/'.$autoridad->foto)}}" class="fancybox" rel="gallery1"><img
+                                    src="{{ asset('/img/personas/'.$autoridad->foto)}}"
+                                    alt="{{$autoridad->nombres.' '.$autoridad->apellidos}}"></a>
                         </div> <!-- /.prof-thumb -->
                         <div class="prof-details">
-                            <h5 class="prof-name-list">Prof. Victor Johns</h5>
-                            <p class="small-text">Nullam sollicitudin libero ut ullamcorper pretium.</p>
+                            <h5 class="prof-name-list">{{$autoridad->nombres.' '.$autoridad->apellidos}}</h5>
+                            <p class="small-text">{{$autoridad->cargo}}</p>
                         </div> <!-- /.prof-details -->
                     </div> <!-- /.prof-list-item -->
-                    <div class="prof-list-item clearfix">
-                        <div class="prof-thumb">
-                            <img src="images/prof/prof3.jpg" alt="Profesor Name">
-                        </div> <!-- /.prof-thumb -->
-                        <div class="prof-details">
-                            <h5 class="prof-name-list">Prof. Charles Conway</h5>
-                            <p class="small-text">Integer et nisl tincidunt, euismod orci eget, posuere nunc.</p>
-                        </div> <!-- /.prof-details -->
-                    </div> <!-- /.prof-list-item -->
+                    @endforeach
                 </div> <!-- /.widget-inner -->
             </div> <!-- /.widget-main -->
 
@@ -229,18 +186,18 @@
                 <div class="widget-inner">
                     <div id="slider-testimonials">
                         <ul>
+                            @foreach ($misionvision as $misiovisio)
                             <li>
                                 <p><strong>misión</strong></p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit, quos, veniam optio
-                                    voluptas hic delectus soluta odit nemo harum <strong class="dark-text">Shannon D.
-                                        Edwards</strong></p>
+                                <p style="text-align: justify">{{$misiovisio->mision}}</strong></p>
                             </li>
+                            @endforeach
+                            @foreach ($misionvision as $misiovisio)
                             <li>
-                                <p><strong>Visión</strong></p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit, quos, veniam optio
-                                    voluptas hic delectus soluta odit nemo harum <strong class="dark-text">Shannon D.
-                                        Edwards</strong></p>
+                                <p><strong>visión</strong></p>
+                                <p style="text-align: justify">{{$misiovisio->vision}}</strong></p>
                             </li>
+                            @endforeach
                         </ul>
                         <a class="prev fa fa-angle-left" href=""></a>
                         <a class="next fa fa-angle-right" href=""></a>
@@ -254,54 +211,14 @@
                 </div>
                 <div class="widget-inner">
                     <div class="gallery-small-thumbs clearfix">
+                        @foreach ($galeriaFacultades as $galeriaFacultad)
                         <div class="thumb-small-gallery">
-                            <a class="fancybox" rel="gallery1" href="images/gallery/gallery1.jpg"
-                                title="Gallery Tittle One">
-                                <img src="images/gallery/gallery-small-thumb1.jpg" alt="" />
+                            <a class="fancybox" rel="gallery1" href="/img/galeriaFacultad/{{$galeriaFacultad->imagen}}"
+                                title="{{$galeriaFacultad->imagen}}">
+                                <img src="/img/galeriaFacultad/{{$galeriaFacultad->imagen}}" alt="" />
                             </a>
                         </div>
-                        <div class="thumb-small-gallery">
-                            <a class="fancybox" rel="gallery1" href="images/gallery/gallery2.jpg"
-                                title="Gallery Tittle One">
-                                <img src="images/gallery/gallery-small-thumb2.jpg" alt="" />
-                            </a>
-                        </div>
-                        <div class="thumb-small-gallery">
-                            <a class="fancybox" rel="gallery1" href="images/gallery/gallery3.jpg"
-                                title="Gallery Tittle One">
-                                <img src="images/gallery/gallery-small-thumb3.jpg" alt="" />
-                            </a>
-                        </div>
-                        <div class="thumb-small-gallery">
-                            <a class="fancybox" rel="gallery1" href="images/gallery/gallery4.jpg"
-                                title="Gallery Tittle One">
-                                <img src="images/gallery/gallery-small-thumb4.jpg" alt="" />
-                            </a>
-                        </div>
-                        <div class="thumb-small-gallery">
-                            <a class="fancybox" rel="gallery1" href="images/gallery/gallery5.jpg"
-                                title="Gallery Tittle One">
-                                <img src="images/gallery/gallery-small-thumb5.jpg" alt="" />
-                            </a>
-                        </div>
-                        <div class="thumb-small-gallery">
-                            <a class="fancybox" rel="gallery1" href="images/gallery/gallery6.jpg"
-                                title="Gallery Tittle One">
-                                <img src="images/gallery/gallery-small-thumb6.jpg" alt="" />
-                            </a>
-                        </div>
-                        <div class="thumb-small-gallery">
-                            <a class="fancybox" rel="gallery1" href="images/gallery/gallery7.jpg"
-                                title="Gallery Tittle One">
-                                <img src="images/gallery/gallery-small-thumb7.jpg" alt="" />
-                            </a>
-                        </div>
-                        <div class="thumb-small-gallery">
-                            <a class="fancybox" rel="gallery1" href="images/gallery/gallery8.jpg"
-                                title="Gallery Tittle One">
-                                <img src="images/gallery/gallery-small-thumb8.jpg" alt="" />
-                            </a>
-                        </div>
+                        @endforeach
                     </div> <!-- /.galler-small-thumbs -->
                 </div> <!-- /.widget-inner -->
                 <div class="container">
@@ -315,44 +232,16 @@
                 </div>
                 <div class="widget-inner">
                     <div class="gallery-small-thumbs clearfix">
+                        @foreach ($videosFacultades as $videosFacultad)
                         <div class="thumb-small-gallery">
                             <a class="fancybox" rel="gallery1" href="images/gallery/gallery1.jpg"
                                 title="Gallery Tittle One">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/_BufY-469g8?start=5"
-                                    frameborder="0"
-                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen></iframe>
-                            </a>
-                            <p>video 1</p>
-                        </div>
-                        <div class="thumb-small-gallery">
-                            <a class="fancybox" rel="gallery1" href="images/gallery/gallery1.jpg"
-                                title="Gallery Tittle One">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/_BufY-469g8?start=5"
-                                    frameborder="0"
-                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen></iframe>
-                            </a>
-                            <p>video 1</p>
-                        </div>
-                        <div class="thumb-small-gallery">
-                            <a class="fancybox" rel="gallery1" href="images/gallery/gallery1.jpg"
-                                title="Gallery Tittle One">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/_BufY-469g8?start=5"
-                                    frameborder="0"
-                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen></iframe>
+                                @php
+                                echo $videosFacultad->link;
+                                @endphp
                             </a>
                         </div>
-                        <div class="thumb-small-gallery">
-                            <a class="fancybox" rel="gallery1" href="images/gallery/gallery1.jpg"
-                                title="Gallery Tittle One">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/_BufY-469g8?start=5"
-                                    frameborder="0"
-                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen></iframe>
-                            </a>
-                        </div>
+                        @endforeach
                     </div> <!-- /.galler-small-thumbs -->
                 </div> <!-- /.widget-inner -->
                 <div class="container">
