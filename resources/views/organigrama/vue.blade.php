@@ -3,7 +3,7 @@
 el: '#app',
 data:{
        titulo:"Mantenimiento",
-       subtitulo: "Gestión de Organigrama",
+       subtitulo: "Gestión de Organigramas",
        subtitulo2: "Principal",
 
    subtitle2:false,
@@ -28,8 +28,8 @@ data:{
    divtitulo:true,
    classTitle:'fa fa-qrcode ',
    classMenu0:'',
-   classMenu1:'active',
-   classMenu2:'',
+   classMenu1:'',
+   classMenu2:'active   ',
    classMenu3:'',
    classMenu4:'',
    classMenu5:'',
@@ -48,7 +48,7 @@ data:{
    escuelas: [],
    errors:[],
 
-   fillGalEcuela:{'id':'', 'imagen':'', 'fecha':'','estado':''},
+   fillGalEcuela:{'id':'', 'imagen':'', 'fecha':'','estado':'','descripcion':''},
 
    pagination: {
    'total': 0,
@@ -67,6 +67,7 @@ data:{
    thispage:'1',
 
    
+   newDescripcion:'',
    newFecha:'',
    newEstado:'1',
    newBorrado:'0',
@@ -121,7 +122,7 @@ methods: {
     },
    getBanner: function (page) {
        var busca=this.buscar;
-       var url = 'organigrama?page='+page+'&busca='+busca;
+       var url = 'organigramafacultad?page='+page+'&busca='+busca;
         
        axios.get(url).then(response=>{
             this.organigramafacultades= response.data.organigramafacultades.data;
@@ -178,7 +179,7 @@ methods: {
     
     create:function () { 
 
-       var url='organigrama';
+       var url='organigramafacultad';
        $("#btnGuardar").attr('disabled', true);
        $("#btnCancel").attr('disabled', true);
        $("#btnClose").attr('disabled', true);
@@ -189,8 +190,8 @@ methods: {
 
             
             data.append('imagen', this.imagen);
+            data.append('descripcion', this.newDescripcion);
             data.append('activo', this.newEstado);
-            data.append('borrado', this.newBorrado);
             
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             axios.post(url,data,config).then(response=>{
@@ -220,7 +221,7 @@ methods: {
     
         swal.fire({
              title: '¿Estás seguro?',
-             text: "¿Desea eliminar el Banner Seleccionado? -- Nota: este proceso no se podrá revertir.",
+             text: "¿Desea eliminar el organigrama Seleccionado? -- Nota: este proceso no se podrá revertir.",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -230,7 +231,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'organigrama/'+organi.id;
+                var url = 'organigramafacultad/'+organi.id;
                 axios.delete(url).then(response=>{//eliminamos
 
                 if(response.data.result=='1'){
@@ -251,6 +252,7 @@ methods: {
 
         this.fillGalEcuela.id=organi.id;
         this.fillGalEcuela.imagen=organi.imagen;
+        this.fillGalEcuela.descripcion=organi.descripcion;
         this.fillGalEcuela.estado=organi.activo;
         
         
@@ -268,13 +270,14 @@ methods: {
 
         data.append('idOrganigrama', this.fillGalEcuela.id);
         data.append('imagen', this.imagen);
+        data.append('descripcion', this.fillGalEcuela.descripcion);
         data.append('oldImagen', this.fillGalEcuela.imagen);
         data.append('editEstado', this.fillGalEcuela.estado);        
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
         
-        var url = "organigrama/" + id;
+        var url = "organigramafacultad/" + id;
 
         $("#btnSaveE").attr('disabled', true);
         $("#btnCloseE").attr('disabled', true);
@@ -305,7 +308,7 @@ methods: {
     bajabanner:function (organi) {
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea desactivar el Banner seleccionado",
+             text: "Desea desactivar el organigrama seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -315,7 +318,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'organigrama/altabaja/'+organi.id+'/0';
+                var url = 'organigramafacultad/altabaja/'+organi.id+'/0';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
                            app.getBanner(app.thispage);//listamos
@@ -332,7 +335,7 @@ methods: {
    altabanner:function (organi) {
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea activar el Banner seleccionado",
+             text: "Desea activar el organigrama seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -342,7 +345,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'organigrama/altabaja/'+organi.id+'/1';
+                var url = 'organigramafacultad/altabaja/'+organi.id+'/1';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
                            app.getBanner(app.thispage);//listamos

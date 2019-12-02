@@ -28,9 +28,9 @@
     divtitulo: true,
     classTitle: 'fa fa-qrcode ',
     classMenu0: '',
-    classMenu1: 'active',
+    classMenu1: '',
     classMenu2: '',
-    classMenu3: '',
+    classMenu3: 'active',
     classMenu4: '',
     classMenu5: '',
     classMenu6: '',
@@ -277,7 +277,7 @@ bajadocente: function (perfiles) {
 
         swal.fire({
             title: '¿Estás seguro?',
-            text: "Desea desactivar la Descripciòn seleccionada",
+            text: "Desea desactivar el perfil profesional seleccionada",
             type: 'info',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -302,7 +302,7 @@ bajadocente: function (perfiles) {
 altadocente: function (perfiles) {
     swal.fire({
         title: '¿Estás seguro?',
-        text: "Desea activar la Descripcion seleccionada",
+        text: "Desea activar el perfil profesional seleccionada",
         type: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',

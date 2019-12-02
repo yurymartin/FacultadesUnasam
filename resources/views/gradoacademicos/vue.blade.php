@@ -279,7 +279,7 @@ methods: {
 
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea desactivar el grado academico",
+             text: "Desea desactivar el grado academico seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',

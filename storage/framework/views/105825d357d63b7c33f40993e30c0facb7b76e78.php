@@ -62,6 +62,7 @@
                     <li><a href="galeriasfacultades"><i class='fa fa-gg'></i> Gestión de Galerias</a></li>
                     <li><a href="videofacultades"><i class='fa fa-gg'></i> Gestión de Videos</a></li>
                     <li><a href="documentofacultades"><i class='fa fa-gg'></i> Gestión de Documentos</a></li>
+                    <li><a href="organigramafacultades"><i class='fa fa-gg'></i> Gestión de Organigramas</a></li>
                 </ul>
             </li>
             <?php endif; ?>
@@ -85,6 +86,7 @@
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="bannersescuelas"><i class='fa fa-gg'></i> Gestión de Banners</a></li>
+                    <li><a href="videoescuelas"><i class='fa fa-gg'></i> Gestión de Videos</a></li>
                     <li><a href="galeriaescuelas"><i class='fa fa-gg'></i> Gestión de Galerias</a></li>
                     <li><a href="mallaescuelas"><i class='fa fa-gg'></i> Gestión de Mallas Curriculares</a></li>
                 </ul>

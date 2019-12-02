@@ -48,6 +48,7 @@ class PerfilesController extends Controller
 
         $escuelas = DB::table('escuelas')
             ->where('borrado', '=', 0)
+            ->where('activo', '=', 1)
             ->get();
 
         return [
@@ -97,11 +98,11 @@ class PerfilesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Complete el perfil profesional de la escuela';
+            $msj = 'FALTA COMPLETAR EL PERFIL PROFESIONAL';
             $selector = 'perfil';
         } else if ($escuela_id == 0) {
             $result = '0';
-            $msj = 'Debe de Seleccionar la Escuela';
+            $msj = 'FALTA SELECCIONAR LA ESCUELA PROFESIONAL';
             $selector = 'cbEscuelas';
         } else {
             $newdescripcion = new Perfiles();
@@ -111,7 +112,7 @@ class PerfilesController extends Controller
             $newdescripcion->borrado = '0';
             $newdescripcion->escuela_id = $escuela_id;
             $newdescripcion->save();
-            $msj = 'el Nuevo Perfil fue creado con éxito';
+            $msj = 'EL NUEVO PERFIL PROFESIONAL FUE REGISTRADO EXITOSAMENTE';
         }
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
@@ -161,11 +162,11 @@ class PerfilesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Complete el perfil profesional de la escuela';
+            $msj = 'FALTA COMPLETAR EL PERFIL PROFESIONAL';
             $selector = 'perfil';
         } else if ($escuela_id == 0) {
             $result = '0';
-            $msj = 'Debe de Seleccionar la Escuela';
+            $msj = 'FALTA SELECCIONAR LA ESCUELA PROFESIONAL';
             $selector = 'cbEscuelas';
         } else {
             $newdescripcion = Perfiles::findOrFail($id);
@@ -179,7 +180,7 @@ class PerfilesController extends Controller
                 $newdescripcion->escuela_id = $escuela_id;
                 $newdescripcion->save();
             }
-            $msj = 'El Nuevo Perfil fue Modificado con éxito';
+            $msj = 'EL PERFIL PROFESIONAL FUE MODIFICADO EXITOSAMENTE';
         }
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
@@ -197,7 +198,7 @@ class PerfilesController extends Controller
         $borrar = Perfiles::findOrFail($id);
         $borrar->borrado = '1';
         $borrar->save();
-        $msj = 'El perfil profesional fue eliminado exitosamente';
+        $msj = 'EL PERFIL PROFESIONAL FUE ELIMINADO EXITOSAMENTE';
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
 
@@ -212,9 +213,9 @@ class PerfilesController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'El perfil profesional fue Desactivada exitosamente';
+            $msj = 'EL PERFIL PROFESIONAL FUE DESACTIVADO EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'El perfil profesional fue Activada exitosamente';
+            $msj = 'EL PERFIL PROFESIONAL FUE ACTIVADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

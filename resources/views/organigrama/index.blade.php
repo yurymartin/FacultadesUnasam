@@ -1,7 +1,7 @@
 @extends('vendor.adminlte.layouts.app')
 
 @section('htmlheader_title')
-Gestión de Organigrama
+Gestión de Organigramas
 @endsection
 
 <style type="text/css">

@@ -87,7 +87,7 @@ class TemasController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Falta completar el tema';
+            $msj = 'FALTA COMPLETAR EL TEMA DE ESTUDIO';
             $selector = 'tema';
         } else {
             $newdescripcion = new Temas();
@@ -95,7 +95,7 @@ class TemasController extends Controller
             $newdescripcion->activo = $estado;
             $newdescripcion->borrado = '0';
             $newdescripcion->save();
-            $msj = 'El nuevo tema fue creado con éxito';
+            $msj = 'EL NUEVO TEMA DE ESTUDIO FUE REGISTRADO EXITOSAMENTE';
         }
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
@@ -144,13 +144,13 @@ class TemasController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Falta completar el tema';
+            $msj = 'FALTA COMPLETAR EL TEMA DE ESTUDIO';
             $selector = 'tema';
         } else {
             $newdescripcion = Temas::findOrFail($id);
             $newdescripcion->tema = $tema;
             $newdescripcion->save();
-            $msj = 'El nuevo tema fue modificado con éxito';
+            $msj = 'EL TEMA DE ESTUDIO FUE MODIFICADO EXITOSAMENTE';
         }
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
@@ -168,7 +168,7 @@ class TemasController extends Controller
         $borrar = Temas::findOrFail($id);
         $borrar->borrado = '1';
         $borrar->save();
-        $msj = 'El tema de estudio fue eliminado exitosamente';
+        $msj = 'EL TEMA DE ESTUDIO FUE ELIMINADO EXITOSAMENTE';
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
 
@@ -183,9 +183,9 @@ class TemasController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'El tema de estudio fue Desactivada exitosamente';
+            $msj = 'EL TEMA DE ESTUDIO FUE DESACTIVADO EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'El tema de estudio fue Activada exitosamente';
+            $msj = 'EL TEMA DE ESTUDIO FUE ACTIVADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

@@ -1,6 +1,6 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de Eventos</h3>
+    <h3 class="box-title">Gestión de Noticias</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="{{URL::to('home')}}"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
@@ -9,7 +9,7 @@
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
-          class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Evento de La Facultad</button>
+          class="fa fa-plus-square-o" aria-hidden="true"></i> Nueva Noticia de La Facultad</button>
     </div>
 
   </div>
@@ -18,7 +18,7 @@
 
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
-    <h3 class="box-title" id="tituloAgregar"> Nuevo Evento de La Facultad</h3>
+    <h3 class="box-title" id="tituloAgregar"> Nuevo Noticia de La Facultad</h3>
   </div>
 
   <form v-on:submit.prevent="create">
@@ -221,7 +221,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
               style="font-size: 35px;">&times;</span></button>
           <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR
-            EL EVENTO DE LA FACULTAD</h4>
+            LA NOTICIA DE LA FACULTAD</h4>
 
         </div>
         <div class="modal-body">

@@ -87,7 +87,7 @@ class GaleriaFacultadesController extends Controller
 
         if ($img == 'null') {
             $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
+            $msj = 'FALTA SELECCIONAR LA IMAGEN PARA LA GALERIA DE LA FACULTAD';
             $selector = 'archivo';
         } else {
 
@@ -128,7 +128,7 @@ class GaleriaFacultadesController extends Controller
                 $newdescripcion->activo = $estado;
                 $newdescripcion->borrado = '0';
                 $newdescripcion->save();
-                $msj = 'La Nueva imagen para la galeria de la facultad fue registrado con éxito';
+                $msj = 'LA NUEVA IMAGEN PARA LA GALERIA DE LA FACULTAD FUE REGISTRADA EXITOSAMENTE';
             }
         }
 
@@ -207,12 +207,12 @@ class GaleriaFacultadesController extends Controller
             $editadescripcion->descripcion = $descripcion;
             $editadescripcion->imagen = $imagen;
             $editadescripcion->save();
-            $msj = 'La Nueva imagen para la galeria de la facultad fue modificado con éxito';
+            $msj = 'LA IMAGEN PARA LA GALERIA DE LA FACULTAD FUE MODIFICADA EXITOSAMENTE';
         } else {
             $editadescripcion = GaleriaFacultades::findOrFail($id);
             $editadescripcion->descripcion = $descripcion;
             $editadescripcion->save();
-            $msj = 'La Nueva imagen para la galeria de la facultad fue modificado con éxito';
+            $msj = 'LA IMAGEN PARA LA GALERIA DE LA FACULTAD FUE MODIFICADA EXITOSAMENTE';
         }
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
@@ -230,7 +230,7 @@ class GaleriaFacultadesController extends Controller
         $borrar = GaleriaFacultades::findOrFail($id);
         $borrar->borrado = '1';
         $borrar->save();
-        $msj = 'La Nueva imagen para la galeria de la facultad fue eliminado con éxito';
+        $msj = 'LA IMAGEN PARA LA GALERIA DE LA FACULTAD FUE ELIMINADA EXITOSAMENTE';
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
 
@@ -245,9 +245,9 @@ class GaleriaFacultadesController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'La Nueva imagen para la galeria de la facultad fue Desactivado con éxito';
+            $msj = 'LA IMAGEN PARA LA GALERIA DE LA FACULTAD FUE DESACTIVADA EXITOSAMENTE';
         } else if (strval($activo) == "1") {
-            $msj = 'La Nueva imagen para la galeria de la facultad fue Activado con éxito';
+            $msj = 'LA IMAGEN PARA LA GALERIA DE LA FACULTAD FUE ACTIVAD EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

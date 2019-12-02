@@ -3,7 +3,7 @@
 el: '#app',
 data:{
        titulo:"Mantenimiento",
-       subtitulo: "Gestión de Mallas",
+       subtitulo: "Gestión de Mallas Curriculares",
        subtitulo2: "Principal",
 
    subtitle2:false,
@@ -28,10 +28,10 @@ data:{
    divtitulo:true,
    classTitle:'fa fa-qrcode ',
    classMenu0:'',
-   classMenu1:'active',
+   classMenu1:'',
    classMenu2:'',
    classMenu3:'',
-   classMenu4:'',
+   classMenu4:'active',
    classMenu5:'',
    classMenu6:'',
    classMenu7:'',
@@ -163,6 +163,7 @@ methods: {
         this.newFechapublica = '';
         this.newEstado = '1';
         this.imagen = null;
+        this.escuela_id = '0';
 
        $(".form-control").css("border","1px solid #d2d6de");
    },
@@ -175,15 +176,6 @@ methods: {
             this.imagen = event.target.files[0];
         }
     },
-    seltipo: function () {
-            if (this.escuela_id == 3) {
-            $('#cbescuela').val('0').trigger('change');
-            this.$nextTick(function () {
-            $('#cbescuela').val('0').trigger('change');
-            })
-            }
-            $('#txtnom').focus();
-            },
     create:function () { 
 
        var url='mallaescuela';
@@ -230,7 +222,7 @@ methods: {
     
         swal.fire({
              title: '¿Estás seguro?',
-             text: "¿Desea eliminar el Banner Seleccionado? -- Nota: este proceso no se podrá revertir.",
+             text: "¿Desea eliminar la malla curricular Seleccionado? -- Nota: este proceso no se podrá revertir.",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -261,12 +253,10 @@ methods: {
 
         this.fillGalEcuela.id=mallaE.id;
         this.fillGalEcuela.imagen=mallaE.imagen;
-        this.fillGalEcuela.numcurricula=mallaE.numcurricula;            
-        this.fillGalEcuela.estado=mallaE.activo;
+        this.fillGalEcuela.numcurricula=mallaE.numcurricula;   
         this.fillGalEcuela.escuela_id=mallaE.idescu;
-        
         this.imagen=null;
-        console.log();
+
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
                 $("#txttituloE").focus();
@@ -280,8 +270,7 @@ methods: {
         data.append('idmalla', this.fillGalEcuela.id);
         data.append('imagen', this.imagen);
         data.append('oldImagen', this.fillGalEcuela.imagen);
-        data.append('editDescripcion', this.fillGalEcuela.numcurricula);
-        data.append('editEstado', this.fillGalEcuela.estado);        
+        data.append('editDescripcion', this.fillGalEcuela.numcurricula);     
        var newEscuela = $("#cbescuela").val();
             data.append('escuela_id', newEscuela);
         data.append('_method', 'PUT');
@@ -319,7 +308,7 @@ methods: {
     bajabanner:function (mallaE) {
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea desactivar la malla seleccionado",
+             text: "Desea desactivar la malla curricular seleccionada",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -342,10 +331,10 @@ methods: {
                }).catch(swal.noop);  
 
    },
-   altabanner:function (    ) {
+   altabanner:function (mallaE) {
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea activar el Banner seleccionado",
+             text: "Desea activar la malla curricular seleccionada",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',

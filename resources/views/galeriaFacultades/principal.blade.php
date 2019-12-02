@@ -115,7 +115,7 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 2 0%;">Imagen</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Imagen</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 50%;">Descripcion</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Gestión</th>
@@ -124,7 +124,7 @@
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{key+pagination.from}}
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; text-align: center;vertical-align: middle;">
-            <img :src="getImg(galeriafacultad)" alt="" style="width: 200px;height: 150px">
+            <img :src="getImg(galeriafacultad)" alt="" style="width: 150px;height: 100px">
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
             @{{galeriafacultad.descripcion }}

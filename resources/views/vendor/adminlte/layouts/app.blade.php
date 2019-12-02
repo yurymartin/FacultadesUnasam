@@ -153,6 +153,9 @@ desired effect
 @elseif($modulo=="inicioAdmin")
 @include('inicio.vueAdmin')
 
+@elseif($modulo=="videoEscuelas")
+@include('videoEscuelas.vue')
+
 @endif
 
 <script type="text/javascript">

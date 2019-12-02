@@ -74,40 +74,43 @@ class GradoAcademicosController extends Controller
      */
     public function store(Request $request)
     {
-        $grado=$request->grado;
-        $abreviatura=$request->abreviatura;
-        $activo=$request->activo;
-        $borrado=0;
+        $grado = $request->grado;
+        $abreviatura = $request->abreviatura;
+        $activo = $request->activo;
 
-        $result='1';
-        $msj='';
-        $selector='';
+        $result = '1';
+        $msj = '';
+        $selector = '';
 
         $input1  = array('grado' => $grado);
         $reglas1 = array('grado' => 'required');
-
-
         $validator1 = Validator::make($input1, $reglas1);
+
+        $input2  = array('abreviatura' => $abreviatura);
+        $reglas2 = array('abreviatura' => 'required');
+        $validator2 = Validator::make($input2, $reglas2);
 
 
         if ($validator1->fails()) {
-            $result='0';
-            $msj='Ingrese el grado academico';
-            $selector='txtgrado';
-        }
-       
-        else{
+            $result = '0';
+            $msj = 'FALTA INGRESAR EL GRADO ACADEMICO';
+            $selector = 'txtgrado';
+        } else if ($validator2->fails()) {
+            $result = '0';
+            $msj = 'FALTA INGRESAR LA ABREVIATURA DEL GRADO ACADEMICO';
+            $selector = 'txtabreviatura';
+        } else {
 
             $newGrados = new GradoAcademicos();
-            $newGrados->grado=$grado;
-            $newGrados->abreviatura=$abreviatura;
-            $newGrados->activo=$activo;
-            $newGrados->borrado='0';
+            $newGrados->grado = $grado;
+            $newGrados->abreviatura = $abreviatura;
+            $newGrados->activo = $activo;
+            $newGrados->borrado = '0';
             $newGrados->save();
-            $msj='Nuevo Grado Academico registrado con éxito';
+            $msj = 'EL NUEVO GRADO ACADEMICO FUE REGISTRADO EXITOSAMENTE';
         }
 
-        return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
+        return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
 
     /**
@@ -141,57 +144,60 @@ class GradoAcademicosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $grado=$request->grado;
-        $abreviatura=$request->abreviatura;
-        $borrado=0;
+        $grado = $request->grado;
+        $abreviatura = $request->abreviatura;
+        $borrado = 0;
 
-        $result='1';
-        $msj='';
-        $selector='';
+        $result = '1';
+        $msj = '';
+        $selector = '';
 
         $input1  = array('grado' => $grado);
         $reglas1 = array('grado' => 'required');
-
-
         $validator1 = Validator::make($input1, $reglas1);
+
+        $input2  = array('abreviatura' => $abreviatura);
+        $reglas2 = array('abreviatura' => 'required');
+        $validator2 = Validator::make($input2, $reglas2);
 
 
         if ($validator1->fails()) {
-            $result='0';
-            $msj='Ingrese el grado academico';
-            $selector='txtgrado';
-        }
-       
-        else{
+            $result = '0';
+            $msj = 'FALTA INGRESAR EL GRADO ACADEMICO';
+            $selector = 'txtgrado';
+        } else if ($validator2->fails()) {
+            $result = '0';
+            $msj = 'FALTA INGRESAR LA ABREVIATURA DEL GRADO ACADEMICO';
+            $selector = 'txtabreviatura';
+        } else {
 
-            $newGrados =GradoAcademicos::findOrFail($id);
-            $newGrados->grado=$grado;
-            $newGrados->abreviatura=$abreviatura;
+            $newGrados = GradoAcademicos::findOrFail($id);
+            $newGrados->grado = $grado;
+            $newGrados->abreviatura = $abreviatura;
             $newGrados->save();
 
-            $msj='El Grado Academico fue modificado con éxito';
+            $msj = 'EL GRADO ACADEMICO FUE MODIFICADO EXITOSAMENTE';
         }
-        return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
+        return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
 
-    public function altabaja($id,$activo)
+    public function altabaja($id, $activo)
     {
-        $result='1';
-        $msj='';
-        $selector='';
+        $result = '1';
+        $msj = '';
+        $selector = '';
 
         $update = GradoAcademicos::findOrFail($id);
-        $update->activo=$activo;
+        $update->activo = $activo;
         $update->save();
 
-        if(strval($activo)=="0"){
-            $msj='El Grado Academico fue Desactivada exitosamente';
-        }elseif(strval($activo)=="1"){
-            $msj='El Grado Academico fue Activada exitosamente';
+        if (strval($activo) == "0") {
+            $msj = 'EL GRADO ACADEMICO FUE DESACTIVADO EXITOSAMENTE';
+        } elseif (strval($activo) == "1") {
+            $msj = 'EL GRADO ACADEMICO FUE ACTIVADO EXITOSAMENTE';
         }
 
-        return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
-
+        return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
 
     /**
@@ -202,28 +208,25 @@ class GradoAcademicosController extends Controller
      */
     public function destroy($id)
     {
-        $result='1';
-        $msj='1';
+        $result = '1';
+        $msj = '1';
 
-        $consulta1=DB::table('docentes as d')
-                    ->join('gradoacademicos as ga', 'd.gradoacademico_id', '=', 'ga.id')
-                    ->where('ga.id',$id)->count();
+        $consulta1 = DB::table('docentes as d')
+            ->join('gradoacademicos as ga', 'd.gradoacademico_id', '=', 'ga.id')
+            ->where('ga.id', $id)
+            ->count();
 
-        if($consulta1>0) {
-            $result='0';
-            $msj='No se puede eliminar el grado academico porque tiene datos enlazados con otras entidades';
-        }else{
-        
-        $borrar = GradoAcademicos::findOrFail($id);
-        //$task->delete();
+        if ($consulta1 > 0) {
+            $result = '0';
+            $msj = 'NO SE PUEDE ELIMINAR EL GRADO ACADEMICO PORQUE CAUSARIA PROBLEMAS EN EL SISTEMA';
+        } else {
 
-        $borrar->borrado='1';
+            $borrar = GradoAcademicos::findOrFail($id);
+            $borrar->borrado = '1';
+            $borrar->save();
 
-        $borrar->save();
-
-        $msj='El Grado Academico fue eliminado exitosamente';
-     }
-
-        return response()->json(["result"=>$result,'msj'=>$msj]);
+            $msj = 'EL GRADO ACADEMICO FUE ELIMINADO EXITOSAMENTE';
+        }
+        return response()->json(["result" => $result, 'msj' => $msj]);
     }
 }

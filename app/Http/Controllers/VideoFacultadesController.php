@@ -97,11 +97,11 @@ class VideoFacultadesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Falta completar el titulo del video';
+            $msj = 'FALTA COMPLETAR EL TITULO DEL VIDEO';
             $selector = 'titulo';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Falta completar el link de youtube del video';
+            $msj = 'FALTA COPIAR Y LLENAR EL LINK DE YOUTUBE';
             $selector = 'link';
         } else {
             $newdescripcion = new VideoFacultades();
@@ -112,7 +112,7 @@ class VideoFacultadesController extends Controller
             $newdescripcion->activo = $estado;
             $newdescripcion->borrado = '0';
             $newdescripcion->save();
-            $msj = 'el nuevo video de facultades fue registrado con éxito';
+            $msj = 'EL NUEVO LINK DEL VIDEO FUE REGISTRADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -168,11 +168,11 @@ class VideoFacultadesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Falta completar el titulo del video';
+            $msj = 'FALTA COMPLETAR EL TITULO DEL VIDEO';
             $selector = 'titulo';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Falta completar el link de youtube del video';
+            $msj = 'FALTA COPIAR Y LLENAR EL LINK DE YOUTUBE';
             $selector = 'link';
         } else {
             $newdescripcion = VideoFacultades::findOrFail($id);
@@ -180,7 +180,7 @@ class VideoFacultadesController extends Controller
             $newdescripcion->descripcion = $descripcion;
             $newdescripcion->link = $link;
             $newdescripcion->save();
-            $msj = 'el nuevo video de facultades fue modificado con éxito';
+            $msj = 'EL VIDEO FUE MODIFICADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -200,7 +200,7 @@ class VideoFacultadesController extends Controller
         $borrar = VideoFacultades::findOrFail($id);
         $borrar->borrado = '1';
         $borrar->save();
-        $msj = 'El video fue eliminado exitosamente';
+        $msj = 'EL VIDEO FUE ELIMINADO EXITOSAMENTE';
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
 
@@ -215,9 +215,9 @@ class VideoFacultadesController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'El video fue Desactivada exitosamente';
+            $msj = 'EL VIDEO FUE DESACTIVADO EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'El video fue Activada exitosamente';
+            $msj = 'EL VIDEO FUE ACTIVADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

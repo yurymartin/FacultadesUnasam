@@ -1,6 +1,6 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de Organigrama</h3>
+    <h3 class="box-title">Gestión de Organigramas</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="{{URL::to('home')}}"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
@@ -21,8 +21,19 @@
     <h3 class="box-title" id="tituloAgregar">Nuevo Organigrama</h3>
   </div>
 
+
   <form v-on:submit.prevent="create">
     <div class="box-body">
+
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="descripcion" class="col-sm-2 control-label">Descripcion:*</label>
+          <div class="col-sm-8">
+            <textarea name="descripcion" id="descripcion" cols="80" rows="5" v-model="newDescripcion"
+              placeholder="Descripcion del organigrama de la facultad" class="form-control"></textarea>
+          </div>
+        </div>
+      </div>
 
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
@@ -82,7 +93,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Organigrama</h3>
+    <h3 class="box-title">Listado de Organigramas</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -104,17 +115,18 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">imagen</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 25%;">imagen</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Descripcion</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Fecha</th>
-          {{-- <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha</th> --}}
-          <th style="border:1px solid #ddd;padding: 5px; width: 8%;">Estado</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
         <tr v-for="organi, key in organigramafacultades">
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{key+pagination.from}}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: center;vertical-align: middle;">
-            <img :src="getImg(organi)" alt="" class="img img-responsive" width="150px" height="50px">
+            <img :src="getImg(organi)" alt="" width="250px" height="150px">
           </td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{organi.descripcion }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{organi.fecha }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
@@ -195,7 +207,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
               style="font-size: 35px;">&times;</span></button>
           <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR
-            BANNER</h4>
+            LA MALLA CURRICULAR</h4>
 
         </div>
         <div class="modal-body">
@@ -204,6 +216,17 @@
               <!-- /.box-header -->
               <!-- form start -->
               <div class="box-body">
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="descripcion" class="col-sm-2 control-label">Descripcion:*</label>
+                    <div class="col-sm-8">
+                      <textarea name="descripcion" id="descripcion" cols="80" rows="5" v-model="fillGalEcuela.descripcion"
+                        placeholder="Descripcion del organigrama de la facultad" class="form-control"></textarea>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
                     <label for="archivo" class="col-sm-2 control-label">Imagen :*</label>
@@ -214,7 +237,7 @@
                   </div>
                 </div>
 
-                </div>
+              </div>
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary" id="btnSaveE"><i class="fa fa-floppy-o"

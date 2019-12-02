@@ -99,6 +99,9 @@ desired effect
 <?php elseif($modulo=="gradoacademicos"): ?>
 <?php echo $__env->make('gradoacademicos.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
+<?php elseif($modulo=="organigramafacultades"): ?>
+<?php echo $__env->make('organigrama.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
 <?php elseif($modulo=="docentes"): ?>
 <?php echo $__env->make('docentes.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
@@ -149,6 +152,9 @@ desired effect
 
 <?php elseif($modulo=="inicioAdmin"): ?>
 <?php echo $__env->make('inicio.vueAdmin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<?php elseif($modulo=="videoEscuelas"): ?>
+<?php echo $__env->make('videoEscuelas.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 <?php endif; ?>
 

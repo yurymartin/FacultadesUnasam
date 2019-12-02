@@ -1,5 +1,5 @@
 <?php $__env->startSection('htmlheader_title'); ?>
-Gestión de Mallas
+Gestión de Mallas Curriculares
 <?php $__env->stopSection(); ?>
 
 <style type="text/css">
