@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\NosotrosEscuelas;
 use App\NoticiaFacultades;
+use App\Organigrama;
 use App\VideoFacultades;
 use DB;
 use Auth;
