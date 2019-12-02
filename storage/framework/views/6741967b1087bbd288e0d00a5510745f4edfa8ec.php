@@ -1,5 +1,5 @@
 <!-- This one in here is responsive menu for tablet and mobiles -->
-<link rel="stylesheet" href="{{ asset('web/css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="<?php echo e(asset('web/css/bootstrap.min.css')); ?>">
 <div class="responsive-navigation visible-sm visible-xs">
     <a href="#" class="menu-toggle-btn">
         <i class="fa fa-bars"></i>
@@ -188,4 +188,4 @@
             origin: 'right',
             distance: '300px'
         });  
-</script>
+</script><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/web/layout/header.blade.php ENDPATH**/ ?>

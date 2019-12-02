@@ -150,4 +150,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('comiteestudiantil', 'ComiteEstudiantilController@index1');
     Route::resource('estudiantil', 'ComiteEstudiantilController');
     Route::get('estudiantil/altabaja/{id}/{var}', 'ComiteEstudiantilController@altabaja');
+
+    Route::get('organigramafacultades', 'OrganigramaController@index1');
+    Route::resource('organigrama', 'OrganigramaController');
+    Route::get('organigrama/altabaja/{id}/{var}', 'OrganigramaController@altabaja');
+    
+    Route::get('misionvision', 'IndexWebController@misionvision');
+    Route::get('filosofia', 'IndexWebController@filosofia');
+    Route::get('organigrama', 'IndexWebController@organigrama');
 });

@@ -99,6 +99,9 @@ desired effect
 @elseif($modulo=="gradoacademicos")
 @include('gradoacademicos.vue')
 
+@elseif($modulo=="organigramafacultades")
+@include('organigrama.vue')
+
 @elseif($modulo=="docentes")
 @include('docentes.vue')
 

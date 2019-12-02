@@ -103,6 +103,11 @@ return [
             'root' => public_path('img/mallaEscuelas'), // miproyecto.com/public/defaults/
             'visibility' => 'public',
          ],
+         'Organigrama' => [
+            'driver' => 'local',
+            'root' => public_path('img/Organigramas'), // miproyecto.com/public/defaults/
+            'visibility' => 'public',
+         ],
          'comiteE' => [
             'driver' => 'local',
             'root' => public_path('img/ComiteEscuelas'), // miproyecto.com/public/defaults/

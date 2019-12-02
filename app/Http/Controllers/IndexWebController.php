@@ -12,6 +12,7 @@ use App\GaleriaFacultades;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\NoticiaFacultades;
+use App\Organigrama;
 use App\VideoFacultades;
 use DB;
 use Auth;
@@ -82,6 +83,31 @@ class IndexWebController extends Controller
             ->select('a.id as idauto', 'p.id as idper', 'p.dni', 'p.nombres', 'p.apellidos', 'p.genero', 'p.foto', 'c.cargo', 'a.descripcion', 'a.fechainicio', 'a.fechafin', 'a.activo', 'c.id as idcargo')
             ->get();
 
-        return view('web.index', ['BannersFacultades' => $BannersFacultades, 'noticias' => $noticias, 'eventos' => $eventos, 'misionvision' => $misionvision, 'galeriaFacultades' => $galeriaFacultades, 'carrerasprofesionales' => $carrerasprofesionales, 'videosFacultades' => $videosFacultades, 'decano' => $decano, 'autoridades'=>$autoridades]);
+        return view('web.index', ['BannersFacultades' => $BannersFacultades, 'noticias' => $noticias, 'eventos' => $eventos, 'misionvision' => $misionvision, 'galeriaFacultades' => $galeriaFacultades, 'carrerasprofesionales' => $carrerasprofesionales, 'videosFacultades' => $videosFacultades, 'decano' => $decano, 'autoridades' => $autoridades]);
+    }
+    public function misionvision()
+    {
+        $misionvision = DescripcionFacultades::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('web.misionvision', ['misionvision' => $misionvision,'filosofia'=> $filosofia]);
+    }
+    public function filosofia(){
+        $filosofia = DescripcionFacultades::where('borrado', '0')
+        ->where('activo', '=', '1')
+        ->orderBy('id', 'desc')
+        ->get();
+
+    return view('web.filosofia', ['filosofia'=> $filosofia]); 
+    }
+    public function organigrama(){
+        $organigrama = Organigrama::where('borrado', '0')
+        ->where('activo', '=', '1')
+        ->orderBy('id', 'desc')
+        ->get();
+
+    return view('web.organigrama', ['organigrama'=> $organigrama]); 
     }
 }

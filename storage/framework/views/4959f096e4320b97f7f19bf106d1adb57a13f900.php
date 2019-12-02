@@ -1,5 +1,4 @@
-@extends('web.layout.layout')
-@section('contenido')
+<?php $__env->startSection('contenido'); ?>
 <style>
     .imagen {
         -webkit-filter: grayscale(100%);
@@ -46,10 +45,10 @@
                 </div>
                 <br><br>
                 <div class="text-center">
-                    @foreach ($organigrama as $org)
-                    <img src="{{ asset('img/Organigramas/'.$org->imagen) }}" alt="Responsive image" class="img-thumbnail imagen2 imagen" style="  width:100%;
+                    <?php $__currentLoopData = $organigrama; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $org): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <img src="<?php echo e(asset('img/Organigramas/'.$org->imagen)); ?>" alt="Responsive image" class="img-thumbnail imagen2 imagen" style="  width:100%;
                     height:50%;"> 
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     
                             
                 </div>
@@ -57,4 +56,5 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('web.layout.layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/web/organigrama.blade.php ENDPATH**/ ?>
