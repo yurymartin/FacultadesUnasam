@@ -51,10 +51,12 @@ class LibrosController extends Controller
 
         $escuelas = DB::table('escuelas')
             ->where('borrado', '=', 0)
+            ->where('activo', '=', 1)
             ->get();
 
         $temas = DB::table('temas')
             ->where('borrado', '=', 0)
+            ->where('activo', '=', 1)
             ->get();
 
         return [
@@ -117,27 +119,27 @@ class LibrosController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Falta el Titulo de la Investigacion';
+            $msj = 'FALTA COMPLETAR EL TITULO DEL LIBRO';
             $selector = 'titulo';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Falta el autor de la Investigacion';
+            $msj = 'FALTA COMPLETAR EL AUTOR DEL LIBRO';
             $selector = 'autor';
         } else if ($img == 'null') {
             $result = '0';
-            $msj = 'Falta seleccionar la imagen de portada de la investigacion';
+            $msj = 'FALTA SELECCIONAR LA IMAGEN DEL LIBRO';
             $selector = 'archivo';
         } else if ($link == 'null') {
             $result = '0';
-            $msj = 'Falta seleccionar la investigacion';
+            $msj = 'FALTA SELECCIONAR EL ARCHIVO';
             $selector = 'archivo2';
         } else if ($escuela_id == 0) {
             $result = '0';
-            $msj = 'Falta seleccionar la Escuela profesional';
+            $msj = 'FALTA SELECCIONAR LA ESCUELA PROFESIONAL';
             $selector = 'escuela_id';
         } else if ($tema_id == 0) {
             $result = '0';
-            $msj = 'Falta seleccionar el tema de Estudio';
+            $msj = 'FALTA SELECCIONAR EL TEMA DE ESTUDIO DEL LIBRO';
             $selector = 'tema_id';
         } else {
             if ($request->file('imagen')) {
@@ -172,7 +174,7 @@ class LibrosController extends Controller
                 $validator3 = Validator::make($input3, $reglas3);
                 if ($validator3->fails()) {
                     $seguredoc = 1;
-                    $msj = "El archivo ingresado solo debe ser PDF";
+                    $msj = "EL ARCHIVO INGRESADO DEBE SER DE FORMATO PDF";
                     $result = '0';
                     $selector = 'archivo2';
                 } else {
@@ -200,7 +202,7 @@ class LibrosController extends Controller
             $newdescripcion->escuela_id = $escuela_id;
             $newdescripcion->tema_id = $tema_id;
             $newdescripcion->save();
-            $msj = 'El libro fue registrado con éxito';
+            $msj = 'EL NUEVO LIBRO FUE REGISTRADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -263,19 +265,19 @@ class LibrosController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Falta el Titulo de la Investigacion';
+            $msj = 'FALTA COMPLETAR EL TITULO DEL LIBRO';
             $selector = 'titulo';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Falta la Fecha de Publicacion de la Investigacion';
-            $selector = 'fecha';
+            $msj = 'FALTA COMPLETAR EL AUTOR DEL LIBRO';
+            $selector = 'autor';
         } else if ($escuela_id == 0) {
             $result = '0';
-            $msj = 'Falta seleccionar la escuela profesional';
+            $msj = 'FALTA SELECCIONAR LA ESCUELA PROFESIONAL';
             $selector = 'escuela_id';
         } else if ($tema_id == 0) {
             $result = '0';
-            $msj = 'Falta seleccionar el tema de estudio';
+            $msj = 'FALTA SELECCIONAR EL TEMA DE ESTUDIO DEL LIBRO';
             $selector = 'tema_id';
         } else {
             if ($request->file('imagen')) {
@@ -310,7 +312,7 @@ class LibrosController extends Controller
                 $validator3 = Validator::make($input3, $reglas3);
                 if ($validator3->fails()) {
                     $seguredoc = 1;
-                    $msj = "El archivo ingresado solo debe ser PDF";
+                    $msj = "EL ARCHIVO INGRESADO DEBE SER DE FORMATO PDF";
                     $result = '0';
                     $selector = 'archivo2';
                 } else {
@@ -364,7 +366,7 @@ class LibrosController extends Controller
                 $newdescripcion->tema_id = $tema_id;
                 $newdescripcion->save();
             }
-            $msj = 'el libro fue Modificado con éxito';
+            $msj = 'EL LIBRO FUE MODIFICADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -385,7 +387,7 @@ class LibrosController extends Controller
         $borrar = Libros::findOrFail($id);
         $borrar->borrado = '1';
         $borrar->save();
-        $msj = 'el libro fue eliminado exitosamente';
+        $msj = 'EL LIBRO FUE ELIMINADO EXITOSAMENTE';
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
 
@@ -400,9 +402,9 @@ class LibrosController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'el libro fue Desactivada exitosamente';
+            $msj = 'EL LIBRO FUE DESACTIVADO EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'el libro fue Activada exitosamente';
+            $msj = 'EL LIBRO FUE ACTIVADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

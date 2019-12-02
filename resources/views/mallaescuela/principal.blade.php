@@ -48,8 +48,8 @@
           <div class="form-group">
             <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>
             <div class="col-sm-8">
-              <select name="cbescuela" id="cbescuela" class="form-control" v-model="escuela_id" @change="seltipo">
-                <option disabled value="0">Seleccione una Escula</option>
+              <select name="cbescuela" id="cbescuela" class="form-control" v-model="escuela_id">
+                <option  value="0">Seleccione una Escuela</option>
                 <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">
                   @{{escuela.nombre}}
                 </option>
@@ -222,7 +222,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
               style="font-size: 35px;">&times;</span></button>
           <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR
-            BANNER</h4>
+            LA MALLA CURRICULAR</h4>
 
         </div>
         <div class="modal-body">
@@ -256,23 +256,11 @@
                   <div class="form-group">
                     <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>
                     <div class="col-sm-8">
-                      <select name="cbescuela" id="cbescuela" class="form-control" v-model="fillGalEcuela.escuela_id"
-                        @change="seltipo">
-                        <option disabled value="0">Seleccione una Escula</option>
+                      <select name="cbescuela" id="cbescuela" class="form-control" v-model="fillGalEcuela.escuela_id">
+                        <option disabled value="0">Seleccione una Escuela</option>
                         <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">
                           @{{escuela.nombre}}
                         </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-12" style="padding-top: 15px;">
-                  <div class="form-group">
-                    <label for="cbuestadoE" class="col-sm-2 control-label">Estado:*</label>
-                    <div class="col-sm-4">
-                      <select class="form-control" id="cbuestadoE" name="cbuestadoE" v-model="fillGalEcuela.estado">
-                        <option value="1">Activado</option>
-                        <option value="0">Desactivado</option>
                       </select>
                     </div>
                   </div>

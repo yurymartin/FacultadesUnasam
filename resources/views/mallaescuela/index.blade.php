@@ -1,7 +1,7 @@
 @extends('vendor.adminlte.layouts.app')
 
 @section('htmlheader_title')
-Gestión de Mallas
+Gestión de Mallas Curriculares
 @endsection
 
 <style type="text/css">

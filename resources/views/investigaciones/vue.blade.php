@@ -244,7 +244,7 @@ methods: {
     
         swal.fire({
              title: '¿Estás seguro?',
-             text: "¿Desea eliminar el Banner Seleccionado? -- Nota: este proceso no se podrá revertir.",
+             text: "¿Desea eliminar la investigacion Seleccionada? -- Nota: este proceso no se podrá revertir.",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -336,7 +336,7 @@ methods: {
     bajabanner:function (investigacion) {
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea desactivar la Investigacion seleccionado",
+             text: "Desea desactivar la Investigacion seleccionada",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -363,7 +363,7 @@ methods: {
    altabanner:function (Investigaciones) {
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea activar la Investigacion seleccionado",
+             text: "Desea activar la Investigacion seleccionada",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',

@@ -97,15 +97,15 @@ class MallaEscuelaController extends Controller
 
         if ($img == 'null') {
             $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
+            $msj = 'FALTA SELECCIONAR LA IMAGEN DE LA MALLA CURRICULAA';
             $selector = 'archivo';
         } else if ($numcurricula == null) {
             $result = '0';
-            $msj = 'Debe de Ingresar el numero de la curricula';
+            $msj = 'FALTA COMPLETAR EL NUMERO O CODIGO DE LA MALLA CURRICULAA';
             $selector = 'txtcurricula';
         } else if ($escuela_id == 0) {
             $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
+            $msj = 'FALTA SELECCIONAR LA ESCUELA PROFESIONAL';
             $selector = 'cbescuela';
         } else {
 
@@ -152,7 +152,7 @@ class MallaEscuelaController extends Controller
 
                 $newBanner->save();
 
-                $msj = 'Nuevo Banner registrado con éxito';
+                $msj = 'LA NUEVA MALLA CURRICULAR FUE REGISTRADO EXITOSAMENTE';
             }
         }
 
@@ -195,9 +195,7 @@ class MallaEscuelaController extends Controller
         $selector = '';
 
         $idmalla = $request->idmalla;
-        $editTitulo = $request->editTitulo;
         $editDescripcion = $request->editDescripcion;
-        $editEstado = $request->editEstado;
         $escuela_id = $request->escuela_id;
         $img = $request->imagen;
 
@@ -206,63 +204,68 @@ class MallaEscuelaController extends Controller
 
         $oldImagen = $request->oldImagen;
 
-        if ($request->hasFile('imagen')) {
-
-            $aux = date('d-m-Y') . '-' . date('H-i-s');;
-            $input  = array('image' => $img);
-            $reglas = array('image' => 'required|image|mimes:png,jpg,jpeg,gif,jpe,PNG,JPG,JPEG,GIF,JPE');
-            $validator = Validator::make($input, $reglas);
-
-            if ($validator->fails()) {
-                $segureImg = 1;
-                $msj = "El archivo ingresado como imagen no es una imagen válida, ingrese otro archivo o limpie el formulario";
-                $result = '0';
-                $selector = 'archivo';
-            } else {
-
-                if (strlen($oldImagen) > 0) {
-                    Storage::disk('mallaE')->delete($oldImagen);
-                }
-
-                $extension = $img->getClientOriginalExtension();
-                $nuevoNombre = $aux . "." . $extension;
-                $subir = Storage::disk('mallaE')->put($nuevoNombre, \File::get($img));
-
-                if ($subir) {
-                    $imagen = $nuevoNombre;
-                } else {
-                    $msj = "Error al subir la imagen, intentelo nuevamente luego";
-                    $segureImg = 1;
-                    $result = '0';
-                    $selector = 'archivo';
-                }
-            }
-        }
-
-        if ($segureImg == 1) {
-            Storage::disk('mallaE')->delete($imagen);
+        if ($editDescripcion == null) {
+            $result = '0';
+            $msj = 'FALTA COMPLETAR EL NUMERO O CODIGO DE LA MALLA CURRICULAA';
+            $selector = 'txtcurricula';
+        } else if ($escuela_id == 0) {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA ESCUELA PROFESIONAL';
+            $selector = 'cbescuela';
         } else {
 
-            $editGalEscu = MallaEscuela::findOrFail($idmalla);
+            if ($request->hasFile('imagen')) {
 
-            if (strlen($imagen) == 0) {
+                $aux = date('d-m-Y') . '-' . date('H-i-s');;
+                $input  = array('image' => $img);
+                $reglas = array('image' => 'required|image|mimes:png,jpg,jpeg,gif,jpe,PNG,JPG,JPEG,GIF,JPE');
+                $validator = Validator::make($input, $reglas);
 
+                if ($validator->fails()) {
+                    $segureImg = 1;
+                    $msj = "El archivo ingresado como imagen no es una imagen válida, ingrese otro archivo o limpie el formulario";
+                    $result = '0';
+                    $selector = 'archivo';
+                } else {
 
-                $editGalEscu->numcurricula = $editDescripcion;
-                $editGalEscu->activo = $editEstado;
-                $editGalEscu->escuela_id = $escuela_id;
-                $editGalEscu->save();
-            } else {
+                    if (strlen($oldImagen) > 0) {
+                        Storage::disk('mallaE')->delete($oldImagen);
+                    }
 
-                $editGalEscu->imagen = $imagen;
-                $editGalEscu->numcurricula = $editDescripcion;
-                $editGalEscu->activo = $editEstado;
-                $editGalEscu->fechapublica = date('Y/m/d');
-                $editGalEscu->escuela_id = $escuela_id;
-                $editGalEscu->save();
+                    $extension = $img->getClientOriginalExtension();
+                    $nuevoNombre = $aux . "." . $extension;
+                    $subir = Storage::disk('mallaE')->put($nuevoNombre, \File::get($img));
+
+                    if ($subir) {
+                        $imagen = $nuevoNombre;
+                    } else {
+                        $msj = "Error al subir la imagen, intentelo nuevamente luego";
+                        $segureImg = 1;
+                        $result = '0';
+                        $selector = 'archivo';
+                    }
+                }
             }
 
-            $msj = 'El Banner fue modificada con éxito';
+            if ($segureImg == 1) {
+                Storage::disk('mallaE')->delete($imagen);
+            } else {
+
+                $editGalEscu = MallaEscuela::findOrFail($idmalla);
+
+                if (strlen($imagen) == 0) {
+                    $editGalEscu->numcurricula = $editDescripcion;
+                    $editGalEscu->escuela_id = $escuela_id;
+                    $editGalEscu->save();
+                } else {
+
+                    $editGalEscu->imagen = $imagen;
+                    $editGalEscu->numcurricula = $editDescripcion;
+                    $editGalEscu->escuela_id = $escuela_id;
+                    $editGalEscu->save();
+                }
+                $msj = 'LA MALLA CURRICULAR FUE MODIFICADA EXITOSAMENTE';
+            }
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -278,19 +281,11 @@ class MallaEscuelaController extends Controller
     {
         $result = '1';
         $msj = '1';
-        $consulta1 = DB::table('mallas as m')
-            ->join('escuelas as e', 'e.id', '=', 'm.escuela_id')
-            ->where('m.escuela_id', $id)
-            ->count();
-        if ($consulta1 > 0) {
-            $result = '0';
-            $msj = 'No se puede eliminar bannersescuelas enlazados con otras entidades';
-        } else {
-            $borrar = MallaEscuela::findOrFail($id);
-            $borrar->borrado = '1';
-            $borrar->save();
-            $msj = 'La malla fue eliminada exitosamente';
-        }
+
+        $borrar = MallaEscuela::findOrFail($id);
+        $borrar->borrado = '1';
+        $borrar->save();
+        $msj = 'LA MALLA CURRICULAR FUE ELIMINADA EXITOSAMENTE';
 
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
@@ -306,9 +301,9 @@ class MallaEscuelaController extends Controller
         $update->save();
 
         if (strval($estado) == "0") {
-            $msj = 'La malla fue Desactivado exitosamente.';
-        } elseif (strval($estado) == "1") {
-            $msj = 'La malla fue Activado exitosamente.';
+            $msj = 'LA MALLA CURRICULAR FUE DESACTIVADA EXITOSAMENTE';
+        } else if (strval($estado) == "1") {
+            $msj = 'LA MALLA CURRICULAR FUE ACTIVADA EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

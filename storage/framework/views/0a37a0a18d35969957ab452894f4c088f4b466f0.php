@@ -92,6 +92,8 @@
                     <a href="index.html" title="Universe" rel="home">
                         <img src="<?php echo e(asset('/img/descripcionFacultades/'.$logo->imagen)); ?>"
                             alt="<?php echo e(asset('/img/descripcionFacultades/'.$logo->imagen)); ?>" style="max-height: 100px;">
+                    <a href="index.html" title="Facultad de Ciencias" rel="home">
+                        <img src="images/fc.png" alt="Facultad de Ciencias" style="max-height: 100px;">
                     </a>
                 </div> <!-- /.logo -->
             </div> <!-- /.col-md-4 -->

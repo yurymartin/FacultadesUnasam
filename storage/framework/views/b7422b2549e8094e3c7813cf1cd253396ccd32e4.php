@@ -28,8 +28,8 @@
     divtitulo: true,
     classTitle: 'fa fa-qrcode ',
     classMenu0: '',
-    classMenu1: 'active',
-    classMenu2: '',
+    classMenu1: '',
+    classMenu2: 'active',
     classMenu3: '',
     classMenu4: '',
     classMenu5: '',
@@ -211,7 +211,7 @@ methods: {
 
             swal.fire({
                 title: '¿Estás seguro?',
-                text: "¿Desea eliminar el galeriasfacultad Seleccionado? -- Nota: este proceso no se podrá revertir.",
+                text: "¿Desea eliminar la imagen de la galeria  Seleccionado? -- Nota: este proceso no se podrá revertir.",
                 type: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -291,7 +291,7 @@ bajadocente: function (galeriaFacultades) {
 
         swal.fire({
             title: '¿Estás seguro?',
-            text: "Desea desactivar la galeriasfacultad seleccionada",
+            text: "Desea desactivar la imagen de la galeria seleccionada",
             type: 'info',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -316,7 +316,7 @@ bajadocente: function (galeriaFacultades) {
 altadocente: function (galeriaFacultades) {
     swal.fire({
         title: '¿Estás seguro?',
-        text: "Desea activar la galeriasfacultad seleccionada",
+        text: "Desea activar la imagen de la galeria seleccionada",
         type: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',

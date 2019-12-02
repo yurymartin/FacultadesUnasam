@@ -3,7 +3,7 @@
     el: '#app',
     data: {
     titulo: "Mantenimiento",
-    subtitulo: "Gestión de los videos",
+    subtitulo: "Gestión de los videos de la facultad",
     subtitulo2: "Principal",
 
     subtitle2: false,
@@ -28,8 +28,8 @@
     divtitulo: true,
     classTitle: 'fa fa-qrcode ',
     classMenu0: '',
-    classMenu1: 'active',
-    classMenu2: '',
+    classMenu1: '',
+    classMenu2: 'active',
     classMenu3: '',
     classMenu4: '',
     classMenu5: '',
@@ -212,7 +212,7 @@ methods: {
 
             swal.fire({
                 title: '¿Estás seguro?',
-                text: "¿Desea eliminar el video Seleccionado? -- Nota: este proceso no se podrá revertir.",
+                text: "¿Desea eliminar el video de la facultad Seleccionado? -- Nota: este proceso no se podrá revertir.",
                 type: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -294,7 +294,7 @@ bajadocente: function (videosfacultades) {
 
         swal.fire({
             title: '¿Estás seguro?',
-            text: "Desea desactivar el video seleccionada",
+            text: "Desea desactivar el video de la facultad seleccionada",
             type: 'info',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -319,7 +319,7 @@ bajadocente: function (videosfacultades) {
 altadocente: function (videosfacultades) {
     swal.fire({
         title: '¿Estás seguro?',
-        text: "Desea activar el video seleccionada",
+        text: "Desea activar el video de la facultad seleccionada",
         type: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',

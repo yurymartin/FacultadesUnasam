@@ -54,10 +54,12 @@ class InvestigacionesController extends Controller
             ->join('personas as p', 'p.id', '=', 'd.persona_id')
             ->select('d.id as iddoc', 'p.nombres', 'p.apellidos', 'p.dni', 'p.id as idper')
             ->where('d.borrado', '=', 0)
+            ->where('d.activo','=',1)
             ->get();
 
         $temas = DB::table('temas')
             ->where('borrado', '=', 0)
+            ->where('activo','=',1)
             ->get();
 
         return [
@@ -119,27 +121,27 @@ class InvestigacionesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Falta el Titulo de la Investigacion';
+            $msj = 'FALTA EL TITULO DE LA INVESTIGACION';
             $selector = 'titulo';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Falta la Fecha de Publicacion de la Investigacion';
+            $msj = 'FALTA LA FECHA DE PUBLICACION DE LA INVESTIGACION';
             $selector = 'fecha';
         } else if ($img == 'null') {
             $result = '0';
-            $msj = 'Falta seleccionar la imagen de portada de la investigacion';
+            $msj = 'FALTA SELECCIONAR LA IMAGEN DE LA INVESTIGACION';
             $selector = 'archivo';
         } else if ($link == 'null') {
             $result = '0';
-            $msj = 'Falta seleccionar la investigacion';
+            $msj = 'FALTA SUBIR EL ARCHIVO O INVESTIGACION';
             $selector = 'archivo2';
         } else if ($docente_id == 0) {
             $result = '0';
-            $msj = 'Falta seleccionar el Docente';
+            $msj = 'FALTA SELECCIONAR EL DOCENTE RESPONSABLE DE LA INVESTIGACION';
             $selector = 'docente_id';
         } else if ($tema_id == 0) {
             $result = '0';
-            $msj = 'Falta seleccionar el tema de Estudio';
+            $msj = 'FALTA SELECCIONAR EL TEMA DE ESTUDIO DE LA INVESTIGACION';
             $selector = 'tema_id';
         } else {
             if ($request->file('imagen')) {
@@ -174,7 +176,7 @@ class InvestigacionesController extends Controller
                 $validator3 = Validator::make($input3, $reglas3);
                 if ($validator3->fails()) {
                     $seguredoc = 1;
-                    $msj = "El archivo ingresado solo debe ser PDF";
+                    $msj = "EL ARCHIVO TIENE QUE SER DE FORMATO PDF";
                     $result = '0';
                     $selector = 'archivo2';
                 } else {
@@ -201,7 +203,7 @@ class InvestigacionesController extends Controller
             $newdescripcion->docente_id = $docente_id;
             $newdescripcion->tema_id = $tema_id;
             $newdescripcion->save();
-            $msj = 'Nueva Investigacion fue registrado con éxito';
+            $msj = 'LA NUEVA INVESTIGACION FUE REGISTRADA EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -263,19 +265,19 @@ class InvestigacionesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Falta el Titulo de la Investigacion';
+            $msj = 'FALTA EL TITULO DE LA INVESTIGACION';
             $selector = 'titulo';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Falta la Fecha de Publicacion de la Investigacion';
+            $msj = 'FALTA LA FECHA DE PUBLICACION DE LA INVESTIGACION';
             $selector = 'fecha';
         } else if ($docente_id == 0) {
             $result = '0';
-            $msj = 'Falta seleccionar el Docente';
+            $msj = 'FALTA SELECCIONAR EL DOCENTE RESPONSABLE DE LA INVESTIGACION';
             $selector = 'docente_id';
         } else if ($tema_id == 0) {
             $result = '0';
-            $msj = 'Falta seleccionar el tema de estudio';
+            $msj = 'FALTA SELECCIONAR EL TEMA DE ESTUDIO DE LA INVESTIGACION';
             $selector = 'tema_id';
         } else {
             if ($request->file('imagen')) {
@@ -310,7 +312,7 @@ class InvestigacionesController extends Controller
                 $validator3 = Validator::make($input3, $reglas3);
                 if ($validator3->fails()) {
                     $seguredoc = 1;
-                    $msj = "El archivo ingresado solo debe ser PDF";
+                    $msj = "ERROR, EL ARCHIVO TIENE QUE SER DE FORMATO PDF";
                     $result = '0';
                     $selector = 'archivo2';
                 } else {
@@ -360,7 +362,7 @@ class InvestigacionesController extends Controller
                 $newdescripcion->tema_id = $tema_id;
                 $newdescripcion->save();
             }
-            $msj = 'Nueva Investigacion fue Modificado con éxito';
+            $msj = 'LA INVESTIGACION FUE MODIFICADA EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -379,7 +381,7 @@ class InvestigacionesController extends Controller
         $borrar = Investigaciones::findOrFail($id);
         $borrar->borrado = '1';
         $borrar->save();
-        $msj = 'La Investigacion fue eliminado exitosamente';
+        $msj = 'LA INVESTIGACION FUE ELIMINADA EXITOSAMENTE';
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
 
@@ -394,9 +396,9 @@ class InvestigacionesController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'La Investigacion fue Desactivada exitosamente';
+            $msj = 'LA INVESTIGACION FUE DESACTIVADA EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'La Investigacion fue Activada exitosamente';
+            $msj = 'LA INVESTIGACION FUE ACTIVADA EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

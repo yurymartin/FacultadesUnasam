@@ -35,12 +35,14 @@ class OrganigramaController extends Controller
     public function index(Request $request)
     {
         $buscar = $request->busca;
-        $organigramafacultades = Organigrama::where('borrado', '0')
+        $organigramafacultades = DB::table('organigramafacultades')
             ->where(function ($query) use ($buscar) {
                 $query->where('imagen', 'like', '%' . $buscar . '%');
             })
+            ->where('borrado', '0')
             ->orderBy('id', 'desc')
             ->paginate(10);
+
         return [
             'pagination' => [
                 'total' => $organigramafacultades->total(),
@@ -71,7 +73,8 @@ class OrganigramaController extends Controller
      */
     public function store(Request $request)
     {
-       
+
+        $descripcion = $request->descripcion;
         $img = $request->imagen;
         $estado = $request->activo;
         $result = '1';
@@ -82,7 +85,7 @@ class OrganigramaController extends Controller
 
         if ($img == 'null') {
             $result = '0';
-            $msj = 'Debe de Ingresar una imagen';
+            $msj = 'FALTA SELECCIONAR LA IMAGEN DEL ORGANIGRAMA';
             $selector = 'archivo';
         } else {
 
@@ -120,6 +123,7 @@ class OrganigramaController extends Controller
                 Storage::disk('Organigrama')->delete($imagen);
             } else {
                 $newBanner = new Organigrama();
+                $newBanner->descripcion = $descripcion;
                 $newBanner->imagen = $imagen;
                 $newBanner->fecha = date('Y/m/d');
                 $newBanner->activo = $estado;
@@ -127,7 +131,7 @@ class OrganigramaController extends Controller
 
                 $newBanner->save();
 
-                $msj = 'Nuevo Organigrama registrado con éxito';
+                $msj = 'EL NUEVO ORGANIGRAMA FUE REGISTRADO EXITOSAMENTE';
             }
         }
 
@@ -169,15 +173,16 @@ class OrganigramaController extends Controller
         $msj = '';
         $selector = '';
 
+        $descripcion = $request->descripcion;
         $idOrganigrama = $request->idOrganigrama;
         $img = $request->imagen;
         $editEstado = $request->editEstado;
-        
+
         $imagen = "";
         $segureImg = 0;
 
         $oldImagen = $request->oldImagen;
-
+        
         if ($request->hasFile('imagen')) {
 
             $aux = date('d-m-Y') . '-' . date('H-i-s');;
@@ -218,17 +223,15 @@ class OrganigramaController extends Controller
             $editBanner = Organigrama::findOrFail($idOrganigrama);
 
             if (strlen($imagen) == 0) {
-
-                $editBanner->activo = $editEstado;
+                $editBanner->descripcion = $descripcion;
                 $editBanner->save();
             } else {
-
-                $editBanner->imagen = $imagen;               
-                $editBanner->activo = $editEstado;        
+                $editBanner->descripcion = $descripcion;
+                $editBanner->imagen = $imagen;
                 $editBanner->save();
             }
 
-            $msj = 'El Organigrama fue modificada con éxito';
+            $msj = 'EL ORGANIGRAMA FUE MODIFICADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -253,7 +256,7 @@ class OrganigramaController extends Controller
 
         $borrar->save();
 
-        $msj = 'Organigrama eliminado exitosamente';
+        $msj = 'EL ORGANIGRAMA FUE ELIMINADO EXITOSAMENTE';
 
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
@@ -268,9 +271,9 @@ class OrganigramaController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'El Cargo fue Desactivada exitosamente';
+            $msj = 'EL ORGANIGRAMA FUE DESACTIVADO EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'El Cargo fue Activada exitosamente';
+            $msj = 'EL ORGANIGRAMA FUE ACTIVADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

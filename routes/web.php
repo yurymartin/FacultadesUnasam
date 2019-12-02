@@ -132,6 +132,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('alumno', 'AlumnosController');
     Route::get('alumno/altabaja/{id}/{var}', 'AlumnosController@altabaja');
 
+    Route::get('videoescuelas', 'VideoEscuelasController@index1');
+    Route::resource('videoescuela', 'VideoEscuelasController');
+    Route::get('videoescuela/altabaja/{id}/{var}', 'VideoEscuelasController@altabaja');
+
     /* --------------------------------------------------- PACHAS --------------------------------------*/
     Route::get('cargos', 'CargoController@index1');
     Route::resource('cargo', 'CargoController');
@@ -158,8 +162,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('estudiantil/altabaja/{id}/{var}', 'ComiteEstudiantilController@altabaja');
 
     Route::get('organigramafacultades', 'OrganigramaController@index1');
-    Route::resource('organigrama', 'OrganigramaController');
-    Route::get('organigrama/altabaja/{id}/{var}', 'OrganigramaController@altabaja');
+    Route::resource('organigramafacultad', 'OrganigramaController');
+    Route::get('organigramafacultad/altabaja/{id}/{var}', 'OrganigramaController@altabaja');
     
     Route::get('misionvision', 'IndexWebController@misionvision');
     Route::get('filosofia', 'IndexWebController@filosofia');

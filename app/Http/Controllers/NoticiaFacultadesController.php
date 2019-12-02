@@ -91,11 +91,11 @@ class NoticiaFacultadesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Falta completar el titulo de la noticia';
+            $msj = 'FALTA COMPLETAR EL TITULO DE LA NOTICIA';
             $selector = 'titulo';
         } else if ($img == 'null') {
             $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
+            $msj = 'FALTA SELECCIONAR LA IMAGEN DE LA NOTICIA';
             $selector = 'archivo';
         } else {
 
@@ -138,7 +138,7 @@ class NoticiaFacultadesController extends Controller
                 $newdescripcion->activo = $estado;
                 $newdescripcion->borrado = '0';
                 $newdescripcion->save();
-                $msj = 'La nuevo noticia de facultades fue registrado con éxito';
+                $msj = 'LA NUEVA NOTICIA FUE REGISTRADO EXITOSAMENTE';
             }
         }
 
@@ -194,7 +194,7 @@ class NoticiaFacultadesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Falta completar el titulo del evento';
+            $msj = 'FALTA COMPLETAR EL TITULO DE LA NOTICIA';
             $selector = 'titulo';
         } else {
             if ($request->hasFile('imagen')) {
@@ -229,13 +229,13 @@ class NoticiaFacultadesController extends Controller
                 $editadescripcion->descripcion = $descripcion;
                 $editadescripcion->imagen = $imagen;
                 $editadescripcion->save();
-                $msj = 'La Noticia de las facultades fue Modificado con éxito';
+                $msj = 'LA NOTICIA FUE MODIFICADO EXITOSAMENTE';
             } else {
                 $editadescripcion = NoticiaFacultades::findOrFail($id);
                 $editadescripcion->titulo = $titulo;
                 $editadescripcion->descripcion = $descripcion;
                 $editadescripcion->save();
-                $msj = 'La Noticia de las facultades fue Modificado con éxito';
+                $msj = 'LA NOTICIA FUE MODIFICADO EXITOSAMENTE';
             }
         }
 
@@ -255,7 +255,7 @@ class NoticiaFacultadesController extends Controller
         $borrar = NoticiaFacultades::findOrFail($id);
         $borrar->borrado = '1';
         $borrar->save();
-        $msj = 'La noticia fue eliminado exitosamente';
+        $msj = 'LA NOTICIA FUE ELIMINADO EXITOSAMENTE';
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
 
@@ -270,9 +270,9 @@ class NoticiaFacultadesController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'La noticia fue Desactivada exitosamente';
+            $msj = 'LA NOTICIA FUE DESACTIVADO EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'La noticia fue Activada exitosamente';
+            $msj = 'LA NOTICIA FUE ACTIVADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
