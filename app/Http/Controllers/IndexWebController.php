@@ -240,5 +240,31 @@ class IndexWebController extends Controller
             ->get();
 
         return view('web.ingenieriadesistemaseinformatica', ['logos' => $logos, 'escuelas' => $escuelas, 'descripciones' => $descripciones, 'campoLaborales' => $campoLaborales, 'perfiles' => $perfiles]);
+        return view('web.index', ['BannersFacultades' => $BannersFacultades, 'noticias' => $noticias, 'eventos' => $eventos, 'misionvision' => $misionvision, 'galeriaFacultades' => $galeriaFacultades, 'carrerasprofesionales' => $carrerasprofesionales, 'videosFacultades' => $videosFacultades, 'decano' => $decano, 'autoridades' => $autoridades]);
+    }
+    public function misionvision()
+    {
+        $misionvision = DescripcionFacultades::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('web.misionvision', ['misionvision' => $misionvision,'filosofia'=> $filosofia]);
+    }
+    public function filosofia(){
+        $filosofia = DescripcionFacultades::where('borrado', '0')
+        ->where('activo', '=', '1')
+        ->orderBy('id', 'desc')
+        ->get();
+
+    return view('web.filosofia', ['filosofia'=> $filosofia]); 
+    }
+    public function organigrama(){
+        $organigrama = Organigrama::where('borrado', '0')
+        ->where('activo', '=', '1')
+        ->orderBy('id', 'desc')
+        ->get();
+
+    return view('web.organigrama', ['organigrama'=> $organigrama]); 
     }
 }
