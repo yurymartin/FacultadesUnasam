@@ -12,6 +12,8 @@ use App\EventoFacultades;
 use App\GaleriaFacultades;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Investigaciones;
+use App\Libros;
 use App\NosotrosEscuelas;
 use App\NoticiaFacultades;
 use App\Organigrama;
@@ -240,7 +242,6 @@ class IndexWebController extends Controller
             ->get();
 
         return view('web.ingenieriadesistemaseinformatica', ['logos' => $logos, 'escuelas' => $escuelas, 'descripciones' => $descripciones, 'campoLaborales' => $campoLaborales, 'perfiles' => $perfiles]);
-        return view('web.index', ['BannersFacultades' => $BannersFacultades, 'noticias' => $noticias, 'eventos' => $eventos, 'misionvision' => $misionvision, 'galeriaFacultades' => $galeriaFacultades, 'carrerasprofesionales' => $carrerasprofesionales, 'videosFacultades' => $videosFacultades, 'decano' => $decano, 'autoridades' => $autoridades]);
     }
     public function misionvision()
     {
@@ -249,22 +250,69 @@ class IndexWebController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        return view('web.misionvision', ['misionvision' => $misionvision,'filosofia'=> $filosofia]);
+        return view('web.misionvision', ['misionvision' => $misionvision]);
     }
-    public function filosofia(){
+    public function filosofia()
+    {
         $filosofia = DescripcionFacultades::where('borrado', '0')
-        ->where('activo', '=', '1')
-        ->orderBy('id', 'desc')
-        ->get();
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
 
-    return view('web.filosofia', ['filosofia'=> $filosofia]); 
+        return view('web.filosofia', ['filosofia' => $filosofia]);
     }
-    public function organigrama(){
+    public function organigrama()
+    {
         $organigrama = Organigrama::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('web.organigrama', ['organigrama' => $organigrama]);
+    }
+    public function revista()
+    {
+        $revista = Investigaciones::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $logos = DescripcionFacultades::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->take(1)
+            ->get();
+        $escuelas = Escuela::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+        $libros = Libros::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('web.revista', ['revista' => $revista, 'logos' => $logos, 'escuelas' => $escuelas,'libros' => $libros]);
+    }
+    public function librosweb(){
+        $revista = Investigaciones::where('borrado', '0')
         ->where('activo', '=', '1')
         ->orderBy('id', 'desc')
         ->get();
 
-    return view('web.organigrama', ['organigrama'=> $organigrama]); 
+    $logos = DescripcionFacultades::where('borrado', '0')
+        ->where('activo', '=', '1')
+        ->orderBy('id', 'desc')
+        ->take(1)
+        ->get();
+    $escuelas = Escuela::where('borrado', '0')
+        ->where('activo', '=', '1')
+        ->orderBy('id', 'desc')
+        ->get();
+    $librosweb = Libros::where('borrado', '0')
+        ->where('activo', '=', '1')
+        ->orderBy('id', 'desc')
+        ->get();
+
+    return view('web.librosweb', ['revista' => $revista, 'logos' => $logos, 'escuelas' => $escuelas,'librosweb' => $librosweb]);  
     }
 }

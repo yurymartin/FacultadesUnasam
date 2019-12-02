@@ -3,7 +3,7 @@
     el: '#app',
     data: {
     titulo: "Mantenimiento",
-    subtitulo: "Gestión de la Descripcion de la Facultad",
+    subtitulo: "Gestión de Autoridades",
     subtitulo2: "Principal",
 
     subtitle2: false,
@@ -28,11 +28,11 @@
     divtitulo: true,
     classTitle: 'fa fa-qrcode ',
     classMenu0: '',
-    classMenu1: 'active',
+    classMenu1: '',
     classMenu2: '',
     classMenu3: '',
     classMenu4: '',
-    classMenu5: '',
+    classMenu5: 'active',
     classMenu6: '',
     classMenu7: '',
     classMenu8: '',
@@ -44,10 +44,15 @@
 
     divprincipal: false,
 
-    descripcionfacultades: [],
+    autoridades: [],
+    cargos: [],
+    persona:[],
+    grados:[],
     errors: [],
 
-    fillDescripcionFacultades:{'id':'', 'descripcion':'', 'reseñahistor':'', 'mision':'', 'vision':'','imagen':'' ,'filosofia':'','activo':'','borrado':''},
+    fillPersona:{'idper':'', 'dni':'', 'nombres':'', 'apellidos':'', 'imagen':'', 'genero':''},
+
+    fillAutoridad:{'idauto':'','descripcion':'','fechainicio': '','fechafin': '','estado': '','cargo_id':'','persona_id':'','gradoacademico_id':''},
 
     pagination: {
     'total': 0,
@@ -65,16 +70,24 @@
 
     thispage: '1',
 
-    newDescripcion: '',
-    newReseñaHistor: '',
-    newMision:'',
-    newVision:'',
+    newDni: '',
+    newNombres: '',
+    newApellidos: '',
     imagen: null,
-    newFilosofia: '',
-    newActivo: '',
+    newGenero: '',
+
+    newDescripcion:'',
+    newFechaInicio: '',
+    newFechaFin: '',
+    newEstado: '1',
+    cargo_id: '0',
+    persona_id: '0',
+    gradoacademico_id: '0',
+
+
 },
 created: function () {
-    this.getDescripcionFacultades(this.thispage);
+    this.getAutoridades(this.thispage);
 },
 mounted: function () {
     this.divloader0 = false;
@@ -110,18 +123,21 @@ computed: {
     } 
 }, 
 methods: { 
-    getImg(descripcionfacultad) { var
-            img="<?php echo e(asset('/')); ?>img/descripcionfacultades/" + descripcionfacultad.imagen;
+    getImg(autoridades) { var
+            img="<?php echo e(asset('/')); ?>img/personas/" + autoridades.foto;
              return img; 
     }, 
-    getDescripcionFacultades: function (page) { 
+    getAutoridades: function (page) { 
         var busca=this.buscar; 
-        var url='descripcionfacultad?page=' + page + '&busca=' + busca; 
+        var url='autoridad?page=' + page + '&busca=' + busca; 
         axios.get(url).then(response=> {
-            this.descripcionfacultades = response.data.descripcionfacultades.data;
+            this.autoridades = response.data.autoridades.data;
             this.pagination = response.data.pagination;
+            this.cargos = response.data.cargos;
+            this.grados = response.data.grados;
+            this.personas= response.data.personas;
 
-        if (this.descripcionfacultades.length == 0 && this.thispage != '1') {
+        if (this.autoridades.length == 0 && this.thispage != '1') {
             var a = parseInt(this.thispage);
             a--;
             this.thispage = a.toString();
@@ -131,11 +147,11 @@ methods: {
         },
     changePage: function (page) {
             this.pagination.current_page = page;
-            this.getDescripcionFacultades(page);
+            this.getAutoridades(page);
             this.thispage = page;
         },
     buscarBtn: function () {
-            this.getDescripcionFacultades();
+            this.getAutoridades();
             this.thispage = '1';
         },
     nuevo: function () {
@@ -151,14 +167,18 @@ methods: {
             this.cancelFormNuevo();
         },
     cancelFormNuevo: function () {
-            $('#Nombress').focus();
+            $('#dni').focus();
+            
+            this.newDni = '';
+            this.newNombres = '';
+            this.newApellidos = '';
             this.newDescripcion = '';
-            this.newReseñaHistor = '';
-            this.newMision = '';
-            this.newVision = '';
-            this.newFilosofia = '';
-            this.newActivo = '1';
+            this.newFechaInicio = '';
+            this.newFechaFin = '';
+            this.newEstado = '1';
+            this.newGenero = '1';
             this.imagen = null;
+            this.gradoacademico_id = '0';
 
             $(".form-control").css("border", "1px solid #d2d6de");
         },
@@ -169,30 +189,34 @@ methods: {
                 this.imagen = event.target.files[0];
             }
             },
-            
+
     recorrerBanner: function () {
             $.each($(".txtimg"), function (index, value) {
             // var valor=$(this).attr("id");
             var idusar = $(this).val();
-            $("#ImgPerfilNuevoE" + idusar).attr("src", "<?php echo e(asset('/img/descripcionfacultad/')); ?>" + "/" + $("#txt" + idusar).val());
+            $("#ImgPerfilNuevoE" + idusar).attr("src", "<?php echo e(asset('/img/personas/')); ?>" + "/" + $("#txt" + idusar).val());
             });
             },
     create: function () {
-        var url = 'descripcionfacultad';
+        var url = 'autoridad';
         $("#btnGuardar").attr('disabled', true);
         $("#btnCancel").attr('disabled', true);
         $("#btnClose").attr('disabled', true);
         this.divloaderNuevo = true;
         $(".form-control").css("border", "1px solid #d2d6de");
             var data = new FormData();
+                data.append('dni', this.newDni);
+                data.append('nombres', this.newNombres);
+                data.append('apellidos', this.newApellidos);
+                data.append('imagen', this.imagen);
+                data.append('genero', this.newGenero);
 
                 data.append('descripcion', this.newDescripcion);
-                data.append('reseñahistor', this.newReseñaHistor);
-                data.append('mision', this.newMision);
-                data.append('vision', this.newVision);
-                data.append('imagen', this.imagen);
-                data.append('filosofia', this.newFilosofia);
-                data.append('activo', this.newActivo);
+                data.append('fechainicio', this.newFechaInicio);
+                data.append('fechafin', this.newFechaFin);
+                data.append('estado', this.newEstado);
+                data.append('cargo_id', this.cargo_id);
+                data.append('gradoacademico_id', this.gradoacademico_id);
                 
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             axios.post(url,data,config).then(response=>{
@@ -203,7 +227,7 @@ methods: {
             this.divloaderNuevo = false;
 
             if (String(response.data.result) == '1') {
-                this.getDescripcionFacultades(this.thispage);
+                this.getAutoridades(this.thispage);
                 this.errors = [];
                 this.cerrarFormNuevo();
                 toastr.success(response.data.msj);
@@ -216,11 +240,11 @@ methods: {
                 //this.errors=error.response.data
             })
             },
-        borrardocente: function (descripcionfacultades) {
+        borrardocente: function (autoridades) {
 
             swal.fire({
                 title: '¿Estás seguro?',
-                text: "¿Desea eliminar la Descripcion Seleccionado? -- Nota: este proceso no se podrá revertir.",
+                text: "¿Desea eliminar la autoridad Seleccionado? -- Nota: este proceso no se podrá revertir.",
                 type: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -230,11 +254,11 @@ methods: {
 
                 if (result.value) {
 
-                    var url = 'descripcionfacultad/' + descripcionfacultades.id;
+                    var url = 'autoridad/' + autoridades.idauto;
                      axios.delete(url).then(response => { //eliminamos
 
                 if (response.data.result == '1') {
-                    app.getDescripcionFacultades(app.thispage); //listamos
+                    app.getAutoridades(app.thispage); //listamos
                     toastr.success(response.data.msj); //mostramos mensaje
                  } else {
                     // $('#'+response.data.selector).focus();
@@ -247,50 +271,70 @@ methods: {
             }).catch(swal.noop);
             },
 
-    editbanner: function (descripcionfacultad) {
-        this.fillDescripcionFacultades.id = descripcionfacultad.id;
-        this.fillDescripcionFacultades.descripcion = descripcionfacultad.descripcion;
-        this.fillDescripcionFacultades.reseñahistor = descripcionfacultad.reseñahistor;
-        this.fillDescripcionFacultades.mision = descripcionfacultad.mision;
-        this.fillDescripcionFacultades.vision = descripcionfacultad.vision;
-        this.fillDescripcionFacultades.filosofia = descripcionfacultad.filosofia;
-        this.imagen=null;
+    editbanner: function (autoridades) {
+        this.fillPersona.idper = autoridades.idper;
+        this.fillPersona.dni = autoridades.dni;
+        this.fillPersona.nombres = autoridades.nombres;
+        this.fillPersona.apellidos = autoridades.apellidos;
+        this.fillPersona.genero = autoridades.genero;
+        this.imagen = null;
         
+        this.fillAutoridad.idauto = autoridades.idauto;
+        this.fillAutoridad.descripcion = autoridades.descripcion;
+        this.fillAutoridad.fechainicio = autoridades.fechainicio;
+        this.fillAutoridad.fechafin = autoridades.fechafin;
+        this.fillAutoridad.cargo_id = autoridades.idcargo;
+        this.fillAutoridad.gradoacademico_id = autoridades.idgrado;
+
         $("#modalEditar").modal('show');
             this.$nextTick(function () {
-            $("#DescripcionE").focus();
+            $("#txttituloE").focus();
         })
     },
-    updateBanner: function (id) {
+    cerrarFormE: function(){
+
+            this.divEditUsuario=false;
+
+            this.$nextTick(function () {
+                this.fillPersona={'id':'', 'dni':'', 'nombres':'', 'apellidos':'', 'imagen':'', 'genero':''};
+                this.fillAutoridad={'idauto':'','descripcion':'','fechainicio': '','fechafin': '','estado': '','cargo_id':'','persona_id':'','gradoacademico_id':''};
+            })
+
+        },
+    updateBanner: function (idper,idauto) {
         var data = new FormData();
 
-        data.append('id', this.fillDescripcionFacultades.id);
-        data.append('descripcion', this.fillDescripcionFacultades.descripcion);
-        data.append('reseñahistor', this.fillDescripcionFacultades.reseñahistor);
-        data.append('mision', this.fillDescripcionFacultades.mision);
-        data.append('vision', this.fillDescripcionFacultades.vision);
+        data.append('idper', this.fillPersona.idper);
+        data.append('idauto', this.fillAutoridad.idauto);
+
+        data.append('dni', this.fillPersona.dni);
+        data.append('nombres', this.fillPersona.nombres);
+        data.append('apellidos', this.fillPersona.apellidos);
         data.append('imagen', this.imagen);
-        data.append('filosofia', this.fillDescripcionFacultades.filosofia);
+        data.append('genero', this.fillPersona.genero);
+     
+        data.append('descripcion', this.fillAutoridad.descripcion);
+        data.append('fechainicio', this.fillAutoridad.fechainicio);
+        data.append('fechafin', this.fillAutoridad.fechafin);   
+        data.append('cargo_id', this.fillAutoridad.cargo_id);
+        data.append('gradoacademico_id', this.fillAutoridad.gradoacademico_id);   
+
         data.append('_method', 'PUT');
-        
+
         const config = {headers: {'Content-Type': 'multipart/form-data'}};
         
-        var url = "descripcionfacultad/" + id;
-
+        var url = "autoridad/" + idauto;
             $("#btnSaveE").attr('disabled', true);
             $("#btnCloseE").attr('disabled', true);
             this.divloaderEdit = true;
-        
             axios.post(url, data, config).then(response => {
-            
             $("#btnSaveE").removeAttr("disabled");
             $("#btnCancelE").removeAttr("disabled");
             this.divloaderEdit = false;
-           
+
         if (response.data.result == '1') {
-            
-            this.getDescripcionFacultades(this.thispage);
-            this.fillLocal= {'id':'', 'descripcion':'', 'reseñahistor':'', 'mision':'', 'vision':'','imagen':'' ,'filosofia':'','activo':'','borrado':''};
+            this.getAutoridades(this.thispage);
+            this.cerrarFormE();
             this.errors = [];
             $("#modalEditar").modal('hide');
             toastr.success(response.data.msj);
@@ -303,11 +347,11 @@ methods: {
             this.errors = error.response.data
         })
     },
-bajadocente: function (descripcionfacultades) {
+bajadocente: function (autoridades) {
 
         swal.fire({
             title: '¿Estás seguro?',
-            text: "Desea desactivar la Descripciòn seleccionada",
+            text: "Desea desactivar la autoridad seleccionado",
             type: 'info',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -315,10 +359,10 @@ bajadocente: function (descripcionfacultades) {
             confirmButtonText: 'Si, Desactivar'
         }).then((result) => {
         if (result.value) {
-            var url = 'descripcionfacultad/altabaja/' + descripcionfacultades.id + '/0';
+            var url = 'autoridad/altabaja/' + autoridades.idauto + '/0';
             axios.get(url).then(response => { //eliminamos
         if (response.data.result == '1') {
-            app.getDescripcionFacultades(app.thispage); //listamos
+            app.getAutoridades(app.thispage); //listamos
             toastr.success(response.data.msj); //mostramos mensaje
         } else {
             // $('#'+response.data.selector).focus();
@@ -329,10 +373,10 @@ bajadocente: function (descripcionfacultades) {
 }).catch(swal.noop);
 },
 
-altadocente: function (descripcionfacultades) {
+altadocente: function (autoridades) {
     swal.fire({
         title: '¿Estás seguro?',
-        text: "Desea activar la Descripciòn seleccionada",
+        text: "Desea activar la autoridad seleccionado",
         type: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -340,10 +384,10 @@ altadocente: function (descripcionfacultades) {
         confirmButtonText: 'Si, Activar'
     }).then((result) => {
     if (result.value) {
-        var url = 'descripcionfacultad/altabaja/' + descripcionfacultades.id + '/1';
+        var url = 'autoridad/altabaja/' + autoridades.idauto + '/1';
         axios.get(url).then(response => { //eliminamos
     if (response.data.result == '1') {
-        app.getDescripcionFacultades(app.thispage); //listamos
+        app.getAutoridades(app.thispage); //listamos
         toastr.success(response.data.msj); //mostramos mensaje
     } else {
         // $('#'+response.data.selector).focus();
@@ -355,4 +399,4 @@ altadocente: function (descripcionfacultades) {
 },
 }
 }); 
-</script><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/descripcionfacultades/vue.blade.php ENDPATH**/ ?>
+</script><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/autoridades/vue.blade.php ENDPATH**/ ?>

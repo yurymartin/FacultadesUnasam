@@ -3,7 +3,7 @@
     el: '#app',
     data: {
     titulo: "Mantenimiento",
-    subtitulo: "Gestión de la Descripcion de la Facultad",
+    subtitulo: "Gestión de Galeria de la Facultad",
     subtitulo2: "Principal",
 
     subtitle2: false,
@@ -44,10 +44,10 @@
 
     divprincipal: false,
 
-    descripcionfacultades: [],
+    galeriafacultades: [],
     errors: [],
 
-    fillDescripcionFacultades:{'id':'', 'descripcion':'', 'reseñahistor':'', 'mision':'', 'vision':'','imagen':'' ,'filosofia':'','activo':'','borrado':''},
+    fillGaleriaFacultad:{'id':'','imagen':'','descripcion':'','activo':'','borrado':''},
 
     pagination: {
     'total': 0,
@@ -66,11 +66,7 @@
     thispage: '1',
 
     newDescripcion: '',
-    newReseñaHistor: '',
-    newMision:'',
-    newVision:'',
     imagen: null,
-    newFilosofia: '',
     newActivo: '',
 },
 created: function () {
@@ -110,18 +106,18 @@ computed: {
     } 
 }, 
 methods: { 
-    getImg(descripcionfacultad) { var
-            img="<?php echo e(asset('/')); ?>img/descripcionfacultades/" + descripcionfacultad.imagen;
+    getImg(galeriasfacultades) { var
+            img="<?php echo e(asset('/')); ?>img/galeriaFacultad/" + galeriasfacultades.imagen;
              return img; 
     }, 
     getDescripcionFacultades: function (page) { 
         var busca=this.buscar; 
-        var url='descripcionfacultad?page=' + page + '&busca=' + busca; 
+        var url='galeriasfacultad?page=' + page + '&busca=' + busca; 
         axios.get(url).then(response=> {
-            this.descripcionfacultades = response.data.descripcionfacultades.data;
+            this.galeriafacultades = response.data.galeriafacultades.data;
             this.pagination = response.data.pagination;
 
-        if (this.descripcionfacultades.length == 0 && this.thispage != '1') {
+        if (this.galeriafacultades.length == 0 && this.thispage != '1') {
             var a = parseInt(this.thispage);
             a--;
             this.thispage = a.toString();
@@ -151,18 +147,16 @@ methods: {
             this.cancelFormNuevo();
         },
     cancelFormNuevo: function () {
-            $('#Nombress').focus();
+            $('#titulo').focus();
+            this.newTitulo = '';
             this.newDescripcion = '';
-            this.newReseñaHistor = '';
-            this.newMision = '';
-            this.newVision = '';
-            this.newFilosofia = '';
+            this.newFechapubli = '';
             this.newActivo = '1';
             this.imagen = null;
 
             $(".form-control").css("border", "1px solid #d2d6de");
         },
-    getImage(event) {
+    getImage(galeriaFacultades) {
             if (!event.target.files.length) {
                 this.imagen = null;
             }else {
@@ -174,11 +168,11 @@ methods: {
             $.each($(".txtimg"), function (index, value) {
             // var valor=$(this).attr("id");
             var idusar = $(this).val();
-            $("#ImgPerfilNuevoE" + idusar).attr("src", "<?php echo e(asset('/img/descripcionfacultad/')); ?>" + "/" + $("#txt" + idusar).val());
+            $("#ImgPerfilNuevoE" + idusar).attr("src", "<?php echo e(asset('/img/galeriaFacultades/')); ?>" + "/" + $("#txt" + idusar).val());
             });
             },
     create: function () {
-        var url = 'descripcionfacultad';
+        var url = 'galeriasfacultad';
         $("#btnGuardar").attr('disabled', true);
         $("#btnCancel").attr('disabled', true);
         $("#btnClose").attr('disabled', true);
@@ -186,12 +180,9 @@ methods: {
         $(".form-control").css("border", "1px solid #d2d6de");
             var data = new FormData();
 
+                data.append('titulo', this.newTitulo);
                 data.append('descripcion', this.newDescripcion);
-                data.append('reseñahistor', this.newReseñaHistor);
-                data.append('mision', this.newMision);
-                data.append('vision', this.newVision);
                 data.append('imagen', this.imagen);
-                data.append('filosofia', this.newFilosofia);
                 data.append('activo', this.newActivo);
                 
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
@@ -216,11 +207,11 @@ methods: {
                 //this.errors=error.response.data
             })
             },
-        borrardocente: function (descripcionfacultades) {
+        borrardocente: function (galeriaFacultades) {
 
             swal.fire({
                 title: '¿Estás seguro?',
-                text: "¿Desea eliminar la Descripcion Seleccionado? -- Nota: este proceso no se podrá revertir.",
+                text: "¿Desea eliminar el galeriasfacultad Seleccionado? -- Nota: este proceso no se podrá revertir.",
                 type: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -230,7 +221,7 @@ methods: {
 
                 if (result.value) {
 
-                    var url = 'descripcionfacultad/' + descripcionfacultades.id;
+                    var url = 'galeriasfacultad/' + galeriaFacultades.id;
                      axios.delete(url).then(response => { //eliminamos
 
                 if (response.data.result == '1') {
@@ -247,35 +238,28 @@ methods: {
             }).catch(swal.noop);
             },
 
-    editbanner: function (descripcionfacultad) {
-        this.fillDescripcionFacultades.id = descripcionfacultad.id;
-        this.fillDescripcionFacultades.descripcion = descripcionfacultad.descripcion;
-        this.fillDescripcionFacultades.reseñahistor = descripcionfacultad.reseñahistor;
-        this.fillDescripcionFacultades.mision = descripcionfacultad.mision;
-        this.fillDescripcionFacultades.vision = descripcionfacultad.vision;
-        this.fillDescripcionFacultades.filosofia = descripcionfacultad.filosofia;
+    editbanner: function (galeriafacultades) {
+        this.fillGaleriaFacultad.id = galeriafacultades.id;
+        this.fillGaleriaFacultad.descripcion = galeriafacultades.descripcion;
         this.imagen=null;
         
         $("#modalEditar").modal('show');
             this.$nextTick(function () {
-            $("#DescripcionE").focus();
+            $("#titulo").focus();
         })
     },
     updateBanner: function (id) {
         var data = new FormData();
 
-        data.append('id', this.fillDescripcionFacultades.id);
-        data.append('descripcion', this.fillDescripcionFacultades.descripcion);
-        data.append('reseñahistor', this.fillDescripcionFacultades.reseñahistor);
-        data.append('mision', this.fillDescripcionFacultades.mision);
-        data.append('vision', this.fillDescripcionFacultades.vision);
-        data.append('imagen', this.imagen);
-        data.append('filosofia', this.fillDescripcionFacultades.filosofia);
+        data.append('id', this.fillGaleriaFacultad.id);
+        data.append('descripcion', this.fillGaleriaFacultad.descripcion);
+        data.append('imagen',this.imagen);
         data.append('_method', 'PUT');
+        
         
         const config = {headers: {'Content-Type': 'multipart/form-data'}};
         
-        var url = "descripcionfacultad/" + id;
+        var url = "galeriasfacultad/" + id;
 
             $("#btnSaveE").attr('disabled', true);
             $("#btnCloseE").attr('disabled', true);
@@ -290,7 +274,7 @@ methods: {
         if (response.data.result == '1') {
             
             this.getDescripcionFacultades(this.thispage);
-            this.fillLocal= {'id':'', 'descripcion':'', 'reseñahistor':'', 'mision':'', 'vision':'','imagen':'' ,'filosofia':'','activo':'','borrado':''};
+            this.fillLocal= {'id':'', 'titulo':'', 'descripcion':'', 'fechainicio':'', 'fechafin':'','imagen':'' ,'activo':'','borrado':''};
             this.errors = [];
             $("#modalEditar").modal('hide');
             toastr.success(response.data.msj);
@@ -303,11 +287,11 @@ methods: {
             this.errors = error.response.data
         })
     },
-bajadocente: function (descripcionfacultades) {
+bajadocente: function (galeriaFacultades) {
 
         swal.fire({
             title: '¿Estás seguro?',
-            text: "Desea desactivar la Descripciòn seleccionada",
+            text: "Desea desactivar la galeriasfacultad seleccionada",
             type: 'info',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -315,7 +299,7 @@ bajadocente: function (descripcionfacultades) {
             confirmButtonText: 'Si, Desactivar'
         }).then((result) => {
         if (result.value) {
-            var url = 'descripcionfacultad/altabaja/' + descripcionfacultades.id + '/0';
+            var url = 'galeriasfacultad/altabaja/' + galeriaFacultades.id + '/0';
             axios.get(url).then(response => { //eliminamos
         if (response.data.result == '1') {
             app.getDescripcionFacultades(app.thispage); //listamos
@@ -329,10 +313,10 @@ bajadocente: function (descripcionfacultades) {
 }).catch(swal.noop);
 },
 
-altadocente: function (descripcionfacultades) {
+altadocente: function (galeriaFacultades) {
     swal.fire({
         title: '¿Estás seguro?',
-        text: "Desea activar la Descripciòn seleccionada",
+        text: "Desea activar la galeriasfacultad seleccionada",
         type: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -340,7 +324,7 @@ altadocente: function (descripcionfacultades) {
         confirmButtonText: 'Si, Activar'
     }).then((result) => {
     if (result.value) {
-        var url = 'descripcionfacultad/altabaja/' + descripcionfacultades.id + '/1';
+        var url = 'galeriasfacultad/altabaja/' + galeriaFacultades.id + '/1';
         axios.get(url).then(response => { //eliminamos
     if (response.data.result == '1') {
         app.getDescripcionFacultades(app.thispage); //listamos
@@ -355,4 +339,4 @@ altadocente: function (descripcionfacultades) {
 },
 }
 }); 
-</script><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/descripcionfacultades/vue.blade.php ENDPATH**/ ?>
+</script><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/galeriaFacultades/vue.blade.php ENDPATH**/ ?>

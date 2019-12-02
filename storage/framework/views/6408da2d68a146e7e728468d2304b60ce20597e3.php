@@ -1,5 +1,4 @@
-@extends('web/layout/layout')
-@section('contenido')
+<?php $__env->startSection('contenido'); ?>
 <style>
     .imagen:hover {
         transform: scale(0.97);
@@ -28,9 +27,9 @@
                                 <label style="font-size: 20px">TEMA:</label>
                                 <select class="form-control form-control-lg">
                                         <option>Todos</option>
-                                    @foreach ($revista as $rta)
-                                    <option>{{$rta->titulo}}</option>   
-                                    @endforeach
+                                    <?php $__currentLoopData = $revista; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rta): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option><?php echo e($rta->titulo); ?></option>   
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                    
                                 </select>
                             </div>
@@ -41,14 +40,14 @@
                     <div class="blog-list-post clearfix">
                         <div class="row">
                             <div class="col-md-6">
-                                @foreach ($revista as $rta)
-                            <h5 class="blog-list-title"><a href="{{asset('doc/investigaciones/'.$rta->ruta) }}" target="blank">{{$rta->titulo}}</a></h5> 
-                            <a href="{{asset('doc/investigaciones/'.$rta->ruta)}}" target="blank"><img src="{{asset('img/investigaciones/'.$rta->imagen)}}" alt=""
+                                <?php $__currentLoopData = $revista; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rta): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <h5 class="blog-list-title"><a href="<?php echo e(asset('doc/investigaciones/'.$rta->ruta)); ?>" target="blank"><?php echo e($rta->titulo); ?></a></h5> 
+                            <a href="<?php echo e(asset('doc/investigaciones/'.$rta->ruta)); ?>" target="blank"><img src="<?php echo e(asset('img/investigaciones/'.$rta->imagen)); ?>" alt=""
                                 style="width: 200px;height: 300px" class="imagen"></a>
-                                <p class="blog-list-meta small-text">{{$rta->fechapublicacion}}</p>
-                                <p style="font-size: 14px;font-family: 'Times New Roman', Times, serif">{{$rta->descripcion}}</p>
+                                <p class="blog-list-meta small-text"><?php echo e($rta->fechapublicacion); ?></p>
+                                <p style="font-size: 14px;font-family: 'Times New Roman', Times, serif"><?php echo e($rta->descripcion); ?></p>
                             </div>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
                     </div>
                 </div> <!-- /.widget-inner -->
@@ -56,4 +55,5 @@
         </div> <!-- /col-md-6 -->
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('web/layout/layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/web/revista.blade.php ENDPATH**/ ?>

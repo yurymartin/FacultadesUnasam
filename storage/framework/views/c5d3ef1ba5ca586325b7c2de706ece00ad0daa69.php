@@ -1,43 +1,34 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de facultades</h3>
+    <h3 class="box-title">Gestión de Categorias de docentes</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="<?php echo e(URL::to('home')); ?>"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
   </div>
-
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
-          class="fa fa-plus-square-o" aria-hidden="true"></i>Nuevo Facultad</button>
+          class="fa fa-plus-square-o" aria-hidden="true"></i> Nueva Categoria de docentes</button>
     </div>
   </div>
 </div>
-
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
-    <h3 class="box-title" id="tituloAgregar">Nuevo Facultad</h3>
+    <h3 class="box-title" id="tituloAgregar"> Nueva Categoria de docentes</h3>
   </div>
   <form v-on:submit.prevent="create">
     <div class="box-body">
+
       <div class="col-md-12">
         <div class="form-group">
-          <label for="txttitulo" class="col-sm-2 control-label">Nombre del Facultad:*</label>
+          <label for="txttitulo" class="col-sm-2 control-label">Categoria*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Facultad" maxlength="200"
-              autofocus v-model="newNombre">
+            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Nombre de la categoria"
+              maxlength="200" autofocus v-model="newCategoria">
           </div>
         </div>
       </div>
-      <div class="col-md-12">
-        <div class="form-group" style="padding-top: 15px;">
-          <label for="txtcodigo" class="col-sm-2 control-label">Abreviatura:*</label>
-          <div class="col-sm-4">
-            <input type="text" class="form-control" id="codigo" name="codigo" placeholder="Abreviatura" maxlength="500"
-              v-model="newAbreviatura">
-          </div>
-        </div>
-      </div>
+      
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
           <label for="cbuestado" class="col-sm-2 control-label">Estado:*</label>
@@ -49,9 +40,7 @@
           </div>
         </div>
       </div>
-
     </div>
-
     <!-- /.box-body -->
     <div class="box-footer">
       <button type="submit" class="btn btn-info" id="btnGuardar">Guardar</button>
@@ -86,7 +75,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Facultades</h3>
+    <h3 class="box-title">Listado de categorias de docentes</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -108,36 +97,34 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Facultad</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Abreviatura</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Categoria de Docentes </th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
-        <tr v-for="facultad, key in facultades">
+        <tr v-for="catdocente, key in catdocentes">
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{key+pagination.from}}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ facultad.nombre }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ facultad.abreviatura }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ catdocente.categoria }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
-              <span class="label label-success" v-if="facultad.activo=='1'">Activo</span>
-              <span class="label label-warning" v-if="facultad.activo=='0'">Inactivo</span>
+              <span class="label label-success" v-if="catdocente.activo=='1'">Activo</span>
+              <span class="label label-warning" v-if="catdocente.activo=='0'">Inactivo</span>
             </center>
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
-              <a href="#" v-if="facultad.activo=='1'" class="btn bg-navy btn-sm"
-                v-on:click.prevent="bajafacultad(facultad)" data-placement="top" data-toggle="tooltip"
-                title="Desactivar facultad"><i class="fa fa-arrow-circle-down"></i></a>
+              <a href="#" v-if="catdocente.activo=='1'" class="btn bg-navy btn-sm"
+                v-on:click.prevent="bajacategoria(catdocente)" data-placement="top" data-toggle="tooltip"
+                title="Desactivar Categoria"><i class="fa fa-arrow-circle-down"></i></a>
 
-              <a href="#" v-if="facultad.activo=='0'" class="btn btn-success btn-sm"
-                v-on:click.prevent="altafacultad(facultad)" data-placement="top" data-toggle="tooltip"
-                title="Activar facultad"><i class="fa fa-check-circle"></i></a>
+              <a href="#" v-if="catdocente.activo=='0'" class="btn btn-success btn-sm"
+                v-on:click.prevent="altacategoria(catdocente)" data-placement="top" data-toggle="tooltip"
+                title="Activar Categoria"><i class="fa fa-check-circle"></i></a>
 
-              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editfacultad(facultad)"
-                data-placement="top" data-toggle="tooltip" title="Editar facultad"><i class="fa fa-edit"></i></a>
+              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editcategoria(catdocente)"
+                data-placement="top" data-toggle="tooltip" title="Editar Categoria"><i class="fa fa-edit"></i></a>
 
-              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarfacultad(facultad)"
-                data-placement="top" data-toggle="tooltip" title="Borrar facultad"><i class="fa fa-trash"></i></a>
+              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarcategoria(catdocente)"
+                data-placement="top" data-toggle="tooltip" title="Borrar Categoria"><i class="fa fa-trash"></i></a>
             </center>
           </td>
         </tr>
@@ -187,7 +174,7 @@
   </div>
 </div>
 
-<form method="post" v-on:submit.prevent="updateFacultad(fillFacultad.id)">
+<form method="post" v-on:submit.prevent="updatedepartamento(fillCatdocentes.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document" id="modaltamanio">
@@ -196,7 +183,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
               style="font-size: 35px;">&times;</span></button>
           <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR
-            LA FACULTAD</h4>
+            CATEGORIA DE DOCENTE</h4>
 
         </div>
         <div class="modal-body">
@@ -208,23 +195,15 @@
 
                 <div class="col-md-12">
                   <div class="form-group">
-                    <label for="txttituloE" class="col-sm-2 control-label">Nombre del Facultad:*</label>
+                    <label for="txttituloE" class="col-sm-2 control-label">Categoria de Docentes:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="txttituloE" name="txttituloE" placeholder="Facultad"
-                        maxlength="200" autofocus v-model="fillFacultad.nombre">
+                      <input type="text" class="form-control" id="txtCategoria" name="txttitulo" placeholder="Categoria de docentes"
+                        maxlength="200" autofocus v-model="fillCatdocentes.categoria">
                     </div>
                   </div>
                 </div>
 
-                <div class="col-md-12">
-                  <div class="form-group" style="padding-top: 15px;">
-                    <label for="txtdescripcionE" class="col-sm-2 control-label">Abreviatura:*</label>
-                    <div class="col-sm-4">
-                      <input type="text" class="form-control" id="codigoE" name="codigoE" placeholder="Abreviatura"
-                        maxlength="500" v-model="fillFacultad.abreviatura">
-                    </div>
-                  </div>
-                </div>
+                
 
               </div>
             </div>
@@ -257,4 +236,4 @@
       </div>
     </div>
   </div>
-</form><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/facultades/principal.blade.php ENDPATH**/ ?>
+</form><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/categoriadocentes/principal.blade.php ENDPATH**/ ?>

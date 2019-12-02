@@ -1,6 +1,6 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de la descripcion de la facultad</h3>
+    <h3 class="box-title">Gestión de Eventos</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="<?php echo e(URL::to('home')); ?>"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
@@ -9,7 +9,7 @@
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
-          class="fa fa-plus-square-o" aria-hidden="true"></i>Nueva Descripciòn de La Facultad</button>
+          class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Evento de La Facultad</button>
     </div>
 
   </div>
@@ -18,52 +18,31 @@
 
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
-    <h3 class="box-title" id="tituloAgregar">Nueva Descripciòn de La Facultad</h3>
+    <h3 class="box-title" id="tituloAgregar"> Nuevo Evento de La Facultad</h3>
   </div>
 
   <form v-on:submit.prevent="create">
     <div class="box-body">
 
       <div class="col-md-12">
+        <div class="form-group" style="padding-top: 15px;">
+          <label for="titulo" class="col-sm-2 control-label">Titulo:*</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="titulo del evento"
+              maxlength="200" autofocus v-model="newTitulo">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
-          <label for="descripcion" class="col-sm-2 control-label">Descripciòn:*</label>
+          <label for="descripcion" class="col-sm-2 control-label">Descripcion:*</label>
           <div class="col-sm-8">
             <textarea name="descripcion" id="descripcion" cols="80" rows="5" v-model="newDescripcion"
               placeholder="descripcion" class="form-control"></textarea>
           </div>
         </div>
       </div>
-
-      <div class="col-md-12">
-        <div class="form-group" style="padding-top: 15px;">
-          <label for="Reseña" class="col-sm-2 control-label">Reseña Historica:*</label>
-          <div class="col-sm-8">
-            <textarea name="Reseña" id="Reseña" cols="80" rows="5" v-model="newReseñaHistor"
-              placeholder="reseña historica" class="form-control"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12">
-        <div class="form-group" style="padding-top: 15px;">
-          <label for="mision" class="col-sm-2 control-label">Mision:*</label>
-          <div class="col-sm-8">
-            <textarea name="mision" id="mision" cols="80" rows="3" v-model="newMision" placeholder="Mision"
-              class="form-control"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12">
-        <div class="form-group" style="padding-top: 15px;">
-          <label for="vision" class="col-sm-2 control-label">Vision:*</label>
-          <div class="col-sm-8">
-            <textarea name="vision" id="vision" cols="80" rows="3" v-model="newVision" placeholder="Vision"
-              class="form-control"></textarea>
-          </div>
-        </div>
-      </div>
-
 
       <div class="col-md-12" style="padding-top: 10px;">
         <div class="form-group">
@@ -77,14 +56,23 @@
 
       <div class="col-md-12">
         <div class="form-group" style="padding-top: 15px;">
-          <label for="vision" class="col-sm-2 control-label">Filosofia:*</label>
-          <div class="col-sm-8">
-            <textarea name="filosofia" id="filosofia" cols="80" rows="3" v-model="newFilosofia" placeholder="Filosofia"
-              class="form-control"></textarea>
+          <label for="fechainicio" class="col-sm-2 control-label">Fecha de Inicio:*</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" id="fechainicio" name="fechainicio"
+              placeholder="fecha inicio del evento" maxlength="200" autofocus v-model="newFechainicio">
           </div>
         </div>
       </div>
 
+      <div class="col-md-12">
+        <div class="form-group" style="padding-top: 15px;">
+          <label for="fechafin" class="col-sm-2 control-label">Fecha de finalizacion:*</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" id="fechafin" name="fechafin" placeholder="fecha fin del evento"
+              maxlength="200" autofocus v-model="newFechafin">
+          </div>
+        </div>
+      </div>
 
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
@@ -135,7 +123,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de descripciones de la facultad</h3>
+    <h3 class="box-title">Listado de Eventos</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -156,56 +144,49 @@
     <table class="table table-hover table-bordered table-dark table-condensed table-striped">
       <tbody>
         <tr>
-          <th style="border:1px solid #ddd;padding: 5px; width: 1%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Descripciòn</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Reseña Historica</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 14%;">Misiòn</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 14%;">Visiòn</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Imagen</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 14%;">Filosofia</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Titulo</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Descripcion</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Imagen</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha Inicio</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha Fin</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha Publicacion</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Estado</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 12%;">Gestión</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Gestión</th>
         </tr>
-        <tr v-for="descripcionfacultad, key in descripcionfacultades">
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">{{key+pagination.from}}
+        <tr v-for="evento, key in eventos">
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{key+pagination.from}}
           </td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
-            {{ descripcionfacultad.descripcion }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
-            {{ descripcionfacultad.reseñahistor }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
-            {{ descripcionfacultad.mision }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
-            {{ descripcionfacultad.vision }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ evento.titulo }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">{{ evento.descripcion }}
+          </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; text-align: center;vertical-align: middle;">
-            <img :src="getImg(descripcionfacultad)" alt="" class="img img-responsive"
-              style="width: 120px;height: 100px">
+            <img :src="getImg(evento)" alt="" style="width: 150px;height: 150px">
           </td>
-          </td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
-            {{ descripcionfacultad.filosofia }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ evento.fechainicio }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ evento.fechafin }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ evento.fechapublicac }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
-              <span class="label label-success" v-if="descripcionfacultad.activo=='1'">Activo</span>
-              <span class="label label-warning" v-if="descripcionfacultad.activo=='0'">Inactivo</span>
+              <span class="label label-success" v-if="evento.activo=='1'">Activo</span>
+              <span class="label label-warning" v-if="evento.activo=='0'">Inactivo</span>
             </center>
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
-              <a href="#" v-if="descripcionfacultad.activo=='1'" class="btn bg-navy btn-sm"
-                v-on:click.prevent="bajadocente(descripcionfacultad)" data-placement="top" data-toggle="tooltip"
-                title="Desactivar descripcion facultad"><i class="fa fa-arrow-circle-down"></i></a>
+              <a href="#" v-if="evento.activo=='1'" class="btn bg-navy btn-sm" v-on:click.prevent="bajadocente(evento)"
+                data-placement="top" data-toggle="tooltip" title="Desactivar descripcion facultad"><i
+                  class="fa fa-arrow-circle-down"></i></a>
 
-              <a href="#" v-if="descripcionfacultad.activo=='0'" class="btn btn-success btn-sm"
-                v-on:click.prevent="altadocente(descripcionfacultad)" data-placement="top" data-toggle="tooltip"
+              <a href="#" v-if="evento.activo=='0'" class="btn btn-success btn-sm"
+                v-on:click.prevent="altadocente(evento)" data-placement="top" data-toggle="tooltip"
                 title="Activar descripcion facultad"><i class="fa fa-check-circle"></i></a>
 
-              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(descripcionfacultad)"
-                data-placement="top" data-toggle="tooltip" title="Editar descripcion facultad"><i
-                  class="fa fa-edit"></i></a>
+              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(evento)" data-placement="top"
+                data-toggle="tooltip" title="Editar descripcion facultad"><i class="fa fa-edit"></i></a>
 
-              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(descripcionfacultad)"
-                data-placement="top" data-toggle="tooltip" title="Borrar docente"><i class="fa fa-trash"></i></a>
+              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(evento)" data-placement="top"
+                data-toggle="tooltip" title="Borrar docente"><i class="fa fa-trash"></i></a>
             </center>
           </td>
         </tr>
@@ -255,7 +236,7 @@
   </div>
 </div>
 
-<form method="post" v-on:submit.prevent="updateBanner(fillDescripcionFacultades.id)">
+<form method="post" v-on:submit.prevent="updateBanner(fillEventos.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document" id="modaltamanio">
@@ -264,7 +245,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
               style="font-size: 35px;">&times;</span></button>
           <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR
-            LA DESCRIPCION DE LA FACULTAD</h4>
+            EL EVENTO DE LA FACULTAD</h4>
 
         </div>
         <div class="modal-body">
@@ -275,43 +256,21 @@
               <div class="box-body">
 
                 <div class="col-md-12">
+                  <div class="form-group" style="padding-top: 15px;">
+                    <label for="titulo" class="col-sm-2 control-label">Titulo:*</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="titulo" name="titulo" placeholder="titulo del evento"
+                        maxlength="200" autofocus v-model="fillEventos.titulo">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
-                    <label for="descripcion" class="col-sm-2 control-label">Descripciòn:*</label>
+                    <label for="descripcion" class="col-sm-2 control-label">Descripcion:*</label>
                     <div class="col-sm-8">
-                      <textarea name="descripcion" id="descripcion" cols="80" rows="5"
-                        v-model="fillDescripcionFacultades.descripcion" placeholder="descripcion"
-                        class="form-control"></textarea>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-12">
-                  <div class="form-group" style="padding-top: 15px;">
-                    <label for="Reseña" class="col-sm-2 control-label">Reseña Historica:*</label>
-                    <div class="col-sm-8">
-                      <textarea name="Reseña" id="Reseña" cols="80" rows="5"
-                        v-model="fillDescripcionFacultades.reseñahistor" placeholder="reseña historica"
-                        class="form-control"></textarea>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-12">
-                  <div class="form-group" style="padding-top: 15px;">
-                    <label for="mision" class="col-sm-2 control-label">Mision:*</label>
-                    <div class="col-sm-8">
-                      <textarea name="mision" id="mision" cols="80" rows="3" v-model="fillDescripcionFacultades.mision"
-                        placeholder="Mision" class="form-control"></textarea>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-12">
-                  <div class="form-group" style="padding-top: 15px;">
-                    <label for="vision" class="col-sm-2 control-label">Vision:*</label>
-                    <div class="col-sm-8">
-                      <textarea name="vision" id="vision" cols="80" rows="3" v-model="fillDescripcionFacultades.vision"
-                        placeholder="Vision" class="form-control"></textarea>
+                      <textarea name="descripcion" id="descripcion" cols="80" rows="5" v-model="fillEventos.descripcion"
+                        placeholder="descripcion" class="form-control"></textarea>
                     </div>
                   </div>
                 </div>
@@ -328,11 +287,20 @@
 
                 <div class="col-md-12">
                   <div class="form-group" style="padding-top: 15px;">
-                    <label for="vision" class="col-sm-2 control-label">Filosofia:*</label>
-                    <div class="col-sm-8">
-                      <textarea name="filosofia" id="filosofia" cols="80" rows="3"
-                        v-model="fillDescripcionFacultades.filosofia" placeholder="Filosofia"
-                        class="form-control"></textarea>
+                    <label for="fechainicio" class="col-sm-2 control-label">Fecha de Inicio:*</label>
+                    <div class="col-sm-4">
+                      <input type="date" class="form-control" id="fechainicio" name="fechainicio"
+                        placeholder="fecha inicio del evento" maxlength="200" autofocus v-model="fillEventos.fechainicio">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group" style="padding-top: 15px;">
+                    <label for="fechafin" class="col-sm-2 control-label">Fecha de finalizacion:*</label>
+                    <div class="col-sm-4">
+                      <input type="date" class="form-control" id="fechafin" name="fechafin"
+                        placeholder="fecha fin del evento" maxlength="200" autofocus v-model="fillEventos.fechafin">
                     </div>
                   </div>
                 </div>
@@ -368,4 +336,4 @@
       </div>
     </div>
   </div>
-</form><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/descripcionfacultades/principal.blade.php ENDPATH**/ ?>
+</form><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/eventoFacultades/principal.blade.php ENDPATH**/ ?>

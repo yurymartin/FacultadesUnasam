@@ -164,4 +164,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('misionvision', 'IndexWebController@misionvision');
     Route::get('filosofia', 'IndexWebController@filosofia');
     Route::get('organigrama', 'IndexWebController@organigrama');
+    Route::get('revista', 'IndexWebController@revista');
+    Route::get('librosweb', 'IndexWebController@librosweb');
 });

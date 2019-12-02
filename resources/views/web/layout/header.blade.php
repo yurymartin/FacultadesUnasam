@@ -45,7 +45,7 @@
             </li>
             <li><a href="#">Investigación de la FCSEC</a>
                 <ul>
-                    <li><a href="revista">Revista Academica de la FCSEC</a></li>
+                    <li><a href="">Revista Academica de la FCSEC</a></li>
                     <li><a href="http://repositorio.unasam.edu.pe/">Repositorio UNASAM</a></li>
                     <li><a href="biblioteca">Biblioteca de la FCSEC</a></li>
                     <li><a href="blog-disqus.html">Investigación de la FCSEC</a>
@@ -92,8 +92,6 @@
                     <a href="index.html" title="Universe" rel="home">
                         <img src="{{ asset('/img/descripcionFacultades/'.$logo->imagen)}}"
                             alt="{{ asset('/img/descripcionFacultades/'.$logo->imagen)}}" style="max-height: 100px;">
-                    <a href="index.html" title="Facultad de Ciencias" rel="home">
-                        <img src="images/fc.png" alt="Facultad de Ciencias" style="max-height: 100px;">
                     </a>
                 </div> <!-- /.logo -->
             </div> <!-- /.col-md-4 -->
@@ -144,7 +142,14 @@
                     </li>
                     <li><a href="#">Repositorio de la Facultad</a>
                         <ul class="sub-menu">
-                            <li><a href="revista">Revista Académica E Investigaciones </a></li>
+                            <li><a href="#">Investigaciones y Libros </a>
+                                <ul> 
+                                    <li><a href="revista">investigaciones</a></li>
+                                    <li><a href="libro">libros</a></li>
+                                </ul>
+                                
+                            </li>
+                            
                             <li><a href="http://repositorio.unasam.edu.pe/" target="blank">Repositorio UNASAM</a></li>
                             <li><a href="biblioteca">Biblioteca Virtual</a></li>
                         </ul>

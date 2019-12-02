@@ -1,6 +1,6 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de la descripcion de la facultad</h3>
+    <h3 class="box-title">Gestión de Videos</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="<?php echo e(URL::to('home')); ?>"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
@@ -9,7 +9,7 @@
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
-          class="fa fa-plus-square-o" aria-hidden="true"></i>Nueva Descripciòn de La Facultad</button>
+          class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Video de La Facultad</button>
     </div>
 
   </div>
@@ -18,15 +18,25 @@
 
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
-    <h3 class="box-title" id="tituloAgregar">Nueva Descripciòn de La Facultad</h3>
+    <h3 class="box-title" id="tituloAgregar"> Nuevo Video de La Facultad</h3>
   </div>
 
   <form v-on:submit.prevent="create">
     <div class="box-body">
 
       <div class="col-md-12">
+        <div class="form-group" style="padding-top: 15px;">
+          <label for="titulo" class="col-sm-2 control-label">Titulo:*</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="titulo del video facultad"
+              maxlength="200" autofocus v-model="newTitulo">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
-          <label for="descripcion" class="col-sm-2 control-label">Descripciòn:*</label>
+          <label for="descripcion" class="col-sm-2 control-label">Descripcion:*</label>
           <div class="col-sm-8">
             <textarea name="descripcion" id="descripcion" cols="80" rows="5" v-model="newDescripcion"
               placeholder="descripcion" class="form-control"></textarea>
@@ -34,52 +44,11 @@
         </div>
       </div>
 
-      <div class="col-md-12">
-        <div class="form-group" style="padding-top: 15px;">
-          <label for="Reseña" class="col-sm-2 control-label">Reseña Historica:*</label>
-          <div class="col-sm-8">
-            <textarea name="Reseña" id="Reseña" cols="80" rows="5" v-model="newReseñaHistor"
-              placeholder="reseña historica" class="form-control"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12">
-        <div class="form-group" style="padding-top: 15px;">
-          <label for="mision" class="col-sm-2 control-label">Mision:*</label>
-          <div class="col-sm-8">
-            <textarea name="mision" id="mision" cols="80" rows="3" v-model="newMision" placeholder="Mision"
-              class="form-control"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12">
-        <div class="form-group" style="padding-top: 15px;">
-          <label for="vision" class="col-sm-2 control-label">Vision:*</label>
-          <div class="col-sm-8">
-            <textarea name="vision" id="vision" cols="80" rows="3" v-model="newVision" placeholder="Vision"
-              class="form-control"></textarea>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="col-md-12" style="padding-top: 10px;">
+      <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
-          <label for="archivo" class="col-sm-2 control-label">imagen:*</label>
-          <div class="col-sm-8" style="padding-top: 10px;">
-            <input name="archivo" type="file" id="archivo" class="archivo form-control" @change="getImage"
-              accept=".png, .jpg, .jpeg, .gif, .jpe, .PNG, .JPG, .JPEG, .GIF, .JPE" />
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12">
-        <div class="form-group" style="padding-top: 15px;">
-          <label for="vision" class="col-sm-2 control-label">Filosofia:*</label>
+          <label for="link" class="col-sm-2 control-label">Link del video:*</label>
           <div class="col-sm-8">
-            <textarea name="filosofia" id="filosofia" cols="80" rows="3" v-model="newFilosofia" placeholder="Filosofia"
+            <textarea name="link" id="link" cols="80" rows="5" v-model="newLink" placeholder="link"
               class="form-control"></textarea>
           </div>
         </div>
@@ -135,7 +104,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de descripciones de la facultad</h3>
+    <h3 class="box-title">Listado de Videos</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -156,55 +125,45 @@
     <table class="table table-hover table-bordered table-dark table-condensed table-striped">
       <tbody>
         <tr>
-          <th style="border:1px solid #ddd;padding: 5px; width: 1%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Descripciòn</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Reseña Historica</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 14%;">Misiòn</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 14%;">Visiòn</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Imagen</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 14%;">Filosofia</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Titulo</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Descripcion</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">video</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha Publicacion</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Estado</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 12%;">Gestión</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
-        <tr v-for="descripcionfacultad, key in descripcionfacultades">
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">{{key+pagination.from}}
+        <tr v-for="videosfacultad, key in videosfacultades">
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{key+pagination.from}}
           </td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ videosfacultad.titulo }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
-            {{ descripcionfacultad.descripcion }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
-            {{ descripcionfacultad.reseñahistor }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
-            {{ descripcionfacultad.mision }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
-            {{ descripcionfacultad.vision }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; text-align: center;vertical-align: middle;">
-            <img :src="getImg(descripcionfacultad)" alt="" class="img img-responsive"
-              style="width: 120px;height: 100px">
+            {{ videosfacultad.descripcion }}
           </td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;"><code>{{ videosfacultad.link }}</code>
           </td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
-            {{ descripcionfacultad.filosofia }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ videosfacultad.fecha }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
-              <span class="label label-success" v-if="descripcionfacultad.activo=='1'">Activo</span>
-              <span class="label label-warning" v-if="descripcionfacultad.activo=='0'">Inactivo</span>
+              <span class="label label-success" v-if="videosfacultad.activo=='1'">Activo</span>
+              <span class="label label-warning" v-if="videosfacultad.activo=='0'">Inactivo</span>
             </center>
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
-              <a href="#" v-if="descripcionfacultad.activo=='1'" class="btn bg-navy btn-sm"
-                v-on:click.prevent="bajadocente(descripcionfacultad)" data-placement="top" data-toggle="tooltip"
+              <a href="#" v-if="videosfacultad.activo=='1'" class="btn bg-navy btn-sm"
+                v-on:click.prevent="bajadocente(videosfacultad)" data-placement="top" data-toggle="tooltip"
                 title="Desactivar descripcion facultad"><i class="fa fa-arrow-circle-down"></i></a>
 
-              <a href="#" v-if="descripcionfacultad.activo=='0'" class="btn btn-success btn-sm"
-                v-on:click.prevent="altadocente(descripcionfacultad)" data-placement="top" data-toggle="tooltip"
+              <a href="#" v-if="videosfacultad.activo=='0'" class="btn btn-success btn-sm"
+                v-on:click.prevent="altadocente(videosfacultad)" data-placement="top" data-toggle="tooltip"
                 title="Activar descripcion facultad"><i class="fa fa-check-circle"></i></a>
 
-              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(descripcionfacultad)"
+              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(videosfacultad)"
                 data-placement="top" data-toggle="tooltip" title="Editar descripcion facultad"><i
                   class="fa fa-edit"></i></a>
 
-              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(descripcionfacultad)"
+              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(videosfacultad)"
                 data-placement="top" data-toggle="tooltip" title="Borrar docente"><i class="fa fa-trash"></i></a>
             </center>
           </td>
@@ -255,7 +214,7 @@
   </div>
 </div>
 
-<form method="post" v-on:submit.prevent="updateBanner(fillDescripcionFacultades.id)">
+<form method="post" v-on:submit.prevent="updateBanner(fillVideoFacultades.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document" id="modaltamanio">
@@ -264,7 +223,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
               style="font-size: 35px;">&times;</span></button>
           <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR
-            LA DESCRIPCION DE LA FACULTAD</h4>
+            EL VIDEO DE LA FACULTAD</h4>
 
         </div>
         <div class="modal-body">
@@ -275,63 +234,33 @@
               <div class="box-body">
 
                 <div class="col-md-12">
-                  <div class="form-group">
-                    <label for="descripcion" class="col-sm-2 control-label">Descripciòn:*</label>
-                    <div class="col-sm-8">
-                      <textarea name="descripcion" id="descripcion" cols="80" rows="5"
-                        v-model="fillDescripcionFacultades.descripcion" placeholder="descripcion"
-                        class="form-control"></textarea>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-12">
                   <div class="form-group" style="padding-top: 15px;">
-                    <label for="Reseña" class="col-sm-2 control-label">Reseña Historica:*</label>
+                    <label for="titulo" class="col-sm-2 control-label">Titulo:*</label>
                     <div class="col-sm-8">
-                      <textarea name="Reseña" id="Reseña" cols="80" rows="5"
-                        v-model="fillDescripcionFacultades.reseñahistor" placeholder="reseña historica"
-                        class="form-control"></textarea>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-12">
-                  <div class="form-group" style="padding-top: 15px;">
-                    <label for="mision" class="col-sm-2 control-label">Mision:*</label>
-                    <div class="col-sm-8">
-                      <textarea name="mision" id="mision" cols="80" rows="3" v-model="fillDescripcionFacultades.mision"
-                        placeholder="Mision" class="form-control"></textarea>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-12">
-                  <div class="form-group" style="padding-top: 15px;">
-                    <label for="vision" class="col-sm-2 control-label">Vision:*</label>
-                    <div class="col-sm-8">
-                      <textarea name="vision" id="vision" cols="80" rows="3" v-model="fillDescripcionFacultades.vision"
-                        placeholder="Vision" class="form-control"></textarea>
+                      <input type="text" class="form-control" id="titulo" name="titulo"
+                        placeholder="titulo del videosfacultad" maxlength="200" autofocus
+                        v-model="fillVideoFacultades.titulo">
                     </div>
                   </div>
                 </div>
 
                 <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
-                    <label for="archivo" class="col-sm-2 control-label">Imagen :*</label>
-                    <div class="col-sm-8" style="padding-top: 10px;">
-                      <input name="archivo" type="file" id="archivo" class="archivo form-control" @change="getImage"
-                        accept=".png, .jpg, .jpeg, .gif, .jpe, .PNG, .JPG, .JPEG, .GIF, .JPE" />
+                    <label for="descripcion" class="col-sm-2 control-label">Descripcion:*</label>
+                    <div class="col-sm-8">
+                      <textarea name="descripcion" id="descripcion" cols="80" rows="5"
+                        v-model="fillVideoFacultades.descripcion" placeholder="descripcion"
+                        class="form-control"></textarea>
                     </div>
                   </div>
                 </div>
 
-                <div class="col-md-12">
-                  <div class="form-group" style="padding-top: 15px;">
-                    <label for="vision" class="col-sm-2 control-label">Filosofia:*</label>
+                <div class="col-md-12" style="padding-top: 15px;">
+                  <div class="form-group">
+                    <label for="descripcion" class="col-sm-2 control-label">Link del video:*</label>
                     <div class="col-sm-8">
-                      <textarea name="filosofia" id="filosofia" cols="80" rows="3"
-                        v-model="fillDescripcionFacultades.filosofia" placeholder="Filosofia"
+                      <textarea name="descripcion" id="descripcion" cols="80" rows="5"
+                        v-model="fillVideoFacultades.link" placeholder="descripcion"
                         class="form-control"></textarea>
                     </div>
                   </div>
@@ -368,4 +297,4 @@
       </div>
     </div>
   </div>
-</form><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/descripcionfacultades/principal.blade.php ENDPATH**/ ?>
+</form><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/videoFacultades/principal.blade.php ENDPATH**/ ?>

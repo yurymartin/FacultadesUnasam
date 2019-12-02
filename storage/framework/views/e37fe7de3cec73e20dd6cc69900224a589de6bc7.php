@@ -95,21 +95,25 @@
                         </div> <!-- /.widget-main-title -->
                         <div class="widget-inner">
                             <div class="our-campus clearfix">
-                                <ul>
-                                    <li><img src="images/campus/campus-logo1.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo2.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo3.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo4.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo1.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo2.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo3.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo4.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo1.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo2.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo3.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo4.jpg" alt=""></li>
+                                <ul style="text-align: center">
+                                    <?php $__currentLoopData = $documentos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $documento): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <div class="col-md-3">
+                                        <li
+                                            style="border-radius: 3px;background-color: #fafafa;padding: 5px 5px 5px 5px;margin-top: 10px;margin-bottom: 10px">
+                                            <p style=><strong><?php echo e($documento->titulo); ?></strong></p>
+                                            <a href="<?php echo e(asset('/doc/documentoFacultades/'.$documento->ruta)); ?>"
+                                                target="_blank"><img
+                                                    src="<?php echo e(asset('/img/documentoFacultades/'.$documento->imagen)); ?>"
+                                                    alt=""></a>
+                                        </li>
+                                    </div>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </ul>
                             </div>
+                        </div>
+                        <div class="container">
+                            <a href="" class="btn btn-primary">Ver Todos los Documentos</a>
+                            <p></p>
                         </div>
                     </div> <!-- /.widget-main -->
                 </div> <!-- /.col-md-12 -->
@@ -122,15 +126,21 @@
                         </div> <!-- /.widget-main-title -->
                         <div class="widget-inner">
                             <div class="our-campus clearfix">
-                                <ul>
+                                <ul style="text-align: center">
                                     <?php $__currentLoopData = $carrerasprofesionales; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $carrerasprofesional): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <li>
-                                        <a class="fancybox"
-                                            href="/img/descripcionEscuelas/<?php echo e($carrerasprofesional->logo); ?>">
-                                            <img src="/img/descripcionEscuelas/<?php echo e($carrerasprofesional->logo); ?>" alt=""
-                                                width="170px" height="113px">
-                                        </a>
-                                    </li>
+                                    <div class="col-md-4">
+                                        <li
+                                            style="border-radius: 3px;background-color: #fafafa;padding: 5px 5px 5px 5px;margin-top: 10px;margin-bottom: 10px">
+                                            <p>
+                                                <strong><?php echo e($carrerasprofesional->nombre); ?></strong>
+                                            </p>
+                                            <a class="fancybox"
+                                                href="/img/descripcionEscuelas/<?php echo e($carrerasprofesional->logo); ?>">
+                                                <img src="/img/descripcionEscuelas/<?php echo e($carrerasprofesional->logo); ?>"
+                                                    alt="" width="170px" height="113px">
+                                            </a>
+                                        </li>
+                                    </div>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </ul>
                             </div>

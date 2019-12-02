@@ -13,7 +13,7 @@
         <div class="col-md-12">
             <div class="widget-main" id="noticias">
                 <div class="widget-main-title">
-                    <h1 class="text-center"><strong>INVESTIGACIONES</strong></h1>
+                    <h1 class="text-center"><strong>Libros</strong></h1>
                     <p></p>
                     <p style="font-size: 16px;text-align: justify;font-family: 'Times New Roman', Times, serif">Lorem
                         ipsum dolor sit, amet consectetur adipisicing
@@ -28,8 +28,8 @@
                                 <label style="font-size: 20px">TEMA:</label>
                                 <select class="form-control form-control-lg">
                                         <option>Todos</option>
-                                    @foreach ($revista as $rta)
-                                    <option>{{$rta->titulo}}</option>   
+                                    @foreach ($librosweb as $lib)
+                                    <option>{{$lib->titulo}}</option>   
                                     @endforeach
                                    
                                 </select>
@@ -41,12 +41,12 @@
                     <div class="blog-list-post clearfix">
                         <div class="row">
                             <div class="col-md-6">
-                                @foreach ($revista as $rta)
-                            <h5 class="blog-list-title"><a href="{{asset('doc/investigaciones/'.$rta->ruta) }}" target="blank">{{$rta->titulo}}</a></h5> 
-                            <a href="{{asset('doc/investigaciones/'.$rta->ruta)}}" target="blank"><img src="{{asset('img/investigaciones/'.$rta->imagen)}}" alt=""
+                                @foreach ($librosweb as $lib)
+                            <h5 class="blog-list-title"><a href="{{asset('doc/investigaciones/'.$lib->ruta) }}" target="blank">{{$lib->titulo}}</a></h5> 
+                            <a href="{{asset('doc/investigaciones/'.$lib->ruta)}}" target="blank"><img src="{{asset('img/investigaciones/'.$lib->imagen)}}" alt=""
                                 style="width: 200px;height: 300px" class="imagen"></a>
-                                <p class="blog-list-meta small-text">{{$rta->fechapublicacion}}</p>
-                                <p style="font-size: 14px;font-family: 'Times New Roman', Times, serif">{{$rta->descripcion}}</p>
+                                <p class="blog-list-meta small-text">{{$lib->fechapublicacion}}</p>
+                                <p style="font-size: 14px;font-family: 'Times New Roman', Times, serif">{{$lib->descripcion}}</p>
                             </div>
                                 @endforeach
                         </div>

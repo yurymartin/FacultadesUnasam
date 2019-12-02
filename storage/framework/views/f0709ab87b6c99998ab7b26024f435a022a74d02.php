@@ -41,7 +41,6 @@
         </div>
     <![endif]-->
     <!------------------ SCROLL REVEAL--------------------->
-    <script src="<?php echo e(asset('web/scroll/scrollreveal.js')); ?>"></script>
     <!----------------------------------------------------->
 
 </head>

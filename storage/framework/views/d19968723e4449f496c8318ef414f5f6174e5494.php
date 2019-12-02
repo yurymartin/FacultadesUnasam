@@ -3,7 +3,7 @@
     el: '#app',
     data: {
     titulo: "Mantenimiento",
-    subtitulo: "Gestión de la Descripcion de la Facultad",
+    subtitulo: "Gestión de Docentes",
     subtitulo2: "Principal",
 
     subtitle2: false,
@@ -28,13 +28,13 @@
     divtitulo: true,
     classTitle: 'fa fa-qrcode ',
     classMenu0: '',
-    classMenu1: 'active',
+    classMenu1: '',
     classMenu2: '',
     classMenu3: '',
     classMenu4: '',
     classMenu5: '',
     classMenu6: '',
-    classMenu7: '',
+    classMenu7: 'active',
     classMenu8: '',
     classMenu9: '',
     classMenu10: '',
@@ -44,10 +44,13 @@
 
     divprincipal: false,
 
-    descripcionfacultades: [],
+    docentes: [],
+    persona:[],
+    categoriadocentes: [],
     errors: [],
 
-    fillDescripcionFacultades:{'id':'', 'descripcion':'', 'reseñahistor':'', 'mision':'', 'vision':'','imagen':'' ,'filosofia':'','activo':'','borrado':''},
+    fillPersona:{'idper':'', 'dni':'', 'nombres':'', 'apellidos':'', 'imagen':'', 'genero':''},
+    fillDocente:{'iddoc':'','curricula':'','tituloprofe': '','fechaingreso': '','estado': '','gradoacademico_id': '','categoriadocen_id': '','persona_id':''},
 
     pagination: {
     'total': 0,
@@ -65,16 +68,25 @@
 
     thispage: '1',
 
-    newDescripcion: '',
-    newReseñaHistor: '',
-    newMision:'',
-    newVision:'',
+    newDni: '',
+    newNombres: '',
+    newApellidos: '',
     imagen: null,
-    newFilosofia: '',
-    newActivo: '',
+    newGenero: '',
+
+    newCurricula:'',
+    newTitulo: '',
+    newFecha: '',
+    newEstado: '1',
+    newBorrado:'0',
+    gradoacademico_id: '0',
+    categoriadocente_id: '0',
+    persona_id: '0',
+
+
 },
 created: function () {
-    this.getDescripcionFacultades(this.thispage);
+    this.getDocentes(this.thispage);
 },
 mounted: function () {
     this.divloader0 = false;
@@ -110,18 +122,20 @@ computed: {
     } 
 }, 
 methods: { 
-    getImg(descripcionfacultad) { var
-            img="<?php echo e(asset('/')); ?>img/descripcionfacultades/" + descripcionfacultad.imagen;
+    getImg(docente) { var
+            img="<?php echo e(asset('/')); ?>img/personas/" + docente.foto;
              return img; 
     }, 
-    getDescripcionFacultades: function (page) { 
+    getDocentes: function (page) { 
         var busca=this.buscar; 
-        var url='descripcionfacultad?page=' + page + '&busca=' + busca; 
+        var url='docente?page=' + page + '&busca=' + busca; 
         axios.get(url).then(response=> {
-            this.descripcionfacultades = response.data.descripcionfacultades.data;
+            this.docentes = response.data.docentes.data;
             this.pagination = response.data.pagination;
-
-        if (this.descripcionfacultades.length == 0 && this.thispage != '1') {
+            this.categoriadocentes = response.data.categoriadocentes;
+            this.gradoacademicos = response.data.gradoacademicos;
+            this.personas= response.data.personas;
+        if (this.docentes.length == 0 && this.thispage != '1') {
             var a = parseInt(this.thispage);
             a--;
             this.thispage = a.toString();
@@ -131,11 +145,11 @@ methods: {
         },
     changePage: function (page) {
             this.pagination.current_page = page;
-            this.getDescripcionFacultades(page);
+            this.getDocentes(page);
             this.thispage = page;
         },
     buscarBtn: function () {
-            this.getDescripcionFacultades();
+            this.getDocentes();
             this.thispage = '1';
         },
     nuevo: function () {
@@ -152,12 +166,13 @@ methods: {
         },
     cancelFormNuevo: function () {
             $('#Nombress').focus();
-            this.newDescripcion = '';
-            this.newReseñaHistor = '';
-            this.newMision = '';
-            this.newVision = '';
-            this.newFilosofia = '';
-            this.newActivo = '1';
+            this.newDni = '';
+            this.newNombres = '';
+            this.newApellidos = '';
+            this.newCurricula = '';
+            this.newFechaingreso = '';
+            this.newEstado = '1';
+            this.newGenero = '1';
             this.imagen = null;
 
             $(".form-control").css("border", "1px solid #d2d6de");
@@ -169,30 +184,35 @@ methods: {
                 this.imagen = event.target.files[0];
             }
             },
-            
+
     recorrerBanner: function () {
             $.each($(".txtimg"), function (index, value) {
             // var valor=$(this).attr("id");
             var idusar = $(this).val();
-            $("#ImgPerfilNuevoE" + idusar).attr("src", "<?php echo e(asset('/img/descripcionfacultad/')); ?>" + "/" + $("#txt" + idusar).val());
+            $("#ImgPerfilNuevoE" + idusar).attr("src", "<?php echo e(asset('/img/personas/')); ?>" + "/" + $("#txt" + idusar).val());
             });
             },
     create: function () {
-        var url = 'descripcionfacultad';
+        var url = 'docente';
         $("#btnGuardar").attr('disabled', true);
         $("#btnCancel").attr('disabled', true);
         $("#btnClose").attr('disabled', true);
         this.divloaderNuevo = true;
         $(".form-control").css("border", "1px solid #d2d6de");
             var data = new FormData();
-
-                data.append('descripcion', this.newDescripcion);
-                data.append('reseñahistor', this.newReseñaHistor);
-                data.append('mision', this.newMision);
-                data.append('vision', this.newVision);
+                data.append('dni', this.newDni);
+                data.append('nombres', this.newNombres);
+                data.append('apellidos', this.newApellidos);
                 data.append('imagen', this.imagen);
-                data.append('filosofia', this.newFilosofia);
-                data.append('activo', this.newActivo);
+                data.append('genero', this.newGenero);
+
+                data.append('curricula', '');
+                data.append('tituloprofe', this.newTitulo);
+                data.append('fechaingreso', this.newFecha);
+                data.append('estado', this.newEstado);
+                data.append('borrado', this.newBorrado);
+                data.append('gradoacademico_id', this.gradoacademico_id);
+                data.append('categoriadocente_id', this.categoriadocente_id);
                 
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             axios.post(url,data,config).then(response=>{
@@ -203,7 +223,7 @@ methods: {
             this.divloaderNuevo = false;
 
             if (String(response.data.result) == '1') {
-                this.getDescripcionFacultades(this.thispage);
+                this.getDocentes(this.thispage);
                 this.errors = [];
                 this.cerrarFormNuevo();
                 toastr.success(response.data.msj);
@@ -216,11 +236,11 @@ methods: {
                 //this.errors=error.response.data
             })
             },
-        borrardocente: function (descripcionfacultades) {
+        borrardocente: function (docentes) {
 
             swal.fire({
                 title: '¿Estás seguro?',
-                text: "¿Desea eliminar la Descripcion Seleccionado? -- Nota: este proceso no se podrá revertir.",
+                text: "¿Desea eliminar el docente Seleccionado? -- Nota: este proceso no se podrá revertir.",
                 type: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -230,11 +250,11 @@ methods: {
 
                 if (result.value) {
 
-                    var url = 'descripcionfacultad/' + descripcionfacultades.id;
+                    var url = 'docente/' + docentes.iddoc;
                      axios.delete(url).then(response => { //eliminamos
 
                 if (response.data.result == '1') {
-                    app.getDescripcionFacultades(app.thispage); //listamos
+                    app.getDocentes(app.thispage); //listamos
                     toastr.success(response.data.msj); //mostramos mensaje
                  } else {
                     // $('#'+response.data.selector).focus();
@@ -247,50 +267,72 @@ methods: {
             }).catch(swal.noop);
             },
 
-    editbanner: function (descripcionfacultad) {
-        this.fillDescripcionFacultades.id = descripcionfacultad.id;
-        this.fillDescripcionFacultades.descripcion = descripcionfacultad.descripcion;
-        this.fillDescripcionFacultades.reseñahistor = descripcionfacultad.reseñahistor;
-        this.fillDescripcionFacultades.mision = descripcionfacultad.mision;
-        this.fillDescripcionFacultades.vision = descripcionfacultad.vision;
-        this.fillDescripcionFacultades.filosofia = descripcionfacultad.filosofia;
-        this.imagen=null;
+    editbanner: function (docente) {
+        this.fillPersona.id = docente.idper;
+        this.fillPersona.dni = docente.dni;
+        this.fillPersona.nombres = docente.nombres;
+        this.fillPersona.apellidos = docente.apellidos;
+        this.fillPersona.genero = docente.genero;
+        this.imagen = null;
+        
+        this.fillDocente.id = docente.iddoc;
+        this.fillDocente.categoriadocen_id = docente.idcat;
+        this.fillDocente.gradoacademico_id = docente.idgrado;
+        this.fillDocente.curricula = '';
+        this.fillDocente.tituloprofe = docente.tituloprofe;
+        this.fillDocente.fechaingreso = docente.fechaingreso;
+        this.fillDocente.estado = docente.activo;
         
         $("#modalEditar").modal('show');
             this.$nextTick(function () {
-            $("#DescripcionE").focus();
+            $("#txttituloE").focus();
         })
     },
-    updateBanner: function (id) {
+    cerrarFormE: function(){
+
+            this.divEditUsuario=false;
+
+            this.$nextTick(function () {
+                this.fillPersona={'id':'', 'dni':'', 'nombres':'', 'apellidos':'', 'imagen':'', 'genero':''};
+                this.fillDocente={'id':'','curricula':'','tituloprofe': '','fechaingreso': '','estado': '','gradoacademico_id': '','categoriadocen_id': '','persona_id':''};
+            })
+
+        },
+    updateBanner: function (idper,iddoc) {
         var data = new FormData();
 
-        data.append('id', this.fillDescripcionFacultades.id);
-        data.append('descripcion', this.fillDescripcionFacultades.descripcion);
-        data.append('reseñahistor', this.fillDescripcionFacultades.reseñahistor);
-        data.append('mision', this.fillDescripcionFacultades.mision);
-        data.append('vision', this.fillDescripcionFacultades.vision);
-        data.append('imagen', this.imagen);
-        data.append('filosofia', this.fillDescripcionFacultades.filosofia);
-        data.append('_method', 'PUT');
-        
-        const config = {headers: {'Content-Type': 'multipart/form-data'}};
-        
-        var url = "descripcionfacultad/" + id;
+        data.append('idPersona', this.fillPersona.id);
+        data.append('idDocente', this.fillDocente.id);
 
+        data.append('id', this.fillPersona.id);
+        data.append('dni', this.fillPersona.dni);
+        data.append('nombres', this.fillPersona.nombres);
+        data.append('apellidos', this.fillPersona.apellidos);
+        data.append('imagen', this.imagen);
+        data.append('genero', this.fillPersona.genero);
+
+        data.append('curricul', '');        
+        data.append('tituloprofe', this.fillDocente.tituloprofe);
+        data.append('fechaingreso', this.fillDocente.fechaingreso);
+        data.append('estado', this.fillDocente.estado);   
+        data.append('gradoacademico_id', this.fillDocente.gradoacademico_id);   
+        data.append('categoriadocente_id', this.fillDocente.categoriadocen_id);   
+
+        data.append('_method', 'PUT');
+
+        const config = {headers: {'Content-Type': 'multipart/form-data'}};
+        var url = "docente/" + iddoc;
             $("#btnSaveE").attr('disabled', true);
             $("#btnCloseE").attr('disabled', true);
             this.divloaderEdit = true;
-        
             axios.post(url, data, config).then(response => {
-            
             $("#btnSaveE").removeAttr("disabled");
             $("#btnCancelE").removeAttr("disabled");
             this.divloaderEdit = false;
-           
+
         if (response.data.result == '1') {
-            
-            this.getDescripcionFacultades(this.thispage);
-            this.fillLocal= {'id':'', 'descripcion':'', 'reseñahistor':'', 'mision':'', 'vision':'','imagen':'' ,'filosofia':'','activo':'','borrado':''};
+            this.getDocentes(this.thispage);
+            this.cerrarFormE();
             this.errors = [];
             $("#modalEditar").modal('hide');
             toastr.success(response.data.msj);
@@ -303,11 +345,11 @@ methods: {
             this.errors = error.response.data
         })
     },
-bajadocente: function (descripcionfacultades) {
+bajadocente: function (docentes) {
 
         swal.fire({
             title: '¿Estás seguro?',
-            text: "Desea desactivar la Descripciòn seleccionada",
+            text: "Desea desactivar el docente seleccionado",
             type: 'info',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -315,10 +357,10 @@ bajadocente: function (descripcionfacultades) {
             confirmButtonText: 'Si, Desactivar'
         }).then((result) => {
         if (result.value) {
-            var url = 'descripcionfacultad/altabaja/' + descripcionfacultades.id + '/0';
+            var url = 'docente/altabaja/' + docentes.iddoc + '/0';
             axios.get(url).then(response => { //eliminamos
         if (response.data.result == '1') {
-            app.getDescripcionFacultades(app.thispage); //listamos
+            app.getDocentes(app.thispage); //listamos
             toastr.success(response.data.msj); //mostramos mensaje
         } else {
             // $('#'+response.data.selector).focus();
@@ -329,10 +371,10 @@ bajadocente: function (descripcionfacultades) {
 }).catch(swal.noop);
 },
 
-altadocente: function (descripcionfacultades) {
+altadocente: function (docentes) {
     swal.fire({
         title: '¿Estás seguro?',
-        text: "Desea activar la Descripciòn seleccionada",
+        text: "Desea activar el docente seleccionado",
         type: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -340,10 +382,10 @@ altadocente: function (descripcionfacultades) {
         confirmButtonText: 'Si, Activar'
     }).then((result) => {
     if (result.value) {
-        var url = 'descripcionfacultad/altabaja/' + descripcionfacultades.id + '/1';
+        var url = 'docente/altabaja/' + docentes.iddoc + '/1';
         axios.get(url).then(response => { //eliminamos
     if (response.data.result == '1') {
-        app.getDescripcionFacultades(app.thispage); //listamos
+        app.getDocentes(app.thispage); //listamos
         toastr.success(response.data.msj); //mostramos mensaje
     } else {
         // $('#'+response.data.selector).focus();
@@ -355,4 +397,4 @@ altadocente: function (descripcionfacultades) {
 },
 }
 }); 
-</script><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/descripcionfacultades/vue.blade.php ENDPATH**/ ?>
+</script><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/docentes/vue.blade.php ENDPATH**/ ?>

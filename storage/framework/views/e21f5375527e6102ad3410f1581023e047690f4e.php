@@ -3,7 +3,7 @@
     el: '#app',
     data: {
     titulo: "Mantenimiento",
-    subtitulo: "Gestión de la Descripcion de la Facultad",
+    subtitulo: "Gestión de los videos",
     subtitulo2: "Principal",
 
     subtitle2: false,
@@ -44,10 +44,10 @@
 
     divprincipal: false,
 
-    descripcionfacultades: [],
+    videosfacultades: [],
     errors: [],
 
-    fillDescripcionFacultades:{'id':'', 'descripcion':'', 'reseñahistor':'', 'mision':'', 'vision':'','imagen':'' ,'filosofia':'','activo':'','borrado':''},
+    fillVideoFacultades:{'id':'', 'titulo':'', 'descripcion':'', 'link':'','fecha':'','activo':'','borrado':''},
 
     pagination: {
     'total': 0,
@@ -65,12 +65,9 @@
 
     thispage: '1',
 
+    newTitulo: '',
     newDescripcion: '',
-    newReseñaHistor: '',
-    newMision:'',
-    newVision:'',
-    imagen: null,
-    newFilosofia: '',
+    newLink: '',
     newActivo: '',
 },
 created: function () {
@@ -110,18 +107,18 @@ computed: {
     } 
 }, 
 methods: { 
-    getImg(descripcionfacultad) { var
-            img="<?php echo e(asset('/')); ?>img/descripcionfacultades/" + descripcionfacultad.imagen;
+    getImg(videosfacultades) { var
+            img="<?php echo e(asset('/')); ?>img/noticiaFacultad/" + videosfacultades.imagen;
              return img; 
     }, 
     getDescripcionFacultades: function (page) { 
         var busca=this.buscar; 
-        var url='descripcionfacultad?page=' + page + '&busca=' + busca; 
+        var url='videofacultad?page=' + page + '&busca=' + busca; 
         axios.get(url).then(response=> {
-            this.descripcionfacultades = response.data.descripcionfacultades.data;
+            this.videosfacultades = response.data.videosfacultades.data;
             this.pagination = response.data.pagination;
 
-        if (this.descripcionfacultades.length == 0 && this.thispage != '1') {
+        if (this.videosfacultades.length == 0 && this.thispage != '1') {
             var a = parseInt(this.thispage);
             a--;
             this.thispage = a.toString();
@@ -151,18 +148,16 @@ methods: {
             this.cancelFormNuevo();
         },
     cancelFormNuevo: function () {
-            $('#Nombress').focus();
+            $('#titulo').focus();
+            this.newTitulo = '';
             this.newDescripcion = '';
-            this.newReseñaHistor = '';
-            this.newMision = '';
-            this.newVision = '';
-            this.newFilosofia = '';
+            this.newFechapubli = '';
             this.newActivo = '1';
             this.imagen = null;
 
             $(".form-control").css("border", "1px solid #d2d6de");
         },
-    getImage(event) {
+    getImage(videosfacultades) {
             if (!event.target.files.length) {
                 this.imagen = null;
             }else {
@@ -174,11 +169,11 @@ methods: {
             $.each($(".txtimg"), function (index, value) {
             // var valor=$(this).attr("id");
             var idusar = $(this).val();
-            $("#ImgPerfilNuevoE" + idusar).attr("src", "<?php echo e(asset('/img/descripcionfacultad/')); ?>" + "/" + $("#txt" + idusar).val());
+            $("#ImgPerfilNuevoE" + idusar).attr("src", "<?php echo e(asset('/img/videosfacultades/')); ?>" + "/" + $("#txt" + idusar).val());
             });
             },
     create: function () {
-        var url = 'descripcionfacultad';
+        var url = 'videofacultad';
         $("#btnGuardar").attr('disabled', true);
         $("#btnCancel").attr('disabled', true);
         $("#btnClose").attr('disabled', true);
@@ -186,12 +181,9 @@ methods: {
         $(".form-control").css("border", "1px solid #d2d6de");
             var data = new FormData();
 
+                data.append('titulo', this.newTitulo);
                 data.append('descripcion', this.newDescripcion);
-                data.append('reseñahistor', this.newReseñaHistor);
-                data.append('mision', this.newMision);
-                data.append('vision', this.newVision);
-                data.append('imagen', this.imagen);
-                data.append('filosofia', this.newFilosofia);
+                data.append('link', this.newLink);
                 data.append('activo', this.newActivo);
                 
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
@@ -216,11 +208,11 @@ methods: {
                 //this.errors=error.response.data
             })
             },
-        borrardocente: function (descripcionfacultades) {
+        borrardocente: function (videosfacultades) {
 
             swal.fire({
                 title: '¿Estás seguro?',
-                text: "¿Desea eliminar la Descripcion Seleccionado? -- Nota: este proceso no se podrá revertir.",
+                text: "¿Desea eliminar el video Seleccionado? -- Nota: este proceso no se podrá revertir.",
                 type: 'info',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -230,7 +222,7 @@ methods: {
 
                 if (result.value) {
 
-                    var url = 'descripcionfacultad/' + descripcionfacultades.id;
+                    var url = 'videofacultad/' + videosfacultades.id;
                      axios.delete(url).then(response => { //eliminamos
 
                 if (response.data.result == '1') {
@@ -247,35 +239,30 @@ methods: {
             }).catch(swal.noop);
             },
 
-    editbanner: function (descripcionfacultad) {
-        this.fillDescripcionFacultades.id = descripcionfacultad.id;
-        this.fillDescripcionFacultades.descripcion = descripcionfacultad.descripcion;
-        this.fillDescripcionFacultades.reseñahistor = descripcionfacultad.reseñahistor;
-        this.fillDescripcionFacultades.mision = descripcionfacultad.mision;
-        this.fillDescripcionFacultades.vision = descripcionfacultad.vision;
-        this.fillDescripcionFacultades.filosofia = descripcionfacultad.filosofia;
-        this.imagen=null;
+    editbanner: function (videosfacultades) {
+        this.fillVideoFacultades.id = videosfacultades.id;
+        this.fillVideoFacultades.titulo = videosfacultades.titulo;
+        this.fillVideoFacultades.descripcion = videosfacultades.descripcion;
+        this.fillVideoFacultades.link = videosfacultades.link;
         
         $("#modalEditar").modal('show');
             this.$nextTick(function () {
-            $("#DescripcionE").focus();
+            $("#titulo").focus();
         })
     },
     updateBanner: function (id) {
         var data = new FormData();
 
-        data.append('id', this.fillDescripcionFacultades.id);
-        data.append('descripcion', this.fillDescripcionFacultades.descripcion);
-        data.append('reseñahistor', this.fillDescripcionFacultades.reseñahistor);
-        data.append('mision', this.fillDescripcionFacultades.mision);
-        data.append('vision', this.fillDescripcionFacultades.vision);
-        data.append('imagen', this.imagen);
-        data.append('filosofia', this.fillDescripcionFacultades.filosofia);
+        data.append('id', this.fillVideoFacultades.id);
+        data.append('titulo', this.fillVideoFacultades.titulo);
+        data.append('descripcion', this.fillVideoFacultades.descripcion);
+        data.append('link', this.fillVideoFacultades.link);
         data.append('_method', 'PUT');
+        
         
         const config = {headers: {'Content-Type': 'multipart/form-data'}};
         
-        var url = "descripcionfacultad/" + id;
+        var url = "videofacultad/" + id;
 
             $("#btnSaveE").attr('disabled', true);
             $("#btnCloseE").attr('disabled', true);
@@ -290,7 +277,7 @@ methods: {
         if (response.data.result == '1') {
             
             this.getDescripcionFacultades(this.thispage);
-            this.fillLocal= {'id':'', 'descripcion':'', 'reseñahistor':'', 'mision':'', 'vision':'','imagen':'' ,'filosofia':'','activo':'','borrado':''};
+            this.fillLocal= {'id':'', 'titulo':'', 'descripcion':'', 'link':'', 'fecha':'','activo':'','borrado':''};
             this.errors = [];
             $("#modalEditar").modal('hide');
             toastr.success(response.data.msj);
@@ -303,11 +290,11 @@ methods: {
             this.errors = error.response.data
         })
     },
-bajadocente: function (descripcionfacultades) {
+bajadocente: function (videosfacultades) {
 
         swal.fire({
             title: '¿Estás seguro?',
-            text: "Desea desactivar la Descripciòn seleccionada",
+            text: "Desea desactivar el video seleccionada",
             type: 'info',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -315,7 +302,7 @@ bajadocente: function (descripcionfacultades) {
             confirmButtonText: 'Si, Desactivar'
         }).then((result) => {
         if (result.value) {
-            var url = 'descripcionfacultad/altabaja/' + descripcionfacultades.id + '/0';
+            var url = 'videofacultad/altabaja/' + videosfacultades.id + '/0';
             axios.get(url).then(response => { //eliminamos
         if (response.data.result == '1') {
             app.getDescripcionFacultades(app.thispage); //listamos
@@ -329,10 +316,10 @@ bajadocente: function (descripcionfacultades) {
 }).catch(swal.noop);
 },
 
-altadocente: function (descripcionfacultades) {
+altadocente: function (videosfacultades) {
     swal.fire({
         title: '¿Estás seguro?',
-        text: "Desea activar la Descripciòn seleccionada",
+        text: "Desea activar el video seleccionada",
         type: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -340,7 +327,7 @@ altadocente: function (descripcionfacultades) {
         confirmButtonText: 'Si, Activar'
     }).then((result) => {
     if (result.value) {
-        var url = 'descripcionfacultad/altabaja/' + descripcionfacultades.id + '/1';
+        var url = 'videofacultad/altabaja/' + videosfacultades.id + '/1';
         axios.get(url).then(response => { //eliminamos
     if (response.data.result == '1') {
         app.getDescripcionFacultades(app.thispage); //listamos
@@ -355,4 +342,4 @@ altadocente: function (descripcionfacultades) {
 },
 }
 }); 
-</script><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/descripcionfacultades/vue.blade.php ENDPATH**/ ?>
+</script><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/videoFacultades/vue.blade.php ENDPATH**/ ?>

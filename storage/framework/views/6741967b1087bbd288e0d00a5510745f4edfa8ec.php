@@ -45,7 +45,7 @@
             </li>
             <li><a href="#">Investigación de la FCSEC</a>
                 <ul>
-                    <li><a href="revista">Revista Academica de la FCSEC</a></li>
+                    <li><a href="">Revista Academica de la FCSEC</a></li>
                     <li><a href="http://repositorio.unasam.edu.pe/">Repositorio UNASAM</a></li>
                     <li><a href="biblioteca">Biblioteca de la FCSEC</a></li>
                     <li><a href="blog-disqus.html">Investigación de la FCSEC</a>
@@ -86,13 +86,16 @@
 
                 </p>
             </div> <!-- /.header-left -->
+            <?php $__currentLoopData = $logos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $logo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="col-md-4" id="logo">
                 <div class="logo" style="text-align: center">
-                    <a href="index.html" title="Facultad de Ciencias" rel="home">
-                        <img src="images/fc.png" alt="Facultad de Ciencias" style="max-height: 100px;">
+                    <a href="index.html" title="Universe" rel="home">
+                        <img src="<?php echo e(asset('/img/descripcionFacultades/'.$logo->imagen)); ?>"
+                            alt="<?php echo e(asset('/img/descripcionFacultades/'.$logo->imagen)); ?>" style="max-height: 100px;">
                     </a>
                 </div> <!-- /.logo -->
             </div> <!-- /.col-md-4 -->
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             <div class="col-md-4 header-right" id="header-right">
                 <ul class="small-links">
                     <li><a href="#">Eventos</a></li>
@@ -132,24 +135,23 @@
                     </li>
                     <li><a href="#">Carreras Profesionales</a>
                         <ul class="sub-menu">
-                            <li><a href="courses.html">Primaria y Educación Bilingue Intercultural</a></li>
-                            <li><a href="course-single.html">Lengua Extranjera: Ingles</a></li>
-                            <li><a href="course-single.html">Matematica e Informatica</a></li>
-                            <li><a href="course-single.html">Comunicación, Linguística y Literatura</a></li>
-                            <li><a href="cienciascomunicacion">Ciencias de Comunicación</a></li>
-                            <li><a href="course-single.html">Arqueología</a></li>
+                            <?php $__currentLoopData = $escuelas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $escuela): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li><a href="<?php echo e($escuela->descripcion); ?>"><?php echo e($escuela->nombre); ?></a></li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </ul>
                     </li>
-                    <li><a href="#">Investigación de la FCSEC</a>
+                    <li><a href="#">Repositorio de la Facultad</a>
                         <ul class="sub-menu">
-                            <li><a href="revista">Revista Académica de la FCSEC</a></li>
-                            <li><a href="http://repositorio.unasam.edu.pe/" target="blank">Repositorio UNASAM</a></li>
-                            <li><a href="biblioteca">Biblioteca FCSEC</a></li>
-                            <li><a href="blog-disqus.html">Investigación FCSEC</a>
-                                <ul class="sub-menu">
-                                    <li><a href="investigadores">Docentes Investigadores</a></li>
+                            <li><a href="#">Investigaciones y Libros </a>
+                                <ul> 
+                                    <li><a href="revista">investigaciones</a></li>
+                                    <li><a href="libro">libros</a></li>
                                 </ul>
+                                
                             </li>
+                            
+                            <li><a href="http://repositorio.unasam.edu.pe/" target="blank">Repositorio UNASAM</a></li>
+                            <li><a href="biblioteca">Biblioteca Virtual</a></li>
                         </ul>
                     </li>
                     <li><a href="#">Docentes</a>
@@ -167,25 +169,4 @@
             </nav> <!-- /.main-navigation -->
         </div> <!-- /.container -->
     </div> <!-- /.nav-bar-main -->
-</header> <!-- /.site-header -->
-
-<script>
-    window.sr = ScrollReveal();
-        sr.reveal('#logo',{
-            duration: 2000,
-            origin: 'top',
-            distance: '300px'
-        });
-    window.sr = ScrollReveal();
-        sr.reveal('#header-left',{
-            duration: 2000,
-            origin: 'left',
-            distance: '300px'
-        }); 
-    window.sr = ScrollReveal();
-        sr.reveal('#header-right',{
-            duration: 2000,
-            origin: 'right',
-            distance: '300px'
-        });  
-</script><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/web/layout/header.blade.php ENDPATH**/ ?>
+</header> <!-- /.site-header --><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/web/layout/header.blade.php ENDPATH**/ ?>
