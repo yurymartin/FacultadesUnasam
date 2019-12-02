@@ -3,7 +3,7 @@
 el: '#app',
 data:{
        titulo:"Mantenimiento",
-       subtitulo: "Gestión de Escuelas",
+       subtitulo: "Gestión de Escuelas Profesionales",
        subtitulo2: "Principal",
 
    subtitle2:false,
@@ -28,9 +28,9 @@ data:{
    divtitulo:true,
    classTitle:'fa fa-qrcode ',
    classMenu0:'',
-   classMenu1:'active',
+   classMenu1:'',
    classMenu2:'',
-   classMenu3:'',
+   classMenu3:'active',
    classMenu4:'',
    classMenu5:'',
    classMenu6:'',
@@ -47,7 +47,7 @@ data:{
    escuelas: [],
    errors:[],
 
-   fillEscuela:{'id':'', 'nombre':'', 'descripcion':''},
+   fillEscuela:{'id':'', 'nombre':''},
 
    pagination: {
    'total': 0,
@@ -171,7 +171,6 @@ methods: {
        var data = new  FormData();
 
             data.append('nombre', this.newTitulo);
-            data.append('descripcion', this.newDescripcion);
             data.append('activo', this.newEstado);
             data.append('borrado', this.newBorrado);
             
@@ -201,7 +200,7 @@ methods: {
    borrarescuela:function (escuela) {
         swal.fire({
              title: '¿Estás seguro?',
-             text: "¿Desea eliminar el escuela academico Seleccionado? -- Nota: este proceso no se podrá revertir.",
+             text: "¿Desea eliminar la escuela profesional Seleccionado? -- Nota: este proceso no se podrá revertir.",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -231,8 +230,7 @@ methods: {
    editescuela:function (escuela) {
 
         this.fillEscuela.id=escuela.id;
-        this.fillEscuela.nombre=escuela.nombre;
-        this.fillEscuela.descripcion=escuela.descripcion;            
+        this.fillEscuela.nombre=escuela.nombre;         
 
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
@@ -244,7 +242,6 @@ methods: {
         var data = new FormData();
         data.append('id', this.fillEscuela.id);
         data.append('nombre', this.fillEscuela.nombre);
-        data.append('descripcion', this.fillEscuela.descripcion);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
@@ -281,7 +278,7 @@ methods: {
 
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea desactivar el escuela seleccionado",
+             text: "Desea desactivar la escuela profesional seleccionada",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -309,7 +306,7 @@ methods: {
 
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea activar el escuela seleccionado",
+             text: "Desea activar la escuela profesional seleccionada",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',

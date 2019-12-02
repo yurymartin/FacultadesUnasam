@@ -28,9 +28,9 @@
     divtitulo: true,
     classTitle: 'fa fa-qrcode ',
     classMenu0: '',
-    classMenu1: 'active',
+    classMenu1: '',
     classMenu2: '',
-    classMenu3: '',
+    classMenu3: 'active',
     classMenu4: '',
     classMenu5: '',
     classMenu6: '',
@@ -45,9 +45,10 @@
     divprincipal: false,
 
     descripcionescuelas: [],
+    escuelas: [],
     errors: [],
 
-    fillDescripcionEscuelas:{'id':'', 'descripcion':'', 'titulo':'', 'gradoacade':'', 'duracion':'','logo':'' ,'activo':'','borrado':'','escuela_id':''},
+    fillDescripcionEscuelas:{'id':'', 'descripcion':'', 'tituloprofesional':'', 'gradoacade':'', 'duracion':'','mision':'','vision':'','historia':'','logo':'' ,'activo':'','borrado':'','escuela_id':''},
 
     pagination: {
     'total': 0,
@@ -69,8 +70,11 @@
     newTitulo: '',
     newGradoAcade:'',
     newDuracion:'',
+    newMision:'',
+    newVision:'',
+    newHistoria:'',
     logo: '',
-    newActivo: '',
+    newActivo: '1',
     escuela_id: '0',
 },
 created: function () {
@@ -152,13 +156,16 @@ methods: {
             this.cancelFormNuevo();
         },
     cancelFormNuevo: function () {
-            $('#Nombress').focus();
+            $('#descripcion').focus();
             this.newDescripcion = '';
-            this.newReseñaHistor = '';
+            this.newTitulo = '';
+            this.newGradoAcade = '';
+            this.newDuracion = '';
             this.newMision = '';
             this.newVision = '';
-            this.newFilosofia = '';
+            this.newHistoria = '';
             this.newActivo = '1';
+            this.escuela_id = '0';
             this.imagen = null;
 
             $(".form-control").css("border", "1px solid #d2d6de");
@@ -191,10 +198,12 @@ methods: {
                 data.append('titulo', this.newTitulo);
                 data.append('gradoacade', this.newGradoAcade);
                 data.append('duracion', this.newDuracion);
+                data.append('mision', this.newMision);
+                data.append('vision', this.newVision);
+                data.append('historia', this.newHistoria);
                 data.append('logo', this.logo);
                 data.append('activo', this.newActivo);
                 data.append('escuela_id', this.escuela_id);
-                console.log(this.logo);
                 
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             axios.post(url,data,config).then(response=>{
@@ -251,11 +260,14 @@ methods: {
     editbanner: function (descripcionescuelas) {
         this.fillDescripcionEscuelas.id = descripcionescuelas.iddesc;
         this.fillDescripcionEscuelas.descripcion = descripcionescuelas.descripcion;
-        this.fillDescripcionEscuelas.titulo = descripcionescuelas.titulo;
+        this.fillDescripcionEscuelas.tituloprofesional = descripcionescuelas.tituloprofesional;
         this.fillDescripcionEscuelas.gradoacade = descripcionescuelas.gradoacade;
         this.fillDescripcionEscuelas.duracion = descripcionescuelas.duracion;
-        this.fillDescripcionEscuelas.logo = descripcionescuelas.logo; 
+        this.fillDescripcionEscuelas.mision = descripcionescuelas.mision;
+        this.fillDescripcionEscuelas.vision = descripcionescuelas.vision;
+        this.fillDescripcionEscuelas.historia = descripcionescuelas.historia;
         this.fillDescripcionEscuelas.escuela_id = descripcionescuelas.idesc; 
+        this.logo = null
                    
         $("#modalEditar").modal('show');
             this.$nextTick(function () {
@@ -267,10 +279,13 @@ methods: {
         var data = new FormData();
         data.append('id', this.fillDescripcionEscuelas.id);
         data.append('descripcion', this.fillDescripcionEscuelas.descripcion);
-        data.append('titulo', this.fillDescripcionEscuelas.titulo);
+        data.append('tituloprofesional', this.fillDescripcionEscuelas.tituloprofesional);
         data.append('gradoacade', this.fillDescripcionEscuelas.gradoacade);
         data.append('duracion', this.fillDescripcionEscuelas.duracion);
-        data.append('logo', this.fillDescripcionEscuelas.logo);
+        data.append('mision', this.fillDescripcionEscuelas.mision);
+        data.append('vision', this.fillDescripcionEscuelas.vision);
+        data.append('historia', this.fillDescripcionEscuelas.historia);
+        data.append('logo', this.logo);
         data.append('escuela_id', this.fillDescripcionEscuelas.escuela_id);
         data.append('_method', 'PUT');
         
@@ -291,7 +306,7 @@ methods: {
         if (response.data.result == '1') {
             
             this.getDescripcionFacultades(this.thispage);
-            this.fillLocal= {'id':'', 'descripcion':'', 'titulo':'', 'gradoacade':'', 'duracion':'','logo':'' ,'escuela_id':''};
+            this.fillLocal= {'id':'', 'descripcion':'', 'tituloprofesional':'', 'gradoacade':'', 'duracion':'','mision':'','vision':'','historia':'','logo':'' ,'activo':'','borrado':'','escuela_id':''};
             this.errors = [];
             $("#modalEditar").modal('hide');
             toastr.success(response.data.msj);

@@ -196,7 +196,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
               style="font-size: 35px;">&times;</span></button>
           <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR
-            BANNER</h4>
+            LA FACULTAD</h4>
 
         </div>
         <div class="modal-body">

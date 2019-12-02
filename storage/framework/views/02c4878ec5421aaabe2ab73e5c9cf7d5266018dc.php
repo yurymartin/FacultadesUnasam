@@ -3,7 +3,7 @@
     el: '#app',
     data: {
     titulo: "Mantenimiento",
-    subtitulo: "Gestión de los campos laborales de cada escuela",
+    subtitulo: "Gestión del campo laboral de las escuelas",
     subtitulo2: "Principal",
 
     subtitle2: false,
@@ -28,9 +28,9 @@
     divtitulo: true,
     classTitle: 'fa fa-qrcode ',
     classMenu0: '',
-    classMenu1: 'active',
+    classMenu1: '',
     classMenu2: '',
-    classMenu3: '',
+    classMenu3: 'active',
     classMenu4: '',
     classMenu5: '',
     classMenu6: '',
@@ -301,7 +301,7 @@ bajadocente: function (campolaborales) {
 
         swal.fire({
             title: '¿Estás seguro?',
-            text: "Desea desactivar el campo Profesional seleccionada",
+            text: "Desea desactivar el campo laboral seleccionada",
             type: 'info',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -326,7 +326,7 @@ bajadocente: function (campolaborales) {
 altadocente: function (campolaborales) {
     swal.fire({
         title: '¿Estás seguro?',
-        text: "Desea activar el campo Profesional seleccionada",
+        text: "Desea activar el campo laboral seleccionada",
         type: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',

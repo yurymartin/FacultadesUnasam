@@ -1,5 +1,5 @@
 <?php $__env->startSection('htmlheader_title'); ?>
-Gestión de los campos laborales de cada escuela
+Gestión del campo laboral de las escuelas
 <?php $__env->stopSection(); ?>
 
 <style type="text/css">

@@ -1,6 +1,6 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de Docentes</h3>
+    <h3 class="box-title">Gestión de la descripcion de la facultad</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="<?php echo e(URL::to('home')); ?>"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
@@ -135,7 +135,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Banner</h3>
+    <h3 class="box-title">Listado de descripciones de la facultad</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">

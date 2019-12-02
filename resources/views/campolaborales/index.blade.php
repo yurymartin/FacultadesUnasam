@@ -1,7 +1,7 @@
 @extends('vendor.adminlte.layouts.app')
 
 @section('htmlheader_title')
-Gestión de los campos laborales de cada escuela
+Gestión del campo laboral de las escuelas
 @endsection
 
 <style type="text/css">

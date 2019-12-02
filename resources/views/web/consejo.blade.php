@@ -20,9 +20,12 @@
             <div class="col-md-9">
                 <div class="widget-main">
                     <div class="widget-main-title">
+                        @foreach ($consejos as $consejo)
                         <h4 class="widget-title" style="text-align: left;font-size: 16px;">
-                            <strong>CONSEJO DE FACULTAD</strong>
+                            <strong>{{$consejo->cargo}}</strong>
                         </h4>
+                        @break
+                        @endforeach
                     </div>
                     <p style="text-align: justify;font-size: 16px;font-family: 'Times New Roman', Times, serif">
                         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Odit fugiat aspernatur a, sequi ea
@@ -32,36 +35,19 @@
                         neque provident voluptatem laborum saepe? Voluptatum, doloremque sint id repellat qui
                         incidunt!</p>
                     <div class="widget-inner">
+                        @foreach ($consejos as $consejo)
                         <div class="prof-list-item clearfix">
                             <div class="prof-thumb">
-                                <img src="images/prof/prof1.jpg" alt="Profesor Name">
+                                <a href="{{ asset('/img/personas/'.$consejo->foto)}}" class="fancybox"
+                                    rel="gallery1"><img src="{{ asset('/img/personas/'.$consejo->foto)}}"
+                                        alt="{{$consejo->nombres.' '.$consejo->apellidos}}"></a>
                             </div> <!-- /.prof-thumb -->
                             <div class="prof-details">
-                                <h5 class="prof-name-list">Prof. Betty Hunt</h5>
-                                <p class="small-text"><strong>Cargo:</strong>Asesor</p>
-                                <p class="small-text"><strong>Escuela:</strong>Ciencias de la Comunicación</p>
+                                <h5 class="prof-name-list">{{$consejo->nombres.' '.$consejo->apellidos}}</h5>
+                                <p class="small-text"><strong>CARGO: </strong>{{$consejo->cargo}}</p>
                             </div> <!-- /.prof-details -->
                         </div> <!-- /.prof-list-item -->
-                        <div class="prof-list-item clearfix">
-                            <div class="prof-thumb">
-                                <img src="images/prof/prof2.jpg" alt="Profesor Name">
-                            </div> <!-- /.prof-thumb -->
-                            <div class="prof-details">
-                                <h5 class="prof-name-list">Prof. Victor Johns</h5>
-                                <p class="small-text"><strong>Cargo:</strong>Asesor</p>
-                                <p class="small-text"><strong>Escuela:</strong>Ciencias de la Comunicación</p>
-                            </div> <!-- /.prof-details -->
-                        </div> <!-- /.prof-list-item -->
-                        <div class="prof-list-item clearfix">
-                            <div class="prof-thumb">
-                                <img src="images/prof/prof3.jpg" alt="Profesor Name">
-                            </div> <!-- /.prof-thumb -->
-                            <div class="prof-details">
-                                <h5 class="prof-name-list">Prof. Charles Conway</h5>
-                                <p class="small-text"><strong>Cargo:</strong>Asesor</p>
-                                <p class="small-text"><strong>Escuela:</strong>Ciencias de la Comunicación</p>
-                            </div> <!-- /.prof-details -->
-                        </div> <!-- /.prof-list-item -->
+                        @endforeach
                     </div> <!-- /.widget-inner -->
                 </div> <!-- /.widget-main -->
             </div>

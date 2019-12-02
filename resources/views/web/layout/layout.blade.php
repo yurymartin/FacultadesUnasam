@@ -41,7 +41,6 @@
         </div>
     <![endif]-->
     <!------------------ SCROLL REVEAL--------------------->
-    <script src="{{ asset('web/scroll/scrollreveal.js') }}"></script>
     <!----------------------------------------------------->
 
 </head>

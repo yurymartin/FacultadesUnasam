@@ -28,7 +28,7 @@
         <div class="form-group">
           <label for="txttitulo" class="col-sm-2 control-label">titulo:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="titulo de la investigacion"
+            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="titulo del documento"
               maxlength="200" autofocus v-model="newTitulo">
           </div>
         </div>
@@ -39,7 +39,7 @@
           <label for="descripcion" class="col-sm-2 control-label">Descripcion:</label>
           <div class="col-sm-8">
             <textarea name="descripcion" id="descripcion" cols="80" rows="5" v-model="newDescripcion"
-              placeholder="descripcion" class="form-control"></textarea>
+              placeholder="descripcion del documento" class="form-control"></textarea>
           </div>
         </div>
       </div>
@@ -248,7 +248,7 @@
                     <label for="txttitulo" class="col-sm-2 control-label">titulo:*</label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="titulo" name="titulo"
-                        placeholder="titulo de la investigacion" maxlength="200" autofocus v-model="fillDocumentoFacultades.titulo">
+                        placeholder="titulo del documento" maxlength="200" autofocus v-model="fillDocumentoFacultades.titulo">
                     </div>
                   </div>
                 </div>
@@ -258,7 +258,7 @@
                     <label for="descripcion" class="col-sm-2 control-label">Descripcion:</label>
                     <div class="col-sm-8">
                       <textarea name="descripcion" id="descripcion" cols="80" rows="5" v-model="fillDocumentoFacultades.descripcion"
-                        placeholder="descripcion" class="form-control"></textarea>
+                        placeholder="descripcion del documento" class="form-control"></textarea>
                     </div>
                   </div>
                 </div>

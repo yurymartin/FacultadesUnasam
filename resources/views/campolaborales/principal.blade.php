@@ -1,6 +1,6 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de Descripcion de Escuelas</h3>
+    <h3 class="box-title">Gestión del campo laboral de las escuelas</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="{{URL::to('home')}}"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
@@ -9,7 +9,7 @@
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
-          class="fa fa-plus-square-o" aria-hidden="true"></i>Nueva Descripcion de Las Escuelas</button>
+          class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Campo Laboral</button>
     </div>
 
   </div>
@@ -18,7 +18,7 @@
 
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
-    <h3 class="box-title" id="tituloAgregar">Nueva Descripciòn de La Escuelas</h3>
+    <h3 class="box-title" id="tituloAgregar"> Nuevo Campo Laboral</h3>
   </div>
 
   <form v-on:submit.prevent="create">
@@ -28,7 +28,7 @@
         <div class="form-group">
           <label for="titulo" class="col-sm-2 control-label">Titulo*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Titulo" maxlength="200"
+            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Titulo del campo laboral" maxlength="200"
               autofocus v-model="newTitulo">
           </div>
         </div>
@@ -117,7 +117,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Banner</h3>
+    <h3 class="box-title">Listado de los campos laborales de las escuelas Profesionales</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -153,7 +153,7 @@
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ campolaboral.titulo }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ campolaboral.campolab }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; text-align: center;vertical-align: middle;">
-            <img :src="getImg(campolaboral)" alt="" class="img img-responsive" style="width: 120px;height: 100px">
+            <img :src="getImg(campolaboral)" alt="" style="width: 120px;height: 50px">
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ campolaboral.fecha }}</td>
           </td>

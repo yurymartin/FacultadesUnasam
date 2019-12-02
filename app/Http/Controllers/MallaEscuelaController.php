@@ -40,16 +40,16 @@ class MallaEscuelaController extends Controller
 
         $mallaescuelas = DB::table('mallas as m')
             ->join('escuelas as e', 'e.id', '=', 'm.escuela_id')
-            ->select('m.id', 'm.imagen', 'm.numcurricula', 'm.fechaRegistro', 'm.activo', 'e.nombre','e.id as idescu')
+            ->select('m.id', 'm.imagen', 'm.numcurricula', 'm.fechaRegistro', 'm.activo', 'e.nombre', 'e.id as idescu')
             ->where('m.borrado', '0')
             ->where(function ($query) use ($buscar) {
                 $query->where('m.numcurricula', 'like', '%' . $buscar . '%');
-                $query->orWhere('m.borrado', 'like', '%' . $buscar . '%');
             })
             ->orderBy('m.id', 'desc')
             ->paginate(10);
 
         $escuelas = Escuela::where('borrado', '0')
+            ->where('activo', '=', '1')
             ->get();
 
         return [
@@ -107,8 +107,7 @@ class MallaEscuelaController extends Controller
             $result = '0';
             $msj = 'Debe de Ingresar una Imagen';
             $selector = 'cbescuela';
-        
-        } else{
+        } else {
 
             if ($request->hasFile('imagen')) {
 
@@ -199,9 +198,9 @@ class MallaEscuelaController extends Controller
         $editTitulo = $request->editTitulo;
         $editDescripcion = $request->editDescripcion;
         $editEstado = $request->editEstado;
-        $escuela_id=$request->escuela_id;
+        $escuela_id = $request->escuela_id;
         $img = $request->imagen;
-       
+
         $imagen = "";
         $segureImg = 0;
 
@@ -248,18 +247,18 @@ class MallaEscuelaController extends Controller
 
             if (strlen($imagen) == 0) {
 
-                
+
                 $editGalEscu->numcurricula = $editDescripcion;
                 $editGalEscu->activo = $editEstado;
-                $editGalEscu->escuela_id=$escuela_id;
+                $editGalEscu->escuela_id = $escuela_id;
                 $editGalEscu->save();
             } else {
 
                 $editGalEscu->imagen = $imagen;
                 $editGalEscu->numcurricula = $editDescripcion;
                 $editGalEscu->activo = $editEstado;
-                $editGalEscu->fechapublica=date('Y/m/d');
-            $editGalEscu->escuela_id=$escuela_id;
+                $editGalEscu->fechapublica = date('Y/m/d');
+                $editGalEscu->escuela_id = $escuela_id;
                 $editGalEscu->save();
             }
 
@@ -285,7 +284,7 @@ class MallaEscuelaController extends Controller
             ->count();
         if ($consulta1 > 0) {
             $result = '0';
-            $msj='No se puede eliminar bannersescuelas enlazados con otras entidades';
+            $msj = 'No se puede eliminar bannersescuelas enlazados con otras entidades';
         } else {
             $borrar = MallaEscuela::findOrFail($id);
             $borrar->borrado = '1';
@@ -303,7 +302,7 @@ class MallaEscuelaController extends Controller
 
         $update = MallaEscuela::findOrFail($id);
         $update->activo = $estado;
-        
+
         $update->save();
 
         if (strval($estado) == "0") {

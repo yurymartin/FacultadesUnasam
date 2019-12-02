@@ -39,18 +39,27 @@ class AutoridadesController extends Controller
         $autoridades = DB::table('autoridades as a')
             ->join('cargos as c', 'c.id', '=', 'a.cargo_id')
             ->join('personas as p', 'p.id', '=', 'a.persona_id')
+            ->join('gradoacademicos as ga', 'ga.id', '=', 'a.gradoacademico_id')
             ->where('a.borrado', '0')
             ->where(function ($query) use ($buscar) {
                 $query->where('p.dni', 'like', '%' . $buscar . '%');
                 $query->orWhere('p.nombres', 'like', '%' . $buscar . '%');
                 $query->orWhere('p.apellidos', 'like', '%' . $buscar . '%');
+                $query->orWhere('c.cargo', 'like', '%' . $buscar . '%');
+                $query->orWhere('ga.grado', 'like', '%' . $buscar . '%');
             })
             ->orderBy('p.nombres')
-            ->select('a.id as idauto', 'p.id as idper', 'p.dni', 'p.nombres', 'p.apellidos', 'p.genero', 'p.foto', 'c.cargo', 'a.descripcion', 'a.fechainicio', 'a.fechafin', 'a.activo', 'c.id as idcargo')
+            ->select('a.id as idauto', 'p.id as idper', 'p.dni', 'p.nombres', 'p.apellidos', 'p.genero', 'p.foto', 'c.cargo', 'a.descripcion', 'a.fechainicio', 'a.fechafin', 'a.activo', 'c.id as idcargo', 'ga.id as idgrado', 'ga.grado')
             ->paginate(10);
 
         $cargos = DB::table('cargos')
-            ->where('borrado', '0')
+            ->where('borrado','=','0')
+            ->where('activo','=','1')
+            ->get();
+
+        $grados = DB::table('gradoacademicos')
+            ->where('borrado','=','0')
+            ->where('activo','=','1')
             ->get();
 
         $personas = Persona::get();
@@ -66,6 +75,7 @@ class AutoridadesController extends Controller
             'autoridades' => $autoridades,
             'cargos' => $cargos,
             'personas' => $personas,
+            'grados' => $grados,
         ];
     }
     /**
@@ -101,6 +111,7 @@ class AutoridadesController extends Controller
         $fechafin = $request->fechafin;
         $estado = $request->estado;
         $cargo_id = $request->cargo_id;
+        $gradoacademico_id = $request->gradoacademico_id;
 
 
         $imagen = "";
@@ -120,23 +131,27 @@ class AutoridadesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Complete el dni del docente';
+            $msj = 'FALTA COMPLETAR EL DNI DE LA AUTORIDAD O EL DNI TIENE MAS DE 8 DIGITOS';
             $selector = 'dni';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Complete los nombres del docente';
+            $msj = 'FALTA COMPLETAR LOS NOMBRES DE LA AUTORIDAD';
             $selector = 'nombres';
         } else if ($validator3->fails()) {
             $result = '0';
-            $msj = 'Complete los apellidos del docente';
+            $msj = 'FALTA COMPLETAR LOS APELLIDOS DE LA AUTORIDAD';
             $selector = 'apellidos';
         } else if ($cargo_id == 0) {
             $result = '0';
-            $msj = 'Seleccione el cargo de la autoridad';
+            $msj = 'FALTA SELECCIONAR EL CARGO DE LA AUTORIDAD';
             $selector = 'cargo';
+        } else if ($gradoacademico_id == 0) {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR EL GRADO ACADEMICO DE LA AUTORIDAD';
+            $selector = 'grado';
         } else if ($img == 'null') {
             $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
+            $msj = 'FALTA INGRESAR LA IMAGEN';
             $selector = 'archivo';
         } else {
             if ($request->hasFile('imagen')) {
@@ -183,9 +198,10 @@ class AutoridadesController extends Controller
                 $docente->borrado = '0';
                 $docente->cargo_id  = $cargo_id;
                 $docente->persona_id = $persona->id;
+                $docente->gradoacademico_id = $gradoacademico_id;
                 $docente->save();
 
-                $msj = 'La Nueva Autoridad fue registrado con éxito';
+                $msj = 'LA NUEVA AUTORIDAD FUE REGISTRADO EXITOSAMENTE';
             }
         }
 
@@ -240,6 +256,7 @@ class AutoridadesController extends Controller
         $fechainicio = $request->fechainicio;
         $fechafin = $request->fechafin;
         $cargo_id = $request->cargo_id;
+        $gradoacademico_id = $request->gradoacademico_id;
 
 
         $imagen = "";
@@ -259,21 +276,25 @@ class AutoridadesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Complete el dni de la autoridad';
+            $msj = 'FALTA COMPLETAR EL DNI DE LA AUTORIDAD';
             $selector = 'dniE';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Complete los nombres de la autoridad';
+            $msj = 'FALTA COMPLETAR LOS NOMBRES DE LA AUTORIDAD';
             $selector = 'nombresE';
         } else if ($validator3->fails()) {
             $result = '0';
-            $msj = 'Complete los apellidos de la autoridad';
+            $msj = 'FALTA COMPLETAR LOS APELLIDOS DE LA AUTORIDAD';
             $selector = 'ApellidosE';
         } else if ($cargo_id == 0) {
             $result = '0';
-            $msj = 'Seleccione el cargo de la autoridad';
+            $msj = 'FALTA SELECCIONAR EL CARGO DE LA AUTORIDAD';
             $selector = 'cdCargoE';
-        } else {
+        } else if ($gradoacademico_id == 0) {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR EL GRADO ACADEMICO DE LA AUTORIDAD';
+            $selector = 'grado';
+        } else{
             if ($request->hasFile('imagen')) {
                 $aux = date('d-m-Y') . '-' . date('H-i-s');
                 $input  = array('image' => $img);
@@ -312,6 +333,7 @@ class AutoridadesController extends Controller
                 $docente->fechainicio = $fechainicio;
                 $docente->fechafin = $fechafin;
                 $docente->cargo_id  = $cargo_id;
+                $docente->gradoacademico_id = $gradoacademico_id;
                 $docente->save();
             } else {
                 $persona->dni = $dni;
@@ -324,10 +346,11 @@ class AutoridadesController extends Controller
                 $docente->fechainicio = $fechainicio;
                 $docente->fechafin = $fechafin;
                 $docente->cargo_id  = $cargo_id;
+                $docente->gradoacademico_id = $gradoacademico_id;
                 $docente->save();
             }
 
-            $msj = 'La Autoridad fue modificado con éxito';
+            $msj = 'LA AUTORIDAD FUE MODIFICADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -346,7 +369,7 @@ class AutoridadesController extends Controller
         $borrar = Autoridades::findOrFail($id);
         $borrar->borrado = '1';
         $borrar->save();
-        $msj = 'La Autoridad fue eliminado exitosamente';
+        $msj = 'LA AUTORIDAD FUE ELIMINADO EXITOSAMENTE';
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
 
@@ -361,9 +384,9 @@ class AutoridadesController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'La Autoridad fue Desactivada exitosamente';
+            $msj = 'LA AUTORIDAD FUE DESACTIVADO EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'La Autoridad fue Activada exitosamente';
+            $msj = 'LA AUTORIDAD FUE ACTIVADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

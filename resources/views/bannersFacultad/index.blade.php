@@ -1,7 +1,7 @@
 @extends('vendor.adminlte.layouts.app')
 
 @section('htmlheader_title')
-Gestión de Banners
+Gestión de los Banners de la Facultad
 @endsection
 
 <style type="text/css">

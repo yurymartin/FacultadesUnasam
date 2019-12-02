@@ -1,6 +1,6 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de Eventos</h3>
+    <h3 class="box-title">Gestión de Eventos de la Facultad</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="<?php echo e(URL::to('home')); ?>"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
@@ -39,7 +39,7 @@
           <label for="descripcion" class="col-sm-2 control-label">Descripcion:*</label>
           <div class="col-sm-8">
             <textarea name="descripcion" id="descripcion" cols="80" rows="5" v-model="newDescripcion"
-              placeholder="descripcion" class="form-control"></textarea>
+              placeholder="descripcion del evento" class="form-control"></textarea>
           </div>
         </div>
       </div>
@@ -58,7 +58,7 @@
         <div class="form-group" style="padding-top: 15px;">
           <label for="fechainicio" class="col-sm-2 control-label">Fecha de Inicio:*</label>
           <div class="col-sm-4">
-            <input type="date" class="form-control" id="fechainicio" name="fechainicio"
+            <input type="date" class="form-control" id="fechainicio" name="fechainicio del evento"
               placeholder="fecha inicio del evento" maxlength="200" autofocus v-model="newFechainicio">
           </div>
         </div>
@@ -123,7 +123,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Eventos</h3>
+    <h3 class="box-title">Listado de Eventos de la Facultad</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -270,7 +270,7 @@
                     <label for="descripcion" class="col-sm-2 control-label">Descripcion:*</label>
                     <div class="col-sm-8">
                       <textarea name="descripcion" id="descripcion" cols="80" rows="5" v-model="fillEventos.descripcion"
-                        placeholder="descripcion" class="form-control"></textarea>
+                        placeholder="descripcion del evento" class="form-control"></textarea>
                     </div>
                   </div>
                 </div>
@@ -289,7 +289,7 @@
                   <div class="form-group" style="padding-top: 15px;">
                     <label for="fechainicio" class="col-sm-2 control-label">Fecha de Inicio:*</label>
                     <div class="col-sm-4">
-                      <input type="date" class="form-control" id="fechainicio" name="fechainicio"
+                      <input type="date" class="form-control" id="fechainicio" name="fecha inicio del evento"
                         placeholder="fecha inicio del evento" maxlength="200" autofocus v-model="fillEventos.fechainicio">
                     </div>
                   </div>
@@ -299,7 +299,7 @@
                   <div class="form-group" style="padding-top: 15px;">
                     <label for="fechafin" class="col-sm-2 control-label">Fecha de finalizacion:*</label>
                     <div class="col-sm-4">
-                      <input type="date" class="form-control" id="fechafin" name="fechafin"
+                      <input type="date" class="form-control" id="fechafin" name="fecha fin del evento"
                         placeholder="fecha fin del evento" maxlength="200" autofocus v-model="fillEventos.fechafin">
                     </div>
                   </div>

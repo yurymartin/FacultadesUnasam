@@ -3,7 +3,7 @@
 el: '#app',
 data:{
        titulo:"Mantenimiento",
-       subtitulo: "Gestión de Cargos",
+       subtitulo: "Gestión de Cargos de las Autoridades",
        subtitulo2: "Principal",
 
    subtitle2:false,
@@ -28,11 +28,11 @@ data:{
    divtitulo:true,
    classTitle:'fa fa-qrcode ',
    classMenu0:'',
-   classMenu1:'active',
+   classMenu1:'',
    classMenu2:'',
    classMenu3:'',
    classMenu4:'',
-   classMenu5:'',
+   classMenu5:'active',
    classMenu6:'',
    classMenu7:'',
    classMenu8:'',
@@ -47,7 +47,7 @@ data:{
    cargos: [],
    errors:[],
 
-   fillCargo:{'id':'', 'cargo':''},
+   fillCargo:{'id':'', 'cargo':'','descripcion':''},
 
 
    pagination: {
@@ -171,6 +171,7 @@ methods: {
        var data = new  FormData();
 
             data.append('cargo', this.newTitulo);
+            data.append('descripcion', this.newDescripcion);
             data.append('activo', this.newEstado);
             data.append('borrado', this.newBorrado);
             
@@ -200,7 +201,7 @@ methods: {
    borrardecargo:function (cargo) {
         swal.fire({
              title: '¿Estás seguro?',
-             text: "¿Desea eliminar el cargo     academico Seleccionado? -- Nota: este proceso no se podrá revertir.",
+             text: "¿Desea eliminar el cargo Seleccionado? -- Nota: este proceso no se podrá revertir.",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -230,7 +231,8 @@ methods: {
    editdecargo:function (cargo) {
 
         this.fillCargo.id=cargo.id;
-        this.fillCargo.cargo=cargo.cargo;          
+        this.fillCargo.cargo=cargo.cargo;
+        this.fillCargo.descripcion=cargo.descripcion;          
 
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
@@ -242,6 +244,7 @@ methods: {
         var data = new FormData();
         data.append('id', this.fillCargo.id);
         data.append('cargo', this.fillCargo.cargo);
+        data.append('descripcion', this.fillCargo.descripcion);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
@@ -278,7 +281,7 @@ methods: {
 
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea desactivar el departamento academico seleccionado",
+             text: "Desea desactivar el cargo seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -306,7 +309,7 @@ methods: {
 
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea activar el departamento academico seleccionado",
+             text: "Desea activar el cargo seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',

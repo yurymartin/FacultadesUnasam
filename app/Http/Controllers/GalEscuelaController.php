@@ -13,7 +13,7 @@ use App\Persona;
 use App\Tipouser;
 use App\User;
 use App\Escuela;
-
+use SebastianBergmann\Environment\Console;
 
 class GalEscuelaController extends Controller
 {
@@ -24,49 +24,46 @@ class GalEscuelaController extends Controller
      */
     public function index1()
     {
-        if(accesoUser([1,2])){
+        if (accesoUser([1, 2])) {
 
-            $idtipouser=Auth::user()->tipouser_id;
-            $tipouser=Tipouser::find($idtipouser);
-            $modulo="galeriaescuelas";
-            return view('galeriaescuela.index',compact('tipouser','modulo'));
-        }
-        else
-        {
-            return view('adminlte::home');           
+            $idtipouser = Auth::user()->tipouser_id;
+            $tipouser = Tipouser::find($idtipouser);
+            $modulo = "galeriaescuelas";
+            return view('galeriaescuela.index', compact('tipouser', 'modulo'));
+        } else {
+            return view('adminlte::home');
         }
     }
     public function index(Request $request)
     {
 
-        $buscar=$request->busca;
+        $buscar = $request->busca;
 
-        $galeriaescuelas =DB::table('galescuelas as be')
-        ->join('escuelas as e','e.id','=','be.escuela_id')
-        ->select('be.id','be.imagen','be.descripcion','e.nombre','be.activo','e.id as idescu')
-        ->where('be.borrado','0')
-        ->where(function($query) use ($buscar){
-            $query->where('be.descripcion', 'like', '%'.$buscar.'%');
-            $query->orWhere('be.borrado', 'like', '%'.$buscar.'%');
-        })
-        ->orderBy('be.id','desc')
-        ->paginate(10);
+        $galeriaescuelas = DB::table('galeriaescuelas as be')
+            ->join('escuelas as e', 'e.id', '=', 'be.escuela_id')
+            ->select('be.id', 'be.imagen', 'be.descripcion', 'e.nombre', 'be.activo', 'e.id as idescu')
+            ->where('be.borrado', '0')
+            ->where(function ($query) use ($buscar) {
+                $query->where('e.nombre', 'like', '%' . $buscar . '%');
+            })
+            ->orderBy('be.id', 'desc')
+            ->paginate(10);
 
         $escuelas = Escuela::where('borrado', '0')
+            ->where('activo', '=', '1')
             ->get();
 
         return [
-            'pagination'=>[
-                'total'=> $galeriaescuelas->total(),
-                'current_page'=> $galeriaescuelas->currentPage(),
-                'per_page'=> $galeriaescuelas->perPage(),
-                'last_page'=> $galeriaescuelas->lastPage(),
-                'from'=> $galeriaescuelas->lastItem(),
+            'pagination' => [
+                'total' => $galeriaescuelas->total(),
+                'current_page' => $galeriaescuelas->currentPage(),
+                'per_page' => $galeriaescuelas->perPage(),
+                'last_page' => $galeriaescuelas->lastPage(),
+                'from' => $galeriaescuelas->lastItem(),
             ],
-            'galeriaescuelas'=>$galeriaescuelas,
+            'galeriaescuelas' => $galeriaescuelas,
             'escuelas' => $escuelas
         ];
-        
     }
 
     /**
@@ -87,86 +84,66 @@ class GalEscuelaController extends Controller
      */
     public function store(Request $request)
     {
-        $titulo=$request->titulo;
-        $descripcion=$request->descripcion;
-        $img=$request->imagen;
-        $estado=$request->activo;
-        $escuela_id=$request->escuela_id;
+        $img = $request->imagen;
+        $descripcion = $request->descripcion;
+        $estado = $request->activo;
+        $escuela_id = $request->escuela_id;
 
-        $result='1';
-        $msj='';
-        $selector='';
+        $result = '1';
+        $msj = '';
+        $selector = '';
 
-        $imagen="";
-        $segureImg=0;
+        $imagen = "";
 
-   
-        if ($img == 'null')
-        {
-            $result='0';
-            $msj='Debe de Ingresar una Imagen';
-            $selector='archivo';
-        } else if ($descripcion == null) {
+
+        if ($img == 'null') {
             $result = '0';
-            $msj = 'Debe de Ingresar una descripción';
-            $selector = 'txtdescripcion';
+            $msj = 'FALTA SELECCIONAR LA IMAGEN';
+            $selector = 'archivo';
         } else if ($escuela_id == 0) {
             $result = '0';
-            $msj = 'Debe seleccionar una escuela';
+            $msj = 'FALTA SELECCIONAR LA ESCUELA';
             $selector = 'cbescuela';
-        }else{
+        } else {
+            if ($request->hasFile('imagen')) {
 
-        if ($request->hasFile('imagen')) {
+                $aux = date('d-m-Y') . '-' . date('H-i-s');
+                $input  = array('image' => $img);
+                $reglas = array('image' => 'required|image|mimes:png,jpg,jpeg,gif,jpe,PNG,JPG,JPEG,GIF,JPE');
+                $validator = Validator::make($input, $reglas);
 
-            $aux=date('d-m-Y') . '-' . date('H-i-s');
-            $input  = array('image' => $img) ;
-            $reglas = array('image' => 'required|image|mimes:png,jpg,jpeg,gif,jpe,PNG,JPG,JPEG,GIF,JPE');
-            $validator = Validator::make($input, $reglas);
+                if ($validator->fails()) {
+                    $segureImg = 1;
+                    $msj = "El archivo ingresado como imagen no es una imagen válida, ingrese otro archivo o limpie el formulario";
+                    $result = '0';
+                    $selector = 'archivo';
+                } else {
 
-            if ($validator->fails())
-            {
-                $segureImg=1;
-                $msj="El archivo ingresado como imagen no es una imagen válida, ingrese otro archivo o limpie el formulario";
-                $result='0';
-                $selector='archivo';
-            }
-            else{
+                    $extension = $img->getClientOriginalExtension();
+                    $nuevoNombre = $aux . "." . $extension;
+                    $subir = Storage::disk('galeriaE')->put($nuevoNombre, \File::get($img));
 
-                $extension=$img->getClientOriginalExtension();
-                $nuevoNombre=$aux.".".$extension;
-                $subir = Storage::disk('galeriaE')->put($nuevoNombre, \File::get($img));
-
-                if($subir){
-                    $imagen=$nuevoNombre;
-                }
-                else{
-                    $msj="Error al subir la imagen, intentelo nuevamente luego";
-                    $segureImg=1;
-                    $result='0';
-                    $selector='archivo';
+                    if ($subir) {
+                        $imagen = $nuevoNombre;
+                    } else {
+                        $msj = "Error al subir la imagen, intentelo nuevamente luego";
+                        $segureImg = 1;
+                        $result = '0';
+                        $selector = 'archivo';
+                    }
                 }
             }
-
-        }
-        
-        if($segureImg==1){ 
-
-            Storage::disk('galeriaE')->delete($imagen);
-
-        }else{
             $newBanner = new GalEscuela();
-            $newBanner->imagen=$imagen;
-            $newBanner->descripcion=$descripcion;
-            $newBanner->activo=$estado;
-            $newBanner->borrado='0';            
-            $newBanner->escuela_id=$escuela_id;
+            $newBanner->imagen = $imagen;
+            $newBanner->descripcion = $descripcion;
+            $newBanner->activo = $estado;
+            $newBanner->borrado = '0';
+            $newBanner->escuela_id = $escuela_id;
             $newBanner->save();
 
-            $msj='Nuevo Banner registrado con éxito';
+            $msj = 'LA NUEVA IMAGEN PARA LA GALERIA FUE REGISTRADA ';
         }
-    }
-
-        return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
+        return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
 
     /**
@@ -207,10 +184,9 @@ class GalEscuelaController extends Controller
         $idGalEscuela = $request->idGalEscuela;
         $img = $request->imagen;
         $editDescripcion = $request->editDescripcion;
-        $editEstado = $request->editEstado;
-        $escuela_id=$request->escuela_id;
-        
-       
+        $escuela_id = $request->escuela_id;
+
+
         $imagen = "";
         $segureImg = 0;
 
@@ -257,21 +233,19 @@ class GalEscuelaController extends Controller
 
             if (strlen($imagen) == 0) {
 
-                
+
                 $editBanner->descripcion = $editDescripcion;
-                $editBanner->activo = $editEstado;
-                $editBanner->escuela_id=$escuela_id;
+                $editBanner->escuela_id = $escuela_id;
                 $editBanner->save();
             } else {
 
                 $editBanner->imagen = $imagen;
-                $editBanner->descripcion = $editDescripcion;                
-                $editBanner->activo = $editEstado;
-            $editBanner->escuela_id=$escuela_id;
+                $editBanner->descripcion = $editDescripcion;
+                $editBanner->escuela_id = $escuela_id;
                 $editBanner->save();
             }
 
-            $msj = 'El Banner fue modificada con éxito';
+            $msj = 'LA IMAGEN DE LA GALERIA FUE MODIFICADA EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -287,19 +261,11 @@ class GalEscuelaController extends Controller
     {
         $result = '1';
         $msj = '1';
-        $consulta1 = DB::table('galescuelas as ge')
-            ->join('escuelas as e', 'e.id', '=', 'ge.escuela_id')
-            ->where('ge.escuela_id', $id)
-            ->count();
-        if ($consulta1 > 0) {
-            $result = '0';
-            $msj='No se puede eliminar bannersescuelas enlazados con otras entidades';
-        } else {
-            $borrar = GalEscuela::findOrFail($id);
-            $borrar->borrado = '1';
-            $borrar->save();
-            $msj = 'Facultad fue eliminada exitosamente';
-        }
+
+        $borrar = GalEscuela::findOrFail($id);
+        $borrar->borrado = '1';
+        $borrar->save();
+        $msj = 'LA IMAGEN DE LA GALERIA FUE ELIMINADA EXITOSAMENTE';
 
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
@@ -311,13 +277,13 @@ class GalEscuelaController extends Controller
 
         $update = GalEscuela::findOrFail($id);
         $update->activo = $estado;
-        
+
         $update->save();
 
         if (strval($estado) == "0") {
-            $msj = 'La galeria de escuela fue Desactivado exitosamente.';
+            $msj = 'LA IMAGEN DE LA GALERIA FUE DESACTIVADA EXITOSAMENTE';
         } elseif (strval($estado) == "1") {
-            $msj = 'La galeria de escuela fue Activado exitosamente.';
+            $msj = 'LA IMAGEN DE LA GALERIA FUE ACTIVADA EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

@@ -3,7 +3,7 @@
 el: '#app',
 data:{
        titulo:"Mantenimiento",
-       subtitulo: "Gestión de Banners",
+       subtitulo: "Gestión de Las Galerias de las Escuelas",
        subtitulo2: "Principal",
 
    subtitle2:false,
@@ -28,10 +28,10 @@ data:{
    divtitulo:true,
    classTitle:'fa fa-qrcode ',
    classMenu0:'',
-   classMenu1:'active',
+   classMenu1:'',
    classMenu2:'',
    classMenu3:'',
-   classMenu4:'',
+   classMenu4:'active',
    classMenu5:'',
    classMenu6:'',
    classMenu7:'',
@@ -48,7 +48,7 @@ data:{
    escuelas: [],
    errors:[],
 
-   fillGalEcuela:{'id':'', 'imagen':'', 'descripcion':'','estado':'','escuela_id':''},
+   fillGalEcuela:{'id':'', 'imagen':'', 'descripcion':'','activo':'','escuela_id':''},
 
    pagination: {
    'total': 0,
@@ -66,11 +66,8 @@ data:{
 
    thispage:'1',
 
-   newTitulo:'',
    newDescripcion:'',
-   newFechapublica:'',
    newEstado:'1',
-   newBorrado:'0',
    imagen : null,
    escuela_id: '0',
 
@@ -128,6 +125,7 @@ methods: {
             this.galeriaescuelas= response.data.galeriaescuelas.data;
             this.pagination= response.data.pagination;
             this.escuelas = response.data.escuelas;
+
            if(this.galeriaescuelas.length==0 && this.thispage!='1'){
                var a = parseInt(this.thispage) ;
                a--;
@@ -159,11 +157,10 @@ methods: {
        this.cancelFormNuevo();
    },
    cancelFormNuevo: function () {
-       $('#txttitulo').focus();
+       $('#archivos').focus();
 
-        this.newTitulo = '';
         this.newDescripcion = '';
-        this.newFechapublica = '';
+        this.escuela_id = '0';
         this.newEstado = '1';
         this.imagen = null;
 
@@ -178,15 +175,6 @@ methods: {
             this.imagen = event.target.files[0];
         }
     },
-    seltipo: function () {
-            if (this.escuela_id == 3) {
-            $('#cbescuela').val('0').trigger('change');
-            this.$nextTick(function () {
-            $('#cbescuela').val('0').trigger('change');
-            })
-            }
-            $('#txtnom').focus();
-            },
     create:function () { 
 
        var url='galeriaescuela';
@@ -198,14 +186,11 @@ methods: {
 
        var data = new  FormData();
 
-            data.append('titulo', this.newTitulo);
             data.append('descripcion', this.newDescripcion);
             data.append('imagen', this.imagen);
             data.append('activo', this.newEstado);
-            var newEscuela = $("#cbescuela").val();
-            data.append('escuela_id', newEscuela);
-            data.append('borrado', this.newBorrado);
-            
+            data.append('escuela_id', this.escuela_id);
+            console.log(this.escuela_id);
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             axios.post(url,data,config).then(response=>{
 
@@ -213,7 +198,6 @@ methods: {
                 $("#btnCancel").removeAttr("disabled");
                 $("#btnClose").removeAttr("disabled");
                 this.divloaderNuevo=false;
-                
                 
                 if(String(response.data.result)=='1'){
                     this.getBanner(this.thispage);
@@ -234,7 +218,7 @@ methods: {
     
         swal.fire({
              title: '¿Estás seguro?',
-             text: "¿Desea eliminar el Banner Seleccionado? -- Nota: este proceso no se podrá revertir.",
+             text: "¿Desea eliminar la imagen Seleccionado? -- Nota: este proceso no se podrá revertir.",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -268,9 +252,8 @@ methods: {
         this.fillGalEcuela.descripcion=galeriaE.descripcion;            
         this.fillGalEcuela.estado=galeriaE.activo;
         this.fillGalEcuela.escuela_id=galeriaE.idescu;
-        
         this.imagen=null;
-        console.log();
+        
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
                 $("#txttituloE").focus();
@@ -283,7 +266,6 @@ methods: {
 
         data.append('idGalEscuela', this.fillGalEcuela.id);
         data.append('imagen', this.imagen);
-        data.append('oldImagen', this.fillGalEcuela.imagen);
         data.append('editDescripcion', this.fillGalEcuela.descripcion);
         data.append('editEstado', this.fillGalEcuela.estado);        
        var newEscuela = $("#cbescuela").val();
@@ -323,7 +305,7 @@ methods: {
     bajabanner:function (galeriaE) {
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea desactivar el Banner seleccionado",
+             text: "Desea desactivar la imagen seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
@@ -350,7 +332,7 @@ methods: {
    altabanner:function (galeriaE) {
     swal.fire({
              title: '¿Estás seguro?',
-             text: "Desea activar el Banner seleccionado",
+             text: "Desea activar la imagen seleccionado",
              type: 'info',
              showCancelButton: true,
              confirmButtonColor: '#3085d6',

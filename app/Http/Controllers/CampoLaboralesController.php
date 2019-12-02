@@ -107,19 +107,19 @@ class CampoLaboralesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Complete el titulo del campo laboral';
+            $msj = 'FALTA COMPLETA EL TITULO DEL CAMPO LABORAL';
             $selector = 'titulo';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Complete el campo laboral';
+            $msj = 'FALTA COMPLETAR EL CAMPO LABORAL';
             $selector = 'campolab';
         } else if ($img == 'null') {
             $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
+            $msj = 'FALTA INGRESAR LA IMAGEN';
             $selector = 'archivo';
         } else if ($escuela_id == 0) {
             $result = '0';
-            $msj = 'Debe de Seleccionar la Escuela';
+            $msj = 'FALTA SELECCIONAR LA ESCUELA PROFESIONAL';
             $selector = 'cbEscuelas';
         } else {
             if ($request->hasFile('imagen')) {
@@ -161,7 +161,7 @@ class CampoLaboralesController extends Controller
                 $newdescripcion->borrado = '0';
                 $newdescripcion->escuela_id = $escuela_id;
                 $newdescripcion->save();
-                $msj = 'Nuevo campo laboral fue registrado con éxito';
+                $msj = 'EL NUEVO CAMPO LABORAL FUE REGISTRADO EXITOSAMENTE';
             }
         }
 
@@ -221,19 +221,15 @@ class CampoLaboralesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Complete el titulo del campo laboral';
+            $msj = 'FALTA COMPLETAR EL TITULO DEL CAMPO LABORAL';
             $selector = 'titulo';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Complete el campo laboral';
+            $msj = 'FALTA COMPLETAR EL CAMPO LABORAL';
             $selector = 'campolab';
-        } else if ($img == 'null') {
-            $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
-            $selector = 'archivo';
         } else if ($escuela_id == 0) {
             $result = '0';
-            $msj = 'Debe de Seleccionar la Escuela';
+            $msj = 'FALTA SELECCIONAR LA ESCUELA PROFESIONAL';
             $selector = 'cbEscuelas';
         } else {
             if ($request->hasFile('imagen')) {
@@ -274,14 +270,14 @@ class CampoLaboralesController extends Controller
                     $newdescripcion->fecha = date('Y/m/d');
                     $newdescripcion->escuela_id = $escuela_id;
                     $newdescripcion->save();
-                    $msj = 'El campo Profesional fue Modificado con éxito';
+                    $msj = 'EL CAMPO LABORAL FUE MODIFICADO EXITOSAMENTE';
                 } else {
                     $newdescripcion->titulo = $titulo;
                     $newdescripcion->campolab = $campolab;
                     $newdescripcion->fecha = date('Y/m/d');
                     $newdescripcion->escuela_id = $escuela_id;
                     $newdescripcion->save();
-                    $msj = 'El campo Profesional fue Modificado con éxito';
+                    $msj = 'EL CAMPO LABORAL FUE MODIFICADO EXITOSAMENTE';
                 }
             }
         }
@@ -302,7 +298,7 @@ class CampoLaboralesController extends Controller
         $borrar = CampoLaborales::findOrFail($id);
         $borrar->borrado = '1';
         $borrar->save();
-        $msj = 'El campo Profesional fue eliminado exitosamente';
+        $msj = 'EL CAMPO LABORAL FUE ELIMINADO EXITOSAMENTE';
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
 
@@ -317,9 +313,9 @@ class CampoLaboralesController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'El campo Profesional fue Desactivada exitosamente';
+            $msj = 'EL CAMPO LABORAL FUE DESACTIVADO EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'El campo Profesional fue Activada exitosamente';
+            $msj = 'EL CAMPO LABORAL FUE ACTIVADI EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

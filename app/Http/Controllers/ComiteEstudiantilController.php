@@ -86,18 +86,17 @@ class ComiteEstudiantilController extends Controller
 
         if ($titulo == null) {
             $result = '0';
-            $msj = 'Debe de Ingresar una Titulo';
+            $msj = 'FALTA COMPLETAR EL TITULO DEL COMITE ESTUDIANTIL';
             $selector = 'txttitulo';
         } else if ($descripcion == null) {
             $result = '0';
-            $msj = 'Debe de Ingresar una descripcion';
+            $msj = 'FALTA COMPLETAR LA DESCRIPCION DEL COMITE ESTUDIANTIL';
             $selector = 'txtdescripcion';
         } else if ($img == 'null') {
             $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
+            $msj = 'FALTA INGRESAR LA IMAGEN DEL COMITE ESTUDIANTIL';
             $selector = 'archivo';
-        
-        } else{
+        } else {
 
             if ($request->hasFile('imagen')) {
 
@@ -132,7 +131,7 @@ class ComiteEstudiantilController extends Controller
 
                 Storage::disk('comiteE')->delete($imagen);
             } else {
-                $newBanner = new ComiteEstudiantil();                
+                $newBanner = new ComiteEstudiantil();
                 $newBanner->titulo = $titulo;
                 $newBanner->descripcion = $descripcion;
                 $newBanner->imagen = $imagen;
@@ -141,7 +140,7 @@ class ComiteEstudiantilController extends Controller
 
                 $newBanner->save();
 
-                $msj = 'Nuevo Banner registrado con éxito';
+                $msj = 'EL NUEVO COMITE ESTUDIANTIL FUE REGISTRADO EXITOSAMENTE';
             }
         }
 
@@ -186,73 +185,78 @@ class ComiteEstudiantilController extends Controller
         $idComite = $request->idComite;
         $editTitulo = $request->editTitulo;
         $editDescripcion = $request->editDescripcion;
-        $img = $request->imagen;        
-        $editEstado = $request->editEstado;
-        $escuela_id=$request->escuela_id;
-        
-       
+        $img = $request->imagen;
+        $escuela_id = $request->escuela_id;
+
+
         $imagen = "";
         $segureImg = 0;
 
         $oldImagen = $request->oldImagen;
+        if ($editTitulo == null) {
+            $result = '0';
+            $msj = 'FALTA COMPLETAR EL TITULO DEL COMITE ESTUDIANTIL';
+            $selector = 'txttituloE';
+        } else if ($editDescripcion == null) {
+            $result = '0';
+            $msj = 'FALTA COMPLETAR LA DESCRIPCION DEL COMITE ESTUDIANTIL';
+            $selector = 'txtdescripcionE';
+        } else {
+            if ($request->hasFile('imagen')) {
 
-        if ($request->hasFile('imagen')) {
+                $aux = date('d-m-Y') . '-' . date('H-i-s');;
+                $input  = array('image' => $img);
+                $reglas = array('image' => 'required|image|mimes:png,jpg,jpeg,gif,jpe,PNG,JPG,JPEG,GIF,JPE');
+                $validator = Validator::make($input, $reglas);
 
-            $aux = date('d-m-Y') . '-' . date('H-i-s');;
-            $input  = array('image' => $img);
-            $reglas = array('image' => 'required|image|mimes:png,jpg,jpeg,gif,jpe,PNG,JPG,JPEG,GIF,JPE');
-            $validator = Validator::make($input, $reglas);
-
-            if ($validator->fails()) {
-                $segureImg = 1;
-                $msj = "El archivo ingresado como imagen no es una imagen válida, ingrese otro archivo o limpie el formulario";
-                $result = '0';
-                $selector = 'archivo';
-            } else {
-
-                if (strlen($oldImagen) > 0) {
-                    Storage::disk('comiteE')->delete($oldImagen);
-                }
-
-                $extension = $img->getClientOriginalExtension();
-                $nuevoNombre = $aux . "." . $extension;
-                $subir = Storage::disk('comiteE')->put($nuevoNombre, \File::get($img));
-
-                if ($subir) {
-                    $imagen = $nuevoNombre;
-                } else {
-                    $msj = "Error al subir la imagen, intentelo nuevamente luego";
+                if ($validator->fails()) {
                     $segureImg = 1;
+                    $msj = "El archivo ingresado como imagen no es una imagen válida, ingrese otro archivo o limpie el formulario";
                     $result = '0';
                     $selector = 'archivo';
+                } else {
+
+                    if (strlen($oldImagen) > 0) {
+                        Storage::disk('comiteE')->delete($oldImagen);
+                    }
+
+                    $extension = $img->getClientOriginalExtension();
+                    $nuevoNombre = $aux . "." . $extension;
+                    $subir = Storage::disk('comiteE')->put($nuevoNombre, \File::get($img));
+
+                    if ($subir) {
+                        $imagen = $nuevoNombre;
+                    } else {
+                        $msj = "Error al subir la imagen, intentelo nuevamente luego";
+                        $segureImg = 1;
+                        $result = '0';
+                        $selector = 'archivo';
+                    }
                 }
             }
-        }
 
-        if ($segureImg == 1) {
-            Storage::disk('comiteE')->delete($imagen);
-        } else {
-
-            $editBanner = ComiteEstudiantil::findOrFail($idComite);
-
-            if (strlen($imagen) == 0) {
-
-                $editBanner->titulo = $editTitulo;
-                $editBanner->descripcion = $editDescripcion;
-                $editBanner->activo = $editEstado;
-                $editBanner->save();
+            if ($segureImg == 1) {
+                Storage::disk('comiteE')->delete($imagen);
             } else {
 
-                $editBanner->titulo = $editTitulo;
-                $editBanner->descripcion = $editDescripcion;
-                $editBanner->imagen = $imagen;
-                $editBanner->activo = $editEstado;
-                $editBanner->save();
+                $editBanner = ComiteEstudiantil::findOrFail($idComite);
+
+                if (strlen($imagen) == 0) {
+
+                    $editBanner->titulo = $editTitulo;
+                    $editBanner->descripcion = $editDescripcion;
+                    $editBanner->save();
+                } else {
+
+                    $editBanner->titulo = $editTitulo;
+                    $editBanner->descripcion = $editDescripcion;
+                    $editBanner->imagen = $imagen;
+                    $editBanner->save();
+                }
+
+                $msj = 'EL COMITE ESTUDIANTIL FUE MODIFICADO EXITOSAMENTE';
             }
-
-            $msj = 'El Banner fue modificada con éxito';
         }
-
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
 
@@ -275,7 +279,7 @@ class ComiteEstudiantilController extends Controller
 
         $borrar->save();
 
-        $msj = 'Comite estudiantil eliminado exitosamente';
+        $msj = 'EL COMITE ESTUDIANTIL FUE ELIMINADO EXITOSAMENTE';
 
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
@@ -290,9 +294,9 @@ class ComiteEstudiantilController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'Comite estudiantil fue Desactivada exitosamente';
+            $msj = 'EL COMITE ESTUDIANTIL FUE DESACTIVADO EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'Comite estudiantil fue Activada exitosamente';
+            $msj = 'EL COMITE ESTUDIANTIL FUE ACTIVADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

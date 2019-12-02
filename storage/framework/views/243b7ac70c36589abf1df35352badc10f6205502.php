@@ -9,7 +9,7 @@
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
-          class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Docentes</button>
+          class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Docente</button>
     </div>
 
   </div>
@@ -18,7 +18,7 @@
 
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
-    <h3 class="box-title" id="tituloAgregar">Nuevo Docentes</h3>
+    <h3 class="box-title" id="tituloAgregar">Nuevo Docente</h3>
   </div>
 
   <form v-on:submit.prevent="create">
@@ -93,8 +93,7 @@
         <div class="form-group">
           <label for="cbcategoria" class="col-sm-2 control-label">Categoria de Docente:*</label>
           <div class="col-sm-8">
-            <select name="cbcategoria" id="cbcategoria" class="form-control" v-model="categoriadocente_id"
-              @change="seltipo">
+            <select name="cbcategoria" id="cbcategoria" class="form-control" v-model="categoriadocente_id">
               <option disabled value="0">Seleccione una Categoria</option>
               <option v-for="categoriadocente, key in categoriadocentes" v-bind:value="categoriadocente.id">
                 {{categoriadocente.categoria}}
@@ -107,7 +106,7 @@
         <div class="form-group">
           <label for="cbGrado" class="col-sm-2 control-label">Grado Academico:*</label>
           <div class="col-sm-8">
-            <select name="cbGrado" id="cbGrado" class="form-control" v-model="gradoacademico_id" @change="seltipo">
+            <select name="cbGrado" id="cbGrado" class="form-control" v-model="gradoacademico_id">
               <option disabled value="0">Seleccione un Grado Academico</option>
               <option v-for="gradoacademico, key in gradoacademicos" v-bind:value="gradoacademico.id">
                 {{gradoacademico.grado}}
@@ -172,7 +171,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Banner</h3>
+    <h3 class="box-title">Listado de Docentes</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -310,7 +309,7 @@
                   <div class="form-group">
                     <label for="txttituloE" class="col-sm-2 control-label">DNI:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="dniE" name="dniE" placeholder="Banner"
+                      <input type="text" class="form-control" id="dniE" name="dniE" placeholder="DNI del docente"
                         maxlength="200" autofocus v-model="fillPersona.dni">
                     </div>
                   </div>
@@ -320,7 +319,7 @@
                   <div class="form-group" style="padding-top: 15px;">
                     <label for="txttituloE" class="col-sm-2 control-label">Nombres:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="nombresE" name="nombresE" placeholder="Banner"
+                      <input type="text" class="form-control" id="nombresE" name="nombresE" placeholder="Nombres del docente"
                         maxlength="200" autofocus v-model="fillPersona.nombres">
                     </div>
                   </div>
@@ -330,7 +329,7 @@
                   <div class="form-group" style="padding-top: 15px;">
                     <label for="txttituloE" class="col-sm-2 control-label">Apellidos:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="ApellidosE" name="ApellidosE" placeholder="Banner"
+                      <input type="text" class="form-control" id="ApellidosE" name="ApellidosE" placeholder="Apellidos del docente"
                         maxlength="200" autofocus v-model="fillPersona.apellidos">
                     </div>
                   </div>
@@ -398,7 +397,7 @@
                   <div class="form-group" style="padding-top: 15px;">
                     <label for="tituloE" class="col-sm-2 control-label">Titulo Profesional:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="tituloE" name="tituloE" placeholder="Titulo Profesional"
+                      <input type="text" class="form-control" id="tituloE" name="tituloE" placeholder="Titulo Profesional del docente"
                         maxlength="200" autofocus v-model="fillDocente.tituloprofe">
                     </div>
                   </div>
@@ -409,7 +408,7 @@
                     <label for="fechaE" class="col-sm-2 control-label">Fecha Ingreso:*</label>
                     <div class="col-sm-4">
                       <input type="date" class="form-control" id="fechaE" name="fechaE"
-                        placeholder="Titulo Profesional del docente" maxlength="200" autofocus v-model="fillDocente.fechaingreso">
+                        placeholder="fecha ingreso del docente" maxlength="200" autofocus v-model="fillDocente.fechaingreso">
                     </div>
                   </div>
                 </div>

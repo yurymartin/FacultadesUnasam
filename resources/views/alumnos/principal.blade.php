@@ -1,6 +1,6 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de Comites de alumnos</h3>
+    <h3 class="box-title">Gestión de Alumnos</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="{{URL::to('home')}}"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
@@ -9,7 +9,7 @@
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
-          class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Autoridade de la Facultad</button>
+          class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Alumno</button>
     </div>
 
   </div>
@@ -18,7 +18,7 @@
 
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
-    <h3 class="box-title" id="tituloAgregar"> Nuevo Autoridade de la Facultad</h3>
+    <h3 class="box-title" id="tituloAgregar"> Nuevo Alumno</h3>
   </div>
 
   <form v-on:submit.prevent="create">
@@ -49,7 +49,7 @@
         <div class="form-group" style="padding-top: 15px;">
           <label for="apellidos" class="col-sm-2 control-label">Apellidos:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos Docentes"
+            <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos del alumno"
               maxlength="500" v-model="newApellidos">
           </div>
         </div>
@@ -92,10 +92,10 @@
 
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
-          <label for="comite" class="col-sm-2 control-label">Cargo de la Autoridad:*</label>
+          <label for="comite" class="col-sm-2 control-label">Comite Estudiantil al pertenece el Alumno:*</label>
           <div class="col-sm-8">
             <select name="comite" id="comite" class="form-control" v-model="comiestudiantil_id">
-              <option disabled value="0">Seleccione un comite Academico</option>
+              <option value="0">Seleccione un Comite Estudiantil</option>
               <option v-for="comiestudiantil, key in comiestudiantiles" v-bind:value="comiestudiantil.id">
                 @{{comiestudiantil.titulo}}
               </option>
@@ -140,7 +140,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Banner</h3>
+    <h3 class="box-title">Listado de Alumnos</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -272,7 +272,7 @@
                   <div class="form-group">
                     <label for="txttituloE" class="col-sm-2 control-label">DNI:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="dniE" name="dniE" placeholder="Banner" maxlength="200"
+                      <input type="text" class="form-control" id="dniE" name="dniE" placeholder="DNI del Alumno" maxlength="200"
                         autofocus v-model="fillPersona.dni">
                     </div>
                   </div>
@@ -283,7 +283,7 @@
                     <label for="txttituloE" class="col-sm-2 control-label">Nombres:*</label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="nombresE" name="nombresE"
-                        placeholder="Nombres de la alumno" maxlength="200" autofocus v-model="fillPersona.nombres">
+                        placeholder="Nombres de la Alumno" maxlength="200" autofocus v-model="fillPersona.nombres">
                     </div>
                   </div>
                 </div>
@@ -293,7 +293,7 @@
                     <label for="txttituloE" class="col-sm-2 control-label">Apellidos:*</label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="ApellidosE" name="ApellidosE"
-                        placeholder="Apellidos de la alumno" maxlength="200" autofocus
+                        placeholder="Apellidos de la Alumno" maxlength="200" autofocus
                         v-model="fillPersona.apellidos">
                     </div>
                   </div>
@@ -324,7 +324,7 @@
 
                 <div class="col-md-12" style="padding-top: 15px; color: black;">
                   <div class="form-group">
-                    <label for="cdCargoE" class="col-sm-2 control-label">Comite Academico:*</label>
+                    <label for="cdCargoE" class="col-sm-2 control-label">Comite Estudiantil al que pertenece el Alumno:*</label>
                     <div class="col-sm-4">
                       <select class="form-control" id="cdCargoE" name="cdCargoE" v-model="fillAlumno.comiestudiantil_id">
                         <option disabled value="">Seleccione una cargo </option>

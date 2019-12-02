@@ -104,11 +104,11 @@ class FacultadesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Complete el nombre del nombre de la facultad';
+            $msj = 'FALTA COMPLETAR EL NOMBRE DE LA FACULTAD';
             $selector = 'nombre';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Ingrese la abreviatura de la facultad';
+            $msj = 'FALTA COMPLETAR LA ABREVIATURA DEL NOMBRE DE LA FACULTAD';
             $selector = 'codigo';
         } else {
 
@@ -118,7 +118,7 @@ class FacultadesController extends Controller
             $Facultad->activo = $activo;
             $Facultad->borrado = '0';
             $Facultad->save();
-            $msj = 'Nueva Facultad registrada con éxito';
+            $msj = 'LA NUEVA FACULTAD FUE REGISTRADA EXITOSAMENTE';
         }
 
 
@@ -178,18 +178,18 @@ class FacultadesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Complete el nombre del nombre de la facultad';
+            $msj = 'FALTA COMPLETAR EL NOMBRE DEL FACULTAD';
             $selector = 'nombre';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Ingrese la abreviatura de la facultad';
+            $msj = 'FALTA COMPLETAR LA ABREVIATURA DEL NOMBRE DE LA FACULTAD';
             $selector = 'codigoE';
         } else {
             $Facultad = Facultades::findOrFail($id);
             $Facultad->nombre = $nombre;
             $Facultad->abreviatura = $abreviatura;
             $Facultad->save();
-            $msj = 'la Facultad fue Modificado con éxito';
+            $msj = 'LA FACULTAD FUE MODIFICADO EXITOSAMENTE';
         }
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
@@ -205,9 +205,9 @@ class FacultadesController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'La facultad fue Desactivada exitosamente';
+            $msj = 'LA FACULTAD FUE DESACTIVADA EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'La facultad fue Activada exitosamente';
+            $msj = 'LA FACULTAD FUE ACTIVADA EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -222,18 +222,11 @@ class FacultadesController extends Controller
     {
         $result = '1';
         $msj = '1';
-        $consulta1 = DB::table('escuelas as e')
-            ->join('facultades as f', 'e.facultad_id', '=', 'f.id')
-            ->where('f.id', $id)->count();
-        if ($consulta1 > 0) {
-            $result = '0';
-            $msj = 'No se puede eliminar la facultad porque tiene datos enlazados con otras entidades';
-        } else {
-            $borrar = Facultades::findOrFail($id);
-            $borrar->borrado = '1';
-            $borrar->save();
-            $msj = 'Facultad fue eliminada exitosamente';
-        }
+
+        $borrar = Facultades::findOrFail($id);
+        $borrar->borrado = '1';
+        $borrar->save();
+        $msj = 'LA FACULTAD FUE ELIMINADO EXITOSAMENTE';
 
         return response()->json(["result" => $result, 'msj' => $msj]);
     }

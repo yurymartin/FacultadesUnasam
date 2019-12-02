@@ -3,7 +3,7 @@
 el: '#app',
 data:{
        titulo:"Mantenimiento",
-       subtitulo: "Gestión de Mallas",
+       subtitulo: "Gestión de Mallas Curriculares",
        subtitulo2: "Principal",
 
    subtitle2:false,
@@ -28,10 +28,10 @@ data:{
    divtitulo:true,
    classTitle:'fa fa-qrcode ',
    classMenu0:'',
-   classMenu1:'active',
+   classMenu1:'',
    classMenu2:'',
    classMenu3:'',
-   classMenu4:'',
+   classMenu4:'active',
    classMenu5:'',
    classMenu6:'',
    classMenu7:'',

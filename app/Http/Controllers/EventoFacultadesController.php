@@ -102,19 +102,19 @@ class EventoFacultadesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Falta completar el titulo del Evento';
+            $msj = 'FALTA COMPLETAR EL TITULO DEL EVENTO';
             $selector = 'titulo';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Falta completar la fecha de inicio del Evento';
+            $msj = 'FALTA COMPLETAR LA FECHA DEL INICIO DEL EVENTO';
             $selector = 'fechainicio';
         } else if ($validator3->fails()) {
             $result = '0';
-            $msj = 'Falta completar la fecha de fin del Evento';
+            $msj = 'FALTA COMPLETAR LA FECHA DE FINALIZACION DEL EVENTO';
             $selector = 'fechafin';
         } else if ($img == 'null') {
             $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
+            $msj = 'FALTA SELECCIONAR LA IMAGEN DEL EVENTO';
             $selector = 'archivo';
         } else {
 
@@ -159,7 +159,7 @@ class EventoFacultadesController extends Controller
                 $newdescripcion->activo = $estado;
                 $newdescripcion->borrado = '0';
                 $newdescripcion->save();
-                $msj = 'el nuevo Evento de facultades fue registrado con éxito';
+                $msj = 'EL NUEVO EVENTO DE LA FACULTAD FUE REGISTRADO EXITOSAMENTE';
             }
         }
 
@@ -225,15 +225,15 @@ class EventoFacultadesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Falta completar el titulo del evento';
+            $msj = 'FALTA COMPLETAR EL TITULO DEL EVENTO';
             $selector = 'titulo';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Falta completar la fecha de inicio del evento';
+            $msj = 'FALTA COMPLETAR LA FECHA DE INICIO DEL EVENTO';
             $selector = 'fechainicio';
         } else if ($validator3->fails()) {
             $result = '0';
-            $msj = 'Falta completar la fecha de fin del evento';
+            $msj = 'FALTA COMPLETAR LA FECHA DE FINALIZACION DEL EVENTO';
             $selector = 'fechafin';
         } else {
             if ($request->hasFile('imagen')) {
@@ -271,7 +271,7 @@ class EventoFacultadesController extends Controller
                 $editadescripcion->fechainicio = $fechainicio;
                 $editadescripcion->fechafin = $fechafin;
                 $editadescripcion->save();
-                $msj = 'El evento de las facultades fue Modificado con éxito';
+                $msj = 'EL EVENTO DE LA FACULTAD FUE MODIFICADO EXITOSAMENTE';
             } else {
                 $editadescripcion = EventoFacultades::findOrFail($id);
                 $editadescripcion->titulo = $titulo;
@@ -279,7 +279,7 @@ class EventoFacultadesController extends Controller
                 $editadescripcion->fechainicio = $fechainicio;
                 $editadescripcion->fechafin = $fechafin;
                 $editadescripcion->save();
-                $msj = 'El evento de las facultades fue Modificado con éxito';
+                $msj = 'EL EVENTO DE LA FACULTAD FUE MODIFICADO EXITOSAMENTE';
             }
         }
 
@@ -299,7 +299,7 @@ class EventoFacultadesController extends Controller
         $borrar = EventoFacultades::findOrFail($id);
         $borrar->borrado = '1';
         $borrar->save();
-        $msj = 'El Evento fue eliminado exitosamente';
+        $msj = 'EL EVENTO DE LA FACULTAD FUE ELIMINADO EXITOSAMENTE';
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
 
@@ -314,9 +314,9 @@ class EventoFacultadesController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'El Evento fue Desactivada exitosamente';
+            $msj = 'EL EVENTO DE LA FACULTAD FUE DESACTIVADO EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'El Evento fue Activada exitosamente';
+            $msj = 'EL EVENTO DE LA FACULTAD FUE ACTIVADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

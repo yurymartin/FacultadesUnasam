@@ -28,11 +28,11 @@
     divtitulo: true,
     classTitle: 'fa fa-qrcode ',
     classMenu0: '',
-    classMenu1: 'active',
+    classMenu1: '',
     classMenu2: '',
     classMenu3: '',
     classMenu4: '',
-    classMenu5: '',
+    classMenu5: 'active',
     classMenu6: '',
     classMenu7: '',
     classMenu8: '',
@@ -47,11 +47,12 @@
     autoridades: [],
     cargos: [],
     persona:[],
+    grados:[],
     errors: [],
 
     fillPersona:{'idper':'', 'dni':'', 'nombres':'', 'apellidos':'', 'imagen':'', 'genero':''},
 
-    fillAutoridad:{'idauto':'','descripcion':'','fechainicio': '','fechafin': '','estado': '','cargo_id':'','persona_id':''},
+    fillAutoridad:{'idauto':'','descripcion':'','fechainicio': '','fechafin': '','estado': '','cargo_id':'','persona_id':'','gradoacademico_id':''},
 
     pagination: {
     'total': 0,
@@ -81,6 +82,7 @@
     newEstado: '1',
     cargo_id: '0',
     persona_id: '0',
+    gradoacademico_id: '0',
 
 
 },
@@ -132,6 +134,7 @@ methods: {
             this.autoridades = response.data.autoridades.data;
             this.pagination = response.data.pagination;
             this.cargos = response.data.cargos;
+            this.grados = response.data.grados;
             this.personas= response.data.personas;
 
         if (this.autoridades.length == 0 && this.thispage != '1') {
@@ -164,7 +167,8 @@ methods: {
             this.cancelFormNuevo();
         },
     cancelFormNuevo: function () {
-            $('#nombres').focus();
+            $('#dni').focus();
+            
             this.newDni = '';
             this.newNombres = '';
             this.newApellidos = '';
@@ -174,6 +178,7 @@ methods: {
             this.newEstado = '1';
             this.newGenero = '1';
             this.imagen = null;
+            this.gradoacademico_id = '0';
 
             $(".form-control").css("border", "1px solid #d2d6de");
         },
@@ -211,6 +216,7 @@ methods: {
                 data.append('fechafin', this.newFechaFin);
                 data.append('estado', this.newEstado);
                 data.append('cargo_id', this.cargo_id);
+                data.append('gradoacademico_id', this.gradoacademico_id);
                 
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             axios.post(url,data,config).then(response=>{
@@ -278,6 +284,8 @@ methods: {
         this.fillAutoridad.fechainicio = autoridades.fechainicio;
         this.fillAutoridad.fechafin = autoridades.fechafin;
         this.fillAutoridad.cargo_id = autoridades.idcargo;
+        this.fillAutoridad.gradoacademico_id = autoridades.idgrado;
+
         $("#modalEditar").modal('show');
             this.$nextTick(function () {
             $("#txttituloE").focus();
@@ -289,7 +297,7 @@ methods: {
 
             this.$nextTick(function () {
                 this.fillPersona={'id':'', 'dni':'', 'nombres':'', 'apellidos':'', 'imagen':'', 'genero':''};
-                this.fillAutoridad={'idauto':'','descripcion':'','fechainicio': '','fechafin': '','estado': '','cargo_id':'','persona_id':''};
+                this.fillAutoridad={'idauto':'','descripcion':'','fechainicio': '','fechafin': '','estado': '','cargo_id':'','persona_id':'','gradoacademico_id':''};
             })
 
         },
@@ -308,7 +316,8 @@ methods: {
         data.append('descripcion', this.fillAutoridad.descripcion);
         data.append('fechainicio', this.fillAutoridad.fechainicio);
         data.append('fechafin', this.fillAutoridad.fechafin);   
-        data.append('cargo_id', this.fillAutoridad.cargo_id);   
+        data.append('cargo_id', this.fillAutoridad.cargo_id);
+        data.append('gradoacademico_id', this.fillAutoridad.gradoacademico_id);   
 
         data.append('_method', 'PUT');
 

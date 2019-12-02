@@ -1,5 +1,5 @@
 <?php $__env->startSection('htmlheader_title'); ?>
-Gestión de Autoridades
+Gestión de Autoridades de la facultad
 <?php $__env->stopSection(); ?>
 
 <style type="text/css">

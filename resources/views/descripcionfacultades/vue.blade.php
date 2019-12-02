@@ -253,9 +253,8 @@ methods: {
         this.fillDescripcionFacultades.reseñahistor = descripcionfacultad.reseñahistor;
         this.fillDescripcionFacultades.mision = descripcionfacultad.mision;
         this.fillDescripcionFacultades.vision = descripcionfacultad.vision;
-        this.fillDescripcionFacultades.imagen = descripcionfacultad.imagen;
         this.fillDescripcionFacultades.filosofia = descripcionfacultad.filosofia;
-        console.log();
+        this.imagen=null;
         
         $("#modalEditar").modal('show');
             this.$nextTick(function () {
@@ -270,7 +269,7 @@ methods: {
         data.append('reseñahistor', this.fillDescripcionFacultades.reseñahistor);
         data.append('mision', this.fillDescripcionFacultades.mision);
         data.append('vision', this.fillDescripcionFacultades.vision);
-        data.append('imagen', this.fillDescripcionFacultades.imagen);
+        data.append('imagen', this.imagen);
         data.append('filosofia', this.fillDescripcionFacultades.filosofia);
         data.append('_method', 'PUT');
         

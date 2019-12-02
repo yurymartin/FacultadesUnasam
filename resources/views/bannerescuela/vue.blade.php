@@ -3,7 +3,7 @@
 el: '#app',
 data:{
        titulo:"Mantenimiento",
-       subtitulo: "Gestión de Banners",
+       subtitulo: "Gestión de los Banners de las Escuelas",
        subtitulo2: "Principal",
 
    subtitle2:false,
@@ -28,10 +28,10 @@ data:{
    divtitulo:true,
    classTitle:'fa fa-qrcode ',
    classMenu0:'',
-   classMenu1:'active',
+   classMenu1:'',
    classMenu2:'',
    classMenu3:'',
-   classMenu4:'',
+   classMenu4:'active',
    classMenu5:'',
    classMenu6:'',
    classMenu7:'',
@@ -45,6 +45,7 @@ data:{
    divprincipal:false,
 
    bannersescuelas: [],
+   escuelas: [],
    errors:[],
 
    fillBanner:{'id':'', 'titulo':'', 'descripcion':'','imagen':'','fechapublica':'','estado':'','escuela_id':''},
@@ -121,7 +122,7 @@ methods: {
     },
    getBanner: function (page) {
        var busca=this.buscar;
-       var url = 'bannerescuela?page='+page+'&busca='+busca;
+       var url = 'banner?page='+page+'&busca='+busca;
         
        axios.get(url).then(response=>{
             this.bannersescuelas= response.data.bannersescuelas.data;
@@ -188,7 +189,7 @@ methods: {
             },
     create:function () { 
 
-       var url='bannerescuela';
+       var url='banner';
        $("#btnGuardar").attr('disabled', true);
        $("#btnCancel").attr('disabled', true);
        $("#btnClose").attr('disabled', true);
@@ -243,7 +244,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'bannerescuela/'+banner.id;
+                var url = 'banner/'+banner.id;
                 axios.delete(url).then(response=>{//eliminamos
 
                 if(response.data.result=='1'){
@@ -266,11 +267,9 @@ methods: {
         this.fillBanner.titulo=banner.titulo;
         this.fillBanner.descripcion=banner.descripcion;            
         this.fillBanner.imagen=banner.imagen;
-        this.fillBanner.estado=banner.activo;
         this.fillBanner.escuela_id=banner.idescu;
-        
         this.imagen=null;
-        console.log();
+
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
                 $("#txttituloE").focus();
@@ -287,13 +286,12 @@ methods: {
         data.append('editEstado', this.fillBanner.estado);
         data.append('imagen', this.imagen);
         data.append('oldImagen', this.fillBanner.imagen);
-       var newEscuela = $("#cbescuela").val();
-            data.append('escuela_id', newEscuela);
+        data.append('escuela_id', this.fillBanner.escuela_id);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
         
-        var url = "bannerescuela/" + id;
+        var url = "banner/" + id;
 
         $("#btnSaveE").attr('disabled', true);
         $("#btnCloseE").attr('disabled', true);
@@ -334,7 +332,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'bannerescuela/altabaja/'+banner.id+'/0';
+                var url = 'banner/altabaja/'+banner.id+'/0';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
                            app.getBanner(app.thispage);//listamos
@@ -361,7 +359,7 @@ methods: {
 
             if (result.value) {
 
-                var url = 'bannerescuela/altabaja/'+banner.id+'/1';
+                var url = 'banner/altabaja/'+banner.id+'/1';
                        axios.get(url).then(response=>{//eliminamos
                        if(response.data.result=='1'){
                            app.getBanner(app.thispage);//listamos

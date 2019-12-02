@@ -3,7 +3,7 @@
     el: '#app',
     data: {
     titulo: "Mantenimiento",
-    subtitulo: "Gestión de Alumno",
+    subtitulo: "Gestión de Alumnos",
     subtitulo2: "Principal",
 
     subtitle2: false,
@@ -28,14 +28,14 @@
     divtitulo: true,
     classTitle: 'fa fa-qrcode ',
     classMenu0: '',
-    classMenu1: 'active',
+    classMenu1: '',
     classMenu2: '',
     classMenu3: '',
     classMenu4: '',
     classMenu5: '',
     classMenu6: '',
     classMenu7: '',
-    classMenu8: '',
+    classMenu8: 'active',
     classMenu9: '',
     classMenu10: '',
     classMenu11: '',
@@ -160,13 +160,14 @@ methods: {
             this.cancelFormNuevo();
         },
     cancelFormNuevo: function () {
-            $('#nombres').focus();
+            $('#dni').focus();
             this.newDni = '';
             this.newNombres = '';
             this.newApellidos = '';
             this.newEstado = '1';
             this.newGenero = '1';
             this.imagen = null;
+            this.comiestudiantil_id = '0';
 
             $(".form-control").css("border", "1px solid #d2d6de");
         },
@@ -328,7 +329,7 @@ bajadocente: function (alumnos) {
 
         swal.fire({
             title: '¿Estás seguro?',
-            text: "Desea desactivar el alumno seleccionado",
+            text: "Desea desactivar el Alumno seleccionado",
             type: 'info',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

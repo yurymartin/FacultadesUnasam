@@ -28,13 +28,13 @@
     divtitulo: true,
     classTitle: 'fa fa-qrcode ',
     classMenu0: '',
-    classMenu1: 'active',
+    classMenu1: '',
     classMenu2: '',
     classMenu3: '',
     classMenu4: '',
     classMenu5: '',
     classMenu6: '',
-    classMenu7: '',
+    classMenu7: 'active',
     classMenu8: '',
     classMenu9: '',
     classMenu10: '',
@@ -46,6 +46,7 @@
 
     docentes: [],
     persona:[],
+    categoriadocentes: [],
     errors: [],
 
     fillPersona:{'idper':'', 'dni':'', 'nombres':'', 'apellidos':'', 'imagen':'', 'genero':''},
@@ -183,25 +184,6 @@ methods: {
                 this.imagen = event.target.files[0];
             }
             },
-    seltipo: function () {
-            if (this.departamentoacad_id == 3) {
-                $('#cbcategoria').val('0').trigger('change');
-                this.$nextTick(function () {
-                $('#cbcategoria').val('0').trigger('change');
-            })
-            }
-                $('#txtnom').focus();
-            },
-
-    seltipo1: function () {
-            if (this.departamentoacad_id == 3) {
-                $('#cbGrado').val('0').trigger('change');
-                this.$nextTick(function () {
-                $('#cbGrado').val('0').trigger('change');
-            })
-            }
-                $('#txtnom').focus();
-            },
 
     recorrerBanner: function () {
             $.each($(".txtimg"), function (index, value) {
@@ -268,7 +250,7 @@ methods: {
 
                 if (result.value) {
 
-                    var url = 'docente/' + docentes.id;
+                    var url = 'docente/' + docentes.iddoc;
                      axios.delete(url).then(response => { //eliminamos
 
                 if (response.data.result == '1') {
@@ -300,8 +282,6 @@ methods: {
         this.fillDocente.tituloprofe = docente.tituloprofe;
         this.fillDocente.fechaingreso = docente.fechaingreso;
         this.fillDocente.estado = docente.activo;
-
-        console.log(docente.idper+'-'+docente.iddoc);
         
         $("#modalEditar").modal('show');
             this.$nextTick(function () {
@@ -328,7 +308,7 @@ methods: {
         data.append('dni', this.fillPersona.dni);
         data.append('nombres', this.fillPersona.nombres);
         data.append('apellidos', this.fillPersona.apellidos);
-        data.append('oldImagen', this.fillDocente.imagen);
+        data.append('imagen', this.imagen);
         data.append('genero', this.fillPersona.genero);
 
         data.append('curricul', '');        
@@ -377,7 +357,7 @@ bajadocente: function (docentes) {
             confirmButtonText: 'Si, Desactivar'
         }).then((result) => {
         if (result.value) {
-            var url = 'docente/altabaja/' + docentes.id + '/0';
+            var url = 'docente/altabaja/' + docentes.iddoc + '/0';
             axios.get(url).then(response => { //eliminamos
         if (response.data.result == '1') {
             app.getDocentes(app.thispage); //listamos
@@ -402,7 +382,7 @@ altadocente: function (docentes) {
         confirmButtonText: 'Si, Activar'
     }).then((result) => {
     if (result.value) {
-        var url = 'docente/altabaja/' + docentes.id + '/1';
+        var url = 'docente/altabaja/' + docentes.iddoc + '/1';
         axios.get(url).then(response => { //eliminamos
     if (response.data.result == '1') {
         app.getDocentes(app.thispage); //listamos

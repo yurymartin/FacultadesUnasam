@@ -38,11 +38,10 @@ class DescripcionEscuelasController extends Controller
         $buscar = $request->busca;
         $descripcionescuelas = DB::table('descripcionescuelas as de')
             ->join('escuelas as e', 'e.id', '=', 'de.escuela_id')
-            ->select('de.id as iddesc', 'de.descripcion', 'de.titulo', 'de.gradoacade', 'de.duracion', 'de.logo', 'de.activo', 'e.id as idesc', 'e.nombre')
+            ->select('de.id as iddesc', 'de.descripcion', 'de.tituloprofesional', 'de.gradoacade', 'de.duracion', 'de.mision', 'de.vision', 'de.historia', 'de.logo', 'de.activo', 'e.id as idesc', 'e.nombre')
             ->where('de.borrado', '=', 0)
             ->where(function ($query) use ($buscar) {
-                $query->where('de.descripcion', 'like', '%' . $buscar . '%');
-                $query->orWhere('de.titulo', 'like', '%' . $buscar . '%');
+                $query->orWhere('de.tituloprofesional', 'like', '%' . $buscar . '%');
                 $query->orWhere('e.nombre', 'like', '%' . $buscar . '%');
             })
             ->orderBy('de.id')
@@ -88,6 +87,9 @@ class DescripcionEscuelasController extends Controller
         $titulo = $request->titulo;
         $gradoacade = $request->gradoacade;
         $duracion = $request->duracion;
+        $mision = $request->mision;
+        $vision = $request->vision;
+        $historia = $request->historia;
         $img = $request->logo;
         $estado = $request->activo;
         $escuela_id = $request->escuela_id;
@@ -111,26 +113,27 @@ class DescripcionEscuelasController extends Controller
         $reglas3 = array('duracion' => 'required');
         $validator3 = Validator::make($input3, $reglas3);
 
+
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Complete el titulo profesional';
+            $msj = 'FALTA COMPLETAR EL TITULO PROFESIONAL';
             $selector = 'titulo';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Complete el grado profesional';
+            $msj = 'FALTA COMPLETAR EL GRADO ACADEMICO';
             $selector = 'gradoacade';
         } else if ($validator3->fails()) {
             $result = '0';
-            $msj = 'Complete la duracion de la escuela';
+            $msj = 'FALTA COMPLETAR LA DURACION DE LA CARRERA PROFESIONAL';
             $selector = 'duracion';
-        } else if ($img == 'null') {
-            $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
-            $selector = 'archivo';
         } else if ($escuela_id == 0) {
             $result = '0';
-            $msj = 'Debe de Seleccionar la Escuela';
+            $msj = 'FALTA SELECCIONAR LA ESCUELA PROFESIONAL';
             $selector = 'cbEscuelas';
+        } else if (!$request->hasFile('logo')) {
+            $result = '0';
+            $msj = 'FALTA INGRESAR EL LOGO DE LA ESCUELA PROFESIONAL';
+            $selector = 'archivo';
         } else {
             if ($request->hasFile('logo')) {
                 $aux = date('d-m-Y') . '-' . date('H-i-s');
@@ -158,21 +161,23 @@ class DescripcionEscuelasController extends Controller
                     }
                 }
             }
-
             if ($segureImg == 1) {
                 Storage::disk('DescripcionE')->delete($imagen);
             } else {
                 $newdescripcion = new DescripcionEscuelas();
                 $newdescripcion->descripcion = $descripcion;
-                $newdescripcion->titulo = $titulo;
+                $newdescripcion->tituloprofesional = $titulo;
                 $newdescripcion->gradoacade = $gradoacade;
                 $newdescripcion->duracion = $duracion;
+                $newdescripcion->mision = $mision;
+                $newdescripcion->vision = $vision;
+                $newdescripcion->historia = $historia;
                 $newdescripcion->logo = $imagen;
                 $newdescripcion->activo = $estado;
                 $newdescripcion->borrado = '0';
                 $newdescripcion->escuela_id = $escuela_id;
                 $newdescripcion->save();
-                $msj = 'Nueva Descripcion de Escuelas fue registrado con éxito';
+                $msj = 'LA NUEVA DESCRIPCION DE LA ESCUELA PROFESIONAL FUE REGISTRADO EXITOSAMENTE';
             }
         }
 
@@ -211,9 +216,12 @@ class DescripcionEscuelasController extends Controller
     public function update(Request $request, $id)
     {
         $descripcion = $request->descripcion;
-        $titulo = $request->titulo;
+        $titulo = $request->tituloprofesional;
         $gradoacade = $request->gradoacade;
         $duracion = $request->duracion;
+        $mision = $request->mision;
+        $vision = $request->vision;
+        $historia = $request->historia;
         $img = $request->logo;
         $escuela_id = $request->escuela_id;
 
@@ -238,23 +246,19 @@ class DescripcionEscuelasController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Complete el titulo profesional';
+            $msj = 'FALTA COMPLETAR EL TITULO PROFESIONAL';
             $selector = 'titulo';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Complete el grado profesional';
+            $msj = 'FALTA COMPLETAR EL GRADO ACADEMICO';
             $selector = 'gradoacade';
         } else if ($validator3->fails()) {
             $result = '0';
-            $msj = 'Complete la duracion de la escuela';
+            $msj = 'FALTA COMPLETAR LA DURACION DE LA CARRERA PROFESIONAL';
             $selector = 'duracion';
-        } else if ($img == 'null') {
-            $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
-            $selector = 'archivo';
         } else if ($escuela_id == 0) {
             $result = '0';
-            $msj = 'Debe de Seleccionar la Escuela';
+            $msj = 'FALTA SELECCIONAR LA ESCUELA PROFESIONAL';
             $selector = 'cbEscuelas';
         } else {
             if ($request->hasFile('logo')) {
@@ -283,29 +287,30 @@ class DescripcionEscuelasController extends Controller
                     }
                 }
             }
-
-            if ($segureImg == 1) {
-                Storage::disk('DescripcionE')->delete($imagen);
+            $newdescripcion = DescripcionEscuelas::findOrFail($id);
+            if ($request->hasFile('logo')) {
+                $newdescripcion->descripcion = $descripcion;
+                $newdescripcion->tituloprofesional = $titulo;
+                $newdescripcion->gradoacade = $gradoacade;
+                $newdescripcion->duracion = $duracion;
+                $newdescripcion->mision = $mision;
+                $newdescripcion->vision = $vision;
+                $newdescripcion->historia = $historia;
+                $newdescripcion->logo = $imagen;
+                $newdescripcion->escuela_id = $escuela_id;
+                $newdescripcion->save();
+                $msj = 'LA NUEVA DESCRIPCION DE LA ESCUELA PROFESIONAL FUE REGISTRADO EXITOSAMENTE';
             } else {
-                $newdescripcion = DescripcionEscuelas::findOrFail($id);
-                if ($request->hasFile('logo')) {
-                    $newdescripcion->descripcion = $descripcion;
-                    $newdescripcion->titulo = $titulo;
-                    $newdescripcion->gradoacade = $gradoacade;
-                    $newdescripcion->duracion = $duracion;
-                    $newdescripcion->logo = $imagen;
-                    $newdescripcion->escuela_id = $escuela_id;
-                    $newdescripcion->save();
-                    $msj = 'Nueva Descripcion de Escuelas fue Modificado con éxito';
-                } else {
-                    $newdescripcion->descripcion = $descripcion;
-                    $newdescripcion->titulo = $titulo;
-                    $newdescripcion->gradoacade = $gradoacade;
-                    $newdescripcion->duracion = $duracion;
-                    $newdescripcion->escuela_id = $escuela_id;
-                    $newdescripcion->save();
-                    $msj = 'Nueva Descripcion de Escuelas fue Modificado con éxito';
-                }
+                $newdescripcion->descripcion = $descripcion;
+                $newdescripcion->tituloprofesional = $titulo;
+                $newdescripcion->gradoacade = $gradoacade;
+                $newdescripcion->duracion = $duracion;
+                $newdescripcion->mision = $mision;
+                $newdescripcion->vision = $vision;
+                $newdescripcion->historia = $historia;
+                $newdescripcion->escuela_id = $escuela_id;
+                $newdescripcion->save();
+                $msj = 'LA NUEVA DESCRIPCION DE LA ESCUELA PROFESIONAL FUE MODIFICADO EXITOSAMENTE';
             }
         }
 
@@ -325,7 +330,7 @@ class DescripcionEscuelasController extends Controller
         $borrar = DescripcionEscuelas::findOrFail($id);
         $borrar->borrado = '1';
         $borrar->save();
-        $msj = 'La Descripcion fue eliminado exitosamente';
+        $msj = 'LA DESCRIPCION DE LA ESCUELA PROFESIONAL FUE ELIMINADO EXITOSAMENTE';
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
 
@@ -340,9 +345,9 @@ class DescripcionEscuelasController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'La Descripcion fue Desactivada exitosamente';
+            $msj = 'LA DESCRIPCION DE LA ESCUELA PROFESIONAL FUE DESACTIVADO EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'La Descripcion fue Activada exitosamente';
+            $msj = 'LA DESCRIPCION DE LA ESCUELA PROFESIONAL FUE ACTIVADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

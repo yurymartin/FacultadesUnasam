@@ -72,37 +72,3 @@
         </div> <!-- /.bottom-footer -->
     </div> <!-- /.container -->
 </footer> <!-- /.site-footer -->
-
-<script>
-    window.sr = ScrollReveal();
-        sr.reveal('#top',{
-            duration: 2000,
-            origin: 'top',
-            distance: '300px'
-        });
-        sr.reveal('#bottom',{
-            duration: 2000,
-            origin: 'bottom',
-            distance: '300px'
-        });
-        sr.reveal('#col1',{
-            duration: 2000,
-            origin: 'left',
-            distance: '300px'
-        });
-        sr.reveal('#col2',{
-            duration: 2000,
-            origin: 'left',
-            distance: '300px'
-        });
-        sr.reveal('#col3',{
-            duration: 2000,
-            origin: 'left',
-            distance: '300px'
-        });
-        sr.reveal('#col4',{
-            duration: 2000,
-            origin: 'left',
-            distance: '300px'
-        });
-</script>

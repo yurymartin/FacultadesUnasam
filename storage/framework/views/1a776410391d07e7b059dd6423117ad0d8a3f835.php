@@ -20,18 +20,18 @@
     <div class="box-body">
       <div class="col-md-12">
         <div class="form-group">
-          <label for="txttitulo" class="col-sm-2 control-label">Nombre de la facultad*</label>
+          <label for="txttitulo" class="col-sm-2 control-label">Nombre del departamento academico*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Nombre de la facultad"
+            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Nombre del departamento academico"
               maxlength="200" autofocus v-model="newTitulo">
           </div>
         </div>
       </div>
       <div class="col-md-12">
         <div class="form-group" style="padding-top: 15px;">
-          <label for="txtdescripcion" class="col-sm-2 control-label">Descripción:</label>
+          <label for="txtdescripcion" class="col-sm-2 control-label">Descripción del departamento:</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion" placeholder="Descripcion"
+            <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion" placeholder="Descripcion del departamento academico"
               maxlength="500" v-model="newDescripcion">
           </div>
         </div>
@@ -82,7 +82,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Facultades</h3>
+    <h3 class="box-title">Listado de Departamentos Academicos</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -206,7 +206,7 @@
                   <div class="form-group">
                     <label for="txttituloE" class="col-sm-2 control-label">Nombre del departamento academico:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Departamento academico"
+                      <input type="text" class="form-control" id="txttituloE" name="txttituloE" placeholder="nombre del departamento academico"
                         maxlength="200" autofocus v-model="fillDepartamento.nombre">
                     </div>
                   </div>
@@ -214,10 +214,10 @@
 
                 <div class="col-md-12">
                   <div class="form-group" style="padding-top: 15px;">
-                    <label for="txtdescripcionE" class="col-sm-2 control-label">Descripción:</label>
+                    <label for="txtdescripcionE" class="col-sm-2 control-label">Descripción del departamento:</label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="txtdescripcionE" name="txtdescripcionE"
-                        placeholder="Descripcion" maxlength="500" v-model="fillDepartamento.descripcion">
+                        placeholder="Descripcion del departamento academico" maxlength="500" v-model="fillDepartamento.descripcion">
                     </div>
                   </div>
                 </div>

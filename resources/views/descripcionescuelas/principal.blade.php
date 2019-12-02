@@ -1,6 +1,6 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de Descripcion de Escuelas</h3>
+    <h3 class="box-title">Gestión de Descripcion de Escuelas Profesionales</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="{{URL::to('home')}}"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
@@ -9,7 +9,7 @@
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
-          class="fa fa-plus-square-o" aria-hidden="true"></i>Nueva Descripcion de Las Escuelas</button>
+          class="fa fa-plus-square-o" aria-hidden="true"></i>Nueva Descripcion de las Escuelas Profesionales</button>
     </div>
 
   </div>
@@ -18,10 +18,10 @@
 
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
-    <h3 class="box-title" id="tituloAgregar">Nueva Descripciòn de La Escuelas</h3>
+    <h3 class="box-title" id="tituloAgregar">Nueva Descripciòn de La Escuelas Profesionales</h3>
   </div>
 
-  <form v-on:submit.prevent="create">
+  <form v-on:submit.prevent="create" name="descripcionEscuela">
     <div class="box-body">
 
       <div class="col-md-12">
@@ -29,7 +29,7 @@
           <label for="descripcion" class="col-sm-2 control-label">Descripcion:*</label>
           <div class="col-sm-8">
             <textarea name="descripcion" id="descripcion" cols="80" rows="5" v-model="newDescripcion"
-              placeholder="descripcion" class="form-control"></textarea>
+              placeholder="Descripcion de la Escuela profesional" class="form-control"></textarea>
           </div>
         </div>
       </div>
@@ -38,8 +38,9 @@
         <div class="form-group">
           <label for="titulo" class="col-sm-2 control-label">Titulo Profesional:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Nombre de la categoria"
-              maxlength="200" autofocus v-model="newTitulo">
+            <input type="text" class="form-control" id="titulo" name="titulo"
+              placeholder="Titulo profesional que obtinen los estudiantes" maxlength="200" autofocus
+              v-model="newTitulo">
           </div>
         </div>
       </div>
@@ -49,7 +50,8 @@
           <label for="gradoacade" class="col-sm-2 control-label">Grado Profesional:*</label>
           <div class="col-sm-8">
             <input type="text" class="form-control" id="gradoacade" name="gradoacade"
-              placeholder="Nombre de la categoria" maxlength="200" autofocus v-model="newGradoAcade">
+              placeholder="Grado Profesional que se obtiene al terminar la carrera" maxlength="200" autofocus
+              v-model="newGradoAcade">
           </div>
         </div>
       </div>
@@ -58,8 +60,38 @@
         <div class="form-group">
           <label for="duracion" class="col-sm-2 control-label">Duracion:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="duracion" name="duracion" placeholder="Nombre de la categoria"
-              maxlength="200" autofocus v-model="newDuracion">
+            <input type="text" class="form-control" id="duracion" name="duracion"
+              placeholder="Duracion de la Carrera Profesional" maxlength="200" autofocus v-model="newDuracion">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12" style="padding-top: 10px;">
+        <div class="form-group">
+          <label for="vs" class="col-sm-2 control-label">Mision:*</label>
+          <div class="col-sm-8">
+            <textarea name="mision" id="mision" cols="80" rows="5" v-model="newMision"
+              placeholder="mision de la escuela Profesional" class="form-control"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12" style="padding-top: 10px;">
+        <div class="form-group">
+          <label for="vision" class="col-sm-2 control-label">Vision:*</label>
+          <div class="col-sm-8">
+            <textarea name="vision" id="vision" cols="80" rows="5" v-model="newVision"
+              placeholder="vision de la escuela Profesional" class="form-control"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="form-group" style="padding-top: 10px;">
+          <label for="historia" class="col-sm-2 control-label">Historia:*</label>
+          <div class="col-sm-8">
+            <textarea name="historia" id="historia" cols="80" rows="5" v-model="newHistoria"
+              placeholder="historia de la escuela Profesional" class="form-control"></textarea>
           </div>
         </div>
       </div>
@@ -75,12 +107,12 @@
         </div>
       </div>
 
-      <div class="col-md-12" style="padding-top: 15px;">
+      <div class="col-md-12" style="padding-top: 10px;">
         <div class="form-group">
           <label for="cbEscuelas" class="col-sm-2 control-label">Escuela Profesional:*</label>
           <div class="col-sm-8">
             <select name="cbEscuelas" id="cbEscuelas" class="form-control" v-model="escuela_id">
-              <option disabled value="0">Seleccione una Escuela Profesional</option>
+              <option  value="0">Seleccione una Escuela Profesional</option>
               <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">@{{escuela.nombre}}
               </option>
             </select>
@@ -88,7 +120,7 @@
         </div>
       </div>
 
-      <div class="col-md-12" style="padding-top: 15px;">
+      <div class="col-md-12" style="padding-top: 10px;">
         <div class="form-group">
           <label for="cbestado" class="col-sm-2 control-label">Estado:*</label>
           <div class="col-sm-4">
@@ -160,11 +192,14 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 1%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Descripciòn</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Titulo</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Descripciòn</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 9%;">Titulo</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Grado Academico</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 9%;">Duracion</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Escuela Profesional</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Duracion</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Mision</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Vision</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">historia</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Escuela Profesional</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Logo</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
@@ -174,9 +209,16 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
             @{{ descripcionescuela.descripcion }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ descripcionescuela.titulo }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ descripcionescuela.tituloprofesional}}
+          </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ descripcionescuela.gradoacade }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ descripcionescuela.duracion }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
+            @{{ descripcionescuela.mision }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
+            @{{ descripcionescuela.vision }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
+            @{{ descripcionescuela.historia }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ descripcionescuela.nombre }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; text-align: center;vertical-align: middle;">
             <img :src="getImg(descripcionescuela)" alt="" class="img img-responsive" style="width: 120px;height: 100px">
@@ -289,7 +331,7 @@
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="titulo" name="titulo"
                         placeholder="Nombre de la categoria" maxlength="200" autofocus
-                        v-model="fillDescripcionEscuelas.titulo">
+                        v-model="fillDescripcionEscuelas.tituloprofesional">
                     </div>
                   </div>
                 </div>
@@ -310,7 +352,38 @@
                     <label for="duracion" class="col-sm-2 control-label">Duracion:*</label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="duracion" name="duracion"
-                        placeholder="Nombre de la categoria" maxlength="200" autofocus v-model="fillDescripcionEscuelas.duracion">
+                        placeholder="Nombre de la categoria" maxlength="200" autofocus
+                        v-model="fillDescripcionEscuelas.duracion">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12" style="padding-top: 10px;">
+                  <div class="form-group">
+                    <label for="vs" class="col-sm-2 control-label">Mision:*</label>
+                    <div class="col-sm-8">
+                      <textarea name="mision" id="mision" cols="80" rows="5" v-model="fillDescripcionEscuelas.mision"
+                        placeholder="mision de la escuela Profesional" class="form-control"></textarea>
+                    </div>
+                  </div>
+                </div>
+          
+                <div class="col-md-12" style="padding-top: 10px;">
+                  <div class="form-group">
+                    <label for="vision" class="col-sm-2 control-label">Vision:*</label>
+                    <div class="col-sm-8">
+                      <textarea name="vision" id="vision" cols="80" rows="5" v-model="fillDescripcionEscuelas.vision"
+                        placeholder="vision de la escuela Profesional" class="form-control"></textarea>
+                    </div>
+                  </div>
+                </div>
+          
+                <div class="col-md-12">
+                  <div class="form-group" style="padding-top: 10px;">
+                    <label for="historia" class="col-sm-2 control-label">Historia:*</label>
+                    <div class="col-sm-8">
+                      <textarea name="historia" id="historia" cols="80" rows="5" v-model="fillDescripcionEscuelas.historia"
+                        placeholder="historia de la escuela Profesional" class="form-control"></textarea>
                     </div>
                   </div>
                 </div>
@@ -329,7 +402,8 @@
                   <div class="form-group">
                     <label for="cbEscuelas" class="col-sm-2 control-label">Escuela Profesional:*</label>
                     <div class="col-sm-8">
-                      <select name="cbEscuelas" id="cbEscuelas" class="form-control" v-model="fillDescripcionEscuelas.escuela_id">
+                      <select name="cbEscuelas" id="cbEscuelas" class="form-control"
+                        v-model="fillDescripcionEscuelas.escuela_id">
                         <option disabled value="0">Seleccione una Escuela Profesional</option>
                         <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">@{{escuela.nombre}}
                         </option>

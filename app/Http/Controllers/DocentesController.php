@@ -47,14 +47,16 @@ class DocentesController extends Controller
                 $query->orWhere('p.apellidos', 'like', '%' . $buscar . '%');
             })
             ->orderBy('p.nombres')
-            ->select('d.id as iddoc','p.id as idper', 'p.dni', 'p.nombres', 'p.apellidos', 'p.genero', 'p.foto', 'ga.grado', 'cd.categoria', 'd.tituloprofe', 'd.fechaingreso', 'd.activo', 'ga.id as idgrado', 'cd.id as idcat')
+            ->select('d.id as iddoc', 'p.id as idper', 'p.dni', 'p.nombres', 'p.apellidos', 'p.genero', 'p.foto', 'ga.grado', 'cd.categoria', 'd.tituloprofe', 'd.fechaingreso', 'd.activo', 'ga.id as idgrado', 'cd.id as idcat')
             ->paginate(10);
 
         $categoriadocentes = CategoriaDocentes::where('borrado', '0')
+            ->where('activo', '=', '1')
             ->get();
 
         $gradoacademicos = DB::table('gradoacademicos')
             ->where('borrado', '0')
+            ->where('activo', '=', '1')
             ->get();
 
         $personas = Persona::get();
@@ -125,28 +127,28 @@ class DocentesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Complete el dni del docente';
+            $msj = 'FALTA COMPLETAR EL DNI DEL DOCENTE ';
             $selector = 'dni';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Complete los nombres del docente';
+            $msj = 'FALTA COMPLETAR LOS NOMBRES DEL DOCENTE';
             $selector = 'nombres';
         } else if ($validator3->fails()) {
             $result = '0';
-            $msj = 'Complete los apellidos del docente';
+            $msj = 'FALTA COMPLETAR LOS APELLIDOS DEL DOCENTE';
             $selector = 'apellidos';
         } else if ($gradoacademico_id == 0) {
             $result = '0';
-            $msj = 'Seleccione el grado del docente';
+            $msj = 'FALTA SELECCIONAR EL GRADO ACADEMICO DEL DOCENTE';
             $selector = 'cbGrado';
         } else if ($categoriadocente_id == 0) {
             $result = '0';
-            $msj = 'Seleccione la categoria del docente';
+            $msj = 'FALTA SELECCIONAR LA CATEGORIA ALA QUE PERTENECE EL DOCENTE';
             $selector = 'cbcategoria';
         } else if ($img == 'null') {
             $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
-            $selector = 'txttituloE';
+            $msj = 'FALTA COMPLETAR LA FOTO DEL DOCENTE';
+            $selector = 'archivo';
         } else {
             if ($request->hasFile('imagen')) {
                 $aux = date('d-m-Y') . '-' . date('H-i-s');
@@ -194,7 +196,7 @@ class DocentesController extends Controller
                 $docente->persona_id  = $persona->id;
                 $docente->save();
 
-                $msj = 'Nuevo Docente registrado con éxito';
+                $msj = 'EL NUEVO DOCENTE FUE REGISTRADO EXITOSAMENTE';
             }
         }
 
@@ -236,8 +238,8 @@ class DocentesController extends Controller
         $msj = '';
         $selector = '';
 
-        $idPersona=$request->idPersona;
-        $idDocente=$request->idDocente;
+        $idPersona = $request->idPersona;
+        $idDocente = $request->idDocente;
 
         $dni = $request->dni;
         $nombres = $request->nombres;
@@ -288,10 +290,6 @@ class DocentesController extends Controller
             $result = '0';
             $msj = 'Seleccione la categoria del docente';
             $selector = 'cbcategoriaE';
-        } else if ($img == 'null') {
-            $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
-            $selector = 'archivo';
         } else {
             if ($request->hasFile('imagen')) {
                 $aux = date('d-m-Y') . '-' . date('H-i-s');
@@ -322,7 +320,6 @@ class DocentesController extends Controller
                     }
                 }
             }
-            return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
             if ($segureImg == 1) {
                 Storage::disk('personas')->delete($imagen);
             } else {
@@ -354,8 +351,7 @@ class DocentesController extends Controller
                     $docente->categoriadocente_id  = $categoriadocente_id;
                     $docente->save();
                 }
-
-                $msj = 'Nuevo Docente registrado con éxito';
+                $msj = 'EL DOCENTE FUE MODIFICADO EXITOSAMENTE';
             }
         }
 
@@ -373,9 +369,9 @@ class DocentesController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'El Docente fue Desactivada exitosamente';
+            $msj = 'EL DOCENTE FUE DESACTIVADO EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'El Docente fue Activada exitosamente';
+            $msj = 'EL DOCENTE FUE ACTIVADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -391,10 +387,19 @@ class DocentesController extends Controller
     {
         $result = '1';
         $msj = '1';
-        $borrar = Docentes::findOrFail($id);
-        $borrar->borrado = '1';
-        $borrar->save();
-        $msj = 'El docente fue eliminado exitosamente';
+        $consulta = DB::table('investigacion')
+            ->where('docente_id', '=', $id)
+            ->count();
+
+        if ($consulta > 0) {
+            $result = '0';
+            $msj = "NO SE PUEDE ELIMINAR EL DOCENTE PORQUE CAUSARIA PROBLEMAS EN EL SISTEMA";
+        } else {
+            $borrar = Docentes::findOrFail($id);
+            $borrar->borrado = '1';
+            $borrar->save();
+            $msj = 'EL DOCENTE FUE ELIMINADO EXITOSAMENTE';
+        }
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
 }

@@ -96,21 +96,25 @@
                         </div> <!-- /.widget-main-title -->
                         <div class="widget-inner">
                             <div class="our-campus clearfix">
-                                <ul>
-                                    <li><img src="images/campus/campus-logo1.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo2.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo3.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo4.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo1.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo2.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo3.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo4.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo1.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo2.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo3.jpg" alt=""></li>
-                                    <li><img src="images/campus/campus-logo4.jpg" alt=""></li>
+                                <ul style="text-align: center">
+                                    @foreach ($documentos as $documento)
+                                    <div class="col-md-3">
+                                        <li
+                                            style="border-radius: 3px;background-color: #fafafa;padding: 5px 5px 5px 5px;margin-top: 10px;margin-bottom: 10px">
+                                            <p style=><strong>{{$documento->titulo}}</strong></p>
+                                            <a href="{{ asset('/doc/documentoFacultades/'.$documento->ruta)}}"
+                                                target="_blank"><img
+                                                    src="{{ asset('/img/documentoFacultades/'.$documento->imagen)}}"
+                                                    alt=""></a>
+                                        </li>
+                                    </div>
+                                    @endforeach
                                 </ul>
                             </div>
+                        </div>
+                        <div class="container">
+                            <a href="" class="btn btn-primary">Ver Todos los Documentos</a>
+                            <p></p>
                         </div>
                     </div> <!-- /.widget-main -->
                 </div> <!-- /.col-md-12 -->
@@ -123,15 +127,21 @@
                         </div> <!-- /.widget-main-title -->
                         <div class="widget-inner">
                             <div class="our-campus clearfix">
-                                <ul>
+                                <ul style="text-align: center">
                                     @foreach ($carrerasprofesionales as $carrerasprofesional)
-                                    <li>
-                                        <a class="fancybox"
-                                            href="/img/descripcionEscuelas/{{$carrerasprofesional->logo}}">
-                                            <img src="/img/descripcionEscuelas/{{$carrerasprofesional->logo}}" alt=""
-                                                width="170px" height="113px">
-                                        </a>
-                                    </li>
+                                    <div class="col-md-4">
+                                        <li
+                                            style="border-radius: 3px;background-color: #fafafa;padding: 5px 5px 5px 5px;margin-top: 10px;margin-bottom: 10px">
+                                            <p>
+                                                <strong>{{$carrerasprofesional->nombre}}</strong>
+                                            </p>
+                                            <a class="fancybox"
+                                                href="/img/descripcionEscuelas/{{$carrerasprofesional->logo}}">
+                                                <img src="/img/descripcionEscuelas/{{$carrerasprofesional->logo}}"
+                                                    alt="" width="170px" height="113px">
+                                            </a>
+                                        </li>
+                                    </div>
                                     @endforeach
                                 </ul>
                             </div>

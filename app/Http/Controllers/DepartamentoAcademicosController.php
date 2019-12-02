@@ -85,14 +85,11 @@ class DepartamentoAcademicosController extends Controller
 
 
         $validator1 = Validator::make($input1, $reglas1);
-
-
         if ($validator1->fails()) {
             $result='0';
-            $msj='Ingrese el Nombre del departamento';
+            $msj='FALTA COMPLETAR EL NOMBRE DEL DEPARTAMENTO ACADEMICO';
             $selector='txttitulo';
         }
-       
         else{
 
             $newDepartamento = new DepartamentoAcademicos();
@@ -101,7 +98,7 @@ class DepartamentoAcademicosController extends Controller
             $newDepartamento->activo=$activo;
             $newDepartamento->borrado='0';
             $newDepartamento->save();
-            $msj='Nueva Departamento Academico registrado con éxito';
+            $msj='EL DEPARTAMENTO ACADEMICO FUE REGISTRADO EXITOSAMENTE';
         }
 
         return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
@@ -155,8 +152,8 @@ class DepartamentoAcademicosController extends Controller
 
         if ($validator1->fails()) {
             $result='0';
-            $msj='Ingrese el Nombre del departamento';
-            $selector='txttitulo';
+            $msj='FALTA COMPLETAR EL NOMBRE DEL DEPARTAMENTO ACADEMICO';
+            $selector='txttituloE';
         }
        
         else{
@@ -166,7 +163,7 @@ class DepartamentoAcademicosController extends Controller
             $newDepartamento->descripcion=$descripcion;
             $newDepartamento->save();
 
-            $msj='Nueva Departamento Academico fue modificado con éxito';
+            $msj='EL DEPARTAMENTO ACADEMICO FUE REGISTRADO EXITOSAMENTE';
         }
         return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
     }
@@ -182,9 +179,9 @@ class DepartamentoAcademicosController extends Controller
         $update->save();
 
         if(strval($activo)=="0"){
-            $msj='El Departamento Academico fue Desactivada exitosamente';
+            $msj='EL DEPARTAMENTO ACADEMICO FUE DESACTIVADO EXITOSAMENTE';
         }elseif(strval($activo)=="1"){
-            $msj='El Departamento Academico fue Activada exitosamente';
+            $msj='EL DEPARTAMENTO ACADEMICO FUE ACTIVADO EXITOSAMENTE';
         }
 
         return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
@@ -203,7 +200,7 @@ class DepartamentoAcademicosController extends Controller
         $borrar = DepartamentoAcademicos::findOrFail($id);
         $borrar->borrado='1';
         $borrar->save();
-        $msj='Departamento Academico eliminado exitosamente';
+        $msj='EL DEPARTAMENTO ACADEMICO FUE ELIMINADO EXITOSAMENTE';
         return response()->json(["result"=>$result,'msj'=>$msj]);
     }
 }

@@ -86,13 +86,16 @@
 
                 </p>
             </div> <!-- /.header-left -->
+            @foreach ($logos as $logo)
             <div class="col-md-4" id="logo">
                 <div class="logo" style="text-align: center">
                     <a href="index.html" title="Universe" rel="home">
-                        <img src="images/FC.jpg" alt="Universe" style="max-height: 100px;">
+                        <img src="{{ asset('/img/descripcionFacultades/'.$logo->imagen)}}"
+                            alt="{{ asset('/img/descripcionFacultades/'.$logo->imagen)}}" style="max-height: 100px;">
                     </a>
                 </div> <!-- /.logo -->
             </div> <!-- /.col-md-4 -->
+            @endforeach
             <div class="col-md-4 header-right" id="header-right">
                 <ul class="small-links">
                     <li><a href="#">Eventos</a></li>
@@ -132,24 +135,16 @@
                     </li>
                     <li><a href="#">Carreras Profesionales</a>
                         <ul class="sub-menu">
-                            <li><a href="courses.html">Primaria y Educación Bilingue Intercultural</a></li>
-                            <li><a href="course-single.html">Lengua Extranjera: Ingles</a></li>
-                            <li><a href="course-single.html">Matematica e Informatica</a></li>
-                            <li><a href="course-single.html">Comunicación, Linguística y Literatura</a></li>
-                            <li><a href="cienciascomunicacion">Ciencias de Comunicación</a></li>
-                            <li><a href="course-single.html">Arqueología</a></li>
+                            @foreach ($escuelas as $escuela)
+                            <li><a href="{{$escuela->descripcion}}">{{$escuela->nombre}}</a></li>
+                            @endforeach
                         </ul>
                     </li>
-                    <li><a href="#">Investigación de la FCSEC</a>
+                    <li><a href="#">Repositorio de la Facultad</a>
                         <ul class="sub-menu">
-                            <li><a href="revista">Revista Académica de la FCSEC</a></li>
+                            <li><a href="revista">Revista Académica E Investigaciones </a></li>
                             <li><a href="http://repositorio.unasam.edu.pe/" target="blank">Repositorio UNASAM</a></li>
-                            <li><a href="biblioteca">Biblioteca FCSEC</a></li>
-                            <li><a href="blog-disqus.html">Investigación FCSEC</a>
-                                <ul class="sub-menu">
-                                    <li><a href="investigadores">Docentes Investigadores</a></li>
-                                </ul>
-                            </li>
+                            <li><a href="biblioteca">Biblioteca Virtual</a></li>
                         </ul>
                     </li>
                     <li><a href="#">Docentes</a>
@@ -168,24 +163,3 @@
         </div> <!-- /.container -->
     </div> <!-- /.nav-bar-main -->
 </header> <!-- /.site-header -->
-
-<script>
-    window.sr = ScrollReveal();
-        sr.reveal('#logo',{
-            duration: 2000,
-            origin: 'top',
-            distance: '300px'
-        });
-    window.sr = ScrollReveal();
-        sr.reveal('#header-left',{
-            duration: 2000,
-            origin: 'left',
-            distance: '300px'
-        }); 
-    window.sr = ScrollReveal();
-        sr.reveal('#header-right',{
-            duration: 2000,
-            origin: 'right',
-            distance: '300px'
-        });  
-</script>

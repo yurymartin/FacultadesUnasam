@@ -1,6 +1,6 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de Cargo</h3>
+    <h3 class="box-title">Gestión de Cargos</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="{{URL::to('home')}}"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
@@ -18,6 +18,7 @@
   </div>
   <form v-on:submit.prevent="create">
     <div class="box-body">
+
       <div class="col-md-12">
         <div class="form-group">
           <label for="txttitulo" class="col-sm-2 control-label">Nombre de Cargo*</label>
@@ -27,6 +28,17 @@
           </div>
         </div>
       </div>
+
+      <div class="col-md-12" style="padding-top: 15px;">
+        <div class="form-group">
+          <label for="descripcion" class="col-sm-2 control-label">Descripcion:*</label>
+          <div class="col-sm-8">
+            <textarea name="descripcion" id="descripcion" cols="80" rows="5" v-model="newDescripcion"
+              placeholder="Descripcion del cargo" class="form-control"></textarea>
+          </div>
+        </div>
+      </div>
+
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
           <label for="cbuestado" class="col-sm-2 control-label">Estado:*</label>
@@ -38,6 +50,7 @@
           </div>
         </div>
       </div>
+
     </div>
     <!-- /.box-body -->
     <div class="box-footer">
@@ -96,12 +109,14 @@
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Cargo</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">descripcion</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
         <tr v-for="cargo, key in cargos">
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{key+pagination.from}}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ cargo.cargo }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ cargo.descripcion }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
               <span class="label label-success" v-if="cargo.activo=='1'">Activo</span>
@@ -110,19 +125,19 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
-              <a href="#" v-if="cargo.activo=='1'" class="btn bg-navy btn-sm"
-                v-on:click.prevent="bajadecargo(cargo)" data-placement="top" data-toggle="tooltip"
-                title="Desactivar cargo"><i class="fa fa-arrow-circle-down"></i></a>
+              <a href="#" v-if="cargo.activo=='1'" class="btn bg-navy btn-sm" v-on:click.prevent="bajadecargo(cargo)"
+                data-placement="top" data-toggle="tooltip" title="Desactivar cargo"><i
+                  class="fa fa-arrow-circle-down"></i></a>
 
               <a href="#" v-if="cargo.activo=='0'" class="btn btn-success btn-sm"
                 v-on:click.prevent="altadecargo(cargo)" data-placement="top" data-toggle="tooltip"
                 title="Activar cargo"><i class="fa fa-check-circle"></i></a>
 
-              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editdecargo(cargo)"
-                data-placement="top" data-toggle="tooltip" title="Editar Cargo"><i class="fa fa-edit"></i></a>
+              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editdecargo(cargo)" data-placement="top"
+                data-toggle="tooltip" title="Editar Cargo"><i class="fa fa-edit"></i></a>
 
-              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardecargo(cargo)"
-                data-placement="top" data-toggle="tooltip" title="Borrar cargo"><i class="fa fa-trash"></i></a>
+              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardecargo(cargo)" data-placement="top"
+                data-toggle="tooltip" title="Borrar cargo"><i class="fa fa-trash"></i></a>
             </center>
           </td>
         </tr>
@@ -180,7 +195,8 @@
         <div class="modal-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
               style="font-size: 35px;">&times;</span></button>
-          <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR CARGO</h4>
+          <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR
+            CARGO</h4>
 
         </div>
         <div class="modal-body">
@@ -199,6 +215,17 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="col-md-12" style="padding-top: 15px;">
+                  <div class="form-group">
+                    <label for="descripcion" class="col-sm-2 control-label">Descripcion:*</label>
+                    <div class="col-sm-8">
+                      <textarea name="descripcion" id="descripcion" cols="80" rows="5" v-model="fillCargo.descripcion"
+                        placeholder="Descripcion del cargo" class="form-control"></textarea>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
             <div class="modal-footer">

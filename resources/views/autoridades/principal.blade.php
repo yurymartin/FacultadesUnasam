@@ -9,7 +9,7 @@
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
-          class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Autoridade de la Facultad</button>
+          class="fa fa-plus-square-o" aria-hidden="true"></i> Nueva Autoridad de la Facultad</button>
     </div>
 
   </div>
@@ -18,7 +18,7 @@
 
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
-    <h3 class="box-title" id="tituloAgregar"> Nuevo Autoridade de la Facultad</h3>
+    <h3 class="box-title" id="tituloAgregar"> Nuevo Autoridad de la Facultad</h3>
   </div>
 
   <form v-on:submit.prevent="create">
@@ -27,7 +27,7 @@
         <div class="form-group">
           <label for="dni" class="col-sm-2 control-label">DNI:*</label>
           <div class="col-sm-4">
-            <input type="number" class="form-control" id="dni" name="dni" placeholder="DNI del autoridad"
+            <input type="number" class="form-control" id="dni" name="dni" placeholder="DNI de la autoridad"
               maxlength="200" autofocus v-model="newDni">
           </div>
         </div>
@@ -37,7 +37,7 @@
         <div class="form-group" style="padding-top: 15px;">
           <label for="nombres" class="col-sm-2 control-label">Nombres:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Nombres del autoridad"
+            <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Nombres de la autoridad"
               maxlength="200" autofocus v-model="newNombres">
           </div>
         </div>
@@ -49,8 +49,8 @@
         <div class="form-group" style="padding-top: 15px;">
           <label for="apellidos" class="col-sm-2 control-label">Apellidos:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos Docentes"
-              maxlength="500" v-model="newApellidos">
+            <input type="text" class="form-control" id="apellidos" name="apellidos"
+              placeholder="Apellidos de la autoridad" maxlength="500" v-model="newApellidos">
           </div>
         </div>
       </div>
@@ -104,9 +104,23 @@
         </div>
       </div>
 
+      <div class="col-md-12" style="padding-top: 15px;">
+        <div class="form-group">
+          <label for="grado" class="col-sm-2 control-label">Grado Academico de la Autoridad:*</label>
+          <div class="col-sm-8">
+            <select name="grado" id="grado" class="form-control" v-model="gradoacademico_id">
+              <option disabled value="0">Seleccione el grado Academico de la Autoridad</option>
+              <option v-for="grado, key in grados" v-bind:value="grado.id">
+                @{{grado.grado}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
       <div class="col-md-12">
         <div class="form-group" style="padding-top: 15px;">
-          <label for="descripcion" class="col-sm-2 control-label">Descripcion*</label>
+          <label for="descripcion" class="col-sm-2 control-label">Descripcion:</label>
           <div class="col-sm-8">
             <textarea name="descripcion" id="descripcion" cols="120" rows="5" placeholder="Descripcion del autoridad"
               maxlength="200" autofocus v-model="newDescripcion"></textarea>
@@ -170,7 +184,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Banner</h3>
+    <h3 class="box-title">Listado de Autoridades de la Facultad</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -195,12 +209,13 @@
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">dni</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Nombres</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Apellidos</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Foto</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Foto</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Descripcion</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Cargo Academico</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Grado Academico</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha Inicio</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha Fin</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Estado</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
         <tr v-for="autoridad, key in autoridades">
@@ -209,11 +224,12 @@
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ autoridad.nombres }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ autoridad.apellidos }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; text-align: center;vertical-align: middle;">
-            <img :src="getImg(autoridad)" alt="" style="width: 150px;height:80px">
+            <img :src="getImg(autoridad)" alt="" style="width: 50px;height:50px">
           </td>
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ autoridad.descripcion }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ autoridad.cargo }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ autoridad.grado }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ autoridad.fechainicio }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ autoridad.fechafin }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
@@ -294,7 +310,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
               style="font-size: 35px;">&times;</span></button>
           <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR
-            DATOS DEL DOCENTE</h4>
+            LOS DATOS DE LA AUTORIDAD</h4>
 
         </div>
         <div class="modal-body">
@@ -308,8 +324,8 @@
                   <div class="form-group">
                     <label for="txttituloE" class="col-sm-2 control-label">DNI:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="dniE" name="dniE" placeholder="Banner" maxlength="200"
-                        autofocus v-model="fillPersona.dni">
+                      <input type="text" class="form-control" id="dniE" name="dniE" placeholder="DNI de la autoridad"
+                        maxlength="200" autofocus v-model="fillPersona.dni">
                     </div>
                   </div>
                 </div>
@@ -360,11 +376,25 @@
 
                 <div class="col-md-12" style="padding-top: 15px; color: black;">
                   <div class="form-group">
-                    <label for="cdCargoE" class="col-sm-2 control-label">Grado Academico:*</label>
+                    <label for="cdCargoE" class="col-sm-2 control-label">Cargo Academico:*</label>
                     <div class="col-sm-4">
                       <select class="form-control" id="cdCargoE" name="cdCargoE" v-model="fillAutoridad.cargo_id">
                         <option disabled value="">Seleccione una cargo </option>
                         <option v-for="cargo, key in cargos" v-bind:value="cargo.id">@{{ cargo.cargo }} </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12" style="padding-top: 15px;">
+                  <div class="form-group">
+                    <label for="grado" class="col-sm-2 control-label">Grado Academico de la Autoridad:*</label>
+                    <div class="col-sm-8">
+                      <select name="grado" id="grado" class="form-control" v-model="fillAutoridad.gradoacademico_id">
+                        <option disabled value="0">Seleccione el grado Academico de la Autoridad</option>
+                        <option v-for="grado, key in grados" v-bind:value="grado.id">
+                          @{{grado.grado}}
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -386,7 +416,8 @@
                     <label for="fechainicio" class="col-sm-2 control-label">Fecha Ingreso:*</label>
                     <div class="col-sm-4">
                       <input type="date" class="form-control" id="fechainicio" name="fechainicio"
-                        placeholder="Fecha de inicio de gestion" maxlength="200" autofocus v-model="fillAutoridad.fechainicio">
+                        placeholder="Fecha de inicio de gestion" maxlength="200" autofocus
+                        v-model="fillAutoridad.fechainicio">
                     </div>
                   </div>
                 </div>
@@ -396,7 +427,8 @@
                     <label for="fechafin" class="col-sm-2 control-label">Fecha Salida:*</label>
                     <div class="col-sm-4">
                       <input type="date" class="form-control" id="fechafin" name="fechafin"
-                        placeholder="Fecha de fin de gestion" maxlength="200" autofocus v-model="fillAutoridad.fechafin">
+                        placeholder="Fecha de fin de gestion" maxlength="200" autofocus
+                        v-model="fillAutoridad.fechafin">
                     </div>
                   </div>
                 </div>

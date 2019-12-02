@@ -111,9 +111,6 @@ desired effect
 @elseif($modulo=="descripcionescuelas")
 @include('descripcionescuelas.vue')
 
-@elseif($modulo=="nosotrosescuelas")
-@include('nosotrosescuelas.vue')
-
 @elseif($modulo=="campolaborales")
 @include('campolaborales.vue')
 

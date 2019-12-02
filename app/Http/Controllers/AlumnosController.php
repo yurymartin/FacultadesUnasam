@@ -117,23 +117,23 @@ class AlumnosController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Complete el dni del docente';
+            $msj = 'FALTA COMPLETAR EL DNI DEL ALUMNO O EL DNI TIENE MAS DE 8 DIGITOS';
             $selector = 'dni';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Complete los nombres del docente';
+            $msj = 'FALTA COMPLETAR LOS NOMBRES DEL ALUMNO';
             $selector = 'nombres';
         } else if ($validator3->fails()) {
             $result = '0';
-            $msj = 'Complete los apellidos del docente';
+            $msj = 'FALTA COMPLETAR LOS APELLIDOS DEL ALUMNO';
             $selector = 'apellidos';
         } else if ($comiestudiantil_id == 0) {
             $result = '0';
-            $msj = 'Seleccione al Comite que pertenece el alumno';
+            $msj = 'DEBES SELECCIONAR EL COMITE ESTUDIANTIL AL QUE PERTENECE EL ALUMNO';
             $selector = 'comite';
         } else if ($img == 'null') {
             $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
+            $msj = 'FALTA INGRESAR LA FOTO DEL ALUMNO';
             $selector = 'archivo';
         } else {
             if ($request->hasFile('imagen')) {
@@ -179,7 +179,7 @@ class AlumnosController extends Controller
                 $docente->comiestudiantil_id  = $comiestudiantil_id;
                 $docente->save();
 
-                $msj = 'El alumno fue registrado con éxito';
+                $msj = 'EL ALUMNO FUE REGISTRADO EXITOSAMENTE';
             }
         }
 
@@ -250,19 +250,19 @@ class AlumnosController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Complete el dni de la autoridad';
+            $msj = 'FALTA COMPLETAR EL DNI O EL DNI TIENE MAS DE 8 DIGITOS';
             $selector = 'dniE';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Complete los nombres de la autoridad';
+            $msj = 'FALTA COMPLETAR LOS NOMBRES DEL ALUMNO';
             $selector = 'nombresE';
         } else if ($validator3->fails()) {
             $result = '0';
-            $msj = 'Complete los apellidos de la autoridad';
+            $msj = 'FALTA COMPLETAR LOS APELLIDOS DEL ALUMNO';
             $selector = 'ApellidosE';
         } else if ($comiestudiantil_id == 0) {
             $result = '0';
-            $msj = 'Seleccione el comite a que pertenece el alumno';
+            $msj = 'DEBE SELECCIONAR UN COMITE ESTUDIANTIL';
             $selector = 'cdCargoE';
         } else {
             if ($request->hasFile('imagen')) {
@@ -312,7 +312,7 @@ class AlumnosController extends Controller
                 $docente->save();
             }
 
-            $msj = 'El Alumno fue modificado con éxito';
+            $msj = 'EL ALUMNO FUE MODIFICADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -331,7 +331,7 @@ class AlumnosController extends Controller
         $borrar = Alumnos::findOrFail($id);
         $borrar->borrado = '1';
         $borrar->save();
-        $msj = 'El Alumno fue eliminado exitosamente';
+        $msj = 'EL ALUMNO FUE ELIMINADO EXITOSAMENTE';
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
 
@@ -346,9 +346,9 @@ class AlumnosController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'El Alumno fue Desactivada exitosamente';
+            $msj = 'EL ALUMNO FUE DESACTIVADO EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'El Alumno fue Activada exitosamente';
+            $msj = 'EL ALUMNO FUE ACTIVADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

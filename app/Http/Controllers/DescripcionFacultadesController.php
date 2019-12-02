@@ -111,24 +111,24 @@ class DescripcionFacultadesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Complete la Reseña Historica del docente';
+            $msj = 'FALTA COMPLETAR LA RESEÑA HISTORICA DE LA FACULTAD';
             $selector = 'reseña';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Complete la Misiòn del docente';
+            $msj = 'FALTA COMPLETAR LA MISION DE LA FACULTAD';
             $selector = 'mision';
         } else if ($validator3->fails()) {
             $result = '0';
-            $msj = 'Complete la Visiòn del docente';
+            $msj = 'FALTA COMPLETAR LA VISION DE LA FACULTAD';
             $selector = 'vision';
         } else if ($validator4->fails()) {
             $result = '0';
-            $msj = 'Complete la Filosofia del docente';
+            $msj = 'FALTA COMPLETAR LA FILOSOFIA DE LA FACULTAD';
             $selector = 'filosofia';
         } else if ($img == 'null') {
             $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
-            $selector = 'descripcion';
+            $msj = 'FALTA INGRESAR EL LOGO DE LA FACULTAD';
+            $selector = 'archivo';
         } else {
 
             if ($request->hasFile('imagen')) {
@@ -172,7 +172,7 @@ class DescripcionFacultadesController extends Controller
                 $newdescripcion->activo = $estado;
                 $newdescripcion->borrado = '0';
                 $newdescripcion->save();
-                $msj = 'Nueva Descripcion de facultades fue registrado con éxito';
+                $msj = 'LA NUEVA DESCRIPCION DE LA FACULTAD FUE REGISTRADA EXITOSAMENTE';
             }
         }
 
@@ -214,7 +214,7 @@ class DescripcionFacultadesController extends Controller
         $reseñahistor = $request->reseñahistor;
         $mision = $request->mision;
         $vision = $request->vision;
-        $imagen = $request->imagen;
+        $img = $request->imagen;
         $filosofia = $request->filosofia;
 
         $result = '1';
@@ -222,7 +222,6 @@ class DescripcionFacultadesController extends Controller
         $selector = '';
 
         $imagen = "";
-        $segureImg = 0;
 
 
         $input1  = array('reseñahistor' => $reseñahistor);
@@ -243,39 +242,34 @@ class DescripcionFacultadesController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Complete la Reseña Historica del docente';
+            $msj = 'FALTA COMPLETAR LA RESEÑA HISTORICA DE LA FACULTAD';
             $selector = 'reseña';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'Complete la Misiòn del docente';
+            $msj = 'FALTA COMPLETAR LA MISION DE LA FACULTAD';
             $selector = 'mision';
         } else if ($validator3->fails()) {
             $result = '0';
-            $msj = 'Complete la Visiòn del docente';
+            $msj = 'FALTA COMPLETAR LA VISION DE LA FACULTAD';
             $selector = 'vision';
         } else if ($validator4->fails()) {
             $result = '0';
-            $msj = 'Complete la Filosofia del docente';
+            $msj = 'FALTA COMPLETAR LA FILOSOFIA DE LA FACULTAD';
             $selector = 'filosofia';
-        } else if ($imagen == 'null') {
-            $result = '0';
-            $msj = 'Debe de Ingresar una Imagen';
-            $selector = 'descripcion';
         } else {
             if ($request->hasFile('imagen')) {
                 $aux = date('d-m-Y') . '-' . date('H-i-s');
-                $input  = array('imagen' => $imagen);
-                $reglas = array('imagen' => 'required|image|mimes:png,jpg,jpeg,gif,jpe,PNG,JPG,JPEG,GIF,JPE');
+                $input  = array('image' => $img);
+                $reglas = array('image' => 'required|image|mimes:png,jpg,jpeg,gif,jpe,PNG,JPG,JPEG,GIF,JPE');
                 $validator = Validator::make($input, $reglas);
                 if ($validator->fails()) {
-                    $segureImg = 1;
                     $msj = "El archivo ingresado como imagen no es una imagen válida, ingrese otro archivo o limpie el formulario";
                     $result = '0';
                     $selector = 'archivo';
                 } else {
-                    $extension = $imagen->getClientOriginalExtension();
+                    $extension = $img->getClientOriginalExtension();
                     $nuevoNombre = $aux . "." . $extension;
-                    $subir = Storage::disk('DescripcionF')->put($nuevoNombre, \File::get($imagen));
+                    $subir = Storage::disk('DescripcionF')->put($nuevoNombre, \File::get($img));
                     if ($subir) {
                         $imagen = $nuevoNombre;
                     } else {
@@ -287,14 +281,7 @@ class DescripcionFacultadesController extends Controller
                 }
             }
             $editadescripcion = DescripcionFacultades::findOrFail($id);
-            if (strlen($imagen) == 0) {
-                $editadescripcion->descripcion = $descripcion;
-                $editadescripcion->reseñahistor = $reseñahistor;
-                $editadescripcion->mision = $mision;
-                $editadescripcion->vision = $vision;
-                $editadescripcion->filosofia = $filosofia;
-                $editadescripcion->save();
-            } else {
+            if ($request->hasFile('imagen')) {
                 $editadescripcion->descripcion = $descripcion;
                 $editadescripcion->reseñahistor = $reseñahistor;
                 $editadescripcion->mision = $mision;
@@ -302,8 +289,15 @@ class DescripcionFacultadesController extends Controller
                 $editadescripcion->imagen = $imagen;
                 $editadescripcion->filosofia = $filosofia;
                 $editadescripcion->save();
+            } else {
+                $editadescripcion->descripcion = $descripcion;
+                $editadescripcion->reseñahistor = $reseñahistor;
+                $editadescripcion->mision = $mision;
+                $editadescripcion->vision = $vision;
+                $editadescripcion->filosofia = $filosofia;
+                $editadescripcion->save();
             }
-            $msj = 'Nueva Descripcion de facultades fue Modificado con éxito';
+            $msj = 'LA DECRIPCION DE LA FACULTAD FUE MODIFICADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -322,7 +316,7 @@ class DescripcionFacultadesController extends Controller
         $borrar = DescripcionFacultades::findOrFail($id);
         $borrar->borrado = '1';
         $borrar->save();
-        $msj = 'La Descripcion fue eliminado exitosamente';
+        $msj = 'LA DESCRIPCION FUE ELIMINADO EXITOSAMENTE';
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
 
@@ -337,9 +331,9 @@ class DescripcionFacultadesController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'La Descripcion fue Desactivada exitosamente';
+            $msj = 'LA DESCRIPCION FUE DESACTIVADO EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'La Descripcion fue Activada exitosamente';
+            $msj = 'LA DESCRIPCION FUE ACTIVADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

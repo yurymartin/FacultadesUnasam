@@ -88,7 +88,7 @@ class CategoriaDocentesController extends Controller
 
         if ($validator1->fails()) {
             $result='0';
-            $msj='Ingrese la categoria de los docentes';
+            $msj='FALTA INGRESAR LA CATEGORIA DE DOCENTES';
             $selector='txtcategoria';
         }
        
@@ -99,7 +99,7 @@ class CategoriaDocentesController extends Controller
             $newCategoria->activo=$activo;
             $newCategoria->borrado='0';
             $newCategoria->save();
-            $msj='Nueva categoria registrada con éxito';
+            $msj='LA NUEVA CATEGORIA FUE REGISTRADA EXITOSAMENTE';
         }
 
         return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
@@ -151,7 +151,7 @@ class CategoriaDocentesController extends Controller
 
         if ($validator1->fails()) {
             $result='0';
-            $msj='Ingrese la categoria de los docentes';
+            $msj='FALTA INGRESAR LA CATEGORIA DE DOCENTES';
             $selector='txtcategoria';
         }
        
@@ -161,7 +161,7 @@ class CategoriaDocentesController extends Controller
             $newCategoria->categoria=$categoria;
             $newCategoria->save();
 
-            $msj='Nueva Departamento Academico fue modificado con éxito';
+            $msj='LA NUEVA CATEGORIA FUE MODIFICADA EXITOSAMENTE';
         }
         return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
     }
@@ -177,9 +177,9 @@ class CategoriaDocentesController extends Controller
         $update->save();
 
         if(strval($activo)=="0"){
-            $msj='La Categoria de Docente fue Desactivada exitosamente';
+            $msj='LA CATEGORIA FUE DESACTIVADA EXITOSAMENTE';
         }elseif(strval($activo)=="1"){
-            $msj='La Categoria de Docente fue Activada exitosamente';
+            $msj='LA CATEGORIA FUE ACTIVADA EXITOSAMENTE';
         }
 
         return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
@@ -198,7 +198,7 @@ class CategoriaDocentesController extends Controller
         $borrar = CategoriaDocentes::findOrFail($id);
         $borrar->borrado='1';
         $borrar->save();
-        $msj='La categoria fue eliminado exitosamente';
+        $msj='LA CATEGORIA FUE ELIMINADA EXITOSAMENTE';
         return response()->json(["result"=>$result,'msj'=>$msj]);
     }
 }

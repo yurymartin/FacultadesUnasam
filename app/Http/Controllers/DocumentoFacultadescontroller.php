@@ -93,15 +93,15 @@ class DocumentoFacultadescontroller extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Falta el titulo del documento';
+            $msj = 'FALTA COOMPLETAR EL TITULO DEL DOCUMENTO';
             $selector = 'titulo';
         } else if ($img == 'null') {
             $result = '0';
-            $msj = 'Falta seleccionar la imagen de portada del documento';
+            $msj = 'FALTA INGRESAR LA IMAGEN DEL DOCUMENTO';
             $selector = 'archivo';
         } else if ($link == 'null') {
             $result = '0';
-            $msj = 'Falta seleccionar el documento';
+            $msj = 'FALTA SELECCIONAR EL DOCUMENTO DE LA FACULTAD';
             $selector = 'archivo2';
         } else {
             if ($request->file('imagen')) {
@@ -136,7 +136,7 @@ class DocumentoFacultadescontroller extends Controller
                 $validator3 = Validator::make($input3, $reglas3);
                 if ($validator3->fails()) {
                     $seguredoc = 1;
-                    $msj = "El archivo ingresado solo debe ser PDF";
+                    $msj = "EL DOCUMENTO DEBE SER EN FORMATO PDF";
                     $result = '0';
                     $selector = 'archivo2';
                 } else {
@@ -161,7 +161,7 @@ class DocumentoFacultadescontroller extends Controller
             $newdescripcion->activo = $estado;
             $newdescripcion->borrado = '0';
             $newdescripcion->save();
-            $msj = 'El Documento fue registrado con éxito';
+            $msj = 'EL DOCUMENTO DE LA FACULTAD FUE REGISTRADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -216,7 +216,7 @@ class DocumentoFacultadescontroller extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Falta el Titulo del documento';
+            $msj = 'FALTA COMPLETAR EL TITULO DEL DOCUMENTO';
             $selector = 'titulo';
         } else {
             if ($request->file('imagen')) {
@@ -251,7 +251,7 @@ class DocumentoFacultadescontroller extends Controller
                 $validator3 = Validator::make($input3, $reglas3);
                 if ($validator3->fails()) {
                     $seguredoc = 1;
-                    $msj = "El archivo ingresado solo debe ser PDF";
+                    $msj = "EL ARCHIVO TIENE QUE SER EN FORMATO PDF";
                     $result = '0';
                     $selector = 'archivo2';
                 } else {
@@ -289,7 +289,7 @@ class DocumentoFacultadescontroller extends Controller
                 $newdescripcion->ruta = $ruta;
                 $newdescripcion->save();
             }
-            $msj = 'el documento fue Modificado con éxito';
+            $msj = 'EL DOCUMENTO FUE MODIFICADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -308,7 +308,7 @@ class DocumentoFacultadescontroller extends Controller
         $borrar = DocumentoFacultades::findOrFail($id);
         $borrar->borrado = '1';
         $borrar->save();
-        $msj = 'el documento fue eliminado exitosamente';
+        $msj = 'EL DOCUMENTO FUE ELIMANADO EXITOSAMENTE';
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
 
@@ -323,9 +323,9 @@ class DocumentoFacultadescontroller extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'el documento fue Desactivada exitosamente';
+            $msj = 'EL DOCUMENTO FUE DESACTIVADO EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'el documento fue Activada exitosamente';
+            $msj = 'EL DOCUMENTO FUE ACTIVADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

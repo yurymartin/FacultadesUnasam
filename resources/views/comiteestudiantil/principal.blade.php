@@ -1,6 +1,6 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de Comite Estudiantil</h3>
+    <h3 class="box-title">Gestión de ComiteS Estudiantiles</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="{{URL::to('home')}}"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
@@ -27,7 +27,7 @@
         <div class="form-group" style="padding-top: 15px;">
           <label for="txttitulo" class="col-sm-2 control-label">Titulo:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Titulo" maxlength="500"
+            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Titulo del comite estudiantil" maxlength="500"
               v-model="newTitulo">
           </div>
         </div>
@@ -37,7 +37,7 @@
         <div class="form-group" style="padding-top: 15px;">
           <label for="txtdescripcion" class="col-sm-2 control-label">Descripción:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion" placeholder="Descripcion"
+            <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion" placeholder="Descripcion del comite estudiantil"
               maxlength="500" v-model="newDescripcion">
           </div>
         </div>
@@ -101,7 +101,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Comite Estudiantil</h3>
+    <h3 class="box-title">Listado de Comites Estudiantiles</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -123,10 +123,10 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Titulo</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Descripción</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">imagen</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 8%;">Estado</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 25%;">Titulo</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 25%;">Descripción</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 25%;">imagen</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
         <tr v-for="comestudiantil, key in comiteestudiantil">
@@ -134,7 +134,7 @@
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ comestudiantil.titulo}}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ comestudiantil.descripcion}}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: center;vertical-align: middle;">
-            <img :src="getImg(comestudiantil)" alt="" class="img img-responsive" width="150px" height="50px">
+            <img :src="getImg(comestudiantil)" alt="" width="150px" height="100px">
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
@@ -216,7 +216,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
               style="font-size: 35px;">&times;</span></button>
           <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR
-            BANNER</h4>
+            EL COMITE ESTUDIANTIL</h4>
 
         </div>
         <div class="modal-body">
@@ -231,7 +231,7 @@
                     <label for="txttituloE" class="col-sm-2 control-label">Titulo:*</label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="txttituloE" name="txttituloE"
-                        placeholder="Titulo" maxlength="500" v-model="fillGalEcuela.titulo">
+                        placeholder="Titulo del comite estudiantil" maxlength="500" v-model="fillGalEcuela.titulo">
                     </div>
                   </div>
                 </div>
@@ -241,7 +241,7 @@
                     <label for="txtdescripcionE" class="col-sm-2 control-label">Descripción:*</label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="txtdescripcionE" name="txtdescripcionE"
-                        placeholder="Descripcion" maxlength="500" v-model="fillGalEcuela.descripcion">
+                        placeholder="Descripcion del comite estudiantil" maxlength="500" v-model="fillGalEcuela.descripcion">
                     </div>
                   </div>
                 </div>

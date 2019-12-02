@@ -72,8 +72,8 @@ class CargoController extends Controller
     public function store(Request $request)
     {
         $cargo = $request->cargo;
+        $descripcion = $request->descripcion;
         $activo = $request->activo;
-        $borrado = 0;
 
         $result = '1';
         $msj = '';
@@ -82,22 +82,30 @@ class CargoController extends Controller
         $input1  = array('cargo' => $cargo);
         $reglas1 = array('cargo' => 'required');
 
+        $input2 = array('descripcion' => $descripcion);
+        $reglas2 = array('descripcion' => 'required');
 
         $validator1 = Validator::make($input1, $reglas1);
+        $validator2 = Validator::make($input2, $reglas2);
 
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Ingrese el Cargo';
+            $msj = 'FALTA COMPLETAR EL CARGO';
             $selector = 'txttitulo';
+        } else if ($validator2->fails()) {
+            $result = '0';
+            $msj = 'FALTA COMPLETAR LA DESCRIPCION DEL CARGO';
+            $selector = 'descripcion';
         } else {
 
             $newCargo = new Cargo();
             $newCargo->cargo = $cargo;
+            $newCargo->descripcion = $descripcion;
             $newCargo->activo = $activo;
             $newCargo->borrado = '0';
             $newCargo->save();
-            $msj = 'Nueva Cargo Academico registrado con éxito';
+            $msj = 'EL CARGO FUE REGISTRADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -135,7 +143,7 @@ class CargoController extends Controller
     public function update(Request $request, $id)
     {
         $cargo = $request->cargo;
-        $borrado = 0;
+        $descripcion = $request->descripcion;
 
         $result = '1';
         $msj = '';
@@ -144,24 +152,34 @@ class CargoController extends Controller
         $input1  = array('cargo' => $cargo);
         $reglas1 = array('cargo' => 'required');
 
+        $input2 = array('descripcion' => $descripcion);
+        $reglas2 = array('descripcion' => 'required');
 
         $validator1 = Validator::make($input1, $reglas1);
+        $validator2 = Validator::make($input2, $reglas2);
 
 
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'Ingrese el Nombre del cargo';
+            $msj = 'FALTA COMPLETAR EL CARGO';
             $selector = 'txttitulo';
+        } else if ($validator2->fails()) {
+            $result = '0';
+            $msj = 'FALTA COMPLETAR LA DESCRIPCION DEL CARGO';
+            $selector = 'descripcion';
         } else {
 
             $newCargo = Cargo::findOrFail($id);
             $newCargo->cargo = $cargo;
+            $newCargo->descripcion = $descripcion;
             $newCargo->save();
 
-            $msj = 'Nueva Cargo fue modificado con éxito';
+            $msj = 'EL CARGO FUE MODIFICADO EXITOSAMENTE';
         }
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
+
+
     public function altabaja($id, $activo)
     {
         $result = '1';
@@ -173,9 +191,9 @@ class CargoController extends Controller
         $update->save();
 
         if (strval($activo) == "0") {
-            $msj = 'El Cargo fue Desactivada exitosamente';
+            $msj = 'EL CARGO FUE DESACTIVADO EXITOSAMENTE';
         } elseif (strval($activo) == "1") {
-            $msj = 'El Cargo fue Activada exitosamente';
+            $msj = 'EL CARGO FUE ACTIVADO EXITOSAMENTE';
         }
 
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
@@ -199,7 +217,7 @@ class CargoController extends Controller
 
         $borrar->save();
 
-        $msj = 'Cargo Academico eliminado exitosamente';
+        $msj = 'EL CARGO FUE ELIMINADO EXITOSAMENTE';
 
         return response()->json(["result" => $result, 'msj' => $msj]);
     }

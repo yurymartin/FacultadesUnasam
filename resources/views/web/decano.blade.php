@@ -35,22 +35,29 @@
             </div>
             <div class="col-md-9">
                 <div class="widget-main-title">
-                    <h4 class="widget-title" style="text-align: left;font-size: 16px;"><strong>DECANO</strong></h4>
+                    @foreach ($decano as $deca)
+                    <h4 class="widget-title" style="text-align: left;font-size: 16px;"><strong>{{$deca->cargo}}</strong>
+                    </h4>
+                    @endforeach
                 </div>
                 <div class="widget-main-title">
-                    <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px">El
-                        decanato
-                        es un Órgano de Dirección y la máxima autoridad de gobierno de la Facultad, representa a la
-                        Facultad de Ciencias Sociales, Educación y de la Comunicación, dirige la gestión académica y
-                        administrativa, representa a la Facultad ante el Consejo Universitario y la Asamblea
-                        Universitaria conforme lo dispone la Ley Universitaria N° 30220.</p>
+                    @foreach ($decano as $deca)
+                    <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px">
+                        {{$deca->descripcion}}</p>
+                    @endforeach
+
                 </div>
                 <br><br>
                 <div class="text-center">
-                    <img src="images/decano.jpg" alt="Responsive image" class="img-thumbnail imagen2 imagen" style="  width:50%;
+                    @foreach ($decano as $deca)
+                    <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px">
+                        {{$deca->descripcion}}</p>
+                    <img src="{{ asset('/img/personas/'.$deca->foto)}}" alt="Responsive image"
+                        class="img-thumbnail imagen2 imagen" style="  width:50%;
                             height:50%;">
                     <hr width="50px">
-                    <p class="widget-title" style="text-align: center">Dr. Simeón Moisés Huerta Rosales</p>
+                    <p class="widget-title" style="text-align: center">{{$deca->nombres.' '$deca->apellidos}}</p>
+                    @endforeach
                 </div>
             </div>
         </div>

@@ -3,7 +3,7 @@
     el: '#app',
     data: {
     titulo: "Mantenimiento",
-    subtitulo: "Gestión de la Eventos",
+    subtitulo: "Gestión de la Eventos de la Facultad",
     subtitulo2: "Principal",
 
     subtitle2: false,
@@ -28,8 +28,8 @@
     divtitulo: true,
     classTitle: 'fa fa-qrcode ',
     classMenu0: '',
-    classMenu1: 'active',
-    classMenu2: '',
+    classMenu1: '',
+    classMenu2: 'active',
     classMenu3: '',
     classMenu4: '',
     classMenu5: '',

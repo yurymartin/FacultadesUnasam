@@ -1,7 +1,7 @@
 @extends('vendor.adminlte.layouts.app')
 
 @section('htmlheader_title')
-Gestión de Galerias
+Gestión de Galerias de Imagenes
 @endsection
 
 <style type="text/css">

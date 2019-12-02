@@ -111,9 +111,6 @@ desired effect
 <?php elseif($modulo=="descripcionescuelas"): ?>
 <?php echo $__env->make('descripcionescuelas.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-<?php elseif($modulo=="nosotrosescuelas"): ?>
-<?php echo $__env->make('nosotrosescuelas.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
 <?php elseif($modulo=="campolaborales"): ?>
 <?php echo $__env->make('campolaborales.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 

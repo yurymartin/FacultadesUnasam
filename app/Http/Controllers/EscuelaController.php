@@ -12,6 +12,7 @@ use Storage;
 use App\Persona;
 use App\Tipouser;
 use App\User;
+
 class EscuelaController extends Controller
 {
     /**
@@ -70,14 +71,13 @@ class EscuelaController extends Controller
      */
     public function store(Request $request)
     {
-        $nombre=$request->nombre;
-        $descripcion=$request->descripcion;
-        $activo=$request->activo;
-        $borrado=0;
+        $nombre = $request->nombre;
+        $activo = $request->activo;
+        $borrado = 0;
 
-        $result='1';
-        $msj='';
-        $selector='';
+        $result = '1';
+        $msj = '';
+        $selector = '';
 
         $input1  = array('nombre' => $nombre);
         $reglas1 = array('nombre' => 'required');
@@ -87,23 +87,20 @@ class EscuelaController extends Controller
 
 
         if ($validator1->fails()) {
-            $result='0';
-            $msj='Ingrese el Nombre de la escuela';
-            $selector='txttitulo';
-        }
-       
-        else{
+            $result = '0';
+            $msj = 'Ingrese el Nombre de la escuela';
+            $selector = 'txttitulo';
+        } else {
 
             $newEscuela = new Escuela();
-            $newEscuela->nombre=$nombre;
-            $newEscuela->descripcion=$descripcion;
-            $newEscuela->activo=$activo;
-            $newEscuela->borrado='0';
+            $newEscuela->nombre = $nombre;
+            $newEscuela->activo = $activo;
+            $newEscuela->borrado = '0';
             $newEscuela->save();
-            $msj='Nueva Escuela registrado con éxito';
+            $msj = 'LA NUEVA ESCUELA PROFESIONAL FUE CREADO EXITOSAMENTE';
         }
 
-        return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
+        return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
 
     /**
@@ -137,13 +134,12 @@ class EscuelaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $nombre=$request->nombre;
-        $descripcion=$request->descripcion;
-        $borrado=0;
+        $nombre = $request->nombre;
+        $borrado = 0;
 
-        $result='1';
-        $msj='';
-        $selector='';
+        $result = '1';
+        $msj = '';
+        $selector = '';
 
         $input1  = array('nombre' => $nombre);
         $reglas1 = array('nombre' => 'required');
@@ -153,40 +149,36 @@ class EscuelaController extends Controller
 
 
         if ($validator1->fails()) {
-            $result='0';
-            $msj='Ingrese el Nombre de la escuela';
-            $selector='txttitulo';
-        }
-       
-        else{
+            $result = '0';
+            $msj = 'Ingrese el Nombre de la escuela';
+            $selector = 'txttitulo';
+        } else {
 
-            $newEscuela =Escuela::findOrFail($id);
-            $newEscuela->nombre=$nombre;
-            $newEscuela->descripcion=$descripcion;
+            $newEscuela = Escuela::findOrFail($id);
+            $newEscuela->nombre = $nombre;
             $newEscuela->save();
 
-            $msj='Nueva Escuela fue modificado con éxito';
+            $msj = 'LA ESCUELA PROFESIONAL FUE MODIFICADO EXITOSAMENTE';
         }
-        return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
+        return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
-    public function altabaja($id,$activo)
+    public function altabaja($id, $activo)
     {
-        $result='1';
-        $msj='';
-        $selector='';
+        $result = '1';
+        $msj = '';
+        $selector = '';
 
         $update = Escuela::findOrFail($id);
-        $update->activo=$activo;
+        $update->activo = $activo;
         $update->save();
 
-        if(strval($activo)=="0"){
-            $msj='La escuela fue Desactivada exitosamente';
-        }elseif(strval($activo)=="1"){
-            $msj='La escuela fue Activada exitosamente';
+        if (strval($activo) == "0") {
+            $msj = 'LA ESCUELA PROFESIONAL FUE DESACTIVADA EXITOSAMENTE';
+        } elseif (strval($activo) == "1") {
+            $msj = 'LA ESCUELA PROFESIONAL FUE ACTIVADA EXITOSAMENTE';
         }
 
-        return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
-
+        return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
     /**
      * Remove the specified resource from storage.
@@ -199,16 +191,41 @@ class EscuelaController extends Controller
         $result = '1';
         $msj = '1';
 
+        $consulta = DB::table('bannersescuelas')
+            ->where('escuela_id', '=', $id)
+            ->count();
 
-        $borrar = Escuela::findOrFail($id);
-        //$task->delete();
+        $consulta1 = DB::table('campolaborales')
+            ->where('escuela_id', '=', $id)
+            ->count();
 
-        $borrar->borrado = '1';
+        $consulta2 = DB::table('perfiles')
+            ->where('escuela_id', '=', $id)
+            ->count();
 
-        $borrar->save();
+        $consulta3 = DB::table('descripcionescuelas')
+            ->where('escuela_id', '=', $id)
+            ->count();
 
-        $msj = 'La escuela eliminado exitosamente';
+        $consulta4 = DB::table('galeriaescuelas')
+            ->where('escuela_id', '=', $id)
+            ->count();
 
+        $consulta5 = DB::table('mallas')
+            ->where('escuela_id', '=', $id)
+            ->count();
+
+
+
+        if ($consulta > 0 || $consulta1 > 0 || $consulta2 > 0 || $consulta3 > 0 || $consulta4 > 0 || $consulta5 > 0) {
+            $result = '0';
+            $msj = 'NO SE PUEDE ELIMINAR LA ESCUELA PROFESIONAL PORQUE CAUSARIA PROBLEMAS EN EL SISTEMA';
+        } else {
+            $borrar = Escuela::findOrFail($id);
+            $borrar->borrado = '1';
+            $borrar->save();
+            $msj = 'LA ESCUELA PROFESIONAL FUE ELIMINADO EXITOSAMENTE';
+        }
         return response()->json(["result" => $result, 'msj' => $msj]);
     }
 }

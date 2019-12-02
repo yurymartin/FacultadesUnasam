@@ -1,6 +1,6 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de Galeria</h3>
+    <h3 class="box-title">Gestión de las Galerias de las Escuelas</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="{{URL::to('home')}}"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
@@ -9,7 +9,7 @@
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
-          class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Galeria</button>
+          class="fa fa-plus-square-o" aria-hidden="true"></i> Nueva Imagen para la galeria de las escuelas</button>
     </div>
 
   </div>
@@ -18,7 +18,7 @@
 
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
-    <h3 class="box-title" id="tituloAgregar">Nuevo Galeria</h3>
+    <h3 class="box-title" id="tituloAgregar">Nuevo Imagen</h3>
   </div>
 
   <form v-on:submit.prevent="create">
@@ -38,7 +38,7 @@
         <div class="form-group" style="padding-top: 15px;">
           <label for="txtdescripcion" class="col-sm-2 control-label">Descripción:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion" placeholder="Descripcion"
+            <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion" placeholder="Descripcion de la imagen"
               maxlength="500" v-model="newDescripcion">
           </div>
         </div>
@@ -48,8 +48,8 @@
           <div class="form-group">
             <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>
             <div class="col-sm-8">
-              <select name="cbescuela" id="cbescuela" class="form-control" v-model="escuela_id" @change="seltipo">
-                <option disabled value="0">Seleccione una Escula</option>
+              <select name="cbescuela" id="cbescuela" class="form-control" v-model="escuela_id">
+                <option disabled value="0">Seleccione una de las Escuelas</option>
                 <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">
                   @{{escuela.nombre}}
                 </option>
@@ -128,17 +128,17 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">imagen</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Descripción</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Escuela</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">imagen</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Descripción</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Escuela</th>
           {{-- <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha</th> --}}
-          <th style="border:1px solid #ddd;padding: 5px; width: 8%;">Estado</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
         <tr v-for="galeriaE, key in galeriaescuelas">
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{key+pagination.from}}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: center;vertical-align: middle;">
-            <img :src="getImg(galeriaE)" alt="" class="img img-responsive" width="150px" height="50px">
+            <img :src="getImg(galeriaE)" alt="" width="150px" height="100px">
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ galeriaE.descripcion }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ galeriaE.nombre }}</td>
@@ -255,8 +255,7 @@
                   <div class="form-group">
                     <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>
                     <div class="col-sm-8">
-                      <select name="cbescuela" id="cbescuela" class="form-control" v-model="fillGalEcuela.escuela_id"
-                        @change="seltipo">
+                      <select name="cbescuela" id="cbescuela" class="form-control" v-model="fillGalEcuela.escuela_id">
                         <option disabled value="0">Seleccione una Escula</option>
                         <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">
                           @{{escuela.nombre}}

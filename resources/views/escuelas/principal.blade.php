@@ -1,6 +1,6 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de Escuelas</h3>
+    <h3 class="box-title">Gestión de Escuelas Profesionales</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="{{URL::to('home')}}"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
@@ -8,7 +8,7 @@
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
-          class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Escula</button>
+          class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Escuela Profesional</button>
     </div>
   </div>
 </div>
@@ -20,22 +20,14 @@
     <div class="box-body">
       <div class="col-md-12">
         <div class="form-group">
-          <label for="txttitulo" class="col-sm-2 control-label">Nombre de la facultad*</label>
+          <label for="txttitulo" class="col-sm-2 control-label">Nombre de la Escuela Profesional*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Nombre de la facultad"
+            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Nombre de la escuela profesional"
               maxlength="200" autofocus v-model="newTitulo">
           </div>
         </div>
       </div>
-      <div class="col-md-12">
-        <div class="form-group" style="padding-top: 15px;">
-          <label for="txtdescripcion" class="col-sm-2 control-label">Descripción:</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion" placeholder="Descripcion"
-              maxlength="500" v-model="newDescripcion">
-          </div>
-        </div>
-      </div>
+
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
           <label for="cbuestado" class="col-sm-2 control-label">Estado:*</label>
@@ -82,7 +74,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Facultades</h3>
+    <h3 class="box-title">Listado de Escuelas Profesionales</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -104,15 +96,13 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Escuela</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Descripcion</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Escuela Profesional</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
         <tr v-for="escuela, key in escuelas">
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{key+pagination.from}}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ escuela.nombre }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ escuela.descripcion }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
               <span class="label label-success" v-if="escuela.activo=='1'">Activo</span>
@@ -203,20 +193,10 @@
 
                 <div class="col-md-12">
                   <div class="form-group">
-                    <label for="txttituloE" class="col-sm-2 control-label">Nombre del departamento academico:*</label>
+                    <label for="txttituloE" class="col-sm-2 control-label">Nombre de la Escuela Profesional:*</label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Departamento academico"
                         maxlength="200" autofocus v-model="fillEscuela.nombre">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-12">
-                  <div class="form-group" style="padding-top: 15px;">
-                    <label for="txtdescripcionE" class="col-sm-2 control-label">Descripción:</label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control" id="txtdescripcionE" name="txtdescripcionE"
-                        placeholder="Descripcion" maxlength="500" v-model="fillEscuela.descripcion">
                     </div>
                   </div>
                 </div>

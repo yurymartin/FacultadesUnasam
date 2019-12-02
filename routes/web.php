@@ -16,6 +16,12 @@
 // });
 /*------------------------------------------------------------------------------------------------*/
 Route::resource('/', 'IndexWebController');
+
+Route::get('historia', 'IndexWebController@historiaF');
+Route::get('decano', 'IndexWebController@decano');
+Route::get('consejo', 'IndexWebController@consejo');
+Route::get('departacademico', 'IndexWebController@departacademico');
+Route::get('ingenieriadesistemaseinformatica', 'IndexWebController@ingenieriadesistemaseinformatica');
 /*------------------------------------------------------------------------------------------------*/
 
 

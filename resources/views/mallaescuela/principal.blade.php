@@ -1,6 +1,6 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de Galeria</h3>
+    <h3 class="box-title">Gestión de Mallas Curriculares</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="{{URL::to('home')}}"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
@@ -9,7 +9,7 @@
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
-          class="fa fa-plus-square-o" aria-hidden="true"></i> Nueva Malla</button>
+          class="fa fa-plus-square-o" aria-hidden="true"></i> Nueva Malla Curricular</button>
     </div>
 
   </div>
@@ -18,7 +18,7 @@
 
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
-    <h3 class="box-title" id="tituloAgregar">Nueva Malla</h3>
+    <h3 class="box-title" id="tituloAgregar">Nueva Malla Curricular</h3>
   </div>
 
   <form v-on:submit.prevent="create">
@@ -106,7 +106,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Malla</h3>
+    <h3 class="box-title">Listado de Malla Curriculares</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -128,18 +128,17 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Imagen</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 8%;">N° Curricula</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Imagen</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">N° Curricula</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Fecha de Registro</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Escuela</th>
-          {{-- <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha</th> --}}
-          <th style="border:1px solid #ddd;padding: 5px; width: 8%;">Estado</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Estado</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Gestión</th>
         </tr>
         <tr v-for="mallaE, key in mallaescuelas">
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{key+pagination.from}}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: center;vertical-align: middle;">
-            <img :src="getImg(mallaE)" alt="" class="img img-responsive" width="150px" height="50px">
+            <img :src="getImg(mallaE)" alt="" width="150px" height="100px">
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{mallaE.numcurricula }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{mallaE.fechaRegistro }}</td>
