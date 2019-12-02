@@ -84,9 +84,6 @@ desired effect
 <?php elseif($modulo=="galeriaescuelas"): ?>
 <?php echo $__env->make('galeriaescuela.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-<?php elseif($modulo=="libros"): ?>
-<?php echo $__env->make('libroescuela.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
 <?php elseif($modulo=="mallaescuelas"): ?>
 <?php echo $__env->make('mallaescuela.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 

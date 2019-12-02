@@ -268,9 +268,8 @@ methods: {
         this.fillBanner.descripcion=banner.descripcion;            
         this.fillBanner.imagen=banner.imagen;
         this.fillBanner.escuela_id=banner.idescu;
-        
         this.imagen=null;
-        console.log();
+
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
                 $("#txttituloE").focus();

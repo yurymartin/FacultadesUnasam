@@ -159,7 +159,7 @@
 
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Investigaciones</h3>
+    <h3 class="box-title">Listado de Libros</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">

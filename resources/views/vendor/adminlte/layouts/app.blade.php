@@ -84,9 +84,6 @@ desired effect
 @elseif($modulo=="galeriaescuelas")
 @include('galeriaescuela.vue')
 
-@elseif($modulo=="libros")
-@include('libroescuela.vue')
-
 @elseif($modulo=="mallaescuelas")
 @include('mallaescuela.vue')
 
