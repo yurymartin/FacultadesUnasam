@@ -22,6 +22,14 @@ Route::get('decano', 'IndexWebController@decano');
 Route::get('consejo', 'IndexWebController@consejo');
 Route::get('departacademico', 'IndexWebController@departacademico');
 Route::get('ingenieriadesistemaseinformatica', 'IndexWebController@ingenieriadesistemaseinformatica');
+
+
+Route::get('misionvision', 'IndexWebController@misionvision');
+Route::get('filosofia', 'IndexWebController@filosofia');
+Route::get('organigrama', 'IndexWebController@organigrama');
+Route::get('revista', 'IndexWebController@revista');
+Route::get('librosweb', 'IndexWebController@librosweb');
+Route::get('docentesweb', 'IndexWebController@docentesweb');
 /*------------------------------------------------------------------------------------------------*/
 
 
@@ -148,7 +156,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('bannersescuelas', 'BannerEscuelaController@index1');
     Route::resource('banner', 'BannerEscuelaController');
     Route::get('banner/altabaja/{id}/{var}', 'BannerEscuelaController@altabaja');
-    
+
     Route::get('galeriaescuelas', 'GalEscuelaController@index1');
     Route::resource('galeriaescuela', 'GalEscuelaController');
     Route::get('galeriaescuela/altabaja/{id}/{var}', 'GalEscuelaController@altabaja');
@@ -164,10 +172,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('organigramafacultades', 'OrganigramaController@index1');
     Route::resource('organigramafacultad', 'OrganigramaController');
     Route::get('organigramafacultad/altabaja/{id}/{var}', 'OrganigramaController@altabaja');
-    
-    Route::get('misionvision', 'IndexWebController@misionvision');
-    Route::get('filosofia', 'IndexWebController@filosofia');
-    Route::get('organigrama', 'IndexWebController@organigrama');
-    Route::get('revista', 'IndexWebController@revista');
-    Route::get('librosweb', 'IndexWebController@librosweb');
 });

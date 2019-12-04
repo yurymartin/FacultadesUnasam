@@ -118,7 +118,7 @@
                         <ul class="sub-menu">
                             <li><a href="events-grid.html">Nuestra Facultad</a>
                                 <ul class="sub-menu">
-                                    <li><a href="misvis">Misión y Visión</a></li>
+                                    <li><a href="misionvision">Misión y Visión</a></li>
                                     <li><a href="historia">Historia</a></li>
                                     <li><a href="filosofia">Filosofia Institucional</a></li>
                                 </ul>
@@ -136,7 +136,7 @@
                     <li><a href="#">Carreras Profesionales</a>
                         <ul class="sub-menu">
                             @foreach ($escuelas as $escuela)
-                            <li><a href="{{$escuela->descripcion}}">{{$escuela->nombre}}</a></li>
+                            <li><a href="ingenieriadesistemaseinformatica">{{$escuela->nombre}}</a></li>
                             @endforeach
                         </ul>
                     </li>
@@ -145,7 +145,7 @@
                             <li><a href="#">Investigaciones y Libros </a>
                                 <ul> 
                                     <li><a href="revista">investigaciones</a></li>
-                                    <li><a href="libro">libros</a></li>
+                                    <li><a href="librosweb">libros</a></li>
                                 </ul>
                                 
                             </li>
@@ -156,7 +156,7 @@
                     </li>
                     <li><a href="#">Docentes</a>
                         <ul class="sub-menu">
-                            <li><a href="docentes">Plana Docente</a></li>
+                            <li><a href="docentesweb">Plana Docente</a></li>
                         </ul>
                     </li>
                     <li><a href="#">Alumnos</a>

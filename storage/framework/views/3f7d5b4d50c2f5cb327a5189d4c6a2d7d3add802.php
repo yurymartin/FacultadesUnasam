@@ -34,28 +34,28 @@
             </div>
             <div class="col-md-9">
                 <div class="widget-main-title">
-                    <?php $__currentLoopData = $decano; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $deca): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <h4 class="widget-title" style="text-align: left;font-size: 16px;"><strong><?php echo e($deca->cargo); ?></strong>
+                    <?php $__currentLoopData = $decano; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $de): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <h4 class="widget-title" style="text-align: left;font-size: 16px;"><strong><?php echo e($de->cargo); ?></strong>
                     </h4>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
                 <div class="widget-main-title">
-                    <?php $__currentLoopData = $decano; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $deca): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__currentLoopData = $decano; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $de): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px">
-                        <?php echo e($deca->descripcion); ?></p>
+                        <?php echo e($de->descripcion); ?></p>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                 </div>
                 <br><br>
                 <div class="text-center">
-                    <?php $__currentLoopData = $decano; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $deca): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__currentLoopData = $decano; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $de): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px">
-                        <?php echo e($deca->descripcion); ?></p>
-                    <img src="<?php echo e(asset('/img/personas/'.$deca->foto)); ?>" alt="Responsive image"
+                        <?php echo e($de->descripcion); ?></p>
+                    <img src="<?php echo e(asset('/img/personas/'.$de->foto)); ?>" alt="Responsive image"
                         class="img-thumbnail imagen2 imagen" style="  width:50%;
-                            height:50%;">
+                                height:50%;">
                     <hr width="50px">
-                    <p class="widget-title" style="text-align: center"><?php echo e($deca->nombres.' '$deca->apellidos); ?></p>
+                    <p class="widget-title" style="text-align: center"><?php echo e($de->nombres.' '.$de->apellidos); ?></p>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </div>
