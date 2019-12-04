@@ -20,13 +20,16 @@ Route::get('historia', 'IndexWebController@historiaF');
 Route::get('decano', 'IndexWebController@decano');
 Route::get('consejo', 'IndexWebController@consejo');
 Route::get('departacademico', 'IndexWebController@departacademico');
-Route::get('misionvision', 'IndexWebController@misionvision');
-Route::get('filosofia', 'IndexWebController@filosofia');
-Route::get('organigrama', 'IndexWebController@organigrama');
 Route::get('investigacionesfacultad', 'IndexWebController@investigacionesfacultad');
 Route::get('librosweb', 'IndexWebController@librosweb');
 Route::get('comestudiantil', 'IndexWebController@comestudiantil');
 Route::get('escuelaweb/{idescuela}','IndexWebController@escuelas');
+
+Route::get('misionvision', 'IndexWebController@misionvision');
+Route::get('filosofia', 'IndexWebController@filosofia');
+Route::get('organigrama', 'IndexWebController@organigrama');
+Route::get('revista', 'IndexWebController@revista');
+Route::get('docentesweb', 'IndexWebController@docentesweb');
 /*------------------------------------------------------------------------------------------------*/
 
 
@@ -153,7 +156,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('bannersescuelas', 'BannerEscuelaController@index1');
     Route::resource('banner', 'BannerEscuelaController');
     Route::get('banner/altabaja/{id}/{var}', 'BannerEscuelaController@altabaja');
-    
+
     Route::get('galeriaescuelas', 'GalEscuelaController@index1');
     Route::resource('galeriaescuela', 'GalEscuelaController');
     Route::get('galeriaescuela/altabaja/{id}/{var}', 'GalEscuelaController@altabaja');

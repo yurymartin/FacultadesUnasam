@@ -136,15 +136,24 @@
                     <li><a href="#">Carreras Profesionales</a>
                         <ul class="sub-menu">
                             @foreach ($escuelas as $escuela)
+<<<<<<< HEAD
                             <li><a href="/escuelaweb/{{$escuela->id}}" name='idescuela'>{{$escuela->nombre}}</a></li>
+=======
+                            <li><a href="ingenieriadesistemaseinformatica">{{$escuela->nombre}}</a></li>
+>>>>>>> 7fbd038794dde6d91d3e00edb577309d0bf80917
                             @endforeach
                         </ul>
                     </li>
                     <li><a href="#">Repositorio de la Facultad</a>
                         <ul class="sub-menu">
                             <li><a href="#">Investigaciones y Libros </a>
+<<<<<<< HEAD
                                 <ul>
                                     <li><a href="investigacionesfacultad">investigaciones</a></li>
+=======
+                                <ul> 
+                                    <li><a href="revista">investigaciones</a></li>
+>>>>>>> 7fbd038794dde6d91d3e00edb577309d0bf80917
                                     <li><a href="librosweb">libros</a></li>
                                 </ul>
 
@@ -156,7 +165,7 @@
                     </li>
                     <li><a href="#">Docentes</a>
                         <ul class="sub-menu">
-                            <li><a href="docentes">Plana Docente</a></li>
+                            <li><a href="docentesweb">Plana Docente</a></li>
                         </ul>
                     </li>
                     <li><a href="#">Alumnos</a>

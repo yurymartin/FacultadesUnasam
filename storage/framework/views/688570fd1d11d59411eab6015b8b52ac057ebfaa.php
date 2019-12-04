@@ -1,5 +1,4 @@
-@extends('web.layout.layout')
-@section('contenido')
+<?php $__env->startSection('contenido'); ?>
 <style>
     .imagen {
         -webkit-filter: grayscale(100%);
@@ -177,4 +176,5 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('web.layout.layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\USUARIO\Desktop\Facus\webFacultades\resources\views/web/docentes.blade.php ENDPATH**/ ?>

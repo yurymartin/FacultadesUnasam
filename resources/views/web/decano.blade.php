@@ -44,7 +44,7 @@
                 <div class="widget-main-title">
                     @foreach ($decanos as $deca)
                     <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px">
-                        {{$deca->descripcion}}</p>
+                        {{$de->descripcion}}</p>
                     @endforeach
 
                 </div>

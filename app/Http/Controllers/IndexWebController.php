@@ -6,6 +6,7 @@ use App\Autoridades;
 use App\BannersFacultades;
 use App\DescripcionEscuelas;
 use App\DescripcionFacultades;
+use App\Docentes;
 use App\DocumentoFacultades;
 use App\Escuela;
 use App\EventoFacultades;
@@ -244,24 +245,41 @@ class IndexWebController extends Controller
     }
     public function organigrama()
     {
-        $organigrama = Organigrama::where('borrado', '0')
-            ->where('activo', '=', '1')
-            ->orderBy('id', 'desc')
-            ->take(1)
-            ->get();
-
         $logos = DescripcionFacultades::where('borrado', '0')
             ->where('activo', '=', '1')
             ->orderBy('id', 'desc')
             ->take(1)
             ->get();
-
         $escuelas = Escuela::where('borrado', '0')
             ->where('activo', '=', '1')
             ->orderBy('id', 'desc')
             ->get();
+        $misionvision = DescripcionFacultades::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->take(1)
+            ->get();
 
-        return view('web.organigrama', ['organigrama' => $organigrama, 'logos' => $logos, 'escuelas' => $escuelas]);
+        return view('web.misionvision', ['logos' => $logos, 'escuelas' => $escuelas, 'misionvision' => $misionvision]);
+    }
+    public function filosofia()
+    {
+        $logos = DescripcionFacultades::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->take(1)
+            ->get();
+        $escuelas = Escuela::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+        $filosofia = DescripcionFacultades::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->take(1)
+            ->get();
+
+        return view('web.filosofia', ['logos' => $logos, 'escuelas' => $escuelas, 'filosofia' => $filosofia]);
     }
     public function investigacionesfacultad(Request $request)
     {

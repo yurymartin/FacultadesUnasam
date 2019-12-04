@@ -42,7 +42,7 @@
             </li>
             <?php if(accesoUser([1,2,3])): ?>
             <li class="treeview" v-bind:class="classMenu1">
-                <a href="#"><i class='fa fa-list-alt'></i> <span>Facultad</span> <i
+                <a href="#"><i class="fa fa-university"></i> <span>Facultad</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="facultades"><i class='fa fa-gg'></i>Facultad</a></li>
@@ -53,7 +53,7 @@
 
             <?php if(accesoUser([1,2,3])): ?>
             <li class="treeview" v-bind:class="classMenu2">
-                <a href="#"><i class='fa fa-list-alt'></i> <span>Contenido Web Facultad</span> <i
+                <a href="#"><i class="fa fa-archive"></i><span>Contenido Web Facultad</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="bannersFacultades"><i class='fa fa-gg'></i> Gestión de Banners</a></li>
@@ -62,13 +62,14 @@
                     <li><a href="galeriasfacultades"><i class='fa fa-gg'></i> Gestión de Galerias</a></li>
                     <li><a href="videofacultades"><i class='fa fa-gg'></i> Gestión de Videos</a></li>
                     <li><a href="documentofacultades"><i class='fa fa-gg'></i> Gestión de Documentos</a></li>
+                    <li><a href="organigramafacultades"><i class='fa fa-gg'></i> Gestión de Organigramas</a></li>
                 </ul>
             </li>
             <?php endif; ?>
 
             <?php if(accesoUser([1,2,3])): ?>
             <li class="treeview" v-bind:class="classMenu3">
-                <a href="#"><i class='fa fa-list-alt'></i> <span>Escuelas</span> <i
+                <a href="#"><i class="fa fa-graduation-cap"></i> <span>Escuelas</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="escuelas"><i class='fa fa-gg'></i>Escuelas Profesionales</a></li>
@@ -81,10 +82,11 @@
 
             <?php if(accesoUser([1,2,3])): ?>
             <li class="treeview" v-bind:class="classMenu4">
-                <a href="#"><i class='fa fa-list-alt'></i> <span>Contenido Web Escuelas</span> <i
+                <a href="#"><i class="fa fa-archive"></i> <span>Contenido Web Escuelas</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="bannersescuelas"><i class='fa fa-gg'></i> Gestión de Banners</a></li>
+                    <li><a href="videoescuelas"><i class='fa fa-gg'></i> Gestión de Videos</a></li>
                     <li><a href="galeriaescuelas"><i class='fa fa-gg'></i> Gestión de Galerias</a></li>
                     <li><a href="mallaescuelas"><i class='fa fa-gg'></i> Gestión de Mallas Curriculares</a></li>
                 </ul>
@@ -104,13 +106,13 @@
             <?php endif; ?>
 
             <?php if(accesoUser([1,2,3])): ?>
-            <li v-bind:class="classMenu6"><a href="<?php echo e(url('departamentos')); ?>"><i class='fa fa-home'></i>
+            <li v-bind:class="classMenu6"><a href="<?php echo e(url('departamentos')); ?>"><i class="fa fa-university"></i>
                     <span>Departamentos Academicos</span></a>
                 <?php endif; ?>
 
                 <?php if(accesoUser([1,2,3])): ?>
             <li class="treeview" v-bind:class="classMenu7">
-                <a href="#"><i class='fa fa-list-alt'></i> <span>Docentes</span> <i
+                <a href="#"><i class="fa fa-users"></i><span>Docentes</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="gradoacademicos"><i class='fa fa-gg'></i>Grados Academicos</a></li>
@@ -122,7 +124,7 @@
 
             <?php if(accesoUser([1,2,3])): ?>
             <li class="treeview" v-bind:class="classMenu8">
-                <a href="#"><i class='fa fa-list-alt'></i> <span>Alumnos</span> <i
+                <a href="#"><i class="fa fa-child"></i> <span>Alumnos</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="comiteestudiantil"><i class='fa fa-gg'></i>Comites Estudiantiles</a></li>
@@ -133,7 +135,7 @@
 
             <?php if(accesoUser([1,2,3])): ?>
             <li class="treeview" v-bind:class="classMenu9">
-                <a href="#"><i class='fa fa-list-alt'></i> <span>Investigaciones y Libros</span> <i
+                <a href="#"><i class='fa fa-book'></i> <span>Investigaciones y Libros</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="temas"><i class='fa fa-gg'></i>Tema de Estudio</a></li>
