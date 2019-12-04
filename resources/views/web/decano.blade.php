@@ -25,6 +25,7 @@
                         <li class="list-group-item text-center" style="background-color: royalblue;color: white">
                             <strong>AUTORIDADES</strong></li>
                         <li class="list-group-item"><a href="decano"><strong>DECANO</strong></a></li>
+                        <li class="list-group-item"><a href="directoresacademicos"><strong>DIRECTORES DE ESCUELAS</strong></a></li>
                         <li class="list-group-item"><a href="consejo"><strong>CONSEJO DE FACULTAD</strong></a></li>
                         <li class="list-group-item"><a href="departacademico"><strong>DEPARTAMENTOS
                                     ACADEMICOS</strong></a></li>
@@ -35,13 +36,13 @@
             </div>
             <div class="col-md-9">
                 <div class="widget-main-title">
-                    @foreach ($decano as $deca)
+                    @foreach ($decanos as $deca)
                     <h4 class="widget-title" style="text-align: left;font-size: 16px;"><strong>{{$deca->cargo}}</strong>
                     </h4>
                     @endforeach
                 </div>
                 <div class="widget-main-title">
-                    @foreach ($decano as $deca)
+                    @foreach ($decanos as $deca)
                     <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px">
                         {{$deca->descripcion}}</p>
                     @endforeach
@@ -49,14 +50,14 @@
                 </div>
                 <br><br>
                 <div class="text-center">
-                    @foreach ($decano as $deca)
-                    <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px">
-                        {{$deca->descripcion}}</p>
-                    <img src="{{ asset('/img/personas/'.$deca->foto)}}" alt="Responsive image"
-                        class="img-thumbnail imagen2 imagen" style="  width:50%;
-                            height:50%;">
+                    @foreach ($decanos as $deca)
+                    <a href="{{ asset('/img/personas/'.$deca->foto)}}" class="fancybox" rel="gallery1"><img
+                            src="{{ asset('/img/personas/'.$deca->foto)}}" alt="Responsive image"
+                            class="img-thumbnail imagen2 imagen" style="  width:50%;
+                            height:50%;"></a>
                     <hr width="50px">
-                    <p class="widget-title" style="text-align: center">{{$deca->nombres.' '$deca->apellidos}}</p>
+                    <p class="widget-title" style="text-align: center">
+                        {{$deca->abreviatura.' '.$deca->nombres.' '.$deca->apellidos}}</p>
                     @endforeach
                 </div>
             </div>

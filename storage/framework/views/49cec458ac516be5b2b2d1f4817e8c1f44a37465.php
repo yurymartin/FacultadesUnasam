@@ -23,7 +23,7 @@
         <div class="form-group">
           <label for="txttitulo" class="col-sm-2 control-label">Nombre de Cargo*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Nombre de la facultad"
+            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="cargo"
               maxlength="200" autofocus v-model="newTitulo">
           </div>
         </div>

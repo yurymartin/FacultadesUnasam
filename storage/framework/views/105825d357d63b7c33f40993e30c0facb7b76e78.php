@@ -95,7 +95,7 @@
 
             <?php if(accesoUser([1,2,3])): ?>
             <li class="treeview" v-bind:class="classMenu5">
-                <a href="#"><i class='fa fa-list-alt'></i> <span>Autoridades</span> <i
+                <a href="#"><i class='fa fa-user-secret'></i> <span>Autoridades</span> <i
                         class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="gradoacademicos"><i class='fa fa-gg'></i>Grados Academicos</a></li>

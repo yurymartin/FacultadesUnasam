@@ -14,10 +14,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Investigaciones;
 use App\Libros;
-use App\NosotrosEscuelas;
 use App\NoticiaFacultades;
 use App\Organigrama;
 use App\VideoFacultades;
+use App\Temas;
 use DB;
 use Auth;
 use Carbon\Carbon;
@@ -131,13 +131,14 @@ class IndexWebController extends Controller
     }
     public function decano()
     {
-        $decano = DB::table('autoridades as a')
+        $decanos = DB::table('autoridades as a')
             ->join('cargos as c', 'c.id', '=', 'a.cargo_id')
             ->join('personas as p', 'p.id', '=', 'a.persona_id')
+            ->join('gradoacademicos as ga', 'ga.id', '=', 'a.gradoacademico_id')
             ->where('a.borrado', '0')
             ->where('c.cargo', '=', 'decano')
             ->orderBy('p.nombres')
-            ->select('a.id as idauto', 'p.id as idper', 'p.dni', 'p.nombres', 'p.apellidos', 'p.genero', 'p.foto', 'c.cargo', 'a.descripcion', 'a.fechainicio', 'a.fechafin', 'a.activo', 'c.id as idcargo')
+            ->select('a.id as idauto', 'p.id as idper', 'p.dni', 'p.nombres', 'p.apellidos', 'p.genero', 'p.foto', 'c.cargo', 'c.descripcion', 'a.fechainicio', 'a.fechafin', 'a.activo', 'c.id as idcargo', 'ga.abreviatura')
             ->take(1)
             ->get();
 
@@ -152,7 +153,7 @@ class IndexWebController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        return view('web.decano', ['decano' => $decano, 'logos' => $logos, 'escuelas' => $escuelas]);
+        return view('web.decano', ['decanos' => $decanos, 'logos' => $logos, 'escuelas' => $escuelas]);
     }
     public function consejo()
     {
@@ -200,12 +201,173 @@ class IndexWebController extends Controller
             ->get();
         return view('web.departacademico', ['logos' => $logos, 'departacademico' => $departacademico, 'escuelas' => $escuelas]);
     }
-    public function ingenieriadesistemaseinformatica()
+    
+    public function misionvision()
     {
         $logos = DescripcionFacultades::where('borrado', '0')
             ->where('activo', '=', '1')
             ->orderBy('id', 'desc')
             ->take(1)
+            ->get();
+
+        $misionvision = DescripcionFacultades::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $escuelas = Escuela::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('web.misionvision', ['misionvision' => $misionvision, 'logos' => $logos, 'escuelas' => $escuelas]);
+    }
+    public function filosofia()
+    {
+        $filosofia = DescripcionFacultades::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $logos = DescripcionFacultades::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->take(1)
+            ->get();
+
+        $escuelas = Escuela::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('web.filosofia', ['filosofia' => $filosofia, 'logos' => $logos, 'escuelas' => $escuelas]);
+    }
+    public function organigrama()
+    {
+        $organigrama = Organigrama::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->take(1)
+            ->get();
+
+        $logos = DescripcionFacultades::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->take(1)
+            ->get();
+
+        $escuelas = Escuela::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('web.organigrama', ['organigrama' => $organigrama, 'logos' => $logos, 'escuelas' => $escuelas]);
+    }
+    public function investigacionesfacultad(Request $request)
+    {
+        $buscar = $request->buscar;
+        $revista = Investigaciones::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->where('tema_id', 'like', '%' . $buscar . '%')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $temas = Temas::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $logos = DescripcionFacultades::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->take(1)
+            ->get();
+        $escuelas = Escuela::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('web.investigacionesfacultad', ['revista' => $revista, 'logos' => $logos, 'escuelas' => $escuelas, 'temas'=>$temas]);
+    }
+    public function librosweb(Request $request)
+    {
+        $buscar = $request->buscar;
+        $librosweb = Libros::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->where('tema_id', 'like', '%' . $buscar . '%')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $temas = Temas::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $logos = DescripcionFacultades::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->take(1)
+            ->get();
+
+        $escuelas = Escuela::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+        
+
+        return view('web.librosweb', ['logos' => $logos, 'escuelas' => $escuelas, 'librosweb' => $librosweb,'temas'=>$temas]);
+    }
+
+
+    public function comestudiantil()
+    {
+
+        $logos = DescripcionFacultades::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->take(1)
+            ->get();
+
+        $escuelas = Escuela::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+        
+        $comiestudiantiles = DB::table('comiestudiantiles')
+            ->where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $alumnos = DB::table('alumnos as a')
+            ->join('comiestudiantiles as ce','ce.id','=','a.comiestudiantil_id')
+            ->join('personas as p','p.id','=','a.persona_id')
+            ->where('a.borrado', '0')
+            ->where('a.activo', '=', '1')
+            ->get();
+
+        return view('web.comestudiantil', ['logos' => $logos, 'escuelas' => $escuelas,'comiestudiantiles'=>$comiestudiantiles,'alumnos'=>$alumnos]);
+    }
+
+
+
+
+
+/*---------------------------------ESCUELAS PROFESIONALES------------------------------------------------------------*/
+    public function escuelas($idescuela)
+    {
+        $bannerescuelas = DB::table('bannersescuelas as be')
+            ->join('escuelas as e', 'e.id', '=', 'be.escuela_id')
+            ->where('be.borrado', '0')
+            ->where('be.activo', '=', '1')
+            ->where('e.id', '=', $idescuela)
+            ->orderBy('be.id', 'desc')
+            ->get();
+
+
+        $logos = DescripcionFacultades::where('borrado', '0')
+            ->where('activo', '=', '1')
+            ->orderBy('id', 'desc')
             ->get();
 
         $escuelas = Escuela::where('borrado', '0')
@@ -217,102 +379,54 @@ class IndexWebController extends Controller
             ->join('escuelas as e', 'e.id', '=', 'ne.escuela_id')
             ->where('ne.activo', '=', '1')
             ->where('ne.borrado', '0')
-            ->where('e.nombre', '=', 'INGENIERIA DE SISTEMAS E INFORMATICA')
-            ->select('ne.id', 'ne.descripcion', 'e.nombre', 'ne.gradoacade', 'ne.titulo', 'ne.duracion', 'ne.logo')
+            ->where('e.id', '=', $idescuela)
+            ->select('ne.id', 'ne.descripcion', 'e.nombre', 'ne.gradoacade', 'ne.tituloprofesional', 'ne.duracion', 'ne.logo')
             ->orderBy('ne.id', 'desc')
-            ->take(1)
             ->get();
 
         $campoLaborales = DB::table('campolaborales as ne')
             ->join('escuelas as e', 'e.id', '=', 'ne.escuela_id')
             ->where('ne.activo', '=', '1')
             ->where('ne.borrado', '0')
-            ->where('e.nombre', '=', 'INGENIERIA DE SISTEMAS E INFORMATICA')
+            ->where('e.id', '=', $idescuela)
             ->orderBy('ne.id', 'desc')
-            ->take(1)
             ->get();
 
         $perfiles = DB::table('perfiles as ne')
             ->join('escuelas as e', 'e.id', '=', 'ne.escuela_id')
             ->where('ne.activo', '=', '1')
             ->where('ne.borrado', '0')
-            ->where('e.nombre', '=', 'INGENIERIA DE SISTEMAS E INFORMATICA')
-            ->select('ne.descripcion')
+            ->where('e.id', '=', $idescuela)
+            ->select('ne.descripcion','ne.perfil')
             ->orderBy('ne.id', 'desc')
             ->get();
 
-        return view('web.ingenieriadesistemaseinformatica', ['logos' => $logos, 'escuelas' => $escuelas, 'descripciones' => $descripciones, 'campoLaborales' => $campoLaborales, 'perfiles' => $perfiles]);
+        $mallas = DB::table('mallas as m')
+            ->join('escuelas as e', 'e.id', '=', 'm.escuela_id')
+            ->where('m.activo', '=', '1')
+            ->where('m.borrado', '0')
+            ->where('e.id', '=', $idescuela)
+            ->select('m.imagen','m.numcurricula')
+            ->orderBy('m.id', 'desc')
+            ->get();
+
+        $galeriaEscuelas = DB::table('galeriaescuelas as m')
+            ->join('escuelas as e', 'e.id', '=', 'm.escuela_id')
+            ->where('m.activo', '=', '1')
+            ->where('m.borrado', '0')
+            ->where('e.id', '=', $idescuela)
+            ->orderBy('m.id', 'desc')
+            ->get();
+
+        $videoescuelas = DB::table('videoescuelas as m')
+            ->join('escuelas as e', 'e.id', '=', 'm.escuela_id')
+            ->where('m.activo', '=', '1')
+            ->where('m.borrado', '0')
+            ->where('e.id', '=', $idescuela)
+            ->orderBy('m.id', 'desc')
+            ->get();
+
+        return view('web.escuelas', ['logos' => $logos, 'escuelas' => $escuelas, 'descripciones' => $descripciones, 'campoLaborales' => $campoLaborales, 'perfiles' => $perfiles,'bannerescuelas'=>$bannerescuelas,'mallas'=>$mallas,'galeriaEscuelas'=>$galeriaEscuelas,'videoescuelas'=>$videoescuelas]);
     }
-    public function misionvision()
-    {
-        $misionvision = DescripcionFacultades::where('borrado', '0')
-            ->where('activo', '=', '1')
-            ->orderBy('id', 'desc')
-            ->get();
-
-        return view('web.misionvision', ['misionvision' => $misionvision]);
-    }
-    public function filosofia()
-    {
-        $filosofia = DescripcionFacultades::where('borrado', '0')
-            ->where('activo', '=', '1')
-            ->orderBy('id', 'desc')
-            ->get();
-
-        return view('web.filosofia', ['filosofia' => $filosofia]);
-    }
-    public function organigrama()
-    {
-        $organigrama = Organigrama::where('borrado', '0')
-            ->where('activo', '=', '1')
-            ->orderBy('id', 'desc')
-            ->get();
-
-        return view('web.organigrama', ['organigrama' => $organigrama]);
-    }
-    public function revista()
-    {
-        $revista = Investigaciones::where('borrado', '0')
-            ->where('activo', '=', '1')
-            ->orderBy('id', 'desc')
-            ->get();
-
-        $logos = DescripcionFacultades::where('borrado', '0')
-            ->where('activo', '=', '1')
-            ->orderBy('id', 'desc')
-            ->take(1)
-            ->get();
-        $escuelas = Escuela::where('borrado', '0')
-            ->where('activo', '=', '1')
-            ->orderBy('id', 'desc')
-            ->get();
-        $libros = Libros::where('borrado', '0')
-            ->where('activo', '=', '1')
-            ->orderBy('id', 'desc')
-            ->get();
-
-        return view('web.revista', ['revista' => $revista, 'logos' => $logos, 'escuelas' => $escuelas,'libros' => $libros]);
-    }
-    public function librosweb(){
-        $revista = Investigaciones::where('borrado', '0')
-        ->where('activo', '=', '1')
-        ->orderBy('id', 'desc')
-        ->get();
-
-    $logos = DescripcionFacultades::where('borrado', '0')
-        ->where('activo', '=', '1')
-        ->orderBy('id', 'desc')
-        ->take(1)
-        ->get();
-    $escuelas = Escuela::where('borrado', '0')
-        ->where('activo', '=', '1')
-        ->orderBy('id', 'desc')
-        ->get();
-    $librosweb = Libros::where('borrado', '0')
-        ->where('activo', '=', '1')
-        ->orderBy('id', 'desc')
-        ->get();
-
-    return view('web.librosweb', ['revista' => $revista, 'logos' => $logos, 'escuelas' => $escuelas,'librosweb' => $librosweb]);  
-    }
+/*------------------------------------------------------------------------------------------------------------------ */
 }

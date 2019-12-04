@@ -105,7 +105,7 @@
                                             <a href="{{ asset('/doc/documentoFacultades/'.$documento->ruta)}}"
                                                 target="_blank"><img
                                                     src="{{ asset('/img/documentoFacultades/'.$documento->imagen)}}"
-                                                    alt=""></a>
+                                                    alt="" width="150px" height="150px"></a>
                                         </li>
                                     </div>
                                     @endforeach

@@ -11,6 +11,7 @@
     <meta name="author" content="Esmet">
     <meta charset="UTF-8">
 
+    <link rel="icon" type="image/png" href="{{ asset('/img/icon.png') }}" />
     <link href='http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800' rel='stylesheet'
         type='text/css'>
 

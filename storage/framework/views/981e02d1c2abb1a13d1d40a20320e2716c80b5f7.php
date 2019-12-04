@@ -4,6 +4,17 @@
         <div class="col-md-12">
             <div class="main-slideshow" style="height: 500px">
                 <div class="flexslider">
+
+                    <?php $__currentLoopData = $BannersFacultades; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $BannersFacultad): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <li>
+                        <img src="/img/bannersFacultades/<?php echo e($BannersFacultad->imagen); ?>" style="height: 500px"
+                            alt="<?php echo e($BannersFacultad->imagen); ?>">
+                        <div class="slider-caption">
+                            <h2><a href="blog-single.html"><?php echo e($BannersFacultad->titulo); ?></a></h2>
+                            <p><?php echo e($BannersFacultad->descripcion); ?></p>
+                        </div>
+                    </li>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     <ul class="slides">
                         <li>
                             <img src="images/slide1.jpg" style="height: 500px" />
@@ -59,7 +70,7 @@
                                 <h3 class="text-primary"><strong>Titulo</strong></h3>
                                 <p
                                     style="font-size: 16px;text-align: justify;font-family: 'Times New Roman', Times, serif">
-                                    <?php echo e($descripcion->titulo); ?></p>
+                                    <?php echo e($descripcion->tituloprofesional); ?></p>
                                 <h3 class="text-primary"><strong>Duración</strong></h3>
                                 <p
                                     style="font-size: 16px;text-align: justify;font-family: 'Times New Roman', Times, serif">

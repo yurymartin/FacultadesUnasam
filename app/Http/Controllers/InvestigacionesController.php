@@ -35,31 +35,20 @@ class InvestigacionesController extends Controller
     {
         $buscar = $request->busca;
         $investigaciones = DB::table('investigacion as i')
-            ->join('docentes as d', 'd.id', '=', 'i.docente_id')
-            ->join('personas as p', 'p.id', '=', 'd.persona_id')
-            ->join('temas as t','t.id','=','i.tema_id')
-            ->select('i.id as idinves', 'i.titulo','i.descripcion', 'i.fechapublicacion', 'i.imagen', 'i.ruta', 'i.activo', 'd.id as iddocen', 'p.nombres', 'p.apellidos', 'p.dni','t.tema','t.id as idtema')
+            ->join('temas as t', 't.id', '=', 'i.tema_id')
+            ->select('i.id as idinves', 'i.titulo', 'i.descripcion', 'i.autor', 'i.fechapublicacion', 'i.imagen', 'i.ruta', 'i.activo', 't.tema', 't.id as idtema')
             ->where('i.borrado', '=', 0)
             ->where(function ($query) use ($buscar) {
                 $query->where('i.titulo', 'like', '%' . $buscar . '%');
-                $query->orWhere('i.fechapublicacion', 'like', '%' . $buscar . '%');
-                $query->orWhere('p.dni', 'like', '%' . $buscar . '%');
-                $query->orWhere('p.nombres', 'like', '%' . $buscar . '%');
-                $query->orWhere('p.apellidos', 'like', '%' . $buscar . '%');
+                $query->where('i.autor', 'like', '%' . $buscar . '%');
+                $query->where('t.tema', 'like', '%' . $buscar . '%');
             })
             ->orderBy('i.id')
             ->paginate(10);
 
-        $docentes = DB::table('docentes as d')
-            ->join('personas as p', 'p.id', '=', 'd.persona_id')
-            ->select('d.id as iddoc', 'p.nombres', 'p.apellidos', 'p.dni', 'p.id as idper')
-            ->where('d.borrado', '=', 0)
-            ->where('d.activo','=',1)
-            ->get();
-
         $temas = DB::table('temas')
             ->where('borrado', '=', 0)
-            ->where('activo','=',1)
+            ->where('activo', '=', 1)
             ->get();
 
         return [
@@ -72,7 +61,6 @@ class InvestigacionesController extends Controller
                 'to' => $investigaciones->lastItem(),
             ],
             'investigaciones' => $investigaciones,
-            'docentes' => $docentes,
             'temas' => $temas,
         ];
     }
@@ -100,7 +88,7 @@ class InvestigacionesController extends Controller
         $fechapublicacion = $request->fechapublicacion;
         $img = $request->imagen;
         $link = $request->ruta;
-        $docente_id = $request->docente_id;
+        $autor = $request->autor;
         $tema_id = $request->tema_id;
         $estado = $request->activo;
 
@@ -119,13 +107,17 @@ class InvestigacionesController extends Controller
         $reglas2 = array('fechapublicacion' => 'required');
         $validator2 = Validator::make($input2, $reglas2);
 
+        $input3  = array('autor' => $autor);
+        $reglas3 = array('autor' => 'required');
+        $validator3 = Validator::make($input3, $reglas3);
+
         if ($validator1->fails()) {
             $result = '0';
-            $msj = 'FALTA EL TITULO DE LA INVESTIGACION';
+            $msj = 'FALTA COMPLETAR EL TITULO DE LA INVESTIGACION';
             $selector = 'titulo';
         } else if ($validator2->fails()) {
             $result = '0';
-            $msj = 'FALTA LA FECHA DE PUBLICACION DE LA INVESTIGACION';
+            $msj = 'FALTA COMPLETAR LA FECHA DE PUBLICACION DE LA INVESTIGACION';
             $selector = 'fecha';
         } else if ($img == 'null') {
             $result = '0';
@@ -135,10 +127,10 @@ class InvestigacionesController extends Controller
             $result = '0';
             $msj = 'FALTA SUBIR EL ARCHIVO O INVESTIGACION';
             $selector = 'archivo2';
-        } else if ($docente_id == 0) {
+        } else if ($validator3->fails()) {
             $result = '0';
-            $msj = 'FALTA SELECCIONAR EL DOCENTE RESPONSABLE DE LA INVESTIGACION';
-            $selector = 'docente_id';
+            $msj = 'FALTA COMPLETAR LOS DATOS DEL AUTOR';
+            $selector = 'autor';
         } else if ($tema_id == 0) {
             $result = '0';
             $msj = 'FALTA SELECCIONAR EL TEMA DE ESTUDIO DE LA INVESTIGACION';
@@ -195,12 +187,12 @@ class InvestigacionesController extends Controller
             $newdescripcion = new Investigaciones();
             $newdescripcion->titulo = $titulo;
             $newdescripcion->descripcion = $descripcion;
+            $newdescripcion->autor = $autor;
             $newdescripcion->fechapublicacion = $fechapublicacion;
             $newdescripcion->imagen = $imagen;
             $newdescripcion->ruta = $ruta;
             $newdescripcion->activo = $estado;
             $newdescripcion->borrado = '0';
-            $newdescripcion->docente_id = $docente_id;
             $newdescripcion->tema_id = $tema_id;
             $newdescripcion->save();
             $msj = 'LA NUEVA INVESTIGACION FUE REGISTRADA EXITOSAMENTE';
@@ -245,7 +237,7 @@ class InvestigacionesController extends Controller
         $fechapublicacion = $request->fechapublicacion;
         $img = $request->imagen;
         $link = $request->ruta;
-        $docente_id = $request->docente_id;
+        $autor = $request->autor;
         $tema_id = $request->tema_id;
 
         $result = '1';
@@ -263,6 +255,10 @@ class InvestigacionesController extends Controller
         $reglas2 = array('fechapublicacion' => 'required');
         $validator2 = Validator::make($input2, $reglas2);
 
+        $input3  = array('autor' => $autor);
+        $reglas3 = array('autor' => 'required');
+        $validator3 = Validator::make($input3, $reglas3);
+
         if ($validator1->fails()) {
             $result = '0';
             $msj = 'FALTA EL TITULO DE LA INVESTIGACION';
@@ -271,10 +267,10 @@ class InvestigacionesController extends Controller
             $result = '0';
             $msj = 'FALTA LA FECHA DE PUBLICACION DE LA INVESTIGACION';
             $selector = 'fecha';
-        } else if ($docente_id == 0) {
+        } else if ($validator3->fails()) {
             $result = '0';
-            $msj = 'FALTA SELECCIONAR EL DOCENTE RESPONSABLE DE LA INVESTIGACION';
-            $selector = 'docente_id';
+            $msj = 'FALTA COMPLETAR LOS DATOS DEL AUTOR';
+            $selector = 'autor';
         } else if ($tema_id == 0) {
             $result = '0';
             $msj = 'FALTA SELECCIONAR EL TEMA DE ESTUDIO DE LA INVESTIGACION';
@@ -332,33 +328,33 @@ class InvestigacionesController extends Controller
             if ($img == 'null' && $link == 'null') {
                 $newdescripcion->titulo = $titulo;
                 $newdescripcion->descripcion = $descripcion;
+                $newdescripcion->autor = $autor;
                 $newdescripcion->fechapublicacion = $fechapublicacion;
-                $newdescripcion->docente_id = $docente_id;
                 $newdescripcion->tema_id = $tema_id;
                 $newdescripcion->save();
             } else if ($img == 'null') {
                 $newdescripcion->titulo = $titulo;
                 $newdescripcion->descripcion = $descripcion;
+                $newdescripcion->autor = $autor;
                 $newdescripcion->fechapublicacion = $fechapublicacion;
                 $newdescripcion->ruta = $ruta;
-                $newdescripcion->docente_id = $docente_id;
                 $newdescripcion->tema_id = $tema_id;
                 $newdescripcion->save();
             } else if ($link == 'null') {
                 $newdescripcion->titulo = $titulo;
                 $newdescripcion->descripcion = $descripcion;
+                $newdescripcion->autor = $autor;
                 $newdescripcion->fechapublicacion = $fechapublicacion;
                 $newdescripcion->imagen = $imagen;
-                $newdescripcion->docente_id = $docente_id;
                 $newdescripcion->tema_id = $tema_id;
                 $newdescripcion->save();
-            }else{
+            } else {
                 $newdescripcion->titulo = $titulo;
                 $newdescripcion->descripcion = $descripcion;
+                $newdescripcion->autor = $autor;
                 $newdescripcion->fechapublicacion = $fechapublicacion;
                 $newdescripcion->imagen = $imagen;
                 $newdescripcion->ruta = $ruta;
-                $newdescripcion->docente_id = $docente_id;
                 $newdescripcion->tema_id = $tema_id;
                 $newdescripcion->save();
             }

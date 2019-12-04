@@ -104,7 +104,7 @@
                                             <a href="<?php echo e(asset('/doc/documentoFacultades/'.$documento->ruta)); ?>"
                                                 target="_blank"><img
                                                     src="<?php echo e(asset('/img/documentoFacultades/'.$documento->imagen)); ?>"
-                                                    alt=""></a>
+                                                    alt="" width="150px" height="150px"></a>
                                         </li>
                                     </div>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

@@ -45,11 +45,10 @@ data:{
    divprincipal:false,
 
    investigaciones: [],
-   docentes: [],
    temas: [],
    errors:[],
 
-   fillInvestigaciones:{'id':'', 'titulo':'','descripcion':'','fechapublicacion':'','imagen':'','ruta':'','estado':'','docente_id':'','tema_id':''},
+   fillInvestigaciones:{'id':'', 'titulo':'','descripcion':'','autor':'','fechapublicacion':'','imagen':'','ruta':'','estado':'','tema_id':''},
 
    pagination: {
    'total': 0,
@@ -69,10 +68,10 @@ data:{
 
    newTitulo:'',
    newDescripcion:'',
+   newAutor : '',
    newFechapublicacion:'',
    imagen : null,
    ruta : null,
-   docente_id : '0',
    tema_id : '0',
    newEstado:'1',
 
@@ -134,7 +133,6 @@ methods: {
            
             this.investigaciones = response.data.investigaciones.data;
             this.pagination= response.data.pagination;
-            this.docentes = response.data.docentes;
             this.temas = response.data.temas;
 
            if(this.investigaciones.length==0 && this.thispage!='1'){
@@ -212,7 +210,7 @@ methods: {
             data.append('fechapublicacion', this.newFechapublicacion);
             data.append('imagen', this.imagen);
             data.append('ruta', this.ruta);
-            data.append('docente_id', this.docente_id);
+            data.append('autor', this.newAutor);
             data.append('tema_id', this.tema_id);
             data.append('activo', this.newEstado);
 
@@ -278,7 +276,7 @@ methods: {
         this.fillInvestigaciones.descripcion=investigaciones.descripcion;
         this.fillInvestigaciones.fechapublicacion=investigaciones.fechapublicacion;            
         this.fillInvestigaciones.estado=investigaciones.activo;
-        this.fillInvestigaciones.docente_id=investigaciones.iddocen;
+        this.fillInvestigaciones.autor=investigaciones.autor;
         this.fillInvestigaciones.tema_id=investigaciones.idtema;
         this.imagen=null;
         this.ruta=null;
@@ -299,7 +297,7 @@ methods: {
         data.append('fechapublicacion', this.fillInvestigaciones.fechapublicacion);
         data.append('ruta', this.ruta);
         data.append('imagen', this.imagen);
-        data.append('docente_id', this.fillInvestigaciones.docente_id);
+        data.append('autor', this.fillInvestigaciones.autor);
         data.append('tema_id', this.fillInvestigaciones.tema_id);
         data.append('_method', 'PUT');
 

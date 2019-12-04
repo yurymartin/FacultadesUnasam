@@ -11,7 +11,7 @@
                 <ul>
                     <li><a href="events-grid.html">Nuestra Facultad</a>
                         <ul>
-                            <li><a href="#">Misión y Visión</a></li>
+                            <li><a href="misionvision">Misión y Visión</a></li>
                             <li><a href="#">Historia</a></li>
                             <li><a href="#">Filosofia Institucional</a></li>
                         </ul>
@@ -45,7 +45,7 @@
             </li>
             <li><a href="#">Investigación de la FCSEC</a>
                 <ul>
-                    <li><a href="revista">Revista Academica de la FCSEC</a></li>
+                    <li><a href="">Revista Academica de la FCSEC</a></li>
                     <li><a href="http://repositorio.unasam.edu.pe/">Repositorio UNASAM</a></li>
                     <li><a href="biblioteca">Biblioteca de la FCSEC</a></li>
                     <li><a href="blog-disqus.html">Investigación de la FCSEC</a>
@@ -92,8 +92,6 @@
                     <a href="index.html" title="Universe" rel="home">
                         <img src="<?php echo e(asset('/img/descripcionFacultades/'.$logo->imagen)); ?>"
                             alt="<?php echo e(asset('/img/descripcionFacultades/'.$logo->imagen)); ?>" style="max-height: 100px;">
-                    <a href="index.html" title="Facultad de Ciencias" rel="home">
-                        <img src="images/fc.png" alt="Facultad de Ciencias" style="max-height: 100px;">
                     </a>
                 </div> <!-- /.logo -->
             </div> <!-- /.col-md-4 -->
@@ -105,7 +103,7 @@
                     <li><a href="home">Acceso</a></li>
                 </ul>
                 <div>
-                    <a href="https://www.unasam.edu.pe"><img src="images/logolicenciada.png" alt="UNASAM"
+                    <a href="https://www.unasam.edu.pe"><img src="/images/logolicenciada.png" alt="UNASAM"
                             style="width:58%"></a>
                 </div>
             </div> <!-- /.header-right -->
@@ -120,7 +118,7 @@
                         <ul class="sub-menu">
                             <li><a href="events-grid.html">Nuestra Facultad</a>
                                 <ul class="sub-menu">
-                                    <li><a href="misvis">Misión y Visión</a></li>
+                                    <li><a href="misionvision">Misión y Visión</a></li>
                                     <li><a href="historia">Historia</a></li>
                                     <li><a href="filosofia">Filosofia Institucional</a></li>
                                 </ul>
@@ -138,15 +136,22 @@
                     <li><a href="#">Carreras Profesionales</a>
                         <ul class="sub-menu">
                             <?php $__currentLoopData = $escuelas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $escuela): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <li><a href="<?php echo e($escuela->descripcion); ?>"><?php echo e($escuela->nombre); ?></a></li>
+                            <li><a href="/escuelaweb/<?php echo e($escuela->id); ?>" name='idescuela'><?php echo e($escuela->nombre); ?></a></li>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </ul>
                     </li>
                     <li><a href="#">Repositorio de la Facultad</a>
                         <ul class="sub-menu">
-                            <li><a href="revista">Revista Académica E Investigaciones </a></li>
+                            <li><a href="#">Investigaciones y Libros </a>
+                                <ul>
+                                    <li><a href="investigacionesfacultad">investigaciones</a></li>
+                                    <li><a href="librosweb">libros</a></li>
+                                </ul>
+
+                            </li>
+
                             <li><a href="http://repositorio.unasam.edu.pe/" target="blank">Repositorio UNASAM</a></li>
-                            <li><a href="biblioteca">Biblioteca Virtual</a></li>
+                            <li><a href="http://koha.unasam.edu.pe/">Biblioteca Virtual Koha</a></li>
                         </ul>
                     </li>
                     <li><a href="#">Docentes</a>

@@ -33,28 +33,22 @@
                 </div>
             </div>
             <div class="col-md-9">
+                <?php $__currentLoopData = $organigrama; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $org): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="widget-main-title">
                     <h4 class="widget-title" style="text-align: left;font-size: 16px;"><strong>ORGANIGRAMA</strong></h4>
                 </div>
                 <div class="widget-main-title">
-                    <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px">El
-                        decanato es un Órgano de Dirección y la máxima autoridad de gobierno de la Facultad, representa a la
-                        Facultad de Ciencias Sociales, Educación y de la Comunicación, dirige la gestión académica y
-                        administrativa, representa a la Facultad ante el Consejo Universitario y la Asamblea
-                        Universitaria conforme lo dispone la Ley Universitaria N° 30220.</p>
+                    <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px"><?php echo e($org->descripcion); ?></p>
                 </div>
                 <br><br>
                 <div class="text-center">
-                    <?php $__currentLoopData = $organigrama; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $org): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <img src="<?php echo e(asset('img/Organigramas/'.$org->imagen)); ?>" alt="Responsive image" class="img-thumbnail imagen2 imagen" style="  width:100%;
-                    height:50%;"> 
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    
-                            
+                    <img src="<?php echo e(asset('img/Organigramas/'.$org->imagen)); ?>" alt="Responsive image"
+                        class="img-thumbnail imagen2 imagen" style="  width:100%;
+                            height:50%;">
                 </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         </div>
     </div>
-</div>
-<?php $__env->stopSection(); ?>
+    <?php $__env->stopSection(); ?>
 <?php echo $__env->make('web.layout.layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\yuri_\OneDrive\Desktop\webFacultades\resources\views/web/organigrama.blade.php ENDPATH**/ ?>

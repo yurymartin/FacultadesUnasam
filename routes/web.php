@@ -1,5 +1,4 @@
 <?php
-
 //Route::get('/', function () {
 //    return view('web/index');
 //});
@@ -21,7 +20,13 @@ Route::get('historia', 'IndexWebController@historiaF');
 Route::get('decano', 'IndexWebController@decano');
 Route::get('consejo', 'IndexWebController@consejo');
 Route::get('departacademico', 'IndexWebController@departacademico');
-Route::get('ingenieriadesistemaseinformatica', 'IndexWebController@ingenieriadesistemaseinformatica');
+Route::get('misionvision', 'IndexWebController@misionvision');
+Route::get('filosofia', 'IndexWebController@filosofia');
+Route::get('organigrama', 'IndexWebController@organigrama');
+Route::get('investigacionesfacultad', 'IndexWebController@investigacionesfacultad');
+Route::get('librosweb', 'IndexWebController@librosweb');
+Route::get('comestudiantil', 'IndexWebController@comestudiantil');
+Route::get('escuelaweb/{idescuela}','IndexWebController@escuelas');
 /*------------------------------------------------------------------------------------------------*/
 
 
@@ -165,9 +170,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('organigramafacultad', 'OrganigramaController');
     Route::get('organigramafacultad/altabaja/{id}/{var}', 'OrganigramaController@altabaja');
     
-    Route::get('misionvision', 'IndexWebController@misionvision');
-    Route::get('filosofia', 'IndexWebController@filosofia');
-    Route::get('organigrama', 'IndexWebController@organigrama');
-    Route::get('revista', 'IndexWebController@revista');
-    Route::get('librosweb', 'IndexWebController@librosweb');
+    
 });

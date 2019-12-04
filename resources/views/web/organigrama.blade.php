@@ -34,27 +34,21 @@
                 </div>
             </div>
             <div class="col-md-9">
+                @foreach ($organigrama as $org)
                 <div class="widget-main-title">
                     <h4 class="widget-title" style="text-align: left;font-size: 16px;"><strong>ORGANIGRAMA</strong></h4>
                 </div>
                 <div class="widget-main-title">
-                    <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px">El
-                        decanato es un Órgano de Dirección y la máxima autoridad de gobierno de la Facultad, representa a la
-                        Facultad de Ciencias Sociales, Educación y de la Comunicación, dirige la gestión académica y
-                        administrativa, representa a la Facultad ante el Consejo Universitario y la Asamblea
-                        Universitaria conforme lo dispone la Ley Universitaria N° 30220.</p>
+                    <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px">{{$org->descripcion}}</p>
                 </div>
                 <br><br>
                 <div class="text-center">
-                    @foreach ($organigrama as $org)
-                    <img src="{{ asset('img/Organigramas/'.$org->imagen) }}" alt="Responsive image" class="img-thumbnail imagen2 imagen" style="  width:100%;
-                    height:50%;"> 
-                    @endforeach
-                    
-                            
+                    <img src="{{ asset('img/Organigramas/'.$org->imagen) }}" alt="Responsive image"
+                        class="img-thumbnail imagen2 imagen" style="  width:100%;
+                            height:50%;">
                 </div>
+                @endforeach
             </div>
         </div>
     </div>
-</div>
-@endsection
+    @endsection

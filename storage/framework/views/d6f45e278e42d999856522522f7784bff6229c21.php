@@ -46,6 +46,16 @@
 
       <div class="col-md-12">
         <div class="form-group" style="padding-top: 15px;">
+          <label for="autor" class="col-sm-2 control-label">Autor:*</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="autor" name="autor" placeholder="autor de la investigacion"
+              maxlength="200" autofocus v-model="newAutor">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="form-group" style="padding-top: 15px;">
           <label for="fecha" class="col-sm-2 control-label">Fecha de Publicacion:*</label>
           <div class="col-sm-4">
             <input type="date" class="form-control" id="fecha" name="fecha" placeholder="fecha de publicacion"
@@ -71,20 +81,6 @@
           <div class="col-sm-8" style="padding-top: 10px;">
             <input name="archivo2" type="file" id="archivo2" class="archivo form-control" @change="getdoc"
               accept=".pdf" />
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12" style="padding-top: 15px;">
-        <div class="form-group">
-          <label for="docente_id" class="col-sm-2 control-label">Docente:*</label>
-          <div class="col-sm-8">
-            <select name="docente_id" id="docente_id" class="form-control" v-model="docente_id">
-              <option disabled value="0">Seleccione un docente</option>
-              <option v-for="docente, key in docentes" v-bind:value="docente.iddoc">{{docente.nombres}}
-                {{docente.apellidos}} - {{docente.dni}}
-              </option>
-            </select>
           </div>
         </div>
       </div>
@@ -191,8 +187,7 @@
             <a href="" v-on:click.prevent="getfile(Investigacion)"><img :src="getImg(Investigacion)" alt=""
                 width="150px" height="100px"></a>
           </td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ Investigacion.nombres }}
-            {{ Investigacion.apellidos }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ Investigacion.autor }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
               <span class="label label-success" v-if="Investigacion.activo=='1'">Activo</span>
@@ -309,7 +304,15 @@
                   </div>
                 </div>
 
-
+                <div class="col-md-12">
+                  <div class="form-group" style="padding-top: 15px;">
+                    <label for="autor" class="col-sm-2 control-label">Autor:*</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="autor" name="autor" placeholder="autor de la investigacion"
+                        maxlength="200" autofocus v-model="fillInvestigaciones.autor">
+                    </div>
+                  </div>
+                </div>
 
                 <div class="col-md-12">
                   <div class="form-group" style="padding-top: 15px;">
@@ -338,21 +341,6 @@
                     <div class="col-sm-8" style="padding-top: 10px;">
                       <input name="archivo2" type="file" id="archivo2" class="archivo form-control" @change="getdoc"
                         accept=".pdf" />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-12" style="padding-top: 15px;">
-                  <div class="form-group">
-                    <label for="docente_id" class="col-sm-2 control-label">Docente:*</label>
-                    <div class="col-sm-8">
-                      <select name="docente_id" id="docente_id" class="form-control"
-                        v-model="fillInvestigaciones.docente_id">
-                        <option disabled value="0">Seleccione un docente</option>
-                        <option v-for="docente, key in docentes" v-bind:value="docente.iddoc">{{docente.nombres}}
-                          {{docente.apellidos}} - {{docente.dni}}
-                        </option>
-                      </select>
                     </div>
                   </div>
                 </div>
