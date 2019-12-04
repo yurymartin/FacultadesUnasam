@@ -137,7 +137,11 @@
                         <ul class="sub-menu">
                             @foreach ($escuelas as $escuela)
 <<<<<<< HEAD
+<<<<<<< HEAD
                             <li><a href="/escuelaweb/{{$escuela->id}}" name='idescuela'>{{$escuela->nombre}}</a></li>
+=======
+                            <li><a href="ingenieriadesistemaseinformatica">{{$escuela->nombre}}</a></li>
+>>>>>>> 7fbd038794dde6d91d3e00edb577309d0bf80917
 =======
                             <li><a href="ingenieriadesistemaseinformatica">{{$escuela->nombre}}</a></li>
 >>>>>>> 7fbd038794dde6d91d3e00edb577309d0bf80917
@@ -153,6 +157,9 @@
 =======
                                 <ul> 
                                     <li><a href="revista">investigaciones</a></li>
+<<<<<<< HEAD
+>>>>>>> 7fbd038794dde6d91d3e00edb577309d0bf80917
+=======
 >>>>>>> 7fbd038794dde6d91d3e00edb577309d0bf80917
                                     <li><a href="librosweb">libros</a></li>
                                 </ul>

@@ -36,13 +36,13 @@
             </div>
             <div class="col-md-9">
                 <div class="widget-main-title">
-                    @foreach ($decanos as $deca)
-                    <h4 class="widget-title" style="text-align: left;font-size: 16px;"><strong>{{$deca->cargo}}</strong>
+                    @foreach ($decano as $de)
+                    <h4 class="widget-title" style="text-align: left;font-size: 16px;"><strong>{{$de->cargo}}</strong>
                     </h4>
                     @endforeach
                 </div>
                 <div class="widget-main-title">
-                    @foreach ($decanos as $deca)
+                    @foreach ($decano as $de)
                     <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px">
                         {{$de->descripcion}}</p>
                     @endforeach
@@ -50,14 +50,14 @@
                 </div>
                 <br><br>
                 <div class="text-center">
-                    @foreach ($decanos as $deca)
-                    <a href="{{ asset('/img/personas/'.$deca->foto)}}" class="fancybox" rel="gallery1"><img
-                            src="{{ asset('/img/personas/'.$deca->foto)}}" alt="Responsive image"
-                            class="img-thumbnail imagen2 imagen" style="  width:50%;
-                            height:50%;"></a>
+                    @foreach ($decano as $de)
+                    <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px">
+                        {{$de->descripcion}}</p>
+                    <img src="{{ asset('/img/personas/'.$de->foto)}}" alt="Responsive image"
+                        class="img-thumbnail imagen2 imagen" style="  width:50%;
+                                height:50%;">
                     <hr width="50px">
-                    <p class="widget-title" style="text-align: center">
-                        {{$deca->abreviatura.' '.$deca->nombres.' '.$deca->apellidos}}</p>
+                    <p class="widget-title" style="text-align: center">{{$de->nombres.' '.$de->apellidos}}</p>
                     @endforeach
                 </div>
             </div>
