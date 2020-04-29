@@ -5,6 +5,6 @@
 <hr><hr>
 <p align="center"><img src="https://github.com/martin1030/FacultadesUnasam/blob/master/public/images/Captura2.jpg" width="1000px"></p>
 <hr><hr>
-<p align="center"><img src="https://github.com/martin1030/FacultadesUnasam/blob/master/public/images/Captura1.jpg" width="1000px"></p>
+<p align="center"><img src="https://github.com/martin1030/FacultadesUnasam/blob/master/public/images/Captura3.jpg" width="1000px"></p>
 <hr><hr>
-<p align="center"><img src="https://github.com/martin1030/FacultadesUnasam/blob/master/public/images/Captura1.jpg" width="1000px"></p>
+<p align="center"><img src="https://github.com/martin1030/FacultadesUnasam/blob/master/public/images/Captura4.jpg" width="1000px"></p>
