@@ -20,16 +20,18 @@ class ComiteEstudiantilController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct(){
+        $this->middleware(['permission:create comitestudiantil'],['only' => ['create','store']]);
+        $this->middleware(['permission:read comitestudiantil'],['only' => ['index1','index']]);
+        $this->middleware(['permission:update comitestudiantil'],['only' => ['edit','update','altabaja']]);
+        $this->middleware(['permission:delete comitestudiantil'],['only' => ['delete']]);
+    }
+    
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "comiteestudiantil";
-            return view('comiteestudiantil.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "comiteestudiantil";
+        return view('comiteestudiantil.index', compact('modulo'));
     }
     public function index(Request $request)
     {

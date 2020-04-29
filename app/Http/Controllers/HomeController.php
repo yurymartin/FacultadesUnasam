@@ -7,12 +7,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use Illuminate\Http\Request;
-use App\Tipouser;
-use App\User;
-use Auth;
-
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class HomeController
@@ -25,10 +21,6 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Show the application dashboard.
@@ -36,12 +28,14 @@ class HomeController extends Controller
      * @return Response
      */
     public function index()
-    {   
-        $iduser=Auth::user()->id;
-        $idtipouser=Auth::user()->tipouser_id;
-        $tipouser=Tipouser::find($idtipouser);
-        $modulo="inicioAdmin";
+    {
+        $user = Auth::user();
+        $rol = $user->roles->implode('name', ', ');
+        $modulo = "inicioAdmin";
+        return view('inicio.home', compact('modulo','user','rol'));
 
-        return view('inicio.home',compact('tipouser','modulo','iduser'));
+        /*$iduser=Auth::user()->id;
+        $idtipouser=Auth::user()->tipouser_id;
+        $tipouser=Tipouser::find($idtipouser);*/
     }
 }

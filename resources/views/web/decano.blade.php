@@ -25,7 +25,6 @@
                         <li class="list-group-item text-center" style="background-color: royalblue;color: white">
                             <strong>AUTORIDADES</strong></li>
                         <li class="list-group-item"><a href="decano"><strong>DECANO</strong></a></li>
-                        <li class="list-group-item"><a href="directoresacademicos"><strong>DIRECTORES DE ESCUELAS</strong></a></li>
                         <li class="list-group-item"><a href="consejo"><strong>CONSEJO DE FACULTAD</strong></a></li>
                         <li class="list-group-item"><a href="departacademico"><strong>DEPARTAMENTOS
                                     ACADEMICOS</strong></a></li>
@@ -36,29 +35,22 @@
             </div>
             <div class="col-md-9">
                 <div class="widget-main-title">
-                    @foreach ($decano as $de)
-                    <h4 class="widget-title" style="text-align: left;font-size: 16px;"><strong>{{$de->cargo}}</strong>
-                    </h4>
-                    @endforeach
+                    <h4 class="widget-title" style="text-align: left;font-size: 16px;"><strong>DECANO</strong></h4>
                 </div>
                 <div class="widget-main-title">
-                    @foreach ($decano as $de)
-                    <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px">
-                        {{$de->descripcion}}</p>
-                    @endforeach
-
+                    <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px">El
+                        decanato
+                        es un Órgano de Dirección y la máxima autoridad de gobierno de la Facultad, representa a la
+                        Facultad de Ciencias Sociales, Educación y de la Comunicación, dirige la gestión académica y
+                        administrativa, representa a la Facultad ante el Consejo Universitario y la Asamblea
+                        Universitaria conforme lo dispone la Ley Universitaria N° 30220.</p>
                 </div>
                 <br><br>
                 <div class="text-center">
-                    @foreach ($decano as $de)
-                    <p style="text-align: justify;font-family: 'Times New Roman', Times, serif;font-size: 16px">
-                        {{$de->descripcion}}</p>
-                    <img src="{{ asset('/img/personas/'.$de->foto)}}" alt="Responsive image"
-                        class="img-thumbnail imagen2 imagen" style="  width:50%;
-                                height:50%;">
+                    <img src="images/decano.jpg" alt="Responsive image" class="img-thumbnail imagen2 imagen" style="  width:50%;
+                            height:50%;">
                     <hr width="50px">
-                    <p class="widget-title" style="text-align: center">{{$de->nombres.' '.$de->apellidos}}</p>
-                    @endforeach
+                    <p class="widget-title" style="text-align: center">Dr. Simeón Moisés Huerta Rosales</p>
                 </div>
             </div>
         </div>

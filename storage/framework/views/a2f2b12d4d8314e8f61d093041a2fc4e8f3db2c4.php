@@ -9,7 +9,7 @@ data:{
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
+   tipouserPerfil:'',
    userPerfil:'<?php echo e(Auth::user()->name); ?>',
    mailPerfil:'<?php echo e(Auth::user()->email); ?>',
 
@@ -45,9 +45,10 @@ data:{
    divprincipal:false,
 
    escuelas: [],
+   departamentoacademicos: [],
    errors:[],
 
-   fillEscuela:{'id':'', 'nombre':''},
+   fillEscuela:{'id':'', 'nombre':'','telefono':'','direccion':'','email':'','departamentoacademico_id':''},
 
    pagination: {
    'total': 0,
@@ -66,9 +67,12 @@ data:{
    thispage:'1',
 
    newTitulo:'',
-   newDescripcion:'',
+   newTelefono:'',
+   newDireccion:'',
+   newEmail:'',
    newEstado:'',
    newBorrado:'0',
+   departamentoacademico_id: '0',
   
 
 
@@ -119,6 +123,8 @@ methods: {
        axios.get(url).then(response=>{
             this.escuelas= response.data.escuelas.data;
             this.pagination= response.data.pagination;
+            this.departamentoacademicos = response.data.departamentoacademicos;
+            
            if(this.escuelas.length == 0 && this.thispage != '1'){
                var a = parseInt(this.thispage) ;
                a--;
@@ -153,9 +159,12 @@ methods: {
        $('#txttitulo').focus();
 
         this.newTitulo = '';
-        this.newDescripcion = '';
+        this.newTelefono = '';
+        this.newDireccion = '';
+        this.newEmail = '';
         this.newEstado = '1';
         this.newBorrado = '0';
+        this.departamentoacademico_id = '0';
 
        $(".form-control").css("border","1px solid #d2d6de");
    },
@@ -171,8 +180,12 @@ methods: {
        var data = new  FormData();
 
             data.append('nombre', this.newTitulo);
+            data.append('telefono', this.newTelefono);
+            data.append('direccion', this.newDireccion);
+            data.append('email', this.newEmail);
             data.append('activo', this.newEstado);
             data.append('borrado', this.newBorrado);
+            data.append('departamentoacademico_id', this.departamentoacademico_id);
             
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             
@@ -230,7 +243,11 @@ methods: {
    editescuela:function (escuela) {
 
         this.fillEscuela.id=escuela.id;
-        this.fillEscuela.nombre=escuela.nombre;         
+        this.fillEscuela.nombre=escuela.nombre; 
+        this.fillEscuela.telefono=escuela.telefono; 
+        this.fillEscuela.direccion=escuela.direccion; 
+        this.fillEscuela.email=escuela.email; 
+        this.fillEscuela.departamentoacademico_id = escuela.idfac       
 
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
@@ -242,6 +259,10 @@ methods: {
         var data = new FormData();
         data.append('id', this.fillEscuela.id);
         data.append('nombre', this.fillEscuela.nombre);
+        data.append('telefono', this.fillEscuela.telefono);
+        data.append('direccion', this.fillEscuela.direccion);
+        data.append('email', this.fillEscuela.email);
+        data.append('departamentoacademico_id', this.fillEscuela.departamentoacademico_id);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };

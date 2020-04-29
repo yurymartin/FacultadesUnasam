@@ -6,6 +6,7 @@
       Volver</a>
   </div>
 
+  <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create galerias escuelas', Model::class)): ?>
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
@@ -13,6 +14,7 @@
     </div>
 
   </div>
+  <?php endif; ?>
 
 </div>
 
@@ -38,25 +40,25 @@
         <div class="form-group" style="padding-top: 15px;">
           <label for="txtdescripcion" class="col-sm-2 control-label">Descripción:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion" placeholder="Descripcion de la imagen"
-              maxlength="500" v-model="newDescripcion">
+            <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion"
+              placeholder="Descripcion de la imagen" maxlength="500" v-model="newDescripcion">
           </div>
         </div>
       </div>
 
       <div class="col-md-12" style="padding-top: 15px;">
-          <div class="form-group">
-            <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>
-            <div class="col-sm-8">
-              <select name="cbescuela" id="cbescuela" class="form-control" v-model="escuela_id">
-                <option disabled value="0">Seleccione una de las Escuelas</option>
-                <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">
-                  {{escuela.nombre}}
-                </option>
-              </select>
-            </div>
+        <div class="form-group">
+          <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>
+          <div class="col-sm-8">
+            <select name="cbescuela" id="cbescuela" class="form-control" v-model="escuela_id">
+              <option disabled value="0">Seleccione una de las Escuelas</option>
+              <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">
+                {{escuela.nombre}}
+              </option>
+            </select>
           </div>
         </div>
+      </div>
 
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
@@ -104,6 +106,7 @@
 
 
 
+<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('read galerias escuelas', Model::class)): ?>
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Galeria</h3>
@@ -150,9 +153,10 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
-              <a href="#" v-if="galeriaE.activo=='1'" class="btn bg-navy btn-sm" v-on:click.prevent="bajabanner(galeriaE)"
-                data-placement="top" data-toggle="tooltip" title="Desactivar banner"><i
-                  class="fa fa-arrow-circle-down"></i></a>
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update galerias escuelas', Model::class)): ?>
+              <a href="#" v-if="galeriaE.activo=='1'" class="btn bg-navy btn-sm"
+                v-on:click.prevent="bajabanner(galeriaE)" data-placement="top" data-toggle="tooltip"
+                title="Desactivar banner"><i class="fa fa-arrow-circle-down"></i></a>
 
               <a href="#" v-if="galeriaE.activo=='0'" class="btn btn-success btn-sm"
                 v-on:click.prevent="altabanner(galeriaE)" data-placement="top" data-toggle="tooltip"
@@ -161,8 +165,12 @@
 
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editGalEscu(galeriaE)" data-placement="top"
                 data-toggle="tooltip" title="Editar galeria de escuela"><i class="fa fa-edit"></i></a>
+              <?php endif; ?>
+
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete galerias escuelas', Model::class)): ?>
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarbanner(galeriaE)" data-placement="top"
                 data-toggle="tooltip" title="Borrar banner"><i class="fa fa-trash"></i></a>
+              <?php endif; ?>
             </center>
           </td>
         </tr>
@@ -211,6 +219,7 @@
     </div>
   </div>
 </div>
+<?php endif; ?>
 
 <form method="post" v-on:submit.prevent="updateGalEscuela(fillGalEcuela.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -250,7 +259,7 @@
                   </div>
                 </div>
 
-                
+
                 <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
                     <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>
@@ -264,6 +273,7 @@
                     </div>
                   </div>
                 </div>
+                
                 <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
                     <label for="cbuestadoE" class="col-sm-2 control-label">Estado:*</label>

@@ -6,6 +6,7 @@
       Volver</a>
   </div>
 
+  @can('create banners facultad', Model::class)
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
@@ -13,6 +14,7 @@
     </div>
 
   </div>
+  @endcan
 
 </div>
 
@@ -26,6 +28,20 @@
 
       <div class="col-md-12">
         <div class="form-group">
+          <label for="facultad_id" class="col-sm-2 control-label">Facultad:*</label>
+          <div class="col-sm-8">
+            <select name="facultad_id" id="facultad_id" class="form-control" v-model="facultad_id">
+              <option value="0">Seleccione una facultad</option>
+              <option v-for="facultad, key in facultades" v-bind:value="facultad.id">
+                @{{facultad.nombre}} - @{{facultad.abreviatura}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="form-group" style="padding-top: 15px;">
           <label for="txttitulo" class="col-sm-2 control-label">Nombre del Banner:*</label>
           <div class="col-sm-8">
             <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Banner" maxlength="200"
@@ -45,7 +61,7 @@
           </div>
         </div>
       </div>
-      
+
 
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
@@ -56,7 +72,7 @@
           </div>
         </div>
       </div>
-      
+
 
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
@@ -104,6 +120,7 @@
 
 
 
+@can('read banners facultad', Model::class)
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Banner</h3>
@@ -128,11 +145,11 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 25%;">Titulo</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 35%;">Descripción</th>
-          {{-- <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha</th> --}}
+          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Titulo</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Descripción</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Banner</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Facultad</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
@@ -141,9 +158,10 @@
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ bannersFacultad.titulo }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ bannersFacultad.descripcion }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: center;vertical-align: middle;">
-              <img :src="getImg(bannersFacultad)" alt="" class="img img-responsive" width="150px" height="50px">
+            <img :src="getImg(bannersFacultad)" alt="" class="img img-responsive" width="150px" height="50px">
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ bannersFacultad.fechapublica }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ bannersFacultad.nombre }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
               <span class="label label-success" v-if="bannersFacultad.activo=='1'">Activo</span>
@@ -152,20 +170,25 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
-              <a href="#" v-if="bannersFacultad.activo=='1'" class="btn bg-navy btn-sm" v-on:click.prevent="bajabanner(bannersFacultad)"
-                data-placement="top" data-toggle="tooltip" title="Desactivar banner"><i
-                  class="fa fa-arrow-circle-down"></i></a>
+              @can('update banners facultad', Model::class)
+              <a href="#" v-if="bannersFacultad.activo=='1'" class="btn bg-navy btn-sm"
+                v-on:click.prevent="bajabanner(bannersFacultad)" data-placement="top" data-toggle="tooltip"
+                title="Desactivar banner"><i class="fa fa-arrow-circle-down"></i></a>
 
               <a href="#" v-if="bannersFacultad.activo=='0'" class="btn btn-success btn-sm"
                 v-on:click.prevent="altabanner(bannersFacultad)" data-placement="top" data-toggle="tooltip"
                 title="Activar banner"><i class="fa fa-check-circle"></i></a>
+              @endcan
 
+              @can('update banners facultad', Model::class)
+              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(bannersFacultad)"
+                data-placement="top" data-toggle="tooltip" title="Editar banner"><i class="fa fa-edit"></i></a>
+              @endcan
 
-              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(bannersFacultad)" data-placement="top"
-                data-toggle="tooltip" title="Editar banner"><i class="fa fa-edit"></i></a>
-                
-              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarbanner(bannersFacultad)" data-placement="top"
-                data-toggle="tooltip" title="Borrar banner"><i class="fa fa-trash"></i></a>
+              @can('delete banners facultad', Model::class)
+              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarbanner(bannersFacultad)"
+                data-placement="top" data-toggle="tooltip" title="Borrar banner"><i class="fa fa-trash"></i></a>
+              @endcan
             </center>
           </td>
         </tr>
@@ -214,6 +237,7 @@
     </div>
   </div>
 </div>
+@endcan
 
 <form method="post" v-on:submit.prevent="updateBanner(fillBannerFacultad.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -235,6 +259,20 @@
               <div class="box-body">
 
                 <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="facultad_id" class="col-sm-2 control-label">Facultad:*</label>
+                    <div class="col-sm-8">
+                      <select name="facultad_id" id="facultad_id" class="form-control" v-model="fillBannerFacultad.facultad_id">
+                        <option value="0">Seleccione una facultad</option>
+                        <option v-for="facultad, key in facultades" v-bind:value="facultad.id">
+                          @{{facultad.nombre}} - @{{facultad.abreviatura}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
                     <label for="txttituloE" class="col-sm-2 control-label">Nombre del Banner:*</label>
                     <div class="col-sm-8">
@@ -268,7 +306,8 @@
                   <div class="form-group">
                     <label for="cbuestadoE" class="col-sm-2 control-label">Estado:*</label>
                     <div class="col-sm-4">
-                      <select class="form-control" id="cbuestadoE" name="cbuestadoE" v-model="fillBannerFacultad.estado">
+                      <select class="form-control" id="cbuestadoE" name="cbuestadoE"
+                        v-model="fillBannerFacultad.estado">
                         <option value="1">Activado</option>
                         <option value="0">Desactivado</option>
                       </select>

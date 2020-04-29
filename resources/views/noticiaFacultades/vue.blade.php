@@ -9,7 +9,7 @@
     subtitle2: false,
     subtitulo2: "",
 
-    tipouserPerfil: '{{ $tipouser->nombre }}',
+    tipouserPerfil: '',
     userPerfil: '{{ Auth::user()->name }}',
     mailPerfil: '{{ Auth::user()->email }}',
 
@@ -45,9 +45,10 @@
     divprincipal: false,
 
     noticias: [],
+    facultades: [],
     errors: [],
 
-    fillNoticias:{'id':'', 'titulo':'', 'descripcion':'', 'imagen':'','fechapubli':'','activo':'','borrado':''},
+    fillNoticias:{'id':'', 'titulo':'', 'descripcion':'', 'imagen':'','fechapubli':'','activo':'','borrado':'','facultad_id':''},
 
     pagination: {
     'total': 0,
@@ -70,6 +71,7 @@
     newFechapubli:'',
     imagen: null,
     newActivo: '',
+    facultad_id: '0',
 },
 created: function () {
     this.getDescripcionFacultades(this.thispage);
@@ -118,6 +120,7 @@ methods: {
         axios.get(url).then(response=> {
             this.noticias = response.data.noticias.data;
             this.pagination = response.data.pagination;
+            this.facultades = response.data.facultades;
 
         if (this.noticias.length == 0 && this.thispage != '1') {
             var a = parseInt(this.thispage);
@@ -155,6 +158,7 @@ methods: {
             this.newFechapubli = '';
             this.newActivo = '1';
             this.imagen = null;
+            this.facultad_id = '0';
 
             $(".form-control").css("border", "1px solid #d2d6de");
         },
@@ -186,6 +190,7 @@ methods: {
                 data.append('descripcion', this.newDescripcion);
                 data.append('imagen', this.imagen);
                 data.append('activo', this.newActivo);
+                data.append('facultad_id', this.facultad_id);
                 
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             axios.post(url,data,config).then(response=>{
@@ -245,6 +250,7 @@ methods: {
         this.fillNoticias.titulo = noticias.titulo;
         this.fillNoticias.descripcion = noticias.descripcion;
         this.imagen=null;
+        this.fillNoticias.facultad_id = noticias.idfac
         
         $("#modalEditar").modal('show');
             this.$nextTick(function () {
@@ -258,6 +264,7 @@ methods: {
         data.append('titulo', this.fillNoticias.titulo);
         data.append('descripcion', this.fillNoticias.descripcion);
         data.append('imagen',this.imagen);
+        data.append('facultad_id', this.fillNoticias.facultad_id);
 
         data.append('_method', 'PUT');
         

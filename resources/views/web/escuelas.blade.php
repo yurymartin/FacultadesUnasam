@@ -40,54 +40,121 @@
         <div class="col-md-12">
             <div class="col-md-8">
                 <div class="widget-main">
-                    @foreach ($descripciones as $descripcion)
                     <div class="widget-main-title">
-                        <h1><strong>{{$descripcion->nombre}}</strong></h1>
+                        @if ($descripciones != null)
+                        <h1 style="font-family: 'Times New Roman', Times, serif">
+                            <strong>{{$descripciones->nombre}}</strong></h1>
+                        @else
+                        <h1><strong>Falta Datos...</strong></h1>
+                        @endif
+
+                        @if ($redesescuelas != null)
+                        <p>
+                            @if ($redesescuelas->facebook != null)
+                            <a href="{{$redesescuelas->facebook}}" data-toggle="tooltip" title="Facebook"
+                                style="padding: 5px 8px 5px 8px;border-radius: 3px;background: #000"><i
+                                    class="fa fa-facebook"></i></a>
+                            @endif
+                            @if ($redesescuelas->google != null)
+                            <a href="{{$redesescuelas->google}}" data-toggle="tooltip" title="Google+"
+                                style="padding: 5px 8px 5px 8px;border-radius: 3px;background: #000"><i
+                                    class="fa fa-google-plus"></i></a>
+                            @endif
+                            @if ($redesescuelas->youtube != null)
+                            <a href="{{$redesescuelas->youtube}}" data-toggle="tooltip" title="Youtube"
+                                style="padding: 5px 8px 5px 8px;border-radius: 3px;background: #000"><i
+                                    class="fa fa-youtube-play"></i></a>
+                            @endif
+                            @if ($redesescuelas->twitter != null)
+                            <a href="{{$redesescuelas->twitter}}" data-toggle="tooltip" title="Twitter"
+                                style="padding: 5px 8px 5px 8px;border-radius: 3px;background: #000"><i
+                                    class="fa fa-twitter"></i></a>
+                            @endif
+                            @if ($redesescuelas->instagram != null)
+                            <a href="{{$redesescuelas->instagram}}" data-toggle="tooltip" title="Instagram"
+                                style="padding: 5px 8px 5px 8px;border-radius: 3px;background: #000"><i
+                                    class="fa fa-instagram"></i></a>
+                            @endif
+                            @if ($redesescuelas->linkedln != null)
+                            <a href="{{$redesescuelas->linkedln}}" data-toggle="tooltip" title="Linkedln"
+                                style="padding: 5px 8px 5px 8px;border-radius: 3px;background: #000"><i
+                                    class="fa fa-linkedin-square"></i></a>
+                            @endif
+                            @if ($redesescuelas->pinterest != null)
+                            <a href="{{$redesescuelas->pinterest}}" data-toggle="tooltip" title="Pinterest"
+                                style="padding: 5px 8px 5px 8px;border-radius: 3px;background: #000"><i
+                                    class="fa fa-pinterest"></i></a>
+                            @endif
+
+                        </p>
+                        @endif
                     </div> <!-- /.widget-main-title -->
                     <div class="widget-inner">
                         <div class="col-md-6">
                             <div class="our-campus clearfix">
                                 <h3 class="text-primary"><strong>La Carrera</strong></h3>
+                                @if ($descripciones != null)
                                 <p
                                     style="font-size: 16px;text-align: justify;font-family: 'Times New Roman', Times, serif">
-                                    {{$descripcion->descripcion}}</p>
+                                    {{$descripciones->descripcion}}</p>
+                                @else
+                                <p
+                                    style="font-size: 16px;text-align: justify;font-family: 'Times New Roman', Times, serif">
+                                    Falta Datos...</p>
+                                @endif
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="our-campus clearfix">
+                                @if ($descripciones != null)
                                 <h3 class="text-primary"><strong>Grado Académico</strong></h3>
                                 <p
                                     style="font-size: 16px;text-align: justify;font-family: 'Times New Roman', Times, serif">
-                                    {{$descripcion->gradoacade}}</p>
+                                    {{$descripciones->gradoacade}}</p>
                                 <h3 class="text-primary"><strong>Titulo</strong></h3>
                                 <p
                                     style="font-size: 16px;text-align: justify;font-family: 'Times New Roman', Times, serif">
-                                    {{$descripcion->tituloprofesional}}</p>
+                                    {{$descripciones->tituloprofesional}}</p>
                                 <h3 class="text-primary"><strong>Duración</strong></h3>
                                 <p
                                     style="font-size: 16px;text-align: justify;font-family: 'Times New Roman', Times, serif">
-                                    {{$descripcion->duracion}}</p>
+                                    {{$descripciones->duracion}}</p>
+                                @else
+                                <h3 class="text-primary"><strong>Grado Académico</strong></h3>
+                                <p
+                                    style="font-size: 16px;text-align: justify;font-family: 'Times New Roman', Times, serif">
+                                    Falta Datos...</p>
+                                <h3 class="text-primary"><strong>Titulo</strong></h3>
+                                <p
+                                    style="font-size: 16px;text-align: justify;font-family: 'Times New Roman', Times, serif">
+                                    Falta Datos...</p>
+                                <h3 class="text-primary"><strong>Duración</strong></h3>
+                                <p
+                                    style="font-size: 16px;text-align: justify;font-family: 'Times New Roman', Times, serif">
+                                    Falta Datos...</p>
+                                @endif
                             </div>
                         </div>
                     </div>
-                    @endforeach
                 </div> <!-- /.widget-main -->
             </div>
             <div class="col-md-4">
                 <div class="widget-main" id="tramites">
                     <br><br><br><br><br><br>
-                    @foreach ($descripciones as $descripcion)
                     <div class="widget-inner text-center">
                         <div class="our-campus clearfix" style="background-color: #fafafa">
                             <br><br><br>
-                            <a href="{{ asset('/img/descripcionEscuelas/'.$descripcion->logo)}}" class="fancybox"
-                                rel="gallery1"><img src="{{ asset('/img/descripcionEscuelas/'.$descripcion->logo)}}"
-                                    alt="{{$descripcion->nombre}}" style="width: 300px;height: 200px"></a>
+                            @if ($descripciones != null)
+                            <a href="{{ asset('/img/descripcionEscuelas/'.$descripciones->logo)}}" class="fancybox"
+                                rel="gallery1"><img src="{{ asset('/img/descripcionEscuelas/'.$descripciones->logo)}}"
+                                    alt="{{$descripciones->nombre}}" style="width: 300px;height: 200px"></a>
+                            @else
+                            <a href="" class="fancybox" rel="gallery1"><img src="" alt="Falta Registar el Logo..."
+                                    style="width: 300px;height: 200px"></a>
+                            @endif
                             <br><br><br>
                         </div>
                     </div>
-                    
-                    @endforeach
                 </div> <!-- /.widget-main -->
             </div> <!-- /.col-md-12 -->
         </div>
@@ -113,7 +180,8 @@
                         id="campo-laboral">
                         <div class="col-md-12">
                             <div class="col-md-8">
-                                <h4 style="color: white;text-decoration: underline" class="text-center"><strong>{{$campoLaboral->titulo}}</strong></h4>
+                                <h4 style="color: white;text-decoration: underline" class="text-center">
+                                    <strong>{{$campoLaboral->titulo}}</strong></h4>
                                 <p
                                     style="text-align: justify;font-size: 16px;font-family: 'Times New Roman', Times, serif">
                                     {{$campoLaboral->campolab}}</p>
@@ -138,16 +206,20 @@
                 </div>
                 <div id="malla" class="tab-pane fade">
                     <h3>Malla Curricular</h3>
-                    @foreach ($mallas as $malla)
-                    <a href="{{ asset('/img/mallaEscuelas/'.$malla->imagen)}}" class="fancybox" rel="gallery1"><img
-                            src="{{ asset('/img/mallaEscuelas/'.$malla->imagen)}}" alt="{{$malla->numcurricula}}"
+                    @if ($mallas != null)
+                    <a href="{{ asset('/img/mallaEscuelas/'.$mallas->imagen)}}" class="fancybox" rel="gallery1"><img
+                            src="{{ asset('/img/mallaEscuelas/'.$mallas->imagen)}}" alt="{{$mallas->numcurricula}}"
                             style="width: 1100px;height: 500px"></a>
-                    @endforeach
+                    @else
+                    <a href="" class="fancybox" rel="gallery1"><img src="" alt="Falta Malla Curricular..."
+                            style="width: 1100px;height: 500px"></a>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -159,7 +231,8 @@
             <div class="mdb-lightbox">
                 @foreach ($galeriaEscuelas as $galeriaEscuela)
                 <figure class="col-md-4">
-                    <a href="{{ asset('/img/galeriaEscuelas/'.$galeriaEscuela->imagen)}}" data-size="500x500">
+                    <a href="{{ asset('/img/galeriaEscuelas/'.$galeriaEscuela->imagen)}}" data-size="500x500"
+                        class="fancybox">
                         <img alt="picture" src="{{ asset('/img/galeriaEscuelas/'.$galeriaEscuela->imagen)}}"
                             class="img-fluid" width="350px" height="200px" id="campo-laboral-imagen">
                     </a>
@@ -170,26 +243,25 @@
         </div>
     </div>
 </div>
-
-
+<div class="container">
+    <div class="row">
+        <hr>
+        <h3 class="text-center"><strong>GALERIA DE VIDEOS</strong></h3>
+        <hr>
+    </div>
+</div>
 
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <hr>
-            <h3 class="text-center"><strong>GALERIA DE VIDEOS</strong></h3>
-            <hr>
             @foreach ($videoescuelas as $videoescuela)
-            <div class="col-md-12">
-                <div class="col-md-6">
-                    @php
-                    echo $videoescuela->link;
-                    @endphp
-                </div>
+            <div class="col-md-6">
+                @php
+                echo $videoescuela->link;
+                @endphp
             </div>
             @endforeach
         </div>
-
     </div>
 </div>
 @endsection

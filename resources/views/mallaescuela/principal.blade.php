@@ -6,6 +6,7 @@
       Volver</a>
   </div>
 
+  @can('create mallas escuelas', Model::class)
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
@@ -13,6 +14,7 @@
     </div>
 
   </div>
+  @endcan
 
 </div>
 
@@ -45,18 +47,18 @@
       </div>
 
       <div class="col-md-12" style="padding-top: 15px;">
-          <div class="form-group">
-            <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>
-            <div class="col-sm-8">
-              <select name="cbescuela" id="cbescuela" class="form-control" v-model="escuela_id">
-                <option  value="0">Seleccione una Escuela</option>
-                <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">
-                  @{{escuela.nombre}}
-                </option>
-              </select>
-            </div>
+        <div class="form-group">
+          <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>
+          <div class="col-sm-8">
+            <select name="cbescuela" id="cbescuela" class="form-control" v-model="escuela_id">
+              <option value="0">Seleccione una Escuela</option>
+              <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">
+                @{{escuela.nombre}}
+              </option>
+            </select>
           </div>
         </div>
+      </div>
 
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
@@ -104,6 +106,7 @@
 
 
 
+@can('read mallas escuelas', Model::class)
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Malla Curriculares</h3>
@@ -151,6 +154,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              @can('update mallas escuelas', Model::class)
               <a href="#" v-if="mallaE.activo=='1'" class="btn bg-navy btn-sm" v-on:click.prevent="bajabanner(mallaE)"
                 data-placement="top" data-toggle="tooltip" title="Desactivar banner"><i
                   class="fa fa-arrow-circle-down"></i></a>
@@ -162,8 +166,12 @@
 
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editGalEscu(mallaE)" data-placement="top"
                 data-toggle="tooltip" title="Editar galeria de escuela"><i class="fa fa-edit"></i></a>
+              @endcan
+
+              @can('delete mallas escuelas', Model::class)
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarbanner(mallaE)" data-placement="top"
                 data-toggle="tooltip" title="Borrar banner"><i class="fa fa-trash"></i></a>
+              @endcan
             </center>
           </td>
         </tr>
@@ -212,6 +220,7 @@
     </div>
   </div>
 </div>
+@endcan
 
 <form method="post" v-on:submit.prevent="updateGalEscuela(fillGalEcuela.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -251,7 +260,7 @@
                   </div>
                 </div>
 
-                
+
                 <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
                     <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>

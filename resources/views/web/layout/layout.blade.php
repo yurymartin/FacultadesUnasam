@@ -5,48 +5,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>FACULTADES | UNASAM</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="College Education Responsive Template">
-    <meta name="author" content="Esmet">
+    <title>{{$facultad->nombre}}</title>
     <meta charset="UTF-8">
-
     <link rel="icon" type="image/png" href="{{ asset('/img/icon.png') }}" />
-    <link href='http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800' rel='stylesheet'
-        type='text/css'>
 
     <!-- CSS Bootstrap & Custom -->
     <link href="{{ asset('web/css/bootstrap.css') }}" rel="stylesheet" media="screen">
     <link href="{{ asset('web/css/font-awesome.min.css') }}" rel="stylesheet" media="screen">
     <link href="{{ asset('web/css/animate.css') }}" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="{{ asset('web/css/font-awesome.min.css') }}">
-
     <link href="{{ asset('style.css') }}" rel="stylesheet" media="screen">
+
     <!-- Favicons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
-    <link rel="shortcut icon" href="images/ico/favicon.ico">
     <link rel="stylesheet" href="{{ asset('web/css/bootstrap.css') }}">
-    <!--link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    
 
     <!-- JavaScripts -->
     <script src="{{ asset('web/js/jquery-1.10.2.min.js') }}"></script>
     <script src="{{ asset('web/js/jquery-migrate-1.2.1.min.js') }}"></script>
     <script src="{{ asset('web/js/modernizr.js') }}"></script>
     <!--[if lt IE 8]>
-	<div style=' clear: both; text-align:center; position: relative;'>
-            <a href="http://www.microsoft.com/windows/internet-explorer/default.aspx?ocid=ie6_countdown_bannercode"><img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" alt="" /></a>
-        </div>
-    <![endif]-->
     <!------------------ SCROLL REVEAL--------------------->
     <!----------------------------------------------------->
 
 </head>
 
 <body>
+    <!-- JavaScripts -->
+    <script src="{{ asset('web/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('web/js/custom.js') }}"></script>
+    <script src="{{ asset('web/js/plugins.js') }}"></script>
     <!--------------------------------------   HEADER --------------------------------------------->
     @include('web.layout.header')
     <!--------------------------------------------------------------------------------------------->
@@ -56,11 +43,56 @@
     <!--------------------------------------   FOOTER  -------------------------------------------->
     @include('web.layout.footer')
     <!--------------------------------------------------------------------------------------------->
+    <script>
+        // sidebar toggle
+    const btnToggle = document.querySelector('.toggle-btn');
+    btnToggle.addEventListener('click', function () {
+      document.getElementById('sidebar').classList.toggle('active');
+    })
 
-    <!-- JavaScripts -->
-    <script src="{{ asset('web/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('web/js/plugins.js') }}"></script>
-    <script src="{{ asset('web/js/custom.js') }}"></script>
+    btncerrar.addEventListener('click', function () {
+      document.getElementById('sidebar').classList.toggle('active');
+    })
+
+    //valor de los colores de textos
+    var fondoheader = document.getElementById("fondoheader");
+    var fondofooter = document.getElementById("fondofooter");
+    var fondonavbar = document.getElementById("fondonavbar");
+    //valor de los colores de textos
+    var textoheader = document.getElementById("textoheader");
+    var textofooter = document.getElementById("textofooter");
+    var textonavbar = document.getElementById("textonavbar");
+
+
+    fondoheader.onchange = function() {
+        document.getElementById("codigofondoheader").value = fondoheader.value;
+    }
+
+    textoheader.onchange = function() {
+        document.getElementById("codigotextoheader").value = textoheader.value;
+    }
+
+    //footer
+    fondofooter.onchange = function() {
+        document.getElementById("codigofondofooter").value = fondofooter.value;
+    }
+
+    textofooter.onchange = function() {
+        document.getElementById("codigotextofooter").value = textofooter.value;
+    }
+    
+    //navbar
+
+    fondonavbar.onchange = function() {
+        document.getElementById("codigofondonavbar").value = fondonavbar.value;
+    }
+
+    textonavbar.onchange = function() {
+        document.getElementById("codigotextonavbar").value = textonavbar.value;
+    }
+
+
+    </script>
 </body>
 
 </html>

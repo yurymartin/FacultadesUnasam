@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DescripcionFacultades;
+use App\Facultades;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -21,31 +22,49 @@ class DescripcionFacultadesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware(['permission:create descripcion facultad'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read descripcion facultad'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update descripcion facultad'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete descripcion facultad'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "descripcionfacultades";
-            return view('descripcionfacultades.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "descripcionfacultades";
+        return view('descripcionfacultades.index', compact('modulo'));
     }
 
     public function index(Request $request)
     {
         $buscar = $request->busca;
-        $descripcionfacultades = DescripcionFacultades::where('borrado', '0')
-            ->where(function ($query) use ($buscar) {
-                $query->where('descripcion', 'like', '%' . $buscar . '%');
-                $query->orWhere('reseñahistor', 'like', '%' . $buscar . '%');
-                $query->orWhere('mision', 'like', '%' . $buscar . '%');
-                $query->orWhere('vision', 'like', '%' . $buscar . '%');
-                $query->orWhere('filosofia', 'like', '%' . $buscar . '%');
+        $descripcionfacultades = DB::table('descripcionfacultades as df')
+            ->join('facultades as f', 'f.id', '=', 'df.facultad_id')
+            ->select('df.id as iddesc', 'df.descripcion', 'df.reseñahistor', 'df.mision', 'df.vision', 'df.imagen', 'filosofia', 'df.activo', 'df.borrado', 'df.facultad_id as idfac', 'f.nombre', 'f.abreviatura')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('df.facultad_id', '=', auth()->user()->facultad_id);
+                }
             })
-            ->orderBy('id')
-            ->paginate(10);
+            ->where('df.borrado', '0')
+            ->where(function ($query) use ($buscar) {
+                $query->where('f.nombre', 'like', '%' . $buscar . '%');
+                $query->orWhere('f.abreviatura', 'like', '%' . $buscar . '%');
+            })
+            ->orderBy('df.id')
+            ->paginate(2);
+
+        $facultades = DB::table('facultades')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('id', '=', auth()->user()->facultad_id);
+                }
+            })
+            ->where('activo', '1')
+            ->where('borrado', '0')
+            ->get();
 
         return [
             'pagination' => [
@@ -57,6 +76,7 @@ class DescripcionFacultadesController extends Controller
                 'to' => $descripcionfacultades->lastItem(),
             ],
             'descripcionfacultades' => $descripcionfacultades,
+            'facultades' => $facultades
         ];
     }
 
@@ -78,6 +98,7 @@ class DescripcionFacultadesController extends Controller
      */
     public function store(Request $request)
     {
+        $facultad_id = $request->facultad_id;
         $descripcion = $request->descripcion;
         $reseñahistor = $request->reseñahistor;
         $mision = $request->mision;
@@ -109,7 +130,11 @@ class DescripcionFacultadesController extends Controller
         $reglas4 = array('filosofia' => 'required');
         $validator4 = Validator::make($input4, $reglas4);
 
-        if ($validator1->fails()) {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($validator1->fails()) {
             $result = '0';
             $msj = 'FALTA COMPLETAR LA RESEÑA HISTORICA DE LA FACULTAD';
             $selector = 'reseña';
@@ -171,6 +196,7 @@ class DescripcionFacultadesController extends Controller
                 $newdescripcion->filosofia = $filosofia;
                 $newdescripcion->activo = $estado;
                 $newdescripcion->borrado = '0';
+                $newdescripcion->facultad_id = $facultad_id;
                 $newdescripcion->save();
                 $msj = 'LA NUEVA DESCRIPCION DE LA FACULTAD FUE REGISTRADA EXITOSAMENTE';
             }
@@ -210,6 +236,7 @@ class DescripcionFacultadesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $facultad_id = $request->facultad_id;
         $descripcion = $request->descripcion;
         $reseñahistor = $request->reseñahistor;
         $mision = $request->mision;
@@ -240,7 +267,11 @@ class DescripcionFacultadesController extends Controller
         $reglas4 = array('filosofia' => 'required');
         $validator4 = Validator::make($input4, $reglas4);
 
-        if ($validator1->fails()) {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($validator1->fails()) {
             $result = '0';
             $msj = 'FALTA COMPLETAR LA RESEÑA HISTORICA DE LA FACULTAD';
             $selector = 'reseña';
@@ -288,6 +319,7 @@ class DescripcionFacultadesController extends Controller
                 $editadescripcion->vision = $vision;
                 $editadescripcion->imagen = $imagen;
                 $editadescripcion->filosofia = $filosofia;
+                $editadescripcion->facultad_id = $facultad_id;
                 $editadescripcion->save();
             } else {
                 $editadescripcion->descripcion = $descripcion;
@@ -295,6 +327,7 @@ class DescripcionFacultadesController extends Controller
                 $editadescripcion->mision = $mision;
                 $editadescripcion->vision = $vision;
                 $editadescripcion->filosofia = $filosofia;
+                $editadescripcion->facultad_id = $facultad_id;
                 $editadescripcion->save();
             }
             $msj = 'LA DECRIPCION DE LA FACULTAD FUE MODIFICADO EXITOSAMENTE';

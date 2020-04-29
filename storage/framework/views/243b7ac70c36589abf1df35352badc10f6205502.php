@@ -6,6 +6,7 @@
       Volver</a>
   </div>
 
+  <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create docentes', Model::class)): ?>
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
@@ -13,6 +14,7 @@
     </div>
 
   </div>
+  <?php endif; ?>
 
 </div>
 
@@ -23,12 +25,28 @@
 
   <form v-on:submit.prevent="create">
     <div class="box-body">
-      <div class="col-md-12">
+
+      <div class="col-md-12" style="padding-top: 10px;">
+        <div class="form-group">
+          <label for="departamentoacademico_id" class="col-sm-2 control-label">Departamento Academico:*</label>
+          <div class="col-sm-8">
+            <select name="departamentoacademico_id" id="departamentoacademico_id" class="form-control"
+              v-model="departamentoacademico_id">
+              <option value="0">Seleccione el Departamento Academico:*</option>
+              <option v-for="departamento, key in departamentoacademicos" v-bind:value="departamento.id">
+                {{departamento.nombre}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
           <label for="dni" class="col-sm-2 control-label">DNI:*</label>
           <div class="col-sm-4">
-            <input type="number" class="form-control" id="dni" name="dni" placeholder="DNI del docente"
-              maxlength="200" autofocus v-model="newDni">
+            <input type="number" class="form-control" id="dni" name="dni" placeholder="DNI del docente" maxlength="200"
+              autofocus v-model="newDni">
           </div>
         </div>
       </div>
@@ -49,8 +67,8 @@
         <div class="form-group" style="padding-top: 15px;">
           <label for="apellidos" class="col-sm-2 control-label">Apellidos:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="apellidos" name="apellidos"
-              placeholder="Apellidos Docentes" maxlength="500" v-model="newApellidos">
+            <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos Docentes"
+              maxlength="500" v-model="newApellidos">
           </div>
         </div>
       </div>
@@ -64,7 +82,7 @@
           </div>
         </div>
       </div>
-      
+
 
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
@@ -94,7 +112,7 @@
           <label for="cbcategoria" class="col-sm-2 control-label">Categoria de Docente:*</label>
           <div class="col-sm-8">
             <select name="cbcategoria" id="cbcategoria" class="form-control" v-model="categoriadocente_id">
-              <option disabled value="0">Seleccione una Categoria</option>
+              <option value="0">Seleccione una Categoria</option>
               <option v-for="categoriadocente, key in categoriadocentes" v-bind:value="categoriadocente.id">
                 {{categoriadocente.categoria}}
               </option>
@@ -107,7 +125,7 @@
           <label for="cbGrado" class="col-sm-2 control-label">Grado Academico:*</label>
           <div class="col-sm-8">
             <select name="cbGrado" id="cbGrado" class="form-control" v-model="gradoacademico_id">
-              <option disabled value="0">Seleccione un Grado Academico</option>
+              <option value="0">Seleccione un Grado Academico</option>
               <option v-for="gradoacademico, key in gradoacademicos" v-bind:value="gradoacademico.id">
                 {{gradoacademico.grado}}
               </option>
@@ -130,8 +148,8 @@
         <div class="form-group" style="padding-top: 15px;">
           <label for="txttitulo" class="col-sm-2 control-label">Fecha Ingreso:*</label>
           <div class="col-sm-2">
-            <input type="date" class="form-control" id="fecha" name="fecha"
-              placeholder="Titulo Profesional del docente" maxlength="200" autofocus v-model="newFecha">
+            <input type="date" class="form-control" id="fecha" name="fecha" placeholder="Titulo Profesional del docente"
+              maxlength="200" autofocus v-model="newFecha">
           </div>
         </div>
       </div>
@@ -169,6 +187,7 @@
 
 
 
+<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('read docentes', Model::class)): ?>
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Docentes</h3>
@@ -192,15 +211,16 @@
     <table class="table table-hover table-bordered table-dark table-condensed table-striped">
       <tbody>
         <tr>
-          <th style="border:1px solid #ddd;padding: 5px; width: 2%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 5%;">dni</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 14%;">Nombres</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 14%;">Apellidos</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 1%;">#</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 4%;">dni</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Nombres</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Apellidos</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Foto</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gr.Academico</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Categoria</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Titulo Profesional</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha Ingreso</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Departamento Academico</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
@@ -217,6 +237,7 @@
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ docente.categoria }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ docente.tituloprofe }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ docente.fechaingreso }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ docente.nombredep }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
               <span class="label label-success" v-if="docente.activo=='1'">Activo</span>
@@ -225,6 +246,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update docentes', Model::class)): ?>
               <a href="#" v-if="docente.activo=='1'" class="btn bg-navy btn-sm"
                 v-on:click.prevent="bajadocente(docente)" data-placement="top" data-toggle="tooltip"
                 title="Desactivar docente"><i class="fa fa-arrow-circle-down"></i></a>
@@ -232,11 +254,17 @@
               <a href="#" v-if="docente.activo=='0'" class="btn btn-success btn-sm"
                 v-on:click.prevent="altadocente(docente)" data-placement="top" data-toggle="tooltip"
                 title="Activar docente"><i class="fa fa-check-circle"></i></a>
+              <?php endif; ?>
 
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update docentes', Model::class)): ?>
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(docente)" data-placement="top"
                 data-toggle="tooltip" title="Editar docente"><i class="fa fa-edit"></i></a>
+              <?php endif; ?>
+
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete docentes', Model::class)): ?>
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(docente)" data-placement="top"
                 data-toggle="tooltip" title="Borrar docente"><i class="fa fa-trash"></i></a>
+              <?php endif; ?>
             </center>
           </td>
         </tr>
@@ -285,6 +313,7 @@
     </div>
   </div>
 </div>
+<?php endif; ?>
 
 <form method="post" v-on:submit.prevent="updateBanner(fillDocente.id,fillPersona.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -305,7 +334,23 @@
               <!-- form start -->
               <div class="box-body">
 
-                <div class="col-md-12">
+                <div class="col-md-12" style="padding-top: 10px;">
+                  <div class="form-group">
+                    <label for="departamentoacademico_id" class="col-sm-2 control-label">Departamento
+                      Academico:*</label>
+                    <div class="col-sm-8">
+                      <select name="departamentoacademico_id" id="departamentoacademico_id" class="form-control"
+                        v-model="fillDocente.departamentoacademico_id">
+                        <option value="0">Seleccione el Departamento Academico</option>
+                        <option v-for="departamento, key in departamentoacademicos" v-bind:value="departamento.id">
+                          {{departamento.nombre}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
                     <label for="txttituloE" class="col-sm-2 control-label">DNI:*</label>
                     <div class="col-sm-8">
@@ -319,8 +364,8 @@
                   <div class="form-group" style="padding-top: 15px;">
                     <label for="txttituloE" class="col-sm-2 control-label">Nombres:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="nombresE" name="nombresE" placeholder="Nombres del docente"
-                        maxlength="200" autofocus v-model="fillPersona.nombres">
+                      <input type="text" class="form-control" id="nombresE" name="nombresE"
+                        placeholder="Nombres del docente" maxlength="200" autofocus v-model="fillPersona.nombres">
                     </div>
                   </div>
                 </div>
@@ -329,8 +374,8 @@
                   <div class="form-group" style="padding-top: 15px;">
                     <label for="txttituloE" class="col-sm-2 control-label">Apellidos:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="ApellidosE" name="ApellidosE" placeholder="Apellidos del docente"
-                        maxlength="200" autofocus v-model="fillPersona.apellidos">
+                      <input type="text" class="form-control" id="ApellidosE" name="ApellidosE"
+                        placeholder="Apellidos del docente" maxlength="200" autofocus v-model="fillPersona.apellidos">
                     </div>
                   </div>
                 </div>
@@ -355,8 +400,8 @@
                       </select>
                     </div>
                   </div>
-                </div>  
-                
+                </div>
+
                 <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
                     <label for="cbestadoE" class="col-sm-2 control-label">Estado:*</label>
@@ -373,9 +418,11 @@
                   <div class="form-group">
                     <label for="cbcategoriaE" class="col-sm-2 control-label">Categoria :*</label>
                     <div class="col-sm-4">
-                      <select class="form-control" id="cbcategoriaE" name="cbcategoriaE" v-model="fillDocente.categoriadocen_id">
+                      <select class="form-control" id="cbcategoriaE" name="cbcategoriaE"
+                        v-model="fillDocente.categoriadocen_id">
                         <option disabled value="">Seleccione una categoria de docente</option>
-                        <option v-for="categoriadocente, key in categoriadocentes" v-bind:value="categoriadocente.id">{{ categoriadocente.categoria }} </option>
+                        <option v-for="categoriadocente, key in categoriadocentes" v-bind:value="categoriadocente.id">
+                          {{ categoriadocente.categoria }} </option>
                       </select>
                     </div>
                   </div>
@@ -385,9 +432,11 @@
                   <div class="form-group">
                     <label for="cbgradoE" class="col-sm-2 control-label">Grado Academico:*</label>
                     <div class="col-sm-4">
-                      <select class="form-control" id="cbgradoE" name="cbgradoE" v-model="fillDocente.gradoacademico_id">
+                      <select class="form-control" id="cbgradoE" name="cbgradoE"
+                        v-model="fillDocente.gradoacademico_id">
                         <option disabled value="">Seleccione una categoria de docente</option>
-                        <option v-for="gradoacademico, key in gradoacademicos" v-bind:value="gradoacademico.id">{{ gradoacademico.grado }} </option>
+                        <option v-for="gradoacademico, key in gradoacademicos" v-bind:value="gradoacademico.id">
+                          {{ gradoacademico.grado }} </option>
                       </select>
                     </div>
                   </div>
@@ -397,8 +446,9 @@
                   <div class="form-group" style="padding-top: 15px;">
                     <label for="tituloE" class="col-sm-2 control-label">Titulo Profesional:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="tituloE" name="tituloE" placeholder="Titulo Profesional del docente"
-                        maxlength="200" autofocus v-model="fillDocente.tituloprofe">
+                      <input type="text" class="form-control" id="tituloE" name="tituloE"
+                        placeholder="Titulo Profesional del docente" maxlength="200" autofocus
+                        v-model="fillDocente.tituloprofe">
                     </div>
                   </div>
                 </div>
@@ -408,11 +458,12 @@
                     <label for="fechaE" class="col-sm-2 control-label">Fecha Ingreso:*</label>
                     <div class="col-sm-4">
                       <input type="date" class="form-control" id="fechaE" name="fechaE"
-                        placeholder="fecha ingreso del docente" maxlength="200" autofocus v-model="fillDocente.fechaingreso">
+                        placeholder="fecha ingreso del docente" maxlength="200" autofocus
+                        v-model="fillDocente.fechaingreso">
                     </div>
                   </div>
                 </div>
-                
+
 
               </div>
             </div>

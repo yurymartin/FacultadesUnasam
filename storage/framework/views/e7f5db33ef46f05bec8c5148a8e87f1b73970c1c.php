@@ -9,11 +9,10 @@ data:{
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
+   tipouserPerfil:'',
    userPerfil:'<?php echo e(Auth::user()->name); ?>',
    mailPerfil:'<?php echo e(Auth::user()->email); ?>',
-
-   
+      
    divloader0:true,
    divloader1:false,
    divloader2:false,
@@ -45,9 +44,10 @@ data:{
    divprincipal:false,
 
    cargos: [],
+   facultades: [],
    errors:[],
 
-   fillCargo:{'id':'', 'cargo':'','descripcion':''},
+   fillCargo:{'id':'', 'cargo':'','descripcion':'','facultad_id':''},
 
 
    pagination: {
@@ -70,6 +70,7 @@ data:{
    newDescripcion:'',
    newEstado:'',
    newBorrado:'0',
+   facultad_id: '0',
   
 
 
@@ -120,6 +121,8 @@ methods: {
        axios.get(url).then(response=>{
             this.cargos= response.data.cargos.data;
             this.pagination= response.data.pagination;
+            this.facultades = response.data.facultades;
+
            if(this.cargos.length == 0 && this.thispage != '1'){
                var a = parseInt(this.thispage) ;
                a--;
@@ -154,8 +157,10 @@ methods: {
        $('#txttitulo').focus();
 
         this.newTitulo = '';
+        this.newDescripcion = '';
         this.newEstado = '1';
         this.newBorrado = '0';
+        this.facultad_id = '0';
 
        $(".form-control").css("border","1px solid #d2d6de");
    },
@@ -174,6 +179,7 @@ methods: {
             data.append('descripcion', this.newDescripcion);
             data.append('activo', this.newEstado);
             data.append('borrado', this.newBorrado);
+            data.append('facultad_id', this.facultad_id);
             
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             
@@ -232,7 +238,8 @@ methods: {
 
         this.fillCargo.id=cargo.id;
         this.fillCargo.cargo=cargo.cargo;
-        this.fillCargo.descripcion=cargo.descripcion;          
+        this.fillCargo.descripcion=cargo.descripcion;
+        this.fillCargo.facultad_id = cargo.idfac          
 
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
@@ -245,6 +252,7 @@ methods: {
         data.append('id', this.fillCargo.id);
         data.append('cargo', this.fillCargo.cargo);
         data.append('descripcion', this.fillCargo.descripcion);
+        data.append('facultad_id', this.fillCargo.facultad_id);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };

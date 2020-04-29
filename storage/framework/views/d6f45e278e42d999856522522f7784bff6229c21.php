@@ -1,24 +1,26 @@
 <div class="box box-primary panel-group">
   <div class="box-header with-border" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Gestión de Investigaciones</h3>
+    <h3 class="box-title">Gestión de Publicaciones</h3>
     <a style="float: right;" type="button" class="btn btn-default" href="<?php echo e(URL::to('home')); ?>"><i class="fa fa-reply-all"
         aria-hidden="true"></i>
       Volver</a>
   </div>
 
+  <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create publicaciones', Model::class)): ?>
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
-          class="fa fa-plus-square-o" aria-hidden="true"></i> Nueva Investigacion</button>
+          class="fa fa-plus-square-o" aria-hidden="true"></i> Nueva Publicacion</button>
     </div>
 
   </div>
+  <?php endif; ?>
 
 </div>
 
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
-    <h3 class="box-title" id="tituloAgregar">Nueva Investigacion</h3>
+    <h3 class="box-title" id="tituloAgregar">Nueva Publicacion</h3>
   </div>
 
   <form v-on:submit.prevent="create">
@@ -87,7 +89,7 @@
 
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
-          <label for="tema_id" class="col-sm-2 control-label">Tema de Esudio:*</label>
+          <label for="tema_id" class="col-sm-2 control-label">Tema de Estudio:*</label>
           <div class="col-sm-8">
             <select name="tema_id" id="tema_id" class="form-control" v-model="tema_id">
               <option disabled value="0">Seleccione el tema de estudio</option>
@@ -144,9 +146,10 @@
 
 
 
+<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('read publicaciones', Model::class)): ?>
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
-    <h3 class="box-title">Listado de Investigaciones</h3>
+    <h3 class="box-title">Listado de Publicaciones</h3>
 
     <div class="box-tools">
       <div class="input-group input-group-sm" style="width: 300px;">
@@ -196,6 +199,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update publicaciones', Model::class)): ?>
               <a href="#" v-if="Investigacion.activo=='1'" class="btn bg-navy btn-sm"
                 v-on:click.prevent="bajabanner(Investigacion)" data-placement="top" data-toggle="tooltip"
                 title="Desactivar Investigacion"><i class="fa fa-arrow-circle-down"></i></a>
@@ -204,15 +208,19 @@
                 v-on:click.prevent="altabanner(Investigacion)" data-placement="top" data-toggle="tooltip"
                 title="Activar Investigacion"><i class="fa fa-check-circle"></i></a>
 
-
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(Investigacion)"
                 data-placement="top" data-toggle="tooltip" title="Editar Investigacion"><i class="fa fa-edit"></i></a>
+              <?php endif; ?>
 
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete publicaciones', Model::class)): ?>
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarbanner(Investigacion)"
                 data-placement="top" data-toggle="tooltip" title="Borrar Investigacion"><i class="fa fa-trash"></i></a>
+              <?php endif; ?>
 
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('read publicaciones', Model::class)): ?>
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="getfile(Investigacion)" data-placement="top"
                 data-toggle="tooltip" title="ver Investigacion"><i class="fa fa-eye"></i></a>
+              <?php endif; ?>
 
             </center>
           </td>
@@ -262,6 +270,7 @@
     </div>
   </div>
 </div>
+<?php endif; ?>
 
 <form method="post" v-on:submit.prevent="updateBanner(fillInvestigaciones.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -272,7 +281,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
               style="font-size: 35px;">&times;</span></button>
           <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR
-            LA INVESTIGACION</h4>
+            LA PUBLICACION</h4>
 
         </div>
         <div class="modal-body">
@@ -308,8 +317,9 @@
                   <div class="form-group" style="padding-top: 15px;">
                     <label for="autor" class="col-sm-2 control-label">Autor:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="autor" name="autor" placeholder="autor de la investigacion"
-                        maxlength="200" autofocus v-model="fillInvestigaciones.autor">
+                      <input type="text" class="form-control" id="autor" name="autor"
+                        placeholder="autor de la investigacion" maxlength="200" autofocus
+                        v-model="fillInvestigaciones.autor">
                     </div>
                   </div>
                 </div>
@@ -347,7 +357,7 @@
 
                 <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
-                    <label for="tema_id" class="col-sm-2 control-label">Tema de Esudio:*</label>
+                    <label for="tema_id" class="col-sm-2 control-label">Tema de Estudio:*</label>
                     <div class="col-sm-8">
                       <select name="tema_id" id="tema_id" class="form-control" v-model="fillInvestigaciones.tema_id">
                         <option disabled value="0">Seleccione el tema de estudio</option>

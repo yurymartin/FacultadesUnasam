@@ -5,23 +5,31 @@
         <div class="col-md-8">
             <div class="widget-main" id="tramites">
                 <div class="widget-main-title">
-                    <h3><strong>MISIÓN</strong></h3>
+                    <h3 style="font-family: cursive"><strong>MISIÓN</strong></h3>
                 </div> <!-- /.widget-main-title -->
                 <div class="widget-inner">
                     <div class="our-campus clearfix">
-                        @foreach ($misionvision as $mision)
-                    <p style="text-align: justify;font-size: 16px;font-family: 'Times New Roman', Times, serif">{{$mision->mision}}</p>   
-                        @endforeach
-                       </div>
+                        @if ($misionvision != null)
+                        <p style="text-align: justify;font-size: 16px;font-family: 'Times New Roman', Times, serif">
+                            {{$misionvision->mision}}</p>
+                        @else
+                        <p style="text-align: justify;font-size: 16px;font-family: 'Times New Roman', Times, serif">
+                            FALTA DATOS</p>
+                        @endif
+                    </div>
                 </div>
                 <div class="widget-main-title">
-                    <h3><strong>VISIÓN</strong></h3>
+                    <h3 style="font-family: cursive"><strong>VISIÓN</strong></h3>
                 </div> <!-- /.widget-main-title -->
                 <div class="widget-inner">
                     <div class="our-campus clearfix">
-                            @foreach ($misionvision as $vision)
-                            <p style="text-align: justify;font-size: 16px;font-family: 'Times New Roman', Times, serif">{{$vision->vision}}</p>   
-                                @endforeach
+                        @if ($misionvision != null)
+                        <p style="text-align: justify;font-size: 16px;font-family: 'Times New Roman', Times, serif">
+                            {{$misionvision->vision}}</p>
+                        @else
+                        <p style="text-align: justify;font-size: 16px;font-family: 'Times New Roman', Times, serif">
+                            FALTA DATOS</p>
+                        @endif
                     </div>
                 </div>
             </div> <!-- /.widget-main -->
@@ -31,10 +39,13 @@
                 <br><br>
                 <div class="widget-inner text-center">
                     <div class="our-campus clearfix">
-                        @foreach ($misionvision as $logo)
-                        <img src="{{asset('img/descripcionFacultades/'.$logo->imagen)}}" alt="UNASAM" style="width: 300px">  
-                        @endforeach
-                    
+                        @if ($misionvision != null)
+                        <img src="{{asset('img/descripcionFacultades/'.$misionvision->imagen)}}" alt="UNASAM"
+                            style="width: 300px">
+                        @else
+                        <img src="" alt="FALTA DATOS"
+                            style="width: 300px">
+                        @endif
                     </div>
                 </div>
             </div> <!-- /.widget-main -->

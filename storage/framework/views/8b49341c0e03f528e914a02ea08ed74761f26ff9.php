@@ -6,6 +6,7 @@
       Volver</a>
   </div>
 
+  <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create descripcion facultad', Model::class)): ?>
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
@@ -13,6 +14,7 @@
     </div>
 
   </div>
+  <?php endif; ?>
 
 </div>
 
@@ -24,12 +26,26 @@
   <form v-on:submit.prevent="create">
     <div class="box-body">
 
-      <div class="col-md-12">
+      <div class="col-md-12" style="padding-top: 10px;">
+        <div class="form-group">
+          <label for="facultad_id" class="col-sm-2 control-label">Facultad:*</label>
+          <div class="col-sm-8">
+            <select name="facultad_id" id="facultad_id" class="form-control" v-model="facultad_id">
+              <option value="0">Seleccione una facultad</option>
+              <option v-for="facultad, key in facultades" v-bind:value="facultad.id">
+                {{facultad.nombre}} - {{facultad.abreviatura}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
           <label for="descripcion" class="col-sm-2 control-label">Descripciòn:*</label>
           <div class="col-sm-8">
             <textarea name="descripcion" id="descripcion" cols="80" rows="5" v-model="newDescripcion"
-              placeholder="descripcion" class="form-control"></textarea>
+              placeholder="descripcion" class="form-control box-body pad"></textarea>
           </div>
         </div>
       </div>
@@ -133,6 +149,7 @@
 
 
 
+<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('read descripcion facultad', Model::class)): ?>
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de descripciones de la facultad</h3>
@@ -156,15 +173,16 @@
     <table class="table table-hover table-bordered table-dark table-condensed table-striped">
       <tbody>
         <tr>
-          <th style="border:1px solid #ddd;padding: 5px; width: 1%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Descripciòn</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Reseña Historica</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 14%;">Misiòn</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 14%;">Visiòn</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Descripciòn</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Reseña Historica</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Misiòn</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Visiòn</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Imagen</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 14%;">Filosofia</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Filosofia</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Facultad</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Estado</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 12%;">Gestión</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
         <tr v-for="descripcionfacultad, key in descripcionfacultades">
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">{{key+pagination.from}}
@@ -184,6 +202,8 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
             {{ descripcionfacultad.filosofia }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
+            {{ descripcionfacultad.nombre }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
               <span class="label label-success" v-if="descripcionfacultad.activo=='1'">Activo</span>
@@ -192,6 +212,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update descripcion facultad', Model::class)): ?>
               <a href="#" v-if="descripcionfacultad.activo=='1'" class="btn bg-navy btn-sm"
                 v-on:click.prevent="bajadocente(descripcionfacultad)" data-placement="top" data-toggle="tooltip"
                 title="Desactivar descripcion facultad"><i class="fa fa-arrow-circle-down"></i></a>
@@ -199,13 +220,18 @@
               <a href="#" v-if="descripcionfacultad.activo=='0'" class="btn btn-success btn-sm"
                 v-on:click.prevent="altadocente(descripcionfacultad)" data-placement="top" data-toggle="tooltip"
                 title="Activar descripcion facultad"><i class="fa fa-check-circle"></i></a>
+              <?php endif; ?>
 
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update descripcion facultad', Model::class)): ?>
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(descripcionfacultad)"
                 data-placement="top" data-toggle="tooltip" title="Editar descripcion facultad"><i
                   class="fa fa-edit"></i></a>
+              <?php endif; ?>
 
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete descripcion facultad', Model::class)): ?>
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(descripcionfacultad)"
                 data-placement="top" data-toggle="tooltip" title="Borrar docente"><i class="fa fa-trash"></i></a>
+              <?php endif; ?>
             </center>
           </td>
         </tr>
@@ -254,6 +280,7 @@
     </div>
   </div>
 </div>
+<?php endif; ?>
 
 <form method="post" v-on:submit.prevent="updateBanner(fillDescripcionFacultades.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -275,6 +302,20 @@
               <div class="box-body">
 
                 <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="facultad_id" class="col-sm-2 control-label">Facultad:*</label>
+                    <div class="col-sm-8">
+                      <select name="facultad_id" id="facultad_id" class="form-control" v-model="fillDescripcionFacultades.facultad_id">
+                        <option value="0">Seleccione una facultad</option>
+                        <option v-for="facultad, key in facultades" v-bind:value="facultad.id">
+                          {{facultad.nombre}} - {{facultad.abreviatura}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12" style="padding-top: 10px;">
                   <div class="form-group">
                     <label for="descripcion" class="col-sm-2 control-label">Descripciòn:*</label>
                     <div class="col-sm-8">

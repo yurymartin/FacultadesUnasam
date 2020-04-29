@@ -22,12 +22,9 @@ Gestión de las noticias de la facultad
 
 		@include('vendor.adminlte.layouts.partials.loaders')
 
-		@if(accesoUser([1,2]))
-
 		<template v-if="divprincipal" id="divprincipal">
 			@include('noticiaFacultades.principal')
 		</template>
-		@endif
 
 
 	</div>

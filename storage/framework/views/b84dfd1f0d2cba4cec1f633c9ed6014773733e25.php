@@ -9,7 +9,7 @@
     subtitle2: false,
     subtitulo2: "",
 
-    tipouserPerfil: '<?php echo e($tipouser->nombre); ?>',
+    tipouserPerfil: '',
     userPerfil: '<?php echo e(Auth::user()->name); ?>',
     mailPerfil: '<?php echo e(Auth::user()->email); ?>',
 
@@ -150,6 +150,7 @@ methods: {
             $('#titulo').focus();
             this.newTitulo = '';
             this.newDescripcion = '';
+            this.newLink ='';
             this.newFechapubli = '';
             this.newActivo = '1';
             this.imagen = null;

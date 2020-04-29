@@ -20,16 +20,18 @@ class EscuelaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware(['permission:create escuelas'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read escuelas'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update escuelas'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete escuelas'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "escuelas";
-            return view('escuelas.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "escuelas";
+        return view('escuelas.index', compact('modulo'));
     }
 
     /**
@@ -40,12 +42,32 @@ class EscuelaController extends Controller
     public function index(Request $request)
     {
         $buscar = $request->busca;
-        $escuelas = Escuela::where('borrado', '0')
-            ->where(function ($query) use ($buscar) {
-                $query->where('nombre', 'like', '%' . $buscar . '%');
+        $escuelas = DB::table('escuelas as e')
+            ->join('departamentoacademicos as d', 'd.id', '=', 'e.departamentoacademico_id')
+            ->select('e.id', 'e.nombre', 'e.telefono', 'e.direccion', 'e.email', 'e.activo', 'e.borrado', 'e.departamentoacademico_id', 'd.id as idfac', 'd.nombre as nombredep')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('d.facultad_id', '=', auth()->user()->facultad_id);
+                }
             })
-            ->orderBy('id', 'desc')
+            ->where('e.borrado', '0')
+            ->where(function ($query) use ($buscar) {
+                $query->where('e.nombre', 'like', '%' . $buscar . '%');
+                $query->where('d.nombre', 'like', '%' . $buscar . '%');
+            })
+            ->orderBy('e.id', 'desc')
             ->paginate(10);
+
+        $departamentoacademicos = DB::table('departamentoacademicos')
+            ->where('activo', '1')
+            ->where('borrado', '0')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('facultad_id', '=', auth()->user()->facultad_id);
+                }
+            })
+            ->get();
+
         return [
             'pagination' => [
                 'total' => $escuelas->total(),
@@ -55,7 +77,8 @@ class EscuelaController extends Controller
                 'from' => $escuelas->firstItem(),
                 'to' => $escuelas->lastItem(),
             ],
-            'escuelas' => $escuelas
+            'escuelas' => $escuelas,
+            'departamentoacademicos' => $departamentoacademicos
         ];
     }
     public function create()
@@ -71,7 +94,11 @@ class EscuelaController extends Controller
      */
     public function store(Request $request)
     {
+        $departamentoacademico_id = $request->departamentoacademico_id;
         $nombre = $request->nombre;
+        $telefono = $request->telefono;
+        $direccion = $request->direccion;
+        $email = $request->email;
         $activo = $request->activo;
         $borrado = 0;
 
@@ -86,7 +113,11 @@ class EscuelaController extends Controller
         $validator1 = Validator::make($input1, $reglas1);
 
 
-        if ($validator1->fails()) {
+        if ($departamentoacademico_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR EL DEPARTAMENTO ACADEMICO';
+            $selector = 'departamentoacademico_id';
+        } else if ($validator1->fails()) {
             $result = '0';
             $msj = 'Ingrese el Nombre de la escuela';
             $selector = 'txttitulo';
@@ -94,8 +125,12 @@ class EscuelaController extends Controller
 
             $newEscuela = new Escuela();
             $newEscuela->nombre = $nombre;
+            $newEscuela->telefono = $telefono;
+            $newEscuela->direccion = $direccion;
+            $newEscuela->email = $email;
             $newEscuela->activo = $activo;
             $newEscuela->borrado = '0';
+            $newEscuela->departamentoacademico_id = $departamentoacademico_id;
             $newEscuela->save();
             $msj = 'LA NUEVA ESCUELA PROFESIONAL FUE CREADO EXITOSAMENTE';
         }
@@ -134,7 +169,11 @@ class EscuelaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $departamentoacademico_id = $request->departamentoacademico_id;
         $nombre = $request->nombre;
+        $telefono = $request->telefono;
+        $direccion = $request->direccion;
+        $email = $request->email;
         $borrado = 0;
 
         $result = '1';
@@ -150,14 +189,25 @@ class EscuelaController extends Controller
 
         if ($validator1->fails()) {
             $result = '0';
+            $msj = 'Complete el dni del docente';
+            $selector = 'dniE';
+        } else if ($departamentoacademico_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR EL DEPARTAMENTO ACADEMICO';
+            $selector = 'departamentoacademico_id';
+        } else if ($validator1->fails()) {
+            $result = '0';
             $msj = 'Ingrese el Nombre de la escuela';
             $selector = 'txttitulo';
         } else {
 
             $newEscuela = Escuela::findOrFail($id);
             $newEscuela->nombre = $nombre;
+            $newEscuela->telefono = $telefono;
+            $newEscuela->direccion = $direccion;
+            $newEscuela->email = $email;
+            $newEscuela->departamentoacademico_id = $departamentoacademico_id;
             $newEscuela->save();
-
             $msj = 'LA ESCUELA PROFESIONAL FUE MODIFICADO EXITOSAMENTE';
         }
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);

@@ -6,6 +6,7 @@
       Volver</a>
   </div>
 
+  @can('create temainvestigacion', Model::class)
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
@@ -13,6 +14,7 @@
     </div>
 
   </div>
+  @endcan
 
 </div>
 
@@ -28,8 +30,8 @@
         <div class="form-group">
           <label for="tema" class="col-sm-2 control-label">Tema de Estudio:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="tema" name="tema" placeholder="tema de estudio"
-              maxlength="200" autofocus v-model="newTema">
+            <input type="text" class="form-control" id="tema" name="tema" placeholder="tema de estudio" maxlength="200"
+              autofocus v-model="newTema">
           </div>
         </div>
       </div>
@@ -80,6 +82,7 @@
 
 
 
+@can('read temainvestigacion', Model::class)
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Temas de Estudio</h3>
@@ -119,19 +122,23 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              @can('update temainvestigacion', Model::class)
               <a href="#" v-if="tema.activo=='1'" class="btn bg-navy btn-sm" v-on:click.prevent="bajadocente(tema)"
                 data-placement="top" data-toggle="tooltip" title="Desactivar descripcion escuela"><i
                   class="fa fa-arrow-circle-down"></i></a>
 
-              <a href="#" v-if="tema.activo=='0'" class="btn btn-success btn-sm"
-                v-on:click.prevent="altadocente(tema)" data-placement="top" data-toggle="tooltip"
-                title="Activar descripcion escuela"><i class="fa fa-check-circle"></i></a>
+              <a href="#" v-if="tema.activo=='0'" class="btn btn-success btn-sm" v-on:click.prevent="altadocente(tema)"
+                data-placement="top" data-toggle="tooltip" title="Activar descripcion escuela"><i
+                  class="fa fa-check-circle"></i></a>
 
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(tema)" data-placement="top"
                 data-toggle="tooltip" title="Editar descripcion facultad"><i class="fa fa-edit"></i></a>
+              @endcan
 
+              @can('delete temainvestigacion', Model::class)
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(tema)" data-placement="top"
                 data-toggle="tooltip" title="Borrar docente"><i class="fa fa-trash"></i></a>
+              @endcan
             </center>
           </td>
         </tr>
@@ -180,6 +187,7 @@
     </div>
   </div>
 </div>
+@endcan
 
 <form method="post" v-on:submit.prevent="updateBanner(fillTema.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"

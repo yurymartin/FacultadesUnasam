@@ -9,7 +9,7 @@ data:{
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'{{ $tipouser->nombre }}',
+   tipouserPerfil:'',
    userPerfil:'{{ Auth::user()->name }}',
    mailPerfil:'{{ Auth::user()->email }}',
 
@@ -166,6 +166,7 @@ methods: {
         this.newFechapublica = '';
         this.newEstado = '1';
         this.imagen = null;
+        this.escuela_id = '0';
 
        $(".form-control").css("border","1px solid #d2d6de");
    },

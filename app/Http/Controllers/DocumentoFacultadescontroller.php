@@ -21,27 +21,49 @@ class DocumentoFacultadescontroller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware(['permission:create documentos'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read documentos'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update documentos'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete documentos'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "documentoFacultades";
-            return view('documentoFacultades.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "documentoFacultades";
+        return view('documentoFacultades.index', compact('modulo'));
     }
     public function index(Request $request)
     {
         $buscar = $request->busca;
-        $documentofacultades = DB::table('documentofacultades')
-            ->where('borrado', '=', 0)
-            ->where(function ($query) use ($buscar) {
-                $query->where('titulo', 'like', '%' . $buscar . '%');
+        $documentofacultades = DB::table('documentofacultades as df')
+            ->join('facultades as f', 'f.id', '=', 'df.facultad_id')
+            ->select('df.id', 'df.titulo', 'df.descripcion', 'df.imagen', 'df.ruta', 'df.fecha', 'df.activo', 'df.borrado', 'df.facultad_id', 'f.id as idfac', 'f.nombre', 'f.abreviatura')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('df.facultad_id', '=', auth()->user()->facultad_id);
+                }
             })
-            ->orderBy('id')
+            ->where('df.borrado', '=', 0)
+            ->where(function ($query) use ($buscar) {
+                $query->where('df.titulo', 'like', '%' . $buscar . '%');
+                $query->orwhere('f.nombre', 'like', '%' . $buscar . '%');
+                $query->orwhere('f.abreviatura', 'like', '%' . $buscar . '%');
+            })
+            ->orderBy('df.id')
             ->paginate(10);
+
+        $facultades = DB::table('facultades')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('id', '=', auth()->user()->facultad_id);
+                }
+            })
+            ->where('activo', '1')
+            ->where('borrado', '0')
+            ->get();
 
         return [
             'pagination' => [
@@ -52,7 +74,8 @@ class DocumentoFacultadescontroller extends Controller
                 'from' => $documentofacultades->firstItem(),
                 'to' => $documentofacultades->lastItem(),
             ],
-            'documentofacultades' => $documentofacultades
+            'documentofacultades' => $documentofacultades,
+            'facultades' => $facultades
         ];
     }
 
@@ -74,6 +97,7 @@ class DocumentoFacultadescontroller extends Controller
      */
     public function store(Request $request)
     {
+        $facultad_id = $request->facultad_id;
         $titulo = $request->titulo;
         $descripcion = $request->descripcion;
         $img = $request->imagen;
@@ -91,7 +115,11 @@ class DocumentoFacultadescontroller extends Controller
         $reglas1 = array('titulo' => 'required');
         $validator1 = Validator::make($input1, $reglas1);
 
-        if ($validator1->fails()) {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($validator1->fails()) {
             $result = '0';
             $msj = 'FALTA COOMPLETAR EL TITULO DEL DOCUMENTO';
             $selector = 'titulo';
@@ -160,6 +188,7 @@ class DocumentoFacultadescontroller extends Controller
             $newdescripcion->fecha = date('Y/m/d');
             $newdescripcion->activo = $estado;
             $newdescripcion->borrado = '0';
+            $newdescripcion->facultad_id = $facultad_id;
             $newdescripcion->save();
             $msj = 'EL DOCUMENTO DE LA FACULTAD FUE REGISTRADO EXITOSAMENTE';
         }
@@ -198,6 +227,7 @@ class DocumentoFacultadescontroller extends Controller
      */
     public function update(Request $request, $id)
     {
+        $facultad_id = $request->facultad_id;
         $titulo = $request->titulo;
         $descripcion = $request->descripcion;
         $img = $request->imagen;
@@ -214,7 +244,11 @@ class DocumentoFacultadescontroller extends Controller
         $reglas1 = array('titulo' => 'required');
         $validator1 = Validator::make($input1, $reglas1);
 
-        if ($validator1->fails()) {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($validator1->fails()) {
             $result = '0';
             $msj = 'FALTA COMPLETAR EL TITULO DEL DOCUMENTO';
             $selector = 'titulo';
@@ -271,22 +305,26 @@ class DocumentoFacultadescontroller extends Controller
             if ($img == 'null' && $link == 'null') {
                 $newdescripcion->titulo = $titulo;
                 $newdescripcion->descripcion = $descripcion;
+                $newdescripcion->facultad_id = $facultad_id;
                 $newdescripcion->save();
             } else if ($img == 'null' && $link != null) {
                 $newdescripcion->titulo = $titulo;
                 $newdescripcion->descripcion = $descripcion;
                 $newdescripcion->ruta = $ruta;
+                $newdescripcion->facultad_id = $facultad_id;
                 $newdescripcion->save();
             } else if ($link == 'null' && $img != 'null') {
                 $newdescripcion->titulo = $titulo;
                 $newdescripcion->descripcion = $descripcion;
                 $newdescripcion->imagen = $imagen;
+                $newdescripcion->facultad_id = $facultad_id;
                 $newdescripcion->save();
             } else {
                 $newdescripcion->titulo = $titulo;
                 $newdescripcion->descripcion = $descripcion;
                 $newdescripcion->imagen = $imagen;
                 $newdescripcion->ruta = $ruta;
+                $newdescripcion->facultad_id = $facultad_id;
                 $newdescripcion->save();
             }
             $msj = 'EL DOCUMENTO FUE MODIFICADO EXITOSAMENTE';

@@ -1,4 +1,18 @@
 <?php $__env->startSection('contenido'); ?>
+<style>
+    #cortar {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    #cortar:hover {
+        width: auto;
+        white-space: initial;
+        overflow: visible;
+        cursor: pointer;
+    }
+</style>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -42,14 +56,14 @@
                                 </div>
                                 <div class="blog-list-details">
                                     <h5 class="blog-list-title"><a href="blog-single.html"><?php echo e($noticia->titulo); ?></a></h5>
-                                    <p class="blog-list-meta small-text"><span><a
-                                                href="#"><?php echo e($noticia->descripcion); ?></a></span></p>
+                                    <p class="blog-list-meta small-text" id="cortar">
+                                        <span><?php echo e($noticia->descripcion); ?></span></p>
                                 </div>
                             </div> <!-- /.blog-list-post -->
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div> <!-- /.widget-inner -->
                         <div class="container">
-                            <a href="" class="btn btn-primary">Ver mas...</a>
+                            <a href="/facultadweb/<?php echo e($facultad->id); ?>/noticiasf" class="btn btn-primary">Ver mas...</a>
                             <p></p>
                         </div>
                     </div> <!-- /.widget-main -->
@@ -72,15 +86,17 @@
                                 <div class="event-small-details">
                                     <h5 class="event-small-title"><a href="event-single.html"><?php echo e($evento->tittulo); ?></a>
                                     </h5>
-                                    <p class="event-small-meta small-text"><?php echo e($evento->descripcion); ?></p>
-                                    <p class="event-small-meta small-text">Inicio: <?php echo e($evento->fechainicio); ?></p>
-                                    <p class="event-small-meta small-text">Fin: <?php echo e($evento->fechafin); ?></p>
+                                    <p class="event-small-meta small-text" id="cortar"><?php echo e($evento->descripcion); ?></p>
+                                    <p class="event-small-meta small-text"><strong>Inicio:
+                                            <?php echo e($evento->fechainicio); ?></strong></p>
+                                    <p class="event-small-meta small-text"><strong>Fin: <?php echo e($evento->fechafin); ?></strong>
+                                    </p>
                                 </div>
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div> <!-- /.widget-inner -->
                         <div class="container">
-                            <a href="" class="btn btn-primary">Ver mas...</a>
+                            <a href="/facultadweb/<?php echo e($facultad->id); ?>/eventosf" class="btn btn-primary">Ver mas...</a>
                             <p></p>
                         </div>
                     </div> <!-- /.widget-main -->
@@ -112,7 +128,8 @@
                             </div>
                         </div>
                         <div class="container">
-                            <a href="" class="btn btn-primary">Ver Todos los Documentos</a>
+                            <a href="/facultadweb/<?php echo e($facultad->id); ?>/documentosf" class="btn btn-primary">Ver Todos los
+                                Documentos</a>
                             <p></p>
                         </div>
                     </div> <!-- /.widget-main -->
@@ -159,19 +176,6 @@
                     <h4 class="widget-title">Autoridades</h4>
                 </div>
                 <div class="widget-inner">
-                    <?php $__currentLoopData = $decano; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $deca): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div class="prof-list-item clearfix">
-                        <div class="prof-thumb">
-                            <a href="<?php echo e(asset('/img/personas/'.$deca->foto)); ?>" class="fancybox" rel="gallery1"><img
-                                    src="<?php echo e(asset('/img/personas/'.$deca->foto)); ?>"
-                                    alt="<?php echo e($deca->nombres.' '.$deca->apellidos); ?>"></a>
-                        </div> <!-- /.prof-thumb -->
-                        <div class="prof-details">
-                            <h5 class="prof-name-list"><?php echo e($deca->nombres.' '.$deca->apellidos); ?></h5>
-                            <p class="small-text"><?php echo e($deca->cargo); ?></p>
-                        </div> <!-- /.prof-details -->
-                    </div> <!-- /.prof-list-item -->
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     <?php $__currentLoopData = $autoridades; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $autoridad): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="prof-list-item clearfix">
                         <div class="prof-thumb">
@@ -195,18 +199,25 @@
                 <div class="widget-inner">
                     <div id="slider-testimonials">
                         <ul>
-                            <?php $__currentLoopData = $misionvision; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $misiovisio): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if($misionvision != null): ?>
                             <li>
                                 <p><strong>misión</strong></p>
-                                <p style="text-align: justify"><?php echo e($misiovisio->mision); ?></strong></p>
+                                <p style="text-align: justify"><?php echo e($misionvision->mision); ?></strong></p>
                             </li>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            <?php $__currentLoopData = $misionvision; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $misiovisio): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <li>
                                 <p><strong>visión</strong></p>
-                                <p style="text-align: justify"><?php echo e($misiovisio->vision); ?></strong></p>
+                                <p style="text-align: justify"><?php echo e($misionvision->vision); ?></strong></p>
                             </li>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php else: ?>
+                            <li>
+                                <p><strong>misión</strong></p>
+                                <p style="text-align: justify">Falta datos</strong></p>
+                            </li>
+                            <li>
+                                <p><strong>visión</strong></p>
+                                <p style="text-align: justify">Falta datos</strong></p>
+                            </li>
+                            <?php endif; ?>
                         </ul>
                         <a class="prev fa fa-angle-left" href=""></a>
                         <a class="next fa fa-angle-right" href=""></a>
@@ -231,7 +242,7 @@
                     </div> <!-- /.galler-small-thumbs -->
                 </div> <!-- /.widget-inner -->
                 <div class="container">
-                    <a href="" class="btn btn-primary">Ver mas...</a>
+                    <a href="/facultadweb/<?php echo e($facultad->id); ?>/galeriaf" class="btn btn-primary">Ver mas...</a>
                     <p></p>
                 </div>
             </div> <!-- /.widget-main -->
@@ -254,62 +265,12 @@
                     </div> <!-- /.galler-small-thumbs -->
                 </div> <!-- /.widget-inner -->
                 <div class="container">
-                    <a href="" class="btn btn-primary">Ver mas...</a>
+                    <a href="/facultadweb/<?php echo e($facultad->id); ?>/videosf" class="btn btn-primary">Ver mas...</a>
                     <p></p>
                 </div>
             </div> <!-- /.widget-main -->
         </div>
     </div>
 </div>
-<script>
-    window.sr = ScrollReveal();
-            sr.reveal('#noticias',{
-                duration: 2000,
-                origin: 'left',
-                distance: '300px'
-            });
-        window.sr = ScrollReveal();
-            sr.reveal('#eventos',{
-                duration: 2000,
-                origin: 'top',
-                distance: '300px'
-            }); 
-        window.sr = ScrollReveal();
-            sr.reveal('#autoridades',{
-                duration: 2000,
-                origin: 'right',
-                distance: '300px'
-            });
-        window.sr = ScrollReveal();
-            sr.reveal('#tramites',{
-                duration: 2000,
-                origin: 'left',
-                distance: '300px'
-            });
-        window.sr = ScrollReveal();
-            sr.reveal('#carreras',{
-                duration: 2000,
-                origin: 'left',
-                distance: '300px'
-            }); 
-        window.sr = ScrollReveal();
-            sr.reveal('#misionyvision',{
-                duration: 2000,
-                origin: 'right',
-                distance: '300px'
-            });
-        window.sr = ScrollReveal();
-            sr.reveal('#imagenes',{
-                duration: 2000,
-                origin: 'right',
-                distance: '300px'
-            });
-        window.sr = ScrollReveal();
-            sr.reveal('#videos',{
-                duration: 2000,
-                origin: 'right',
-                distance: '300px'
-            }); 
-</script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('web/layout/layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\yuri_\OneDrive\Desktop\webFacultades\resources\views/web/index.blade.php ENDPATH**/ ?>

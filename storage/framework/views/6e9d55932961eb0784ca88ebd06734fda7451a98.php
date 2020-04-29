@@ -9,7 +9,7 @@ data:{
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
+   tipouserPerfil:'',
    userPerfil:'<?php echo e(Auth::user()->name); ?>',
    mailPerfil:'<?php echo e(Auth::user()->email); ?>',
 
@@ -45,9 +45,10 @@ data:{
    divprincipal:false,
 
    departamentos: [],
+    facultades: [],
    errors:[],
 
-   fillDepartamento:{'id':'', 'nombre':'', 'descripcion':''},
+   fillDepartamento:{'id':'', 'nombre':'', 'descripcion':'','facultad_id':''},
 
    pagination: {
    'total': 0,
@@ -69,9 +70,8 @@ data:{
    newDescripcion:'',
    newEstado:'',
    newBorrado:'0',
+   facultad_id: '0',
   
-
-
 },
 created:function () {
    this.getDepartamentos(this.thispage);
@@ -119,6 +119,8 @@ methods: {
        axios.get(url).then(response=>{
             this.departamentos= response.data.departamentos.data;
             this.pagination= response.data.pagination;
+            this.facultades = response.data.facultades;
+
            if(this.departamentos.length == 0 && this.thispage != '1'){
                var a = parseInt(this.thispage) ;
                a--;
@@ -156,6 +158,7 @@ methods: {
         this.newDescripcion = '';
         this.newEstado = '1';
         this.newBorrado = '0';
+        this.facultad_id = '0';
 
        $(".form-control").css("border","1px solid #d2d6de");
    },
@@ -174,6 +177,7 @@ methods: {
             data.append('descripcion', this.newDescripcion);
             data.append('activo', this.newEstado);
             data.append('borrado', this.newBorrado);
+            data.append('facultad_id', this.facultad_id);
             
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             
@@ -232,7 +236,8 @@ methods: {
 
         this.fillDepartamento.id=departamento.id;
         this.fillDepartamento.nombre=departamento.nombre;
-        this.fillDepartamento.descripcion=departamento.descripcion;            
+        this.fillDepartamento.descripcion=departamento.descripcion;      
+        this.fillDepartamento.facultad_id = departamento.idfac      
 
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
@@ -245,6 +250,7 @@ methods: {
         data.append('id', this.fillDepartamento.id);
         data.append('nombre', this.fillDepartamento.nombre);
         data.append('descripcion', this.fillDepartamento.descripcion);
+        data.append('facultad_id', this.fillDepartamento.facultad_id);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };

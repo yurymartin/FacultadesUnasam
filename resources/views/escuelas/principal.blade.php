@@ -5,12 +5,14 @@
         aria-hidden="true"></i>
       Volver</a>
   </div>
+  @can('create escuelas', Model::class)
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
           class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Escuela Profesional</button>
     </div>
   </div>
+  @endcan
 </div>
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
@@ -18,12 +20,58 @@
   </div>
   <form v-on:submit.prevent="create">
     <div class="box-body">
-      <div class="col-md-12">
+
+      <div class="col-md-12" style="padding-top: 10px;">
+        <div class="form-group">
+          <label for="departamentoacademico_id" class="col-sm-2 control-label">Departamento Academico:*</label>
+          <div class="col-sm-8">
+            <select name="departamentoacademico_id" id="departamentoacademico_id" class="form-control"
+              v-model="departamentoacademico_id">
+              <option value="0">Seleccione una facultad</option>
+              <option v-for="departamento, key in departamentoacademicos" v-bind:value="departamento.id">
+                @{{departamento.nombre}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
           <label for="txttitulo" class="col-sm-2 control-label">Nombre de la Escuela Profesional*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Nombre de la escuela profesional"
-              maxlength="200" autofocus v-model="newTitulo">
+            <input type="text" class="form-control" id="txttitulo" name="txttitulo"
+              placeholder="Nombre de la escuela profesional" maxlength="200" autofocus v-model="newTitulo">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="form-group" style="padding-top: 15px;">
+          <label for="telefono" class="col-sm-2 control-label">Telefono / Celular:*</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Telefono / Celular"
+              maxlength="500" v-model="newTelefono">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="form-group" style="padding-top: 15px;">
+          <label for="direccion" class="col-sm-2 control-label">Direccion:*</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Direccion"
+              maxlength="500" v-model="newDireccion">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="form-group" style="padding-top: 15px;">
+          <label for="txtcodigo" class="col-sm-2 control-label">Correo electronico:*</label>
+          <div class="col-sm-8">
+            <input type="email" class="form-control" id="email" name="email" placeholder="email" maxlength="500"
+              v-model="newEmail">
           </div>
         </div>
       </div>
@@ -72,6 +120,7 @@
 
 
 
+@can('read escuelas', Model::class)
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Escuelas Profesionales</h3>
@@ -96,13 +145,21 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Escuela Profesional</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 25%;">Escuela Profesional</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Telefono</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">direccion</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">email</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Departamento Academico</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
         <tr v-for="escuela, key in escuelas">
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{key+pagination.from}}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ escuela.nombre }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ escuela.telefono }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ escuela.direccion }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ escuela.email }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ escuela.nombredep }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
               <span class="label label-success" v-if="escuela.activo=='1'">Activo</span>
@@ -111,6 +168,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              @can('update escuelas', Model::class)
               <a href="#" v-if="escuela.activo=='1'" class="btn bg-navy btn-sm"
                 v-on:click.prevent="bajaescuela(escuela)" data-placement="top" data-toggle="tooltip"
                 title="Desactivar escuela"><i class="fa fa-arrow-circle-down"></i></a>
@@ -119,11 +177,14 @@
                 v-on:click.prevent="altaescuela(escuela)" data-placement="top" data-toggle="tooltip"
                 title="Activar escuela"><i class="fa fa-check-circle"></i></a>
 
-              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editescuela(escuela)"
-                data-placement="top" data-toggle="tooltip" title="Editar Escuela"><i class="fa fa-edit"></i></a>
+              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editescuela(escuela)" data-placement="top"
+                data-toggle="tooltip" title="Editar Escuela"><i class="fa fa-edit"></i></a>
+              @endcan
 
-              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarescuela(escuela)"
-                data-placement="top" data-toggle="tooltip" title="Borrar escuela"><i class="fa fa-trash"></i></a>
+              @can('delete escuelas', Model::class)
+              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarescuela(escuela)" data-placement="top"
+                data-toggle="tooltip" title="Borrar escuela"><i class="fa fa-trash"></i></a>
+              @endcan
             </center>
           </td>
         </tr>
@@ -172,6 +233,7 @@
     </div>
   </div>
 </div>
+@endcan
 
 <form method="post" v-on:submit.prevent="updateescuela(fillEscuela.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -181,7 +243,8 @@
         <div class="modal-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
               style="font-size: 35px;">&times;</span></button>
-          <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR ESCUELA</h4>
+          <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR
+            ESCUELA</h4>
 
         </div>
         <div class="modal-body">
@@ -191,12 +254,58 @@
               <!-- form start -->
               <div class="box-body">
 
-                <div class="col-md-12">
+                <div class="col-md-12" style="padding-top: 10px;">
+                  <div class="form-group">
+                    <label for="departamentoacademico_id" class="col-sm-2 control-label">Departamento
+                      Academico:*</label>
+                    <div class="col-sm-8">
+                      <select name="departamentoacademico_id" id="departamentoacademico_id" class="form-control"
+                        v-model="fillEscuela.departamentoacademico_id">
+                        <option value="0">Seleccione una facultad</option>
+                        <option v-for="departamento, key in departamentoacademicos" v-bind:value="departamento.id">
+                          @{{departamento.nombre}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
                     <label for="txttituloE" class="col-sm-2 control-label">Nombre de la Escuela Profesional:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Departamento academico"
-                        maxlength="200" autofocus v-model="fillEscuela.nombre">
+                      <input type="text" class="form-control" id="txttitulo" name="txttitulo"
+                        placeholder="Departamento academico" maxlength="200" autofocus v-model="fillEscuela.nombre">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group" style="padding-top: 15px;">
+                    <label for="telefono" class="col-sm-2 control-label">Telefono / Celular:*</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="telefono" name="telefono"
+                        placeholder="Telefono / Celular" maxlength="500" v-model="fillEscuela.telefono">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group" style="padding-top: 15px;">
+                    <label for="direccion" class="col-sm-2 control-label">Direccion:*</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Direccion"
+                        maxlength="500" v-model="fillEscuela.direccion">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group" style="padding-top: 15px;">
+                    <label for="txtcodigo" class="col-sm-2 control-label">Correo electronico:*</label>
+                    <div class="col-sm-8">
+                      <input type="email" class="form-control" id="email" name="email" placeholder="email"
+                        maxlength="500" v-model="fillEscuela.email">
                     </div>
                   </div>
                 </div>

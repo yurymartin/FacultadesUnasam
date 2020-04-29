@@ -9,7 +9,7 @@ data:{
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
+   tipouserPerfil:'',
    userPerfil:'<?php echo e(Auth::user()->name); ?>',
    mailPerfil:'<?php echo e(Auth::user()->email); ?>',
 
@@ -48,7 +48,7 @@ data:{
    cant_filas: [],
    errors:[],
 
-   fillFacultad:{'id':'', 'nombre':'', 'abreviatura':'','activo':''},
+   fillFacultad:{'id':'', 'nombre':'', 'abreviatura':'','telefono':'','direccion':'','email':'','activo':''},
 
    pagination: {
    'total': 0,
@@ -68,6 +68,9 @@ data:{
 
    newNombre:'',
    newAbreviatura:'',
+   newTelefono:'',
+   newDireccion:'',
+   newEmail:'',
    newEstado:'',
 
 
@@ -150,12 +153,11 @@ methods: {
             this.cancelFormNuevo();
             })
        } else {
-            this.divNuevo=false;
+            this.divNuevo=true;
             //$("#txtespecialidad").focus();
             //$('#txtespecialidad').focus();
             this.$nextTick(function () {
             this.cancelFormNuevo();
-            toastr.error('YA SE CUENTA CON EL REGISTRO DE UNA FACULTAD');
             })
        }
          
@@ -169,6 +171,9 @@ methods: {
 
         this.newNombre = '';
         this.newAbreviatura = '';
+        this.newTelefono = '';
+        this.newDireccion = '';
+        this.newEmail = '';
         this.newEstado = '1';
 
        $(".form-control").css("border","1px solid #d2d6de");
@@ -186,6 +191,9 @@ methods: {
 
             data.append('nombre', this.newNombre);
             data.append('abreviatura', this.newAbreviatura);
+            data.append('telefono', this.newTelefono);
+            data.append('direccion', this.newDireccion);
+            data.append('email', this.newEmail);
             data.append('activo', this.newEstado);
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
@@ -248,7 +256,10 @@ methods: {
 
         this.fillFacultad.id=facultad.id;
         this.fillFacultad.nombre=facultad.nombre;
-        this.fillFacultad.abreviatura=facultad.abreviatura;  
+        this.fillFacultad.abreviatura=facultad.abreviatura; 
+        this.fillFacultad.telefono=facultad.telefono; 
+        this.fillFacultad.direccion=facultad.direccion; 
+        this.fillFacultad.email=facultad.email;  
       
         this.$nextTick(function () {
         $("#cbdepartamentoE").val( fillFacultad.departamentoacad_id);
@@ -264,6 +275,9 @@ methods: {
         data.append('id', this.fillFacultad.id);
         data.append('nombre', this.fillFacultad.nombre);
         data.append('abreviatura', this.fillFacultad.abreviatura);
+        data.append('telefono', this.fillFacultad.telefono);
+        data.append('direccion', this.fillFacultad.direccion);
+        data.append('email', this.fillFacultad.email);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };

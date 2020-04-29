@@ -9,7 +9,7 @@
     subtitle2: false,
     subtitulo2: "",
 
-    tipouserPerfil: '{{ $tipouser->nombre }}',
+    tipouserPerfil: '',
     userPerfil: '{{ Auth::user()->name }}',
     mailPerfil: '{{ Auth::user()->email }}',
 

@@ -5,12 +5,14 @@
         aria-hidden="true"></i>
       Volver</a>
   </div>
+  @can('create categoriadocente', Model::class)
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
           class="fa fa-plus-square-o" aria-hidden="true"></i> Nueva Categoria de docentes</button>
     </div>
   </div>
+  @endcan
 </div>
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
@@ -28,7 +30,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
           <label for="cbuestado" class="col-sm-2 control-label">Estado:*</label>
@@ -73,6 +75,7 @@
 
 
 
+@can('read categoriadocente', Model::class)
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de categorias de docentes</h3>
@@ -112,6 +115,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              @can('update categoriadocente', Model::class)
               <a href="#" v-if="catdocente.activo=='1'" class="btn bg-navy btn-sm"
                 v-on:click.prevent="bajacategoria(catdocente)" data-placement="top" data-toggle="tooltip"
                 title="Desactivar Categoria"><i class="fa fa-arrow-circle-down"></i></a>
@@ -120,11 +124,14 @@
                 v-on:click.prevent="altacategoria(catdocente)" data-placement="top" data-toggle="tooltip"
                 title="Activar Categoria"><i class="fa fa-check-circle"></i></a>
 
-              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editcategoria(catdocente)"
-                data-placement="top" data-toggle="tooltip" title="Editar Categoria"><i class="fa fa-edit"></i></a>
+              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editcategoria(catdocente)" data-placement="top"
+                data-toggle="tooltip" title="Editar categoria docente"><i class="fa fa-edit"></i></a>
+              @endcan
 
+              @can('delete categoriadocente', Model::class)
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarcategoria(catdocente)"
                 data-placement="top" data-toggle="tooltip" title="Borrar Categoria"><i class="fa fa-trash"></i></a>
+              @endcan
             </center>
           </td>
         </tr>
@@ -173,6 +180,7 @@
     </div>
   </div>
 </div>
+@endcan
 
 <form method="post" v-on:submit.prevent="updatedepartamento(fillCatdocentes.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -197,13 +205,14 @@
                   <div class="form-group">
                     <label for="txttituloE" class="col-sm-2 control-label">Categoria de Docentes:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="txtCategoria" name="txttitulo" placeholder="Categoria de docentes"
-                        maxlength="200" autofocus v-model="fillCatdocentes.categoria">
+                      <input type="text" class="form-control" id="txtCategoria" name="txttitulo"
+                        placeholder="Categoria de docentes" maxlength="200" autofocus
+                        v-model="fillCatdocentes.categoria">
                     </div>
                   </div>
                 </div>
 
-                
+
 
               </div>
             </div>

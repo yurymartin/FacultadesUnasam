@@ -20,16 +20,19 @@ class CargoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware(['permission:create cargos'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read cargos'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update cargos'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete cargos'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "cargos";
-            return view('cargo.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "cargos";
+        return view('cargo.index', compact('modulo'));
     }
 
     /**
@@ -40,12 +43,33 @@ class CargoController extends Controller
     public function index(Request $request)
     {
         $buscar = $request->busca;
-        $cargos = Cargo::where('borrado', '0')
-            ->where(function ($query) use ($buscar) {
-                $query->where('cargo', 'like', '%' . $buscar . '%');
+        $cargos = DB::table('cargos as c')
+            ->join('facultades as f', 'f.id', '=', 'c.facultad_id')
+            ->select('c.id', 'c.cargo', 'c.descripcion', 'c.activo', 'c.borrado', 'f.id as idfac', 'f.nombre', 'f.abreviatura')
+            ->where('c.borrado', '0')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('c.facultad_id', '=', auth()->user()->facultad_id);
+                }
             })
-            ->orderBy('id', 'desc')
+            ->where(function ($query) use ($buscar) {
+                $query->where('c.cargo', 'like', '%' . $buscar . '%');
+                $query->orWhere('f.nombre', 'like', '%' . $buscar . '%');
+                $query->orWhere('f.abreviatura', 'like', '%' . $buscar . '%');
+            })
+            ->orderBy('c.id', 'desc')
             ->paginate(10);
+
+        $facultades = DB::table('facultades')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('id', '=', auth()->user()->facultad_id);
+                }
+            })
+            ->where('activo', '1')
+            ->where('borrado', '0')
+            ->get();
+
         return [
             'pagination' => [
                 'total' => $cargos->total(),
@@ -55,7 +79,8 @@ class CargoController extends Controller
                 'from' => $cargos->firstItem(),
                 'to' => $cargos->lastItem(),
             ],
-            'cargos' => $cargos
+            'cargos' => $cargos,
+            'facultades' => $facultades
         ];
     }
     public function create()
@@ -71,6 +96,7 @@ class CargoController extends Controller
      */
     public function store(Request $request)
     {
+        $facultad_id = $request->facultad_id;
         $cargo = $request->cargo;
         $descripcion = $request->descripcion;
         $activo = $request->activo;
@@ -89,7 +115,11 @@ class CargoController extends Controller
         $validator2 = Validator::make($input2, $reglas2);
 
 
-        if ($validator1->fails()) {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($validator1->fails()) {
             $result = '0';
             $msj = 'FALTA COMPLETAR EL CARGO';
             $selector = 'txttitulo';
@@ -104,6 +134,7 @@ class CargoController extends Controller
             $newCargo->descripcion = $descripcion;
             $newCargo->activo = $activo;
             $newCargo->borrado = '0';
+            $newCargo->facultad_id = $facultad_id;
             $newCargo->save();
             $msj = 'EL CARGO FUE REGISTRADO EXITOSAMENTE';
         }
@@ -142,6 +173,7 @@ class CargoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $facultad_id = $request->facultad_id;
         $cargo = $request->cargo;
         $descripcion = $request->descripcion;
 
@@ -159,7 +191,11 @@ class CargoController extends Controller
         $validator2 = Validator::make($input2, $reglas2);
 
 
-        if ($validator1->fails()) {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($validator1->fails()) {
             $result = '0';
             $msj = 'FALTA COMPLETAR EL CARGO';
             $selector = 'txttitulo';
@@ -172,6 +208,7 @@ class CargoController extends Controller
             $newCargo = Cargo::findOrFail($id);
             $newCargo->cargo = $cargo;
             $newCargo->descripcion = $descripcion;
+            $newCargo->facultad_id = $facultad_id;
             $newCargo->save();
 
             $msj = 'EL CARGO FUE MODIFICADO EXITOSAMENTE';

@@ -6,13 +6,14 @@
       Volver</a>
   </div>
 
+  <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create perfilprofesional escuelas', Model::class)): ?>
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
           class="fa fa-plus-square-o" aria-hidden="true"></i>Nuevo Perfil profesional</button>
     </div>
-
   </div>
+  <?php endif; ?>
 
 </div>
 
@@ -38,8 +39,8 @@
         <div class="form-group">
           <label for="perfil" class="col-sm-2 control-label">Perfil Profesional:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="perfil" name="perfil" placeholder="Perfil Profesional"
-              maxlength="200" autofocus v-model="newPerfil">
+            <textarea name="perfil" id="perfil" cols="80" rows="5" v-model="newPerfil"
+              placeholder="Perfil Profesional" class="form-control"></textarea>
           </div>
         </div>
       </div>
@@ -49,7 +50,7 @@
           <label for="cbEscuelas" class="col-sm-2 control-label">Escuela Profesional:*</label>
           <div class="col-sm-8">
             <select name="cbEscuelas" id="cbEscuelas" class="form-control" v-model="escuela_id">
-              <option disabled value="0">Seleccione una Escuela Profesional</option>
+              <option value="0">Seleccione una Escuela Profesional</option>
               <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">{{escuela.nombre}}
               </option>
             </select>
@@ -103,6 +104,7 @@
 
 
 
+<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('read perfilprofesional escuelas', Model::class)): ?>
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de perfiles profesional </h3>
@@ -149,6 +151,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update perfilprofesional escuelas', Model::class)): ?>
               <a href="#" v-if="perfil.activo=='1'" class="btn bg-navy btn-sm" v-on:click.prevent="bajadocente(perfil)"
                 data-placement="top" data-toggle="tooltip" title="Desactivar descripcion escuela"><i
                   class="fa fa-arrow-circle-down"></i></a>
@@ -159,9 +162,12 @@
 
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(perfil)" data-placement="top"
                 data-toggle="tooltip" title="Editar descripcion facultad"><i class="fa fa-edit"></i></a>
+              <?php endif; ?>
 
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete perfilprofesional escuelas', Model::class)): ?>
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(perfil)" data-placement="top"
                 data-toggle="tooltip" title="Borrar docente"><i class="fa fa-trash"></i></a>
+              <?php endif; ?>
             </center>
           </td>
         </tr>
@@ -210,6 +216,7 @@
     </div>
   </div>
 </div>
+<?php endif; ?>
 
 <form method="post" v-on:submit.prevent="updateBanner(fillPerfiles.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -244,8 +251,7 @@
                   <div class="form-group">
                     <label for="perfil" class="col-sm-2 control-label">Perfil Profesional:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="perfil" name="perfil"
-                        placeholder="Nombre de la categoria" maxlength="200" autofocus v-model="fillPerfiles.perfil">
+                      <textarea name="perfil" id="perfil" cols="30" rows="5" v-model="fillPerfiles.perfil" placeholder="Perfil profesional" class="form-control" ></textarea>
                     </div>
                   </div>
                 </div>

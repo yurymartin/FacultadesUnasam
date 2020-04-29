@@ -1,5 +1,19 @@
 @extends('web/layout/layout')
 @section('contenido')
+<style>
+    #cortar {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    #cortar:hover {
+        width: auto;
+        white-space: initial;
+        overflow: visible;
+        cursor: pointer;
+    }
+</style>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -43,14 +57,14 @@
                                 </div>
                                 <div class="blog-list-details">
                                     <h5 class="blog-list-title"><a href="blog-single.html">{{$noticia->titulo}}</a></h5>
-                                    <p class="blog-list-meta small-text"><span><a
-                                                href="#">{{$noticia->descripcion}}</a></span></p>
+                                    <p class="blog-list-meta small-text" id="cortar">
+                                        <span>{{$noticia->descripcion}}</span></p>
                                 </div>
                             </div> <!-- /.blog-list-post -->
                             @endforeach
                         </div> <!-- /.widget-inner -->
                         <div class="container">
-                            <a href="" class="btn btn-primary">Ver mas...</a>
+                            <a href="/facultadweb/{{$facultad->id}}/noticiasf" class="btn btn-primary">Ver mas...</a>
                             <p></p>
                         </div>
                     </div> <!-- /.widget-main -->
@@ -73,15 +87,17 @@
                                 <div class="event-small-details">
                                     <h5 class="event-small-title"><a href="event-single.html">{{$evento->tittulo}}</a>
                                     </h5>
-                                    <p class="event-small-meta small-text">{{$evento->descripcion}}</p>
-                                    <p class="event-small-meta small-text">Inicio: {{$evento->fechainicio}}</p>
-                                    <p class="event-small-meta small-text">Fin: {{$evento->fechafin}}</p>
+                                    <p class="event-small-meta small-text" id="cortar">{{$evento->descripcion}}</p>
+                                    <p class="event-small-meta small-text"><strong>Inicio:
+                                            {{$evento->fechainicio}}</strong></p>
+                                    <p class="event-small-meta small-text"><strong>Fin: {{$evento->fechafin}}</strong>
+                                    </p>
                                 </div>
                             </div>
                             @endforeach
                         </div> <!-- /.widget-inner -->
                         <div class="container">
-                            <a href="" class="btn btn-primary">Ver mas...</a>
+                            <a href="/facultadweb/{{$facultad->id}}/eventosf" class="btn btn-primary">Ver mas...</a>
                             <p></p>
                         </div>
                     </div> <!-- /.widget-main -->
@@ -113,7 +129,8 @@
                             </div>
                         </div>
                         <div class="container">
-                            <a href="" class="btn btn-primary">Ver Todos los Documentos</a>
+                            <a href="/facultadweb/{{$facultad->id}}/documentosf" class="btn btn-primary">Ver Todos los
+                                Documentos</a>
                             <p></p>
                         </div>
                     </div> <!-- /.widget-main -->
@@ -160,19 +177,6 @@
                     <h4 class="widget-title">Autoridades</h4>
                 </div>
                 <div class="widget-inner">
-                    @foreach ($decano as $deca)
-                    <div class="prof-list-item clearfix">
-                        <div class="prof-thumb">
-                            <a href="{{ asset('/img/personas/'.$deca->foto)}}" class="fancybox" rel="gallery1"><img
-                                    src="{{ asset('/img/personas/'.$deca->foto)}}"
-                                    alt="{{$deca->nombres.' '.$deca->apellidos}}"></a>
-                        </div> <!-- /.prof-thumb -->
-                        <div class="prof-details">
-                            <h5 class="prof-name-list">{{$deca->nombres.' '.$deca->apellidos}}</h5>
-                            <p class="small-text">{{$deca->cargo}}</p>
-                        </div> <!-- /.prof-details -->
-                    </div> <!-- /.prof-list-item -->
-                    @endforeach
                     @foreach ($autoridades as $autoridad)
                     <div class="prof-list-item clearfix">
                         <div class="prof-thumb">
@@ -196,18 +200,25 @@
                 <div class="widget-inner">
                     <div id="slider-testimonials">
                         <ul>
-                            @foreach ($misionvision as $misiovisio)
+                            @if ($misionvision != null)
                             <li>
                                 <p><strong>misión</strong></p>
-                                <p style="text-align: justify">{{$misiovisio->mision}}</strong></p>
+                                <p style="text-align: justify">{{$misionvision->mision}}</strong></p>
                             </li>
-                            @endforeach
-                            @foreach ($misionvision as $misiovisio)
                             <li>
                                 <p><strong>visión</strong></p>
-                                <p style="text-align: justify">{{$misiovisio->vision}}</strong></p>
+                                <p style="text-align: justify">{{$misionvision->vision}}</strong></p>
                             </li>
-                            @endforeach
+                            @else
+                            <li>
+                                <p><strong>misión</strong></p>
+                                <p style="text-align: justify">Falta datos</strong></p>
+                            </li>
+                            <li>
+                                <p><strong>visión</strong></p>
+                                <p style="text-align: justify">Falta datos</strong></p>
+                            </li>
+                            @endif
                         </ul>
                         <a class="prev fa fa-angle-left" href=""></a>
                         <a class="next fa fa-angle-right" href=""></a>
@@ -232,7 +243,7 @@
                     </div> <!-- /.galler-small-thumbs -->
                 </div> <!-- /.widget-inner -->
                 <div class="container">
-                    <a href="" class="btn btn-primary">Ver mas...</a>
+                    <a href="/facultadweb/{{$facultad->id}}/galeriaf" class="btn btn-primary">Ver mas...</a>
                     <p></p>
                 </div>
             </div> <!-- /.widget-main -->
@@ -255,61 +266,11 @@
                     </div> <!-- /.galler-small-thumbs -->
                 </div> <!-- /.widget-inner -->
                 <div class="container">
-                    <a href="" class="btn btn-primary">Ver mas...</a>
+                    <a href="/facultadweb/{{$facultad->id}}/videosf" class="btn btn-primary">Ver mas...</a>
                     <p></p>
                 </div>
             </div> <!-- /.widget-main -->
         </div>
     </div>
 </div>
-<script>
-    window.sr = ScrollReveal();
-            sr.reveal('#noticias',{
-                duration: 2000,
-                origin: 'left',
-                distance: '300px'
-            });
-        window.sr = ScrollReveal();
-            sr.reveal('#eventos',{
-                duration: 2000,
-                origin: 'top',
-                distance: '300px'
-            }); 
-        window.sr = ScrollReveal();
-            sr.reveal('#autoridades',{
-                duration: 2000,
-                origin: 'right',
-                distance: '300px'
-            });
-        window.sr = ScrollReveal();
-            sr.reveal('#tramites',{
-                duration: 2000,
-                origin: 'left',
-                distance: '300px'
-            });
-        window.sr = ScrollReveal();
-            sr.reveal('#carreras',{
-                duration: 2000,
-                origin: 'left',
-                distance: '300px'
-            }); 
-        window.sr = ScrollReveal();
-            sr.reveal('#misionyvision',{
-                duration: 2000,
-                origin: 'right',
-                distance: '300px'
-            });
-        window.sr = ScrollReveal();
-            sr.reveal('#imagenes',{
-                duration: 2000,
-                origin: 'right',
-                distance: '300px'
-            });
-        window.sr = ScrollReveal();
-            sr.reveal('#videos',{
-                duration: 2000,
-                origin: 'right',
-                distance: '300px'
-            }); 
-</script>
 @endsection

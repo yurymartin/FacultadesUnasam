@@ -22,12 +22,9 @@ Gestión de Organigramas
 
 		@include('vendor.adminlte.layouts.partials.loaders')
 
-		@if(accesoUser([1,2]))
-
 		<template v-if="divprincipal" id="divprincipal">
 			@include('organigrama.principal')
 		</template>
-		@endif
 
 
 	</div>

@@ -8,10 +8,8 @@
                 </div> <!-- /.widget-main-title -->
                 <div class="widget-inner">
                     <div class="our-campus clearfix">
-                        <?php $__currentLoopData = $filosofia; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $filo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <p style="font-size: 16px;font-family: 'Times New Roman', Times, serif;text-align: justify"><?php echo e($filo->filosofia); ?></p> 
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        
+                        <p style="font-size: 16px;font-family: 'Times New Roman', Times, serif;text-align: justify">
+                            <?php echo e($filosofia->filosofia); ?></p>
                     </div>
                 </div>
             </div> <!-- /.widget-main -->
@@ -21,9 +19,9 @@
                 <br><br><br><br>
                 <div class="widget-inner text-right">
                     <div class="our-campus clearfix">
-                            <?php $__currentLoopData = $filosofia; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $logo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <img src="<?php echo e(asset('img/descripcionFacultades/'.$logo->imagen)); ?>" alt="UNASAM" style="width: 350px">  
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <a href="<?php echo e(asset('/img/descripcionFacultades/'.$logos->imagen)); ?>" class="fancybox"
+                            rel="gallery1"><img src="<?php echo e(asset('/img/descripcionFacultades/'.$logos->imagen)); ?>"
+                                alt="UNASAM" style="width: 350px"></a>
                     </div>
                 </div>
             </div> <!-- /.widget-main -->

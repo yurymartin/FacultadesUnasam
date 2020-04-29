@@ -22,16 +22,18 @@ class AutoridadesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware(['permission:create autoridades'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read autoridades'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update autoridades'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete autoridades'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "autoridades";
-            return view('autoridades.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "autoridades";
+        return view('autoridades.index', compact('modulo'));
     }
     public function index(Request $request)
     {
@@ -41,6 +43,11 @@ class AutoridadesController extends Controller
             ->join('personas as p', 'p.id', '=', 'a.persona_id')
             ->join('gradoacademicos as ga', 'ga.id', '=', 'a.gradoacademico_id')
             ->where('a.borrado', '0')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('c.facultad_id', '=', auth()->user()->facultad_id);
+                }
+            })
             ->where(function ($query) use ($buscar) {
                 $query->where('p.dni', 'like', '%' . $buscar . '%');
                 $query->orWhere('p.nombres', 'like', '%' . $buscar . '%');
@@ -48,18 +55,23 @@ class AutoridadesController extends Controller
                 $query->orWhere('c.cargo', 'like', '%' . $buscar . '%');
                 $query->orWhere('ga.grado', 'like', '%' . $buscar . '%');
             })
-            ->orderBy('p.nombres')
+            ->orderBy('a.id')
             ->select('a.id as idauto', 'p.id as idper', 'p.dni', 'p.nombres', 'p.apellidos', 'p.genero', 'p.foto', 'c.cargo', 'a.descripcion', 'a.fechainicio', 'a.fechafin', 'a.activo', 'c.id as idcargo', 'ga.id as idgrado', 'ga.grado')
             ->paginate(10);
 
         $cargos = DB::table('cargos')
-            ->where('borrado','=','0')
-            ->where('activo','=','1')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('facultad_id', '=', auth()->user()->facultad_id);
+                }
+            })
+            ->where('borrado', '=', '0')
+            ->where('activo', '=', '1')
             ->get();
 
         $grados = DB::table('gradoacademicos')
-            ->where('borrado','=','0')
-            ->where('activo','=','1')
+            ->where('borrado', '=', '0')
+            ->where('activo', '=', '1')
             ->get();
 
         $personas = Persona::get();
@@ -294,7 +306,7 @@ class AutoridadesController extends Controller
             $result = '0';
             $msj = 'FALTA SELECCIONAR EL GRADO ACADEMICO DE LA AUTORIDAD';
             $selector = 'grado';
-        } else{
+        } else {
             if ($request->hasFile('imagen')) {
                 $aux = date('d-m-Y') . '-' . date('H-i-s');
                 $input  = array('image' => $img);

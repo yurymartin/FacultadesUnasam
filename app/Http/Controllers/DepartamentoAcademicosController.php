@@ -15,16 +15,19 @@ use App\User;
 
 class DepartamentoAcademicosController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['permission:create departamentoacademico'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read departamentoacademico'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update departamentoacademico'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete departamentoacademico'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "departamentoacademicos";
-            return view('departamentoacademicos.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "departamentoacademicos";
+        return view('departamentoacademicos.index', compact('modulo'));
     }
     /**
      * Display a listing of the resource.
@@ -34,12 +37,33 @@ class DepartamentoAcademicosController extends Controller
     public function index(Request $request)
     {
         $buscar = $request->busca;
-        $departamentos = DepartamentoAcademicos::where('borrado', '0')
-            ->where(function ($query) use ($buscar) {
-                $query->where('nombre', 'like', '%' . $buscar . '%');
+        $departamentos = DB::table('departamentoacademicos as d')
+            ->join('facultades as f', 'f.id', '=', 'd.facultad_id')
+            ->select('d.id', 'd.nombre', 'd.descripcion', 'd.activo', 'd.borrado', 'd.facultad_id', 'f.id as idfac', 'f.nombre as nombrefac', 'f.abreviatura')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('d.facultad_id', '=', auth()->user()->facultad_id);
+                }
             })
-            ->orderBy('id', 'desc')
+            ->where('d.borrado', '0')
+            ->where(function ($query) use ($buscar) {
+                $query->where('d.nombre', 'like', '%' . $buscar . '%');
+                $query->orwhere('f.nombre', 'like', '%' . $buscar . '%');
+                $query->orwhere('f.abreviatura', 'like', '%' . $buscar . '%');
+            })
+            ->orderBy('d.id', 'desc')
             ->paginate(10);
+
+        $facultades = DB::table('facultades')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('id', '=', auth()->user()->facultad_id);
+                }
+            })
+            ->where('activo', '1')
+            ->where('borrado', '0')
+            ->get();
+
         return [
             'pagination' => [
                 'total' => $departamentos->total(),
@@ -49,7 +73,8 @@ class DepartamentoAcademicosController extends Controller
                 'from' => $departamentos->firstItem(),
                 'to' => $departamentos->lastItem(),
             ],
-            'departamentos' => $departamentos
+            'departamentos' => $departamentos,
+            'facultades' => $facultades
         ];
     }
 
@@ -71,37 +96,42 @@ class DepartamentoAcademicosController extends Controller
      */
     public function store(Request $request)
     {
-        $nombre=$request->nombre;
-        $descripcion=$request->descripcion;
-        $activo=$request->activo;
-        $borrado=0;
+        $facultad_id = $request->facultad_id;
+        $nombre = $request->nombre;
+        $descripcion = $request->descripcion;
+        $activo = $request->activo;
+        $borrado = 0;
 
-        $result='1';
-        $msj='';
-        $selector='';
+        $result = '1';
+        $msj = '';
+        $selector = '';
 
         $input1  = array('nombre' => $nombre);
         $reglas1 = array('nombre' => 'required');
 
 
         $validator1 = Validator::make($input1, $reglas1);
-        if ($validator1->fails()) {
-            $result='0';
-            $msj='FALTA COMPLETAR EL NOMBRE DEL DEPARTAMENTO ACADEMICO';
-            $selector='txttitulo';
-        }
-        else{
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($validator1->fails()) {
+            $result = '0';
+            $msj = 'FALTA COMPLETAR EL NOMBRE DEL DEPARTAMENTO ACADEMICO';
+            $selector = 'txttitulo';
+        } else {
 
             $newDepartamento = new DepartamentoAcademicos();
-            $newDepartamento->nombre=$nombre;
-            $newDepartamento->descripcion=$descripcion;
-            $newDepartamento->activo=$activo;
-            $newDepartamento->borrado='0';
+            $newDepartamento->nombre = $nombre;
+            $newDepartamento->descripcion = $descripcion;
+            $newDepartamento->activo = $activo;
+            $newDepartamento->borrado = '0';
+            $newDepartamento->facultad_id = $facultad_id;
             $newDepartamento->save();
-            $msj='EL DEPARTAMENTO ACADEMICO FUE REGISTRADO EXITOSAMENTE';
+            $msj = 'EL DEPARTAMENTO ACADEMICO FUE REGISTRADO EXITOSAMENTE';
         }
 
-        return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
+        return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
 
     /**
@@ -135,13 +165,14 @@ class DepartamentoAcademicosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $nombre=$request->nombre;
-        $descripcion=$request->descripcion;
-        $borrado=0;
+        $facultad_id = $request->facultad_id;
+        $nombre = $request->nombre;
+        $descripcion = $request->descripcion;
+        $borrado = 0;
 
-        $result='1';
-        $msj='';
-        $selector='';
+        $result = '1';
+        $msj = '';
+        $selector = '';
 
         $input1  = array('nombre' => $nombre);
         $reglas1 = array('nombre' => 'required');
@@ -150,42 +181,44 @@ class DepartamentoAcademicosController extends Controller
         $validator1 = Validator::make($input1, $reglas1);
 
 
-        if ($validator1->fails()) {
-            $result='0';
-            $msj='FALTA COMPLETAR EL NOMBRE DEL DEPARTAMENTO ACADEMICO';
-            $selector='txttituloE';
-        }
-       
-        else{
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($validator1->fails()) {
+            $result = '0';
+            $msj = 'FALTA COMPLETAR EL NOMBRE DEL DEPARTAMENTO ACADEMICO';
+            $selector = 'txttituloE';
+        } else {
 
-            $newDepartamento =DepartamentoAcademicos::findOrFail($id);
-            $newDepartamento->nombre=$nombre;
-            $newDepartamento->descripcion=$descripcion;
+            $newDepartamento = DepartamentoAcademicos::findOrFail($id);
+            $newDepartamento->nombre = $nombre;
+            $newDepartamento->descripcion = $descripcion;
+            $newDepartamento->facultad_id = $facultad_id;
             $newDepartamento->save();
 
-            $msj='EL DEPARTAMENTO ACADEMICO FUE REGISTRADO EXITOSAMENTE';
+            $msj = 'EL DEPARTAMENTO ACADEMICO FUE REGISTRADO EXITOSAMENTE';
         }
-        return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
+        return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
 
-    public function altabaja($id,$activo)
+    public function altabaja($id, $activo)
     {
-        $result='1';
-        $msj='';
-        $selector='';
+        $result = '1';
+        $msj = '';
+        $selector = '';
 
         $update = DepartamentoAcademicos::findOrFail($id);
-        $update->activo=$activo;
+        $update->activo = $activo;
         $update->save();
 
-        if(strval($activo)=="0"){
-            $msj='EL DEPARTAMENTO ACADEMICO FUE DESACTIVADO EXITOSAMENTE';
-        }elseif(strval($activo)=="1"){
-            $msj='EL DEPARTAMENTO ACADEMICO FUE ACTIVADO EXITOSAMENTE';
+        if (strval($activo) == "0") {
+            $msj = 'EL DEPARTAMENTO ACADEMICO FUE DESACTIVADO EXITOSAMENTE';
+        } elseif (strval($activo) == "1") {
+            $msj = 'EL DEPARTAMENTO ACADEMICO FUE ACTIVADO EXITOSAMENTE';
         }
 
-        return response()->json(["result"=>$result,'msj'=>$msj,'selector'=>$selector]);
-
+        return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
     /**
      * Remove the specified resource from storage.
@@ -195,12 +228,12 @@ class DepartamentoAcademicosController extends Controller
      */
     public function destroy($id)
     {
-        $result='1';
-        $msj='1';
+        $result = '1';
+        $msj = '1';
         $borrar = DepartamentoAcademicos::findOrFail($id);
-        $borrar->borrado='1';
+        $borrar->borrado = '1';
         $borrar->save();
-        $msj='EL DEPARTAMENTO ACADEMICO FUE ELIMINADO EXITOSAMENTE';
-        return response()->json(["result"=>$result,'msj'=>$msj]);
+        $msj = 'EL DEPARTAMENTO ACADEMICO FUE ELIMINADO EXITOSAMENTE';
+        return response()->json(["result" => $result, 'msj' => $msj]);
     }
 }

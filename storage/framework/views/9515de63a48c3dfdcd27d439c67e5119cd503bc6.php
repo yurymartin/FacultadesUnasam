@@ -6,6 +6,7 @@
       Volver</a>
   </div>
 
+  <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create eventos facultad', Model::class)): ?>
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
@@ -13,6 +14,7 @@
     </div>
 
   </div>
+  <?php endif; ?>
 
 </div>
 
@@ -23,6 +25,20 @@
 
   <form v-on:submit.prevent="create">
     <div class="box-body">
+
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="facultad_id" class="col-sm-2 control-label">Facultad:*</label>
+          <div class="col-sm-8">
+            <select name="facultad_id" id="facultad_id" class="form-control" v-model="facultad_id">
+              <option value="0">Seleccione una facultad</option>
+              <option v-for="facultad, key in facultades" v-bind:value="facultad.id">
+                {{facultad.nombre}} - {{facultad.abreviatura}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
 
       <div class="col-md-12">
         <div class="form-group" style="padding-top: 15px;">
@@ -121,6 +137,7 @@
 
 
 
+<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('read eventos facultad', Model::class)): ?>
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Eventos de la Facultad</h3>
@@ -145,14 +162,15 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Titulo</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Titulo</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Descripcion</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Imagen</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha Inicio</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha Fin</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha Publicacion</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Facultad</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Estado</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Gestión</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
         <tr v-for="evento, key in eventos">
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{key+pagination.from}}
@@ -166,6 +184,7 @@
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ evento.fechainicio }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ evento.fechafin }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ evento.fechapublicac }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ evento.nombre }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
               <span class="label label-success" v-if="evento.activo=='1'">Activo</span>
@@ -174,6 +193,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update eventos facultad', Model::class)): ?>
               <a href="#" v-if="evento.activo=='1'" class="btn bg-navy btn-sm" v-on:click.prevent="bajadocente(evento)"
                 data-placement="top" data-toggle="tooltip" title="Desactivar descripcion facultad"><i
                   class="fa fa-arrow-circle-down"></i></a>
@@ -184,9 +204,12 @@
 
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(evento)" data-placement="top"
                 data-toggle="tooltip" title="Editar descripcion facultad"><i class="fa fa-edit"></i></a>
+              <?php endif; ?>
 
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete eventos facultad', Model::class)): ?>
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(evento)" data-placement="top"
                 data-toggle="tooltip" title="Borrar docente"><i class="fa fa-trash"></i></a>
+              <?php endif; ?>
             </center>
           </td>
         </tr>
@@ -235,6 +258,7 @@
     </div>
   </div>
 </div>
+<?php endif; ?>
 
 <form method="post" v-on:submit.prevent="updateBanner(fillEventos.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -254,6 +278,20 @@
               <!-- /.box-header -->
               <!-- form start -->
               <div class="box-body">
+                
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="facultad_id" class="col-sm-2 control-label">Facultad:*</label>
+                    <div class="col-sm-8">
+                      <select name="facultad_id" id="facultad_id" class="form-control" v-model="fillEventos.facultad_id">
+                        <option value="0">Seleccione una facultad</option>
+                        <option v-for="facultad, key in facultades" v-bind:value="facultad.id">
+                          {{facultad.nombre}} - {{facultad.abreviatura}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
 
                 <div class="col-md-12">
                   <div class="form-group" style="padding-top: 15px;">
@@ -290,7 +328,8 @@
                     <label for="fechainicio" class="col-sm-2 control-label">Fecha de Inicio:*</label>
                     <div class="col-sm-4">
                       <input type="date" class="form-control" id="fechainicio" name="fecha inicio del evento"
-                        placeholder="fecha inicio del evento" maxlength="200" autofocus v-model="fillEventos.fechainicio">
+                        placeholder="fecha inicio del evento" maxlength="200" autofocus
+                        v-model="fillEventos.fechainicio">
                     </div>
                   </div>
                 </div>

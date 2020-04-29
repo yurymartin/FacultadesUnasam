@@ -9,7 +9,7 @@ data:{
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
+   tipouserPerfil:'',
    userPerfil:'<?php echo e(Auth::user()->name); ?>',
    mailPerfil:'<?php echo e(Auth::user()->email); ?>',
 
@@ -45,9 +45,10 @@ data:{
    divprincipal:false,
 
    bannersFacultades: [],
+   facultades: [],
    errors:[],
 
-   fillBannerFacultad:{'id':'', 'titulo':'', 'descripcion':'','imagen':'','fechapublica':'','estado':''},
+   fillBannerFacultad:{'id':'', 'titulo':'', 'descripcion':'','imagen':'','fechapublica':'','estado':'','facultad_id':''},
 
    pagination: {
    'total': 0,
@@ -71,6 +72,7 @@ data:{
    newEstado:'1',
    newBorrado:'0',
    imagen : null,
+   facultad_id: '0',
 
 
 
@@ -125,6 +127,8 @@ methods: {
            
             this.bannersFacultades = response.data.bannersFacultades.data;
             this.pagination= response.data.pagination;
+            this.facultades = response.data.facultades;
+
            if(this.bannersFacultades.length==0 && this.thispage!='1'){
                var a = parseInt(this.thispage) ;
                a--;
@@ -163,6 +167,7 @@ methods: {
         this.newFechapublica = '';
         this.newEstado = '1';
         this.imagen = null;
+        this.facultad_id = '0';
 
        $(".form-control").css("border","1px solid #d2d6de");
    },
@@ -191,6 +196,7 @@ methods: {
             data.append('imagen', this.imagen);
             data.append('activo', this.newEstado);
             data.append('borrado', this.newBorrado);
+            data.append('facultad_id', this.facultad_id);
             
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
         axios.post(url,data,config).then(response=>{
@@ -253,6 +259,7 @@ methods: {
         this.fillBannerFacultad.descripcion=bannersFacultades.descripcion;            
         this.fillBannerFacultad.imagen=bannersFacultades.imagen;
         this.fillBannerFacultad.estado=bannersFacultades.activo;
+        this.fillBannerFacultad.facultad_id = bannersFacultades.idfac
         this.imagen=null;
 
         $("#modalEditar").modal('show');
@@ -271,6 +278,7 @@ methods: {
         data.append('estado', this.fillBannerFacultad.estado);
         data.append('imagen', this.imagen);
         data.append('oldImagen', this.fillBannerFacultad.imagen);
+        data.append('facultad_id', this.fillBannerFacultad.facultad_id);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };

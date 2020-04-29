@@ -6,6 +6,7 @@
       Volver</a>
   </div>
 
+  @can('create galerias facultad', Model::class)
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
@@ -13,6 +14,7 @@
     </div>
 
   </div>
+  @endcan
 
 </div>
 
@@ -23,6 +25,20 @@
 
   <form v-on:submit.prevent="create">
     <div class="box-body">
+
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="facultad_id" class="col-sm-2 control-label">Facultad:*</label>
+          <div class="col-sm-8">
+            <select name="facultad_id" id="facultad_id" class="form-control" v-model="facultad_id">
+              <option value="0">Seleccione una facultad</option>
+              <option v-for="facultad, key in facultades" v-bind:value="facultad.id">
+                @{{facultad.nombre}} - @{{facultad.abreviatura}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
 
       <div class="col-md-12" style="padding-top: 10px;">
         <div class="form-group">
@@ -91,6 +107,7 @@
 
 
 
+@can('read galerias facultad', Model::class)
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Galerias de fotos de la Facultad</h3>
@@ -116,7 +133,8 @@
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Imagen</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 50%;">Descripcion</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 25%;">Descripcion</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 25%;">Facultad</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Gestión</th>
         </tr>
@@ -129,6 +147,8 @@
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">
             @{{galeriafacultad.descripcion }}
           </td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{galeriafacultad.nombre }}
+          </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
               <span class="label label-success" v-if="galeriafacultad.activo=='1'">Activo</span>
@@ -137,6 +157,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              @can('update galerias facultad', Model::class)
               <a href="#" v-if="galeriafacultad.activo=='1'" class="btn bg-navy btn-sm"
                 v-on:click.prevent="bajadocente(galeriafacultad)" data-placement="top" data-toggle="tooltip"
                 title="Desactivar descripcion facultad"><i class="fa fa-arrow-circle-down"></i></a>
@@ -148,9 +169,12 @@
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(galeriafacultad)"
                 data-placement="top" data-toggle="tooltip" title="Editar descripcion facultad"><i
                   class="fa fa-edit"></i></a>
+              @endcan
 
+              @can('delete galerias facultad', Model::class)
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(galeriafacultad)"
                 data-placement="top" data-toggle="tooltip" title="Borrar docente"><i class="fa fa-trash"></i></a>
+              @endcan
             </center>
           </td>
         </tr>
@@ -199,6 +223,7 @@
     </div>
   </div>
 </div>
+@endcan
 
 <form method="post" v-on:submit.prevent="updateBanner(fillGaleriaFacultad.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -218,6 +243,20 @@
               <!-- /.box-header -->
               <!-- form start -->
               <div class="box-body">
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="facultad_id" class="col-sm-2 control-label">Facultad:*</label>
+                    <div class="col-sm-8">
+                      <select name="facultad_id" id="facultad_id" class="form-control" v-model="fillGaleriaFacultad.facultad_id">
+                        <option value="0">Seleccione una facultad</option>
+                        <option v-for="facultad, key in facultades" v-bind:value="facultad.id">
+                          @{{facultad.nombre}} - @{{facultad.abreviatura}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
 
                 <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">

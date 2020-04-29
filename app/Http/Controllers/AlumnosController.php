@@ -7,12 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Validator;
-use Auth;
 use DB;
 use Storage;
-use App\Persona;
-use App\Tipouser;
 use App\User;
+use App\Persona;
 
 class AlumnosController extends Controller
 {
@@ -21,16 +19,18 @@ class AlumnosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware(['permission:create alumnos'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read alumnos'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update alumnos'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete alumnos'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "alumnos";
-            return view('alumnos.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "alumnos";
+        return view('alumnos.index', compact('modulo'));
     }
     public function index(Request $request)
     {
@@ -38,17 +38,33 @@ class AlumnosController extends Controller
         $alumnos = DB::table('alumnos as a')
             ->join('comiestudiantiles as c', 'c.id', '=', 'a.comiestudiantil_id')
             ->join('personas as p', 'p.id', '=', 'a.persona_id')
+            ->join('facultades as f', 'f.id', '=', 'a.facultad_id')
             ->where('a.borrado', '0')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('a.facultad_id', '=', auth()->user()->facultad_id);
+                }
+            })
             ->where(function ($query) use ($buscar) {
                 $query->where('p.dni', 'like', '%' . $buscar . '%');
                 $query->orWhere('p.nombres', 'like', '%' . $buscar . '%');
                 $query->orWhere('p.apellidos', 'like', '%' . $buscar . '%');
             })
             ->orderBy('p.nombres')
-            ->select('a.id as idalu', 'p.id as idper', 'p.dni', 'p.nombres', 'p.apellidos', 'p.genero', 'p.foto', 'c.titulo', 'a.activo', 'c.id as idcomi')
+            ->select('a.id as idalu', 'p.id as idper', 'p.dni', 'p.nombres', 'p.apellidos', 'p.genero', 'p.foto', 'c.titulo', 'a.activo', 'c.id as idcomi', 'a.facultad_id', 'f.id as idfac', 'f.nombre', 'f.abreviatura')
             ->paginate(10);
 
         $comiestudiantiles = DB::table('comiestudiantiles')
+            ->where('borrado', '0')
+            ->get();
+
+        $facultades = DB::table('facultades')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('id', '=', auth()->user()->facultad_id);
+                }
+            })
+            ->where('activo', '1')
             ->where('borrado', '0')
             ->get();
 
@@ -65,6 +81,7 @@ class AlumnosController extends Controller
             'alumnos' => $alumnos,
             'comiestudiantiles' => $comiestudiantiles,
             'personas' => $personas,
+            'facultades' => $facultades
         ];
     }
 
@@ -90,6 +107,7 @@ class AlumnosController extends Controller
         $msj = '';
         $selector = '';
 
+        $facultad_id = $request->facultad_id;
         $dni = $request->dni;
         $nombres = $request->nombres;
         $apellidos = $request->apellidos;
@@ -115,7 +133,11 @@ class AlumnosController extends Controller
         $reglas3 = array('apellidos' => 'required');
         $validator3 = Validator::make($input3, $reglas3);
 
-        if ($validator1->fails()) {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($validator1->fails()) {
             $result = '0';
             $msj = 'FALTA COMPLETAR EL DNI DEL ALUMNO O EL DNI TIENE MAS DE 8 DIGITOS';
             $selector = 'dni';
@@ -177,8 +199,8 @@ class AlumnosController extends Controller
                 $docente->borrado = '0';
                 $docente->persona_id = $persona->id;
                 $docente->comiestudiantil_id  = $comiestudiantil_id;
+                $docente->facultad_id = $facultad_id;
                 $docente->save();
-
                 $msj = 'EL ALUMNO FUE REGISTRADO EXITOSAMENTE';
             }
         }
@@ -224,6 +246,7 @@ class AlumnosController extends Controller
         $idPersona = $request->idper;
         $idalumno = $request->idalu;
 
+        $facultad_id = $request->facultad_id;
         $dni = $request->dni;
         $nombres = $request->nombres;
         $apellidos = $request->apellidos;
@@ -248,7 +271,11 @@ class AlumnosController extends Controller
         $validator3 = Validator::make($input3, $reglas3);
 
 
-        if ($validator1->fails()) {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($validator1->fails()) {
             $result = '0';
             $msj = 'FALTA COMPLETAR EL DNI O EL DNI TIENE MAS DE 8 DIGITOS';
             $selector = 'dniE';
@@ -300,6 +327,7 @@ class AlumnosController extends Controller
                 $persona->save();
 
                 $docente->comiestudiantil_id  = $comiestudiantil_id;
+                $docente->facultad_id = $facultad_id;
                 $docente->save();
             } else {
                 $persona->dni = $dni;
@@ -309,6 +337,7 @@ class AlumnosController extends Controller
                 $persona->save();
 
                 $docente->comiestudiantil_id  = $comiestudiantil_id;
+                $docente->facultad_id = $facultad_id;
                 $docente->save();
             }
 

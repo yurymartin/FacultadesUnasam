@@ -9,7 +9,7 @@ data:{
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
+   tipouserPerfil:'',
    userPerfil:'<?php echo e(Auth::user()->name); ?>',
    mailPerfil:'<?php echo e(Auth::user()->email); ?>',
 
@@ -46,9 +46,10 @@ data:{
 
    documentofacultades: [],
    temas: [],
+   facultades: [],
    errors:[],
 
-   fillDocumentoFacultades:{'id':'', 'titulo':'','descripcion':'','imagen':'','ruta':'','estado':''},
+   fillDocumentoFacultades:{'id':'', 'titulo':'','descripcion':'','imagen':'','ruta':'','estado':'','facultad_id':''},
 
    pagination: {
    'total': 0,
@@ -71,10 +72,7 @@ data:{
    imagen : null,
    ruta : null,
    newEstado:'1',
-
-
-
-
+   facultad_id: '0',
 },
 created:function () {
    this.getBannerFacultad(this.thispage);
@@ -130,6 +128,7 @@ methods: {
            
             this.documentofacultades = response.data.documentofacultades.data;
             this.pagination= response.data.pagination;
+            this.facultades = response.data.facultades;
 
            if(this.documentofacultades.length==0 && this.thispage!='1'){
                var a = parseInt(this.thispage) ;
@@ -170,6 +169,7 @@ methods: {
         this.newEstado = '1';
         this.imagen = null;
         this.ruta = null;
+        this.facultad_id = '0';
 
        $(".form-control").css("border","1px solid #d2d6de");
    },
@@ -207,6 +207,7 @@ methods: {
             data.append('imagen', this.imagen);
             data.append('ruta', this.ruta);
             data.append('activo', this.newEstado);
+            data.append('facultad_id', this.facultad_id);
             
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };
         axios.post(url,data,config).then(response=>{
@@ -269,6 +270,7 @@ methods: {
         this.fillDocumentoFacultades.descripcion=documentofacultades.descripcion;
         this.imagen=null;
         this.ruta=null;
+        this.fillDocumentoFacultades.facultad_id = documentofacultades.idfac
 
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
@@ -285,6 +287,7 @@ methods: {
         data.append('descripcion', this.fillDocumentoFacultades.descripcion);
         data.append('ruta', this.ruta);
         data.append('imagen', this.imagen);
+        data.append('facultad_id', this.fillDocumentoFacultades.facultad_id);
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };

@@ -21,27 +21,48 @@ class OrganigramaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware(['permission:create organigramas'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read organigramas'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update organigramas'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete organigramas'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "organigramafacultades";
-            return view('organigrama.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "organigramafacultades";
+        return view('organigrama.index', compact('modulo'));
     }
     public function index(Request $request)
     {
         $buscar = $request->busca;
-        $organigramafacultades = DB::table('organigramafacultades')
-            ->where(function ($query) use ($buscar) {
-                $query->where('imagen', 'like', '%' . $buscar . '%');
+        $organigramafacultades = DB::table('organigramafacultades as of')
+            ->join('facultades as f', 'f.id', '=', 'of.facultad_id')
+            ->select('of.id', 'of.descripcion', 'of.imagen', 'of.fecha', 'of.activo', 'of.borrado', 'of.facultad_id', 'f.id as idfac', 'f.nombre', 'f.abreviatura')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('of.facultad_id', '=', auth()->user()->facultad_id);
+                }
             })
-            ->where('borrado', '0')
-            ->orderBy('id', 'desc')
+            ->where(function ($query) use ($buscar) {
+                $query->where('f.nombre', 'like', '%' . $buscar . '%');
+                $query->orwhere('f.abreviatura', 'like', '%' . $buscar . '%');
+            })
+            ->where('of.borrado', '0')
+            ->orderBy('of.id', 'desc')
             ->paginate(10);
+
+        $facultades = DB::table('facultades')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('id', '=', auth()->user()->facultad_id);
+                }
+            })
+            ->where('activo', '1')
+            ->where('borrado', '0')
+            ->get();
 
         return [
             'pagination' => [
@@ -52,7 +73,8 @@ class OrganigramaController extends Controller
                 'from' => $organigramafacultades->firstItem(),
                 'to' => $organigramafacultades->lastItem(),
             ],
-            'organigramafacultades' => $organigramafacultades
+            'organigramafacultades' => $organigramafacultades,
+            'facultades' => $facultades
         ];
     }
     /**
@@ -73,7 +95,7 @@ class OrganigramaController extends Controller
      */
     public function store(Request $request)
     {
-
+        $facultad_id = $request->facultad_id;
         $descripcion = $request->descripcion;
         $img = $request->imagen;
         $estado = $request->activo;
@@ -83,7 +105,11 @@ class OrganigramaController extends Controller
         $imagen = "";
         $segureImg = 0;
 
-        if ($img == 'null') {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($img == 'null') {
             $result = '0';
             $msj = 'FALTA SELECCIONAR LA IMAGEN DEL ORGANIGRAMA';
             $selector = 'archivo';
@@ -128,7 +154,7 @@ class OrganigramaController extends Controller
                 $newBanner->fecha = date('Y/m/d');
                 $newBanner->activo = $estado;
                 $newBanner->borrado = '0';
-
+                $newBanner->facultad_id = $facultad_id;
                 $newBanner->save();
 
                 $msj = 'EL NUEVO ORGANIGRAMA FUE REGISTRADO EXITOSAMENTE';
@@ -173,6 +199,7 @@ class OrganigramaController extends Controller
         $msj = '';
         $selector = '';
 
+        $facultad_id = $request->facultad_id;
         $descripcion = $request->descripcion;
         $idOrganigrama = $request->idOrganigrama;
         $img = $request->imagen;
@@ -182,8 +209,12 @@ class OrganigramaController extends Controller
         $segureImg = 0;
 
         $oldImagen = $request->oldImagen;
-        
-        if ($request->hasFile('imagen')) {
+
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($request->hasFile('imagen')) {
 
             $aux = date('d-m-Y') . '-' . date('H-i-s');;
             $input  = array('image' => $img);
@@ -224,10 +255,12 @@ class OrganigramaController extends Controller
 
             if (strlen($imagen) == 0) {
                 $editBanner->descripcion = $descripcion;
+                $editBanner->facultad_id = $facultad_id;
                 $editBanner->save();
             } else {
                 $editBanner->descripcion = $descripcion;
                 $editBanner->imagen = $imagen;
+                $editBanner->facultad_id = $facultad_id;
                 $editBanner->save();
             }
 

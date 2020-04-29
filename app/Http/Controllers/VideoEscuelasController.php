@@ -21,16 +21,19 @@ class VideoEscuelasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware(['permission:create videos escuelas'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read videos escuelas'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update videos escuelas'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete videos escuelas'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "videoEscuelas";
-            return view('videoEscuelas.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "videoEscuelas";
+        return view('videoEscuelas.index', compact('modulo'));
     }
 
     public function index(Request $request)
@@ -38,7 +41,13 @@ class VideoEscuelasController extends Controller
         $buscar = $request->busca;
         $videosfacultades = DB::table('videoescuelas as ve')
             ->join('escuelas as e', 'e.id', '=', 've.escuela_id')
+            ->join('departamentoacademicos as da', 'da.id', '=', 'e.departamentoacademico_id')
             ->select('ve.id', 've.titulo', 've.descripcion', 've.link', 've.fecha', 've.activo', 'e.id as idescuela', 'e.nombre')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('da.facultad_id', '=', auth()->user()->facultad_id);
+                }
+            })
             ->where(function ($query) use ($buscar) {
                 $query->where('ve.titulo', 'like', '%' . $buscar . '%');
                 $query->where('e.nombre', 'like', '%' . $buscar . '%');
@@ -47,9 +56,16 @@ class VideoEscuelasController extends Controller
             ->orderBy('ve.id')
             ->paginate(10);
 
-        $escuelas = DB::table('escuelas')
-            ->where('borrado', '=', 0)
-            ->where('activo', '=', 1)
+        $escuelas = DB::table('escuelas as e')
+            ->join('departamentoacademicos as da', 'da.id', '=', 'e.departamentoacademico_id')
+            ->select('e.id', 'e.nombre')
+            ->where('e.borrado', '0')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('da.facultad_id', '=', auth()->user()->facultad_id);
+                }
+            })
+            ->where('e.activo', '=', '1')
             ->get();
 
         return [

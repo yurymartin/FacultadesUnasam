@@ -9,7 +9,7 @@
     subtitle2: false,
     subtitulo2: "",
 
-    tipouserPerfil: '<?php echo e($tipouser->nombre); ?>',
+    tipouserPerfil: '',
     userPerfil: '<?php echo e(Auth::user()->name); ?>',
     mailPerfil: '<?php echo e(Auth::user()->email); ?>',
 
@@ -45,9 +45,10 @@
     divprincipal: false,
 
     galeriafacultades: [],
+    facultades: [],
     errors: [],
 
-    fillGaleriaFacultad:{'id':'','imagen':'','descripcion':'','activo':'','borrado':''},
+    fillGaleriaFacultad:{'id':'','imagen':'','descripcion':'','activo':'','borrado':'','facultad_id':''},
 
     pagination: {
     'total': 0,
@@ -68,6 +69,7 @@
     newDescripcion: '',
     imagen: null,
     newActivo: '',
+    facultad_id: '0',
 },
 created: function () {
     this.getDescripcionFacultades(this.thispage);
@@ -116,6 +118,7 @@ methods: {
         axios.get(url).then(response=> {
             this.galeriafacultades = response.data.galeriafacultades.data;
             this.pagination = response.data.pagination;
+            this.facultades = response.data.facultades;
 
         if (this.galeriafacultades.length == 0 && this.thispage != '1') {
             var a = parseInt(this.thispage);
@@ -153,6 +156,7 @@ methods: {
             this.newFechapubli = '';
             this.newActivo = '1';
             this.imagen = null;
+            this.facultad_id = '0';
 
             $(".form-control").css("border", "1px solid #d2d6de");
         },
@@ -184,6 +188,7 @@ methods: {
                 data.append('descripcion', this.newDescripcion);
                 data.append('imagen', this.imagen);
                 data.append('activo', this.newActivo);
+                data.append('facultad_id', this.facultad_id);
                 
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             axios.post(url,data,config).then(response=>{
@@ -242,6 +247,7 @@ methods: {
         this.fillGaleriaFacultad.id = galeriafacultades.id;
         this.fillGaleriaFacultad.descripcion = galeriafacultades.descripcion;
         this.imagen=null;
+        this.fillGaleriaFacultad.facultad_id = galeriafacultades.idfac
         
         $("#modalEditar").modal('show');
             this.$nextTick(function () {
@@ -254,6 +260,7 @@ methods: {
         data.append('id', this.fillGaleriaFacultad.id);
         data.append('descripcion', this.fillGaleriaFacultad.descripcion);
         data.append('imagen',this.imagen);
+        data.append('facultad_id', this.fillGaleriaFacultad.facultad_id);
         data.append('_method', 'PUT');
         
         

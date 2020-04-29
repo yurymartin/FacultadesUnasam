@@ -6,6 +6,7 @@
       Volver</a>
   </div>
 
+  <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create libros', Model::class)): ?>
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
@@ -13,6 +14,7 @@
     </div>
 
   </div>
+  <?php endif; ?>
 
 </div>
 
@@ -157,6 +159,7 @@
 
 
 
+<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('read libros', Model::class)): ?>
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Libros</h3>
@@ -181,9 +184,9 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Titulo</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Descripcion</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha Publicacion</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Titulo</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Descripcion</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Fecha Publicacion</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Tema de Estudio</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Escuela Profesional</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Imagen</th>
@@ -194,7 +197,7 @@
         <tr v-for="libro, key in libros">
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{key+pagination.from}}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ libro.titulo }}</td>
-          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ libro.descripcion }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: justify">{{ libro.descripcion }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ libro.fechapublicacion }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ libro.tema }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ libro.nombre }}</td>
@@ -211,6 +214,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update libros', Model::class)): ?>
               <a href="#" v-if="libro.activo=='1'" class="btn bg-navy btn-sm" v-on:click.prevent="bajabanner(libro)"
                 data-placement="top" data-toggle="tooltip" title="Desactivar libro"><i
                   class="fa fa-arrow-circle-down"></i></a>
@@ -221,12 +225,17 @@
 
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(libro)" data-placement="top"
                 data-toggle="tooltip" title="Editar libro"><i class="fa fa-edit"></i></a>
+              <?php endif; ?>
 
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete libros', Model::class)): ?>
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarbanner(libro)" data-placement="top"
                 data-toggle="tooltip" title="Borrar libro"><i class="fa fa-trash"></i></a>
+              <?php endif; ?>
 
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('read libros', Model::class)): ?>
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="getfile(libro)" data-placement="top"
                 data-toggle="tooltip" title="ver libro"><i class="fa fa-eye"></i></a>
+              <?php endif; ?>
 
             </center>
           </td>
@@ -276,6 +285,7 @@
     </div>
   </div>
 </div>
+<?php endif; ?>
 
 <form method="post" v-on:submit.prevent="updateBanner(fillLibros.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -286,7 +296,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
               style="font-size: 35px;">&times;</span></button>
           <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR
-          EL LIBRO </h4>
+            EL LIBRO </h4>
 
         </div>
         <div class="modal-body">
@@ -332,8 +342,8 @@
                   <div class="form-group">
                     <label for="autor" class="col-sm-2 control-label">Autor:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="autor" name="autor"
-                        placeholder="autor del libro" maxlength="200" autofocus v-model="fillLibros.autor">
+                      <input type="text" class="form-control" id="autor" name="autor" placeholder="autor del libro"
+                        maxlength="200" autofocus v-model="fillLibros.autor">
                     </div>
                   </div>
                 </div>

@@ -17,17 +17,18 @@ use App\User;
 class BannersController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware(['permission:create banners facultad'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read banners facultad'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update banners facultad'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete banners facultad'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "bannersFacultad";
-            return view('bannersFacultad.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "bannersFacultad";
+        return view('bannersFacultad.index', compact('modulo'));
     }
 
     /**
@@ -39,13 +40,32 @@ class BannersController extends Controller
     {
 
         $buscar = $request->busca;
-        $bannersFacultades = BannersFacultades::where('borrado', '=', '0')
-            ->where(function ($query) use ($buscar) {
-                $query->where('titulo', 'like', '%' . $buscar . '%');
-                $query->orWhere('descripcion', 'like', '%' . $buscar . '%');
+        $bannersFacultades = DB::table('bannerfacultades as bf')
+            ->join('facultades as f', 'f.id', '=', 'bf.facultad_id')
+            ->select('bf.id', 'bf.titulo', 'bf.descripcion', 'bf.imagen', 'bf.fechapublica', 'bf.activo', 'bf.borrado', 'bf.facultad_id', 'f.id as idfac', 'f.nombre', 'f.abreviatura')
+            ->where('bf.borrado', '=', '0')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('bf.facultad_id', '=', auth()->user()->facultad_id);
+                }
             })
-            ->orderBy('id', 'desc')
+            ->where(function ($query) use ($buscar) {
+                $query->where('bf.titulo', 'like', '%' . $buscar . '%');
+                $query->orWhere('f.nombre', 'like', '%' . $buscar . '%');
+                $query->orWhere('f.abreviatura', 'like', '%' . $buscar . '%');
+            })
+            ->orderBy('bf.id', 'desc')
             ->paginate(10);
+
+        $facultades = DB::table('facultades')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('id', '=', auth()->user()->facultad_id);
+                }
+            })
+            ->where('activo', '1')
+            ->where('borrado', '0')
+            ->get();
 
         return [
             'pagination' => [
@@ -56,7 +76,8 @@ class BannersController extends Controller
                 'from' => $bannersFacultades->firstItem(),
                 'to' => $bannersFacultades->lastItem(),
             ],
-            'bannersFacultades' => $bannersFacultades
+            'bannersFacultades' => $bannersFacultades,
+            'facultades' => $facultades
         ];
     }
 
@@ -78,6 +99,7 @@ class BannersController extends Controller
      */
     public function store(Request $request)
     {
+        $facultad_id = $request->facultad_id;
         $titulo = $request->titulo;
         $descripcion = $request->descripcion;
         $img = $request->imagen;
@@ -91,7 +113,11 @@ class BannersController extends Controller
         $segureImg = 0;
 
 
-        if ($titulo == null) {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($titulo == null) {
             $result = '0';
             $msj = 'FALTA COMPLETAR EL TITULO DEL BANNER';
             $selector = 'txttitulo';
@@ -143,7 +169,7 @@ class BannersController extends Controller
                 $newBanner->fechapublica = date('Y/m/d');
                 $newBanner->activo = $estado;
                 $newBanner->borrado = '0';
-
+                $newBanner->facultad_id = $facultad_id;
                 $newBanner->save();
 
                 $msj = 'EL NUEVO BANNER FUE REGISTRADO EXITOSAMENTE';
@@ -187,6 +213,7 @@ class BannersController extends Controller
         $msj = '';
         $selector = '';
 
+        $facultad_id = $request->facultad_id;
         $titulo = $request->titulo;
         $descripcion = $request->descripcion;
         $estado = $request->estado;
@@ -197,7 +224,11 @@ class BannersController extends Controller
 
         $oldImagen = $request->oldImagen;
 
-        if ($titulo == null) {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($titulo == null) {
             $result = '0';
             $msj = 'FALTA COMPLETAR EL TITULO DEL BANNER';
             $selector = 'txttituloE';
@@ -249,12 +280,14 @@ class BannersController extends Controller
                     $editBanner->titulo = $titulo;
                     $editBanner->descripcion = $descripcion;
                     $editBanner->activo = $estado;
+                    $editBanner->facultad_id = $facultad_id;
                     $editBanner->save();
                 } else {
                     $editBanner->titulo = $titulo;
                     $editBanner->descripcion = $descripcion;
                     $editBanner->imagen = $imagen;
                     $editBanner->activo = $estado;
+                    $editBanner->facultad_id = $facultad_id;
                     $editBanner->save();
                 }
 

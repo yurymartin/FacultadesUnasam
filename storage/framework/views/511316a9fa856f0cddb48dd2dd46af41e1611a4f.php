@@ -6,6 +6,7 @@
       Volver</a>
   </div>
 
+  <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create campolaboral escuelas', Model::class)): ?>
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
@@ -13,6 +14,7 @@
     </div>
 
   </div>
+  <?php endif; ?>
 
 </div>
 
@@ -28,8 +30,8 @@
         <div class="form-group">
           <label for="titulo" class="col-sm-2 control-label">Titulo*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Titulo del campo laboral" maxlength="200"
-              autofocus v-model="newTitulo">
+            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Titulo del campo laboral"
+              maxlength="200" autofocus v-model="newTitulo">
           </div>
         </div>
       </div>
@@ -115,6 +117,7 @@
 
 
 
+<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('read campolaboral escuelas', Model::class)): ?>
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de los campos laborales de las escuelas Profesionales</h3>
@@ -167,6 +170,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update campolaboral escuelas', Model::class)): ?>
               <a href="#" v-if="campolaboral.activo=='1'" class="btn bg-navy btn-sm"
                 v-on:click.prevent="bajadocente(campolaboral)" data-placement="top" data-toggle="tooltip"
                 title="Desactivar descripcion escuela"><i class="fa fa-arrow-circle-down"></i></a>
@@ -174,13 +178,18 @@
               <a href="#" v-if="campolaboral.activo=='0'" class="btn btn-success btn-sm"
                 v-on:click.prevent="altadocente(campolaboral)" data-placement="top" data-toggle="tooltip"
                 title="Activar descripcion escuela"><i class="fa fa-check-circle"></i></a>
+              <?php endif; ?>
 
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update campolaboral escuelas', Model::class)): ?>
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(campolaboral)"
                 data-placement="top" data-toggle="tooltip" title="Editar descripcion facultad"><i
                   class="fa fa-edit"></i></a>
+              <?php endif; ?>
 
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete campolaboral escuelas', Model::class)): ?>
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(campolaboral)"
                 data-placement="top" data-toggle="tooltip" title="Borrar docente"><i class="fa fa-trash"></i></a>
+              <?php endif; ?>
             </center>
           </td>
         </tr>
@@ -229,6 +238,7 @@
     </div>
   </div>
 </div>
+<?php endif; ?>
 
 <form method="post" v-on:submit.prevent="updateBanner(fillCampoLaborales.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -283,7 +293,8 @@
                   <div class="form-group">
                     <label for="cbEscuelas" class="col-sm-2 control-label">Escuela Profesional:*</label>
                     <div class="col-sm-8">
-                      <select name="cbEscuelas" id="cbEscuelas" class="form-control" v-model="fillCampoLaborales.escuela_id">
+                      <select name="cbEscuelas" id="cbEscuelas" class="form-control"
+                        v-model="fillCampoLaborales.escuela_id">
                         <option disabled value="0">Seleccione una Escuela Profesional</option>
                         <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">{{escuela.nombre}}
                         </option>

@@ -9,7 +9,7 @@ data:{
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'{{ $tipouser->nombre }}',
+   tipouserPerfil:'',
    userPerfil:'{{ Auth::user()->name }}',
    mailPerfil:'{{ Auth::user()->email }}',
 
@@ -153,7 +153,7 @@ methods: {
        $('#txtgrado').focus();
 
         this.newGrado = '';
-        this.abreviatura = '';
+        this.newAbreviatura = '';
         this.newEstado = '1';
         this.newBorrado = '0';
 

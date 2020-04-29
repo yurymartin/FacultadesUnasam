@@ -6,6 +6,7 @@
       Volver</a>
   </div>
 
+  @can('create banners escuelas', Model::class)
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
@@ -13,6 +14,7 @@
     </div>
 
   </div>
+  @endcan
 
 </div>
 
@@ -28,8 +30,8 @@
         <div class="form-group">
           <label for="txttitulo" class="col-sm-2 control-label">Nombre del Banner:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Nomre del Banner" maxlength="200"
-              autofocus v-model="newTitulo">
+            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Nombre del Banner"
+              maxlength="200" autofocus v-model="newTitulo">
           </div>
         </div>
       </div>
@@ -40,8 +42,8 @@
         <div class="form-group" style="padding-top: 15px;">
           <label for="txtdescripcion" class="col-sm-2 control-label">Descripción:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion" placeholder="Descripcion del Banner"
-              maxlength="500" v-model="newDescripcion">
+            <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion"
+              placeholder="Descripcion del Banner" maxlength="500" v-model="newDescripcion">
           </div>
         </div>
       </div>
@@ -61,7 +63,7 @@
           <label for="cbescuela" class="col-sm-2 control-label">Escuela:*</label>
           <div class="col-sm-8">
             <select name="cbescuela" id="cbescuela" class="form-control" v-model="escuela_id" @change="seltipo">
-              <option disabled value="0">Seleccione una Escula</option>
+              <option disabled value="0">Seleccione una Escuela profesional</option>
               <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">
                 @{{escuela.nombre}}
               </option>
@@ -116,6 +118,7 @@
 
 
 
+@can('read banners escuelas', Model::class)
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Banners</h3>
@@ -166,6 +169,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              @can('update banners escuelas', Model::class)
               <a href="#" v-if="banner.activo=='1'" class="btn bg-navy btn-sm" v-on:click.prevent="bajabanner(banner)"
                 data-placement="top" data-toggle="tooltip" title="Desactivar banner"><i
                   class="fa fa-arrow-circle-down"></i></a>
@@ -173,12 +177,17 @@
               <a href="#" v-if="banner.activo=='0'" class="btn btn-success btn-sm"
                 v-on:click.prevent="altabanner(banner)" data-placement="top" data-toggle="tooltip"
                 title="Activar banner"><i class="fa fa-check-circle"></i></a>
+              @endcan
 
-
+              @can('update banners escuelas', Model::class)
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(banner)" data-placement="top"
                 data-toggle="tooltip" title="Editar banner"><i class="fa fa-edit"></i></a>
+              @endcan
+
+              @can('delete banners escuelas', Model::class)
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarbanner(banner)" data-placement="top"
                 data-toggle="tooltip" title="Borrar banner"><i class="fa fa-trash"></i></a>
+              @endcan
             </center>
           </td>
         </tr>
@@ -227,6 +236,7 @@
     </div>
   </div>
 </div>
+@endcan
 
 <form method="post" v-on:submit.prevent="updateBanner(fillBanner.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -251,8 +261,8 @@
                   <div class="form-group">
                     <label for="txttituloE" class="col-sm-2 control-label">Nombre del Banner:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="txttituloE" name="txttituloE" placeholder="nombre del banner"
-                        maxlength="200" autofocus v-model="fillBanner.titulo">
+                      <input type="text" class="form-control" id="txttituloE" name="txttituloE"
+                        placeholder="nombre del banner" maxlength="200" autofocus v-model="fillBanner.titulo">
                     </div>
                   </div>
                 </div>

@@ -1,0 +1,1 @@
+<?php /**PATH C:\Users\yuri_\OneDrive\Desktop\webFacultades\resources\views/users/vue.blade.php ENDPATH**/ ?>

@@ -6,13 +6,14 @@
       Volver</a>
   </div>
 
+  @can('create alumnos')
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
           class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Alumno</button>
     </div>
-
   </div>
+  @endcan
 
 </div>
 
@@ -23,12 +24,27 @@
 
   <form v-on:submit.prevent="create">
     <div class="box-body">
-      <div class="col-md-12">
+
+      <div class="col-md-12" style="padding-top: 10px;">
+        <div class="form-group">
+          <label for="facultad_id" class="col-sm-2 control-label">Facultad:*</label>
+          <div class="col-sm-8">
+            <select name="facultad_id" id="facultad_id" class="form-control" v-model="facultad_id">
+              <option value="0">Seleccione una facultad</option>
+              <option v-for="facultad, key in facultades" v-bind:value="facultad.id">
+                @{{facultad.nombre}} - @{{facultad.abreviatura}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
           <label for="dni" class="col-sm-2 control-label">DNI:*</label>
           <div class="col-sm-4">
-            <input type="number" class="form-control" id="dni" name="dni" placeholder="DNI del alumno"
-              maxlength="200" autofocus v-model="newDni">
+            <input type="number" class="form-control" id="dni" name="dni" placeholder="DNI del alumno" maxlength="200"
+              autofocus v-model="newDni">
           </div>
         </div>
       </div>
@@ -138,6 +154,7 @@
 
 
 
+@can('read alumnos')
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Alumnos</h3>
@@ -162,11 +179,12 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 5%;">dni</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">dni</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Nombres</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Apellidos</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Foto</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Comite Estudiantil</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Comite Estudiantil</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Facultad</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
@@ -180,6 +198,7 @@
           </td>
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ alumno.titulo }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ alumno.nombre }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
               <span class="label label-success" v-if="alumno.activo=='1'">Activo</span>
@@ -188,18 +207,25 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
-              <a href="#" v-if="alumno.activo=='1'" class="btn bg-navy btn-sm"
-                v-on:click.prevent="bajadocente(alumno)" data-placement="top" data-toggle="tooltip"
-                title="Desactivar alumno"><i class="fa fa-arrow-circle-down"></i></a>
+              @can('update alumnos')
+              <a href="#" v-if="alumno.activo=='1'" class="btn bg-navy btn-sm" v-on:click.prevent="bajadocente(alumno)"
+                data-placement="top" data-toggle="tooltip" title="Desactivar alumno"><i
+                  class="fa fa-arrow-circle-down"></i></a>
 
               <a href="#" v-if="alumno.activo=='0'" class="btn btn-success btn-sm"
                 v-on:click.prevent="altadocente(alumno)" data-placement="top" data-toggle="tooltip"
                 title="Activar alumno"><i class="fa fa-check-circle"></i></a>
+              @endcan
 
+              @can('update alumnos')
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(alumno)" data-placement="top"
                 data-toggle="tooltip" title="Editar alumno"><i class="fa fa-edit"></i></a>
-              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(alumno)"
-                data-placement="top" data-toggle="tooltip" title="Borrar alumno"><i class="fa fa-trash"></i></a>
+              @endcan
+
+              @can('delete alumnos')
+              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(alumno)" data-placement="top"
+                data-toggle="tooltip" title="Borrar alumno"><i class="fa fa-trash"></i></a>
+              @endcan
             </center>
           </td>
         </tr>
@@ -248,6 +274,7 @@
     </div>
   </div>
 </div>
+@endcan
 
 <form method="post" v-on:submit.prevent="updateBanner(fillAlumno.idalu,fillPersona.idper)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -270,10 +297,24 @@
 
                 <div class="col-md-12">
                   <div class="form-group">
+                    <label for="facultad_id" class="col-sm-2 control-label">Facultad:*</label>
+                    <div class="col-sm-8">
+                      <select name="facultad_id" id="facultad_id" class="form-control" v-model="fillAlumno.facultad_id">
+                        <option value="0">Seleccione una facultad</option>
+                        <option v-for="facultad, key in facultades" v-bind:value="facultad.id">
+                          @{{facultad.nombre}} - @{{facultad.abreviatura}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group" style="padding-top: 15px;">
                     <label for="txttituloE" class="col-sm-2 control-label">DNI:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="dniE" name="dniE" placeholder="DNI del Alumno" maxlength="200"
-                        autofocus v-model="fillPersona.dni">
+                      <input type="text" class="form-control" id="dniE" name="dniE" placeholder="DNI del Alumno"
+                        maxlength="200" autofocus v-model="fillPersona.dni">
                     </div>
                   </div>
                 </div>
@@ -293,8 +334,7 @@
                     <label for="txttituloE" class="col-sm-2 control-label">Apellidos:*</label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="ApellidosE" name="ApellidosE"
-                        placeholder="Apellidos de la Alumno" maxlength="200" autofocus
-                        v-model="fillPersona.apellidos">
+                        placeholder="Apellidos de la Alumno" maxlength="200" autofocus v-model="fillPersona.apellidos">
                     </div>
                   </div>
                 </div>
@@ -324,11 +364,14 @@
 
                 <div class="col-md-12" style="padding-top: 15px; color: black;">
                   <div class="form-group">
-                    <label for="cdCargoE" class="col-sm-2 control-label">Comite Estudiantil al que pertenece el Alumno:*</label>
+                    <label for="cdCargoE" class="col-sm-2 control-label">Comite Estudiantil al que pertenece el
+                      Alumno:*</label>
                     <div class="col-sm-4">
-                      <select class="form-control" id="cdCargoE" name="cdCargoE" v-model="fillAlumno.comiestudiantil_id">
+                      <select class="form-control" id="cdCargoE" name="cdCargoE"
+                        v-model="fillAlumno.comiestudiantil_id">
                         <option disabled value="">Seleccione una cargo </option>
-                        <option v-for="comiestudiantil, key in comiestudiantiles" v-bind:value="comiestudiantil.id">@{{comiestudiantil.titulo}}</option>
+                        <option v-for="comiestudiantil, key in comiestudiantiles" v-bind:value="comiestudiantil.id">
+                          @{{comiestudiantil.titulo}}</option>
                       </select>
                     </div>
                   </div>

@@ -1,5 +1,5 @@
 <?php $__env->startSection('htmlheader_title'); ?>
-Gestión de investigaciones
+Gestión de Publicaciones
 <?php $__env->stopSection(); ?>
 
 <style type="text/css">
@@ -20,12 +20,9 @@ Gestión de investigaciones
 
 		<?php echo $__env->make('vendor.adminlte.layouts.partials.loaders', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-		<?php if(accesoUser([1,2])): ?>
-
 		<template v-if="divprincipal" id="divprincipal">
 			<?php echo $__env->make('investigaciones.principal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 		</template>
-		<?php endif; ?>
 
 
 	</div>

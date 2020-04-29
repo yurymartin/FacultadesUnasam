@@ -21,16 +21,19 @@ class DescripcionEscuelasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware(['permission:create descripcion escuelas'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read descripcion escuelas'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update descripcion escuelas'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete descripcion escuelas'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "descripcionescuelas";
-            return view('descripcionescuelas.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "descripcionescuelas";
+        return view('descripcionescuelas.index', compact('modulo'));
     }
 
     public function index(Request $request)
@@ -38,17 +41,31 @@ class DescripcionEscuelasController extends Controller
         $buscar = $request->busca;
         $descripcionescuelas = DB::table('descripcionescuelas as de')
             ->join('escuelas as e', 'e.id', '=', 'de.escuela_id')
+            ->join('departamentoacademicos as da', 'da.id', '=', 'e.departamentoacademico_id')
             ->select('de.id as iddesc', 'de.descripcion', 'de.tituloprofesional', 'de.gradoacade', 'de.duracion', 'de.mision', 'de.vision', 'de.historia', 'de.logo', 'de.activo', 'e.id as idesc', 'e.nombre')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('da.facultad_id', '=', auth()->user()->facultad_id);
+                }
+            })
             ->where('de.borrado', '=', 0)
             ->where(function ($query) use ($buscar) {
                 $query->orWhere('de.tituloprofesional', 'like', '%' . $buscar . '%');
                 $query->orWhere('e.nombre', 'like', '%' . $buscar . '%');
             })
             ->orderBy('de.id')
-            ->paginate(10);
+            ->paginate(2);
 
-        $escuelas = DB::table('escuelas')
-            ->where('borrado', '=', 0)
+        $escuelas = DB::table('escuelas as e')
+            ->join('departamentoacademicos as da', 'da.id', '=', 'e.departamentoacademico_id')
+            ->select('e.id', 'e.nombre')
+            ->where('e.borrado', '0')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('da.facultad_id', '=', auth()->user()->facultad_id);
+                }
+            })
+            ->where('e.activo', '=', '1')
             ->get();
 
         return [

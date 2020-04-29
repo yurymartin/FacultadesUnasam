@@ -17,11 +17,9 @@ Gestion de Facultades
 <div class="container-fluid spark-screen" id="contenidoItem">
 	<div class="row">
 		@include('vendor.adminlte.layouts.partials.loaders')
-		@if(accesoUser([1,2]))	
 		<template v-if="divprincipal" id="divprincipal">
 			@include('facultades.principal')
 		</template>
-		@endif
 	</div>
 </div>
 @endsection

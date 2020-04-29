@@ -6,6 +6,7 @@
       Volver</a>
   </div>
 
+  @can('create descripcion escuelas', Model::class)
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
@@ -13,6 +14,7 @@
     </div>
 
   </div>
+  @endcan
 
 </div>
 
@@ -24,7 +26,20 @@
   <form v-on:submit.prevent="create" name="descripcionEscuela">
     <div class="box-body">
 
-      <div class="col-md-12">
+      <div class="col-md-12" style="padding-top: 10px;">
+        <div class="form-group">
+          <label for="cbEscuelas" class="col-sm-2 control-label">Escuela Profesional:*</label>
+          <div class="col-sm-8">
+            <select name="cbEscuelas" id="cbEscuelas" class="form-control" v-model="escuela_id">
+              <option value="0">Seleccione una Escuela Profesional</option>
+              <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">@{{escuela.nombre}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12" style="padding-top: 10px;">
         <div class="form-group">
           <label for="descripcion" class="col-sm-2 control-label">Descripcion:*</label>
           <div class="col-sm-8">
@@ -109,19 +124,6 @@
 
       <div class="col-md-12" style="padding-top: 10px;">
         <div class="form-group">
-          <label for="cbEscuelas" class="col-sm-2 control-label">Escuela Profesional:*</label>
-          <div class="col-sm-8">
-            <select name="cbEscuelas" id="cbEscuelas" class="form-control" v-model="escuela_id">
-              <option  value="0">Seleccione una Escuela Profesional</option>
-              <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">@{{escuela.nombre}}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12" style="padding-top: 10px;">
-        <div class="form-group">
           <label for="cbestado" class="col-sm-2 control-label">Estado:*</label>
           <div class="col-sm-4">
             <select class="form-control" id="cbestado" name="cbestado" v-model="newActivo">
@@ -165,9 +167,7 @@
   </form>
 </div>
 
-
-
-
+@can('read descripcion escuelas', Model::class)
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Banner</h3>
@@ -232,6 +232,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              @can('update descripcion escuelas', Model::class)
               <a href="#" v-if="descripcionescuela.activo=='1'" class="btn bg-navy btn-sm"
                 v-on:click.prevent="bajadocente(descripcionescuela)" data-placement="top" data-toggle="tooltip"
                 title="Desactivar descripcion escuela"><i class="fa fa-arrow-circle-down"></i></a>
@@ -239,13 +240,18 @@
               <a href="#" v-if="descripcionescuela.activo=='0'" class="btn btn-success btn-sm"
                 v-on:click.prevent="altadocente(descripcionescuela)" data-placement="top" data-toggle="tooltip"
                 title="Activar descripcion escuela"><i class="fa fa-check-circle"></i></a>
+              @endcan
 
+              @can('update descripcion escuelas', Model::class)
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(descripcionescuela)"
                 data-placement="top" data-toggle="tooltip" title="Editar descripcion facultad"><i
                   class="fa fa-edit"></i></a>
+              @endcan
 
+              @can('delete descripcion escuelas', Model::class)
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(descripcionescuela)"
                 data-placement="top" data-toggle="tooltip" title="Borrar docente"><i class="fa fa-trash"></i></a>
+              @endcan
             </center>
           </td>
         </tr>
@@ -294,6 +300,7 @@
     </div>
   </div>
 </div>
+@endcan
 
 <form method="post" v-on:submit.prevent="updateBanner(fillDescripcionEscuelas.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -367,7 +374,7 @@
                     </div>
                   </div>
                 </div>
-          
+
                 <div class="col-md-12" style="padding-top: 10px;">
                   <div class="form-group">
                     <label for="vision" class="col-sm-2 control-label">Vision:*</label>
@@ -377,13 +384,14 @@
                     </div>
                   </div>
                 </div>
-          
+
                 <div class="col-md-12">
                   <div class="form-group" style="padding-top: 10px;">
                     <label for="historia" class="col-sm-2 control-label">Historia:*</label>
                     <div class="col-sm-8">
-                      <textarea name="historia" id="historia" cols="80" rows="5" v-model="fillDescripcionEscuelas.historia"
-                        placeholder="historia de la escuela Profesional" class="form-control"></textarea>
+                      <textarea name="historia" id="historia" cols="80" rows="5"
+                        v-model="fillDescripcionEscuelas.historia" placeholder="historia de la escuela Profesional"
+                        class="form-control"></textarea>
                     </div>
                   </div>
                 </div>

@@ -13,21 +13,11 @@ Gestión del campo laboral de las escuelas
 </style>
 <?php $__env->startSection('main-content'); ?>
 <div class="container-fluid spark-screen" id="contenidoItem">
-
-
-
 	<div class="row">
-
 		<?php echo $__env->make('vendor.adminlte.layouts.partials.loaders', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-		<?php if(accesoUser([1,2])): ?>
-
 		<template v-if="divprincipal" id="divprincipal">
 			<?php echo $__env->make('campolaborales.principal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 		</template>
-		<?php endif; ?>
-
-
 	</div>
 </div>
 <?php $__env->stopSection(); ?>

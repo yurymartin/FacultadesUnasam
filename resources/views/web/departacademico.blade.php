@@ -53,17 +53,34 @@
                 </div>
                 <div class="row container">
                     <div class="row text-center">
-                        @foreach ($departacademico as $dep)
                         <div class="col-md-4">
-                            <h4><strong>{{$dep->cargo}}</strong></h4>
-                            <a href="{{ asset('/img/personas/'.$dep->foto)}}" class="fancybox" rel="gallery1"><img src="{{ asset('/img/personas/'.$dep->foto)}}" alt="Responsive"
-                                class="img-thumbnail imagen imagen2" width="200px" height="200px"></a>
+                            <h4><strong>Departamento de Educación</strong></h4>
+                            <img src="images/narrito.jpg" alt="Responsive" class="img-thumbnail imagen imagen2"
+                                width="200px" height="200px">
                             <hr width="50px">
-                            <p class="widget-title image" style="text-align: center">
-                                {{$dep->nombres.' '.$dep->apellidos}}
+                            <p class="widget-title image" style="text-align: center">Dr. Simeón Moisés Huerta Rosales
+                            </p>
+                            <p class="widget-title image" style="text-align: center">Dr. Simeón Moisés Huerta Rosales
                             </p>
                         </div>
-                        @endforeach
+                        <div class="col-md-4">
+                            <h4><strong>Departamento de Educación</strong></h4>
+                            <img src="images/narrito.jpg" alt="Responsive" class="img-thumbnail imagen imagen2"
+                                width="200px" height="200px">
+                            <hr width="50px">
+                            <p class="widget-title img" style="text-align: center">Dr. Simeón Moisés Huerta Rosales</p>
+                            <p class="widget-title image" style="text-align: center">Dr. Simeón Moisés Huerta Rosales
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <h4><strong>Departamento de Educación</strong></h4>
+                            <img src="images/narrito.jpg" alt="Responsive" class="img-thumbnail imagen imagen2"
+                                width="200px" height="200px">
+                            <hr width="50px">
+                            <p class="widget-title img" style="text-align: center">Dr. Simeón Moisés Huerta Rosales</p>
+                            <p class="widget-title image" style="text-align: center">Dr. Simeón Moisés Huerta Rosales
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

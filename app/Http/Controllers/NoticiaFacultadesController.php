@@ -9,9 +9,6 @@ use Validator;
 use Auth;
 use DB;
 use Storage;
-use App\Persona;
-use App\Tipouser;
-use App\User;
 
 class NoticiaFacultadesController extends Controller
 {
@@ -20,27 +17,49 @@ class NoticiaFacultadesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware(['permission:create noticias facultad'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read noticias facultad'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update noticias facultad'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete noticias facultad'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "noticiaFacultades";
-            return view('noticiaFacultades.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "noticiaFacultades";
+        return view('noticiaFacultades.index', compact('modulo'));
     }
 
     public function index(Request $request)
     {
         $buscar = $request->busca;
-        $noticias = NoticiaFacultades::where('borrado', '0')
-            ->where(function ($query) use ($buscar) {
-                $query->where('titulo', 'like', '%' . $buscar . '%');
+        $noticias = DB::table('noticiafacultades as nf')
+            ->join('facultades as f', 'f.id', '=', 'nf.facultad_id')
+            ->select('nf.id', 'nf.titulo', 'nf.descripcion', 'nf.imagen', 'nf.fechapubli', 'nf.activo', 'nf.borrado', 'nf.facultad_id', 'f.id as idfac', 'f.nombre', 'f.abreviatura')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('nf.facultad_id', '=', auth()->user()->facultad_id);
+                }
             })
-            ->orderBy('id')
+            ->where('nf.borrado', '0')
+            ->where(function ($query) use ($buscar) {
+                $query->where('nf.titulo', 'like', '%' . $buscar . '%');
+                $query->orwhere('f.nombre', 'like', '%' . $buscar . '%');
+                $query->orwhere('f.abreviatura', 'like', '%' . $buscar . '%');
+            })
+            ->orderBy('nf.id')
             ->paginate(10);
+
+        $facultades = DB::table('facultades')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('id', '=', auth()->user()->facultad_id);
+                }
+            })
+            ->where('activo', '1')
+            ->where('borrado', '0')
+            ->get();
 
         return [
             'pagination' => [
@@ -52,6 +71,7 @@ class NoticiaFacultadesController extends Controller
                 'to' => $noticias->lastItem(),
             ],
             'noticias' => $noticias,
+            'facultades' => $facultades
         ];
     }
 
@@ -73,6 +93,7 @@ class NoticiaFacultadesController extends Controller
      */
     public function store(Request $request)
     {
+        $facultad_id = $request->facultad_id;
         $titulo = $request->titulo;
         $descripcion = $request->descripcion;
         $img = $request->imagen;
@@ -89,7 +110,11 @@ class NoticiaFacultadesController extends Controller
         $reglas1 = array('titulo' => 'required');
         $validator1 = Validator::make($input1, $reglas1);
 
-        if ($validator1->fails()) {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($validator1->fails()) {
             $result = '0';
             $msj = 'FALTA COMPLETAR EL TITULO DE LA NOTICIA';
             $selector = 'titulo';
@@ -137,6 +162,7 @@ class NoticiaFacultadesController extends Controller
                 $newdescripcion->fechapubli = date('Y/m/d');
                 $newdescripcion->activo = $estado;
                 $newdescripcion->borrado = '0';
+                $newdescripcion->facultad_id = $facultad_id;
                 $newdescripcion->save();
                 $msj = 'LA NUEVA NOTICIA FUE REGISTRADO EXITOSAMENTE';
             }
@@ -176,6 +202,7 @@ class NoticiaFacultadesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $facultad_id = $request->facultad_id;
         $titulo = $request->titulo;
         $descripcion = $request->descripcion;
         $img = $request->imagen;
@@ -192,7 +219,11 @@ class NoticiaFacultadesController extends Controller
         $reglas1 = array('titulo' => 'required');
         $validator1 = Validator::make($input1, $reglas1);
 
-        if ($validator1->fails()) {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($validator1->fails()) {
             $result = '0';
             $msj = 'FALTA COMPLETAR EL TITULO DE LA NOTICIA';
             $selector = 'titulo';
@@ -228,12 +259,14 @@ class NoticiaFacultadesController extends Controller
                 $editadescripcion->titulo = $titulo;
                 $editadescripcion->descripcion = $descripcion;
                 $editadescripcion->imagen = $imagen;
+                $editadescripcion->facultad_id = $facultad_id;
                 $editadescripcion->save();
                 $msj = 'LA NOTICIA FUE MODIFICADO EXITOSAMENTE';
             } else {
                 $editadescripcion = NoticiaFacultades::findOrFail($id);
                 $editadescripcion->titulo = $titulo;
                 $editadescripcion->descripcion = $descripcion;
+                $editadescripcion->facultad_id = $facultad_id;
                 $editadescripcion->save();
                 $msj = 'LA NOTICIA FUE MODIFICADO EXITOSAMENTE';
             }

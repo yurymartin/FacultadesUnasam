@@ -21,27 +21,50 @@ class VideoFacultadesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware(['permission:create videos facultad'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read videos facultad'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update videos facultad'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete videos facultad'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "videoFacultades";
-            return view('videoFacultades.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "videoFacultades";
+        return view('videoFacultades.index', compact('modulo'));
     }
 
     public function index(Request $request)
     {
         $buscar = $request->busca;
-        $videosfacultades = VideoFacultades::where('borrado', '0')
-            ->where(function ($query) use ($buscar) {
-                $query->where('titulo', 'like', '%' . $buscar . '%');
+        $videosfacultades = DB::table('videofacultades as vf')
+            ->join('facultades as f', 'f.id', '=', 'vf.facultad_id')
+            ->select('vf.id', 'vf.titulo', 'vf.descripcion', 'vf.link', 'vf.fecha', 'vf.activo', 'vf.borrado', 'vf.facultad_id', 'f.id as idfac', 'f.nombre', 'f.abreviatura')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('vf.facultad_id', '=', auth()->user()->facultad_id);
+                }
             })
-            ->orderBy('id')
+            ->where('vf.borrado', '0')
+            ->where(function ($query) use ($buscar) {
+                $query->where('vf.titulo', 'like', '%' . $buscar . '%');
+                $query->orwhere('f.nombre', 'like', '%' . $buscar . '%');
+                $query->orwhere('f.abreviatura', 'like', '%' . $buscar . '%');
+            })
+            ->orderBy('vf.id')
             ->paginate(10);
+
+        $facultades = DB::table('facultades')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('id', '=', auth()->user()->facultad_id);
+                }
+            })
+            ->where('activo', '1')
+            ->where('borrado', '0')
+            ->get();
 
         return [
             'pagination' => [
@@ -53,6 +76,7 @@ class VideoFacultadesController extends Controller
                 'to' => $videosfacultades->lastItem(),
             ],
             'videosfacultades' => $videosfacultades,
+            'facultades' => $facultades
         ];
     }
 
@@ -74,6 +98,7 @@ class VideoFacultadesController extends Controller
      */
     public function store(Request $request)
     {
+        $facultad_id = $request->facultad_id;
         $titulo = $request->titulo;
         $descripcion = $request->descripcion;
         $link = $request->link;
@@ -95,7 +120,11 @@ class VideoFacultadesController extends Controller
         $validator2 = Validator::make($input2, $reglas2);
 
 
-        if ($validator1->fails()) {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($validator1->fails()) {
             $result = '0';
             $msj = 'FALTA COMPLETAR EL TITULO DEL VIDEO';
             $selector = 'titulo';
@@ -111,6 +140,7 @@ class VideoFacultadesController extends Controller
             $newdescripcion->fecha = date('Y/m/d');
             $newdescripcion->activo = $estado;
             $newdescripcion->borrado = '0';
+            $newdescripcion->facultad_id = $facultad_id;
             $newdescripcion->save();
             $msj = 'EL NUEVO LINK DEL VIDEO FUE REGISTRADO EXITOSAMENTE';
         }
@@ -149,6 +179,7 @@ class VideoFacultadesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $facultad_id = $request->facultad_id;
         $titulo = $request->titulo;
         $descripcion = $request->descripcion;
         $link = $request->link;
@@ -166,7 +197,11 @@ class VideoFacultadesController extends Controller
         $validator2 = Validator::make($input2, $reglas2);
 
 
-        if ($validator1->fails()) {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($validator1->fails()) {
             $result = '0';
             $msj = 'FALTA COMPLETAR EL TITULO DEL VIDEO';
             $selector = 'titulo';
@@ -179,6 +214,7 @@ class VideoFacultadesController extends Controller
             $newdescripcion->titulo = $titulo;
             $newdescripcion->descripcion = $descripcion;
             $newdescripcion->link = $link;
+            $newdescripcion->facultad_id = $facultad_id;
             $newdescripcion->save();
             $msj = 'EL VIDEO FUE MODIFICADO EXITOSAMENTE';
         }

@@ -4,23 +4,31 @@
         <div class="col-md-8">
             <div class="widget-main" id="tramites">
                 <div class="widget-main-title">
-                    <h3><strong>MISIÓN</strong></h3>
+                    <h3 style="font-family: cursive"><strong>MISIÓN</strong></h3>
                 </div> <!-- /.widget-main-title -->
                 <div class="widget-inner">
                     <div class="our-campus clearfix">
-                        <?php $__currentLoopData = $misionvision; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mision): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <p style="text-align: justify;font-size: 16px;font-family: 'Times New Roman', Times, serif"><?php echo e($mision->mision); ?></p>   
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                       </div>
+                        <?php if($misionvision != null): ?>
+                        <p style="text-align: justify;font-size: 16px;font-family: 'Times New Roman', Times, serif">
+                            <?php echo e($misionvision->mision); ?></p>
+                        <?php else: ?>
+                        <p style="text-align: justify;font-size: 16px;font-family: 'Times New Roman', Times, serif">
+                            FALTA DATOS</p>
+                        <?php endif; ?>
+                    </div>
                 </div>
                 <div class="widget-main-title">
-                    <h3><strong>VISIÓN</strong></h3>
+                    <h3 style="font-family: cursive"><strong>VISIÓN</strong></h3>
                 </div> <!-- /.widget-main-title -->
                 <div class="widget-inner">
                     <div class="our-campus clearfix">
-                            <?php $__currentLoopData = $misionvision; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $vision): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <p style="text-align: justify;font-size: 16px;font-family: 'Times New Roman', Times, serif"><?php echo e($vision->vision); ?></p>   
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php if($misionvision != null): ?>
+                        <p style="text-align: justify;font-size: 16px;font-family: 'Times New Roman', Times, serif">
+                            <?php echo e($misionvision->vision); ?></p>
+                        <?php else: ?>
+                        <p style="text-align: justify;font-size: 16px;font-family: 'Times New Roman', Times, serif">
+                            FALTA DATOS</p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div> <!-- /.widget-main -->
@@ -30,10 +38,13 @@
                 <br><br>
                 <div class="widget-inner text-center">
                     <div class="our-campus clearfix">
-                        <?php $__currentLoopData = $misionvision; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $logo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <img src="<?php echo e(asset('img/descripcionFacultades/'.$logo->imagen)); ?>" alt="UNASAM" style="width: 300px">  
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    
+                        <?php if($misionvision != null): ?>
+                        <img src="<?php echo e(asset('img/descripcionFacultades/'.$misionvision->imagen)); ?>" alt="UNASAM"
+                            style="width: 300px">
+                        <?php else: ?>
+                        <img src="" alt="FALTA DATOS"
+                            style="width: 300px">
+                        <?php endif; ?>
                     </div>
                 </div>
             </div> <!-- /.widget-main -->

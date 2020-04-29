@@ -6,6 +6,7 @@
       Volver</a>
   </div>
 
+  @can('create videos facultad', Model::class)
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
@@ -13,6 +14,7 @@
     </div>
 
   </div>
+  @endcan
 
 </div>
 
@@ -23,6 +25,20 @@
 
   <form v-on:submit.prevent="create">
     <div class="box-body">
+
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="facultad_id" class="col-sm-2 control-label">Facultad:*</label>
+          <div class="col-sm-8">
+            <select name="facultad_id" id="facultad_id" class="form-control" v-model="facultad_id">
+              <option value="0">Seleccione una facultad</option>
+              <option v-for="facultad, key in facultades" v-bind:value="facultad.id">
+                @{{facultad.nombre}} - @{{facultad.abreviatura}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
 
       <div class="col-md-12">
         <div class="form-group" style="padding-top: 15px;">
@@ -102,6 +118,7 @@
 
 
 
+@can('read videos facultad', Model::class)
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Videos</h3>
@@ -110,15 +127,13 @@
       <div class="input-group input-group-sm" style="width: 300px;">
         <input type="text" name="table_search" class="form-control pull-right" placeholder="Buscar" v-model="buscar"
           @keyup.enter="buscarBtn()">
-
         <div class="input-group-btn">
           <button type="submit" class="btn btn-default" @click.prevent="buscarBtn()"><i
               class="fa fa-search"></i></button>
         </div>
-
-
       </div>
     </div>
+    
   </div>
   <!-- /.box-header -->
   <div class="box-body table-responsive">
@@ -128,8 +143,9 @@
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Titulo</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Descripcion</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">video</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha Publicacion</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 25%;">video</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Fecha Publicacion</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Facultad</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
@@ -143,6 +159,7 @@
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;"><code>@{{ videosfacultad.link }}</code>
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ videosfacultad.fecha }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ videosfacultad.nombre }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
               <span class="label label-success" v-if="videosfacultad.activo=='1'">Activo</span>
@@ -151,6 +168,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              @can('update videos facultad', Model::class)
               <a href="#" v-if="videosfacultad.activo=='1'" class="btn bg-navy btn-sm"
                 v-on:click.prevent="bajadocente(videosfacultad)" data-placement="top" data-toggle="tooltip"
                 title="Desactivar descripcion facultad"><i class="fa fa-arrow-circle-down"></i></a>
@@ -162,9 +180,12 @@
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(videosfacultad)"
                 data-placement="top" data-toggle="tooltip" title="Editar descripcion facultad"><i
                   class="fa fa-edit"></i></a>
+              @endcan
 
+              @can('delete videos facultad', Model::class)
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(videosfacultad)"
                 data-placement="top" data-toggle="tooltip" title="Borrar docente"><i class="fa fa-trash"></i></a>
+              @endcan
             </center>
           </td>
         </tr>
@@ -213,6 +234,7 @@
     </div>
   </div>
 </div>
+@endcan
 
 <form method="post" v-on:submit.prevent="updateBanner(fillVideoFacultades.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -232,6 +254,21 @@
               <!-- /.box-header -->
               <!-- form start -->
               <div class="box-body">
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="facultad_id" class="col-sm-2 control-label">Facultad:*</label>
+                    <div class="col-sm-8">
+                      <select name="facultad_id" id="facultad_id" class="form-control"
+                        v-model="fillVideoFacultades.facultad_id">
+                        <option value="0">Seleccione una facultad</option>
+                        <option v-for="facultad, key in facultades" v-bind:value="facultad.id">
+                          @{{facultad.nombre}} - @{{facultad.abreviatura}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
 
                 <div class="col-md-12">
                   <div class="form-group" style="padding-top: 15px;">
@@ -260,8 +297,7 @@
                     <label for="descripcion" class="col-sm-2 control-label">Link del video:*</label>
                     <div class="col-sm-8">
                       <textarea name="descripcion" id="descripcion" cols="80" rows="5"
-                        v-model="fillVideoFacultades.link" placeholder="descripcion"
-                        class="form-control"></textarea>
+                        v-model="fillVideoFacultades.link" placeholder="descripcion" class="form-control"></textarea>
                     </div>
                   </div>
                 </div>

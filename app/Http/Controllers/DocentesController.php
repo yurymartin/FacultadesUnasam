@@ -22,16 +22,19 @@ class DocentesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware(['permission:create docentes'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read docentes'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update docentes'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete docentes'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "docentes";
-            return view('docentes.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "docentes";
+        return view('docentes.index', compact('modulo'));
     }
     public function index(Request $request)
     {
@@ -40,6 +43,12 @@ class DocentesController extends Controller
             ->join('gradoacademicos as ga', 'ga.id', '=', 'd.gradoacademico_id')
             ->join('categoriadocentes as cd', 'cd.id', '=', 'd.categoriadocente_id')
             ->join('personas as p', 'p.id', '=', 'd.persona_id')
+            ->join('departamentoacademicos as dp', 'dp.id', '=', 'd.departamentoacademico_id')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('dp.facultad_id', '=', auth()->user()->facultad_id);
+                }
+            })
             ->where('d.borrado', '0')
             ->where(function ($query) use ($buscar) {
                 $query->where('p.dni', 'like', '%' . $buscar . '%');
@@ -47,7 +56,7 @@ class DocentesController extends Controller
                 $query->orWhere('p.apellidos', 'like', '%' . $buscar . '%');
             })
             ->orderBy('p.nombres')
-            ->select('d.id as iddoc', 'p.id as idper', 'p.dni', 'p.nombres', 'p.apellidos', 'p.genero', 'p.foto', 'ga.grado', 'cd.categoria', 'd.tituloprofe', 'd.fechaingreso', 'd.activo', 'ga.id as idgrado', 'cd.id as idcat')
+            ->select('d.id as iddoc', 'p.id as idper', 'p.dni', 'p.nombres', 'p.apellidos', 'p.genero', 'p.foto', 'ga.grado', 'cd.categoria', 'd.tituloprofe', 'd.fechaingreso', 'd.activo', 'ga.id as idgrado', 'cd.id as idcat', 'd.departamentoacademico_id', 'dp.id as idfac', 'dp.nombre as nombredep')
             ->paginate(10);
 
         $categoriadocentes = CategoriaDocentes::where('borrado', '0')
@@ -57,6 +66,16 @@ class DocentesController extends Controller
         $gradoacademicos = DB::table('gradoacademicos')
             ->where('borrado', '0')
             ->where('activo', '=', '1')
+            ->get();
+
+        $departamentoacademicos = DB::table('departamentoacademicos')
+            ->where('activo', '1')
+            ->where('borrado', '0')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('facultad_id', '=', auth()->user()->facultad_id);
+                }
+            })
             ->get();
 
         $personas = Persona::get();
@@ -73,6 +92,7 @@ class DocentesController extends Controller
             'categoriadocentes' => $categoriadocentes,
             'gradoacademicos' => $gradoacademicos,
             'personas' => $personas,
+            'departamentoacademicos' => $departamentoacademicos
         ];
     }
 
@@ -98,6 +118,7 @@ class DocentesController extends Controller
         $msj = '';
         $selector = '';
 
+        $departamentoacademico_id = $request->departamentoacademico_id;
         $dni = $request->dni;
         $nombres = $request->nombres;
         $apellidos = $request->apellidos;
@@ -125,7 +146,11 @@ class DocentesController extends Controller
         $reglas3 = array('apellidos' => 'required');
         $validator3 = Validator::make($input3, $reglas3);
 
-        if ($validator1->fails()) {
+        if ($departamentoacademico_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR EL DEPARTAMENTO ACADEMICO';
+            $selector = 'departamentoacademico_id';
+        } else if ($validator1->fails()) {
             $result = '0';
             $msj = 'FALTA COMPLETAR EL DNI DEL DOCENTE ';
             $selector = 'dni';
@@ -194,6 +219,7 @@ class DocentesController extends Controller
                 $docente->gradoacademico_id  = $gradoacademico_id;
                 $docente->categoriadocente_id  = $categoriadocente_id;
                 $docente->persona_id  = $persona->id;
+                $docente->departamentoacademico_id = $departamentoacademico_id;
                 $docente->save();
 
                 $msj = 'EL NUEVO DOCENTE FUE REGISTRADO EXITOSAMENTE';
@@ -241,6 +267,7 @@ class DocentesController extends Controller
         $idPersona = $request->idPersona;
         $idDocente = $request->idDocente;
 
+        $departamentoacademico_id = $request->departamentoacademico_id;
         $dni = $request->dni;
         $nombres = $request->nombres;
         $apellidos = $request->apellidos;
@@ -325,10 +352,11 @@ class DocentesController extends Controller
             } else {
                 $persona = Persona::findOrFail($idPersona);
                 $docente = Docentes::findOrFail($idDocente);
-                if (strlen($img) == 0) {
+                if ($request->hasFile('imagen')) {
                     $persona->dni = $dni;
                     $persona->nombres = $nombres;
                     $persona->apellidos = $apellidos;
+                    $persona->foto = $imagen;
                     $persona->genero = $genero;
                     $persona->save();
 
@@ -341,7 +369,6 @@ class DocentesController extends Controller
                     $persona->dni = $dni;
                     $persona->nombres = $nombres;
                     $persona->apellidos = $apellidos;
-                    $persona->foto = $imagen;
                     $persona->genero = $genero;
                     $persona->save();
 
@@ -349,6 +376,7 @@ class DocentesController extends Controller
                     $docente->fechaingreso = $fechaingreso;
                     $docente->gradoacademico_id  = $gradoacademico_id;
                     $docente->categoriadocente_id  = $categoriadocente_id;
+                    $docente->departamentoacademico_id = $departamentoacademico_id;
                     $docente->save();
                 }
                 $msj = 'EL DOCENTE FUE MODIFICADO EXITOSAMENTE';

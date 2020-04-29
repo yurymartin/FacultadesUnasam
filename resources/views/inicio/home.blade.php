@@ -1,31 +1,24 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	Inicio
+Inicio
 @endsection
 
-<style type="text/css">         
-          
-	#modaltamanio{
-	  width: 70% !important;
+<style type="text/css">
+	#modaltamanio {
+		width: 70% !important;
 	}
-	
-	</style>
+</style>
 
 @section('main-content')
-	<div class="container-fluid spark-screen">
-		<div class="row">
-	
+<div class="container-fluid spark-screen">
+	<div class="row">
+
 		@include('adminlte::layouts.partials.loaders')
-
-
-		@if(accesoUser([1]))
 		<template v-if="divhome" id="divhome" v-show="divhome">
-		@include('inicio.menuAdmin')
+			@include('inicio.menuAdmin')
 		</template>
-		@endif
 
-			
-		</div>
 	</div>
+</div>
 @endsection

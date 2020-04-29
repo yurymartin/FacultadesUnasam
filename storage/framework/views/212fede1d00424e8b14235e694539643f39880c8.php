@@ -6,6 +6,7 @@
       Volver</a>
   </div>
 
+  <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create videos escuelas', Model::class)): ?>
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
@@ -13,6 +14,7 @@
     </div>
 
   </div>
+  <?php endif; ?>
 
 </div>
 
@@ -115,6 +117,7 @@
 
 
 
+<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('read videos escuelas', Model::class)): ?>
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Videos</h3>
@@ -166,6 +169,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update videos escuelas', Model::class)): ?>
               <a href="#" v-if="videosfacultad.activo=='1'" class="btn bg-navy btn-sm"
                 v-on:click.prevent="bajadocente(videosfacultad)" data-placement="top" data-toggle="tooltip"
                 title="Desactivar descripcion facultad"><i class="fa fa-arrow-circle-down"></i></a>
@@ -177,9 +181,12 @@
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(videosfacultad)"
                 data-placement="top" data-toggle="tooltip" title="Editar descripcion facultad"><i
                   class="fa fa-edit"></i></a>
+              <?php endif; ?>
 
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete videos escuelas', Model::class)): ?>
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(videosfacultad)"
                 data-placement="top" data-toggle="tooltip" title="Borrar docente"><i class="fa fa-trash"></i></a>
+              <?php endif; ?>
             </center>
           </td>
         </tr>
@@ -228,6 +235,7 @@
     </div>
   </div>
 </div>
+<?php endif; ?>
 
 <form method="post" v-on:submit.prevent="updateBanner(fillVideoFacultades.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -284,7 +292,8 @@
                   <div class="form-group">
                     <label for="escuela_id" class="col-sm-2 control-label">Escuela Profesional:*</label>
                     <div class="col-sm-8">
-                      <select name="escuela_id" id="escuela_id" class="form-control" v-model="fillVideoFacultades.escuela_id">
+                      <select name="escuela_id" id="escuela_id" class="form-control"
+                        v-model="fillVideoFacultades.escuela_id">
                         <option value="0">Seleccione la escuela profesional</option>
                         <option v-for="escuela, key in escuelas" v-bind:value="escuela.id">{{escuela.nombre}}
                         </option>

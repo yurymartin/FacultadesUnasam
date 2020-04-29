@@ -42,7 +42,7 @@ trait AuthenticatesUsers
             return $this->sendLockoutResponse($request);
         }
 
-        if ($this->attemptLogin($request)) {
+        if ($this->attemptLogin($request)) {          
             return $this->sendLoginResponse($request);
         }
 
@@ -79,7 +79,7 @@ trait AuthenticatesUsers
     protected function attemptLogin(Request $request)
     {
         return $this->guard()->attempt(
-            $this->credentials($request), $request->filled('remember')
+            $this->credentials($request),'activo',$request->filled('remember')
         );
     }
 
@@ -105,6 +105,14 @@ trait AuthenticatesUsers
         $request->session()->regenerate();
 
         $this->clearLoginAttempts($request);
+        
+        //validacion de estado de usuario
+        $userLoggedIn = Auth()->user();
+        if(!$userLoggedIn->activo) {
+            $this->guard()->logout();
+            $request->session()->invalidate();
+            return $this->loggedOut($request) ?: redirect('/login')->with('errorMessage', 'El usuario ' . $userLoggedIn->username . ' se encuentra inactivo');
+        }
 
         return $this->authenticated($request, $this->guard()->user())
                 ?: redirect()->intended($this->redirectPath());

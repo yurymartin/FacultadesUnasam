@@ -1,7 +1,7 @@
 @extends('vendor.adminlte.layouts.app')
 
 @section('htmlheader_title')
-Gestion de Departamento Academicos
+Gestion de Escuelas Profesionales
 @endsection
 
 <style type="text/css">
@@ -17,11 +17,9 @@ Gestion de Departamento Academicos
 <div class="container-fluid spark-screen" id="contenidoItem">
 	<div class="row">
 		@include('vendor.adminlte.layouts.partials.loaders')
-		@if(accesoUser([1,2]))	
 		<template v-if="divprincipal" id="divprincipal">
 			@include('escuelas.principal')
 		</template>
-		@endif
 	</div>
 </div>
 @endsection

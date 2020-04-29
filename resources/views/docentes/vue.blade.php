@@ -9,7 +9,7 @@
     subtitle2: false,
     subtitulo2: "",
 
-    tipouserPerfil: '{{ $tipouser->nombre }}',
+    tipouserPerfil: '',
     userPerfil: '{{ Auth::user()->name }}',
     mailPerfil: '{{ Auth::user()->email }}',
 
@@ -47,10 +47,12 @@
     docentes: [],
     persona:[],
     categoriadocentes: [],
+    gradoacademicos: [],
+    departamentoacademicos: [],
     errors: [],
 
     fillPersona:{'idper':'', 'dni':'', 'nombres':'', 'apellidos':'', 'imagen':'', 'genero':''},
-    fillDocente:{'iddoc':'','curricula':'','tituloprofe': '','fechaingreso': '','estado': '','gradoacademico_id': '','categoriadocen_id': '','persona_id':''},
+    fillDocente:{'iddoc':'','curricula':'','tituloprofe': '','fechaingreso': '','estado': '','gradoacademico_id': '','categoriadocen_id': '','persona_id':'','departamentoacademico_id':''},
 
     pagination: {
     'total': 0,
@@ -73,8 +75,6 @@
     newApellidos: '',
     imagen: null,
     newGenero: '',
-
-    newCurricula:'',
     newTitulo: '',
     newFecha: '',
     newEstado: '1',
@@ -82,6 +82,7 @@
     gradoacademico_id: '0',
     categoriadocente_id: '0',
     persona_id: '0',
+    departamentoacademico_id: '0',
 
 
 },
@@ -135,6 +136,8 @@ methods: {
             this.categoriadocentes = response.data.categoriadocentes;
             this.gradoacademicos = response.data.gradoacademicos;
             this.personas= response.data.personas;
+            this.departamentoacademicos = response.data.departamentoacademicos;
+
         if (this.docentes.length == 0 && this.thispage != '1') {
             var a = parseInt(this.thispage);
             a--;
@@ -169,11 +172,15 @@ methods: {
             this.newDni = '';
             this.newNombres = '';
             this.newApellidos = '';
-            this.newCurricula = '';
+            this.imagen = null;
             this.newFechaingreso = '';
             this.newEstado = '1';
             this.newGenero = '1';
-            this.imagen = null;
+            this.gradoacademico_id = '0';
+            this.categoriadocente_id = '0';
+            this.newTitulo = '';
+            this.persona_id = '0',
+            this.departamentoacademico_id = '0';
 
             $(".form-control").css("border", "1px solid #d2d6de");
         },
@@ -213,6 +220,7 @@ methods: {
                 data.append('borrado', this.newBorrado);
                 data.append('gradoacademico_id', this.gradoacademico_id);
                 data.append('categoriadocente_id', this.categoriadocente_id);
+                data.append('departamentoacademico_id', this.departamentoacademico_id);
                 
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             axios.post(url,data,config).then(response=>{
@@ -282,6 +290,7 @@ methods: {
         this.fillDocente.tituloprofe = docente.tituloprofe;
         this.fillDocente.fechaingreso = docente.fechaingreso;
         this.fillDocente.estado = docente.activo;
+        this.fillDocente.departamentoacademico_id = docente.idfac 
         
         $("#modalEditar").modal('show');
             this.$nextTick(function () {
@@ -316,7 +325,8 @@ methods: {
         data.append('fechaingreso', this.fillDocente.fechaingreso);
         data.append('estado', this.fillDocente.estado);   
         data.append('gradoacademico_id', this.fillDocente.gradoacademico_id);   
-        data.append('categoriadocente_id', this.fillDocente.categoriadocen_id);   
+        data.append('categoriadocente_id', this.fillDocente.categoriadocen_id); 
+        data.append('departamentoacademico_id', this.fillDocente.departamentoacademico_id);  
 
         data.append('_method', 'PUT');
 

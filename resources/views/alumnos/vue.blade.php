@@ -9,7 +9,7 @@
     subtitle2: false,
     subtitulo2: "",
 
-    tipouserPerfil: '{{ $tipouser->nombre }}',
+    tipouserPerfil: '',
     userPerfil: '{{ Auth::user()->name }}',
     mailPerfil: '{{ Auth::user()->email }}',
 
@@ -47,11 +47,12 @@
     alumnos: [],
     comiestudiantiles: [],
     persona:[],
+    facultades: [],
     errors: [],
 
     fillPersona:{'idper':'', 'dni':'', 'nombres':'', 'apellidos':'', 'imagen':'', 'genero':''},
 
-    fillAlumno:{'idalu':'','estado': '','persona_id':'','comiestudiantil_id':''},
+    fillAlumno:{'idalu':'','estado': '','persona_id':'','comiestudiantil_id':'','facultad_id':''},
 
     pagination: {
     'total': 0,
@@ -77,6 +78,7 @@
 
     newEstado: '1',
     comiestudiantil_id: '0',
+    facultad_id: '0',
 
 
 },
@@ -129,6 +131,7 @@ methods: {
             this.pagination = response.data.pagination;
             this.comiestudiantiles = response.data.comiestudiantiles;
             this.personas= response.data.personas;
+            this.facultades = response.data.facultades;
 
         if (this.alumnos.length == 0 && this.thispage != '1') {
             var a = parseInt(this.thispage);
@@ -168,6 +171,7 @@ methods: {
             this.newGenero = '1';
             this.imagen = null;
             this.comiestudiantil_id = '0';
+            this.facultad_id = '0';
 
             $(".form-control").css("border", "1px solid #d2d6de");
         },
@@ -202,7 +206,7 @@ methods: {
 
                 data.append('estado', this.newEstado);
                 data.append('comiestudiantil_id', this.comiestudiantil_id);
-                console.log(this.comiestudiantil_id);
+                data.append('facultad_id', this.facultad_id);
                 
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             axios.post(url,data,config).then(response=>{
@@ -267,6 +271,7 @@ methods: {
         
         this.fillAlumno.idalu = alumnos.idalu;
         this.fillAlumno.comiestudiantil_id = alumnos.idcomi;
+        this.fillAlumno.facultad_id = alumnos.idfac
 
         $("#modalEditar").modal('show');
             this.$nextTick(function () {
@@ -295,7 +300,8 @@ methods: {
         data.append('imagen', this.imagen);
         data.append('genero', this.fillPersona.genero);
 
-        data.append('comiestudiantil_id', this.fillAlumno.comiestudiantil_id);   
+        data.append('comiestudiantil_id', this.fillAlumno.comiestudiantil_id);
+        data.append('facultad_id', this.fillAlumno.facultad_id);   
 
         data.append('_method', 'PUT');
 

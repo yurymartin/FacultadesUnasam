@@ -9,7 +9,7 @@ data:{
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'{{ $tipouser->nombre }}',
+   tipouserPerfil:'',
    userPerfil:'{{ Auth::user()->name }}',
    mailPerfil:'{{ Auth::user()->email }}',
 
@@ -190,7 +190,6 @@ methods: {
             data.append('imagen', this.imagen);
             data.append('activo', this.newEstado);
             data.append('escuela_id', this.escuela_id);
-            console.log(this.escuela_id);
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             axios.post(url,data,config).then(response=>{
 

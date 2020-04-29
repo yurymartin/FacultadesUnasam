@@ -8,12 +8,15 @@
                 </div> <!-- /.widget-main-title -->
                 <div class="widget-inner">
                     <div class="our-campus clearfix">
-                        <?php $__currentLoopData = $historia; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $historias): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if($historia != null): ?>
                         <p style="font-size: 16px;text-align: justify;font-family: 'Times New Roman', Times, serif">
-                            <?php echo e($historias->reseñahistor); ?>
+                            <?php echo e($historia->reseñahistor); ?>
 
+                        <?php else: ?>
+                        <p style="font-size: 16px;text-align: justify;font-family: 'Times New Roman', Times, serif">
+                            FALTA DATOS
+                        <?php endif; ?>
                         </p>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>
             </div> <!-- /.widget-main -->
@@ -23,9 +26,15 @@
                 <br><br><br><br>
                 <div class="widget-inner text-right">
                     <div class="our-campus clearfix">
-                        <?php $__currentLoopData = $logos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $logo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <a href="<?php echo e(asset('/img/descripcionFacultades/'.$logo->imagen)); ?>" class="fancybox" rel="gallery1"><img src="<?php echo e(asset('/img/descripcionFacultades/'.$logo->imagen)); ?>" alt="UNASAM" style="width: 350px"></a>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php if($logos != null): ?>
+                        <a href="<?php echo e(asset('/img/descripcionFacultades/'.$logos->imagen)); ?>" class="fancybox"
+                            rel="gallery1"><img src="<?php echo e(asset('/img/descripcionFacultades/'.$logos->imagen)); ?>"
+                                alt="UNASAM" style="width: 350px"></a>
+                        <?php else: ?>
+                        <a href="" class="fancybox"
+                            rel="gallery1"><img src=""
+                                alt="FALTA DATOS" style="width: 350px"></a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div> <!-- /.widget-main -->

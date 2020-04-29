@@ -5,12 +5,14 @@
         aria-hidden="true"></i>
       Volver</a>
   </div>
+  @can('create departamentoacademico', Model::class)
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
           class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo Departamento Academico</button>
     </div>
   </div>
+  @endcan
 </div>
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
@@ -18,21 +20,37 @@
   </div>
   <form v-on:submit.prevent="create">
     <div class="box-body">
+
       <div class="col-md-12">
         <div class="form-group">
-          <label for="txttitulo" class="col-sm-2 control-label">Nombre del departamento academico*</label>
+          <label for="facultad_id" class="col-sm-2 control-label">Facultad:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Nombre del departamento academico"
-              maxlength="200" autofocus v-model="newTitulo">
+            <select name="facultad_id" id="facultad_id" class="form-control" v-model="facultad_id">
+              <option value="0">Seleccione una facultad</option>
+              <option v-for="facultad, key in facultades" v-bind:value="facultad.id">
+                @{{facultad.nombre}} - @{{facultad.abreviatura}}
+              </option>
+            </select>
           </div>
         </div>
       </div>
+
+      <div class="col-md-12" style="padding-top: 15px;">
+        <div class="form-group">
+          <label for="txttitulo" class="col-sm-2 control-label">Nombre del departamento academico*</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="txttitulo" name="txttitulo"
+              placeholder="Nombre del departamento academico" maxlength="200" autofocus v-model="newTitulo">
+          </div>
+        </div>
+      </div>
+
       <div class="col-md-12">
         <div class="form-group" style="padding-top: 15px;">
           <label for="txtdescripcion" class="col-sm-2 control-label">Descripción del departamento:</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion" placeholder="Descripcion del departamento academico"
-              maxlength="500" v-model="newDescripcion">
+            <textarea name="txtdescripcion" id="txtdescripcion" cols="30" rows="5" class="form-control"
+              v-model="newDescripcion" placeholder="Descripcion del departamento academico"></textarea>
           </div>
         </div>
       </div>
@@ -80,6 +98,7 @@
 
 
 
+@can('read departamentoacademico', Model::class)
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Departamentos Academicos</h3>
@@ -104,8 +123,9 @@
       <tbody>
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Departamento Academico</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 30%;">Descripcion</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 25%;">Departamento Academico</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 25%;">Descripcion</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 25%;">Facultad</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Gestión</th>
         </tr>
@@ -113,6 +133,7 @@
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{key+pagination.from}}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ departamento.nombre }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ departamento.descripcion }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">@{{ departamento.nombrefac }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
               <span class="label label-success" v-if="departamento.activo=='1'">Activo</span>
@@ -121,6 +142,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              @can('update departamentoacademico', Model::class)
               <a href="#" v-if="departamento.activo=='1'" class="btn bg-navy btn-sm"
                 v-on:click.prevent="bajadepartamento(departamento)" data-placement="top" data-toggle="tooltip"
                 title="Desactivar departamento"><i class="fa fa-arrow-circle-down"></i></a>
@@ -128,12 +150,17 @@
               <a href="#" v-if="departamento.activo=='0'" class="btn btn-success btn-sm"
                 v-on:click.prevent="altadepartamento(departamento)" data-placement="top" data-toggle="tooltip"
                 title="Activar departamento"><i class="fa fa-check-circle"></i></a>
+              @endcan
 
+              @can('update departamentoacademico', Model::class)
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editdepartamento(departamento)"
                 data-placement="top" data-toggle="tooltip" title="Editar Departamento"><i class="fa fa-edit"></i></a>
+              @endcan
 
+              @can('delete departamentoacademico', Model::class)
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardepartamento(departamento)"
                 data-placement="top" data-toggle="tooltip" title="Borrar departamento"><i class="fa fa-trash"></i></a>
+              @endcan
             </center>
           </td>
         </tr>
@@ -182,6 +209,7 @@
     </div>
   </div>
 </div>
+@endcan
 
 <form method="post" v-on:submit.prevent="updatedepartamento(fillDepartamento.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -202,12 +230,27 @@
               <!-- form start -->
               <div class="box-body">
 
-                <div class="col-md-12">
+                <div class="col-md-12" style="padding-top: 10px;">
+                  <div class="form-group">
+                    <label for="facultad_id" class="col-sm-2 control-label">Facultad:*</label>
+                    <div class="col-sm-8">
+                      <select name="facultad_id" id="facultad_id" class="form-control" v-model="fillDepartamento.facultad_id">
+                        <option value="0">Seleccione una facultad</option>
+                        <option v-for="facultad, key in facultades" v-bind:value="facultad.id">
+                          @{{facultad.nombre}} - @{{facultad.abreviatura}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12" style="padding-top: 15px;">
                   <div class="form-group">
                     <label for="txttituloE" class="col-sm-2 control-label">Nombre del departamento academico:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="txttituloE" name="txttituloE" placeholder="nombre del departamento academico"
-                        maxlength="200" autofocus v-model="fillDepartamento.nombre">
+                      <input type="text" class="form-control" id="txttituloE" name="txttituloE"
+                        placeholder="nombre del departamento academico" maxlength="200" autofocus
+                        v-model="fillDepartamento.nombre">
                     </div>
                   </div>
                 </div>
@@ -216,8 +259,9 @@
                   <div class="form-group" style="padding-top: 15px;">
                     <label for="txtdescripcionE" class="col-sm-2 control-label">Descripción del departamento:</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="txtdescripcionE" name="txtdescripcionE"
-                        placeholder="Descripcion del departamento academico" maxlength="500" v-model="fillDepartamento.descripcion">
+                      <textarea class="form-control" id="txtdescripcionE" name="txtdescripcionE" cols="30" rows="5"
+                        placeholder="Descripcion del departamento academico"
+                        v-model="fillDepartamento.descripcion"></textarea>
                     </div>
                   </div>
                 </div>

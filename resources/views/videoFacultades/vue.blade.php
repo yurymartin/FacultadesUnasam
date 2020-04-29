@@ -9,7 +9,7 @@
     subtitle2: false,
     subtitulo2: "",
 
-    tipouserPerfil: '{{ $tipouser->nombre }}',
+    tipouserPerfil: '',
     userPerfil: '{{ Auth::user()->name }}',
     mailPerfil: '{{ Auth::user()->email }}',
 
@@ -45,9 +45,10 @@
     divprincipal: false,
 
     videosfacultades: [],
+    facultades: [],
     errors: [],
 
-    fillVideoFacultades:{'id':'', 'titulo':'', 'descripcion':'', 'link':'','fecha':'','activo':'','borrado':''},
+    fillVideoFacultades:{'id':'', 'titulo':'', 'descripcion':'', 'link':'','fecha':'','activo':'','borrado':'','facultad_id':''},
 
     pagination: {
     'total': 0,
@@ -69,6 +70,7 @@
     newDescripcion: '',
     newLink: '',
     newActivo: '',
+    facultad_id: '0',
 },
 created: function () {
     this.getDescripcionFacultades(this.thispage);
@@ -117,6 +119,7 @@ methods: {
         axios.get(url).then(response=> {
             this.videosfacultades = response.data.videosfacultades.data;
             this.pagination = response.data.pagination;
+            this.facultades = response.data.facultades;
 
         if (this.videosfacultades.length == 0 && this.thispage != '1') {
             var a = parseInt(this.thispage);
@@ -151,9 +154,10 @@ methods: {
             $('#titulo').focus();
             this.newTitulo = '';
             this.newDescripcion = '';
-            this.newFechapubli = '';
+            this.newLink = '';
             this.newActivo = '1';
             this.imagen = null;
+            this.facultad_id = '0';
 
             $(".form-control").css("border", "1px solid #d2d6de");
         },
@@ -185,6 +189,7 @@ methods: {
                 data.append('descripcion', this.newDescripcion);
                 data.append('link', this.newLink);
                 data.append('activo', this.newActivo);
+                data.append('facultad_id', this.facultad_id);
                 
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             axios.post(url,data,config).then(response=>{
@@ -244,6 +249,7 @@ methods: {
         this.fillVideoFacultades.titulo = videosfacultades.titulo;
         this.fillVideoFacultades.descripcion = videosfacultades.descripcion;
         this.fillVideoFacultades.link = videosfacultades.link;
+        this.fillVideoFacultades.facultad_id = videosfacultades.idfac
         
         $("#modalEditar").modal('show');
             this.$nextTick(function () {
@@ -257,6 +263,7 @@ methods: {
         data.append('titulo', this.fillVideoFacultades.titulo);
         data.append('descripcion', this.fillVideoFacultades.descripcion);
         data.append('link', this.fillVideoFacultades.link);
+        data.append('facultad_id', this.fillVideoFacultades.facultad_id);
         data.append('_method', 'PUT');
         
         
@@ -266,6 +273,7 @@ methods: {
 
             $("#btnSaveE").attr('disabled', true);
             $("#btnCloseE").attr('disabled', true);
+            
             this.divloaderEdit = true;
         
             axios.post(url, data, config).then(response => {

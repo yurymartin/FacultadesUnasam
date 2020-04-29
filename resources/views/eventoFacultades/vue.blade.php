@@ -9,7 +9,7 @@
     subtitle2: false,
     subtitulo2: "",
 
-    tipouserPerfil: '{{ $tipouser->nombre }}',
+    tipouserPerfil: '',
     userPerfil: '{{ Auth::user()->name }}',
     mailPerfil: '{{ Auth::user()->email }}',
 
@@ -45,9 +45,10 @@
     divprincipal: false,
 
     eventos: [],
+    facultades: [],
     errors: [],
 
-    fillEventos:{'id':'', 'titulo':'', 'descripcion':'', 'imagen':'', 'fechainicio':'','fechafin':'','fechafin':'' ,'fechapublicac':'','activo':'','borrado':''},
+    fillEventos:{'id':'', 'titulo':'', 'descripcion':'', 'imagen':'', 'fechainicio':'','fechafin':'','fechafin':'' ,'fechapublicac':'','activo':'','borrado':'','facultad_id':''},
 
     pagination: {
     'total': 0,
@@ -72,6 +73,7 @@
     newFechapublicac:'',
     imagen: null,
     newActivo: '',
+   facultad_id: '0',
 },
 created: function () {
     this.getDescripcionFacultades(this.thispage);
@@ -120,6 +122,7 @@ methods: {
         axios.get(url).then(response=> {
             this.eventos = response.data.eventos.data;
             this.pagination = response.data.pagination;
+            this.facultades = response.data.facultades;
 
         if (this.eventos.length == 0 && this.thispage != '1') {
             var a = parseInt(this.thispage);
@@ -159,6 +162,7 @@ methods: {
             this.newFechapublicac = '';
             this.newActivo = '1';
             this.imagen = null;
+            this.facultad_id = '0';
 
             $(".form-control").css("border", "1px solid #d2d6de");
         },
@@ -192,6 +196,7 @@ methods: {
                 data.append('fechainicio', this.newFechainicio);
                 data.append('fechafin', this.newFechafin);
                 data.append('activo', this.newActivo);
+                data.append('facultad_id', this.facultad_id);
                 
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             axios.post(url,data,config).then(response=>{
@@ -253,6 +258,7 @@ methods: {
         this.fillEventos.fechainicio = eventos.fechainicio;
         this.fillEventos.fechafin = eventos.fechafin;
         this.imagen=null;
+        this.fillEventos.facultad_id = eventos.idfac
         
         $("#modalEditar").modal('show');
             this.$nextTick(function () {
@@ -267,6 +273,7 @@ methods: {
         data.append('descripcion', this.fillEventos.descripcion);
         data.append('fechainicio', this.fillEventos.fechainicio);
         data.append('fechafin', this.fillEventos.fechafin);
+        data.append('facultad_id', this.fillEventos.facultad_id);
         data.append('imagen',this.imagen);
 
         data.append('_method', 'PUT');

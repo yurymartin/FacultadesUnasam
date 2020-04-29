@@ -6,13 +6,14 @@
       Volver</a>
   </div>
 
+  <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create documentos', Model::class)): ?>
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
           class="fa fa-plus-square-o" aria-hidden="true"></i> Nuevo documento</button>
     </div>
-
   </div>
+  <?php endif; ?>
 
 </div>
 
@@ -25,6 +26,20 @@
     <div class="box-body">
 
       <div class="col-md-12">
+        <div class="form-group">
+          <label for="facultad_id" class="col-sm-2 control-label">Facultad:*</label>
+          <div class="col-sm-8">
+            <select name="facultad_id" id="facultad_id" class="form-control" v-model="facultad_id">
+              <option value="0">Seleccione una facultad</option>
+              <option v-for="facultad, key in facultades" v-bind:value="facultad.id">
+                {{facultad.nombre}} - {{facultad.abreviatura}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
           <label for="txttitulo" class="col-sm-2 control-label">titulo:*</label>
           <div class="col-sm-8">
@@ -110,6 +125,7 @@
 
 
 
+<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('read documentos', Model::class)): ?>
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Documentos</h3>
@@ -135,9 +151,10 @@
         <tr>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">#</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Titulo</th>
-          <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Descripcion</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Descripcion</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Imagen</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 10%;">Fecha de publicacion</th>
+          <th style="border:1px solid #ddd;padding: 5px; width: 20%;">Facultad</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 5%;">Estado</th>
           <th style="border:1px solid #ddd;padding: 5px; width: 15%;">Gestión</th>
         </tr>
@@ -146,10 +163,11 @@
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ documentofacultad.titulo }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ documentofacultad.descripcion }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;text-align: center;vertical-align: middle;">
-            <a href="" v-on:click.prevent="getfile(documentofacultad)"><img :src="getImg(documentofacultad)" alt="" width="150px"
-                height="100px"></a>
+            <a href="" v-on:click.prevent="getfile(documentofacultad)"><img :src="getImg(documentofacultad)" alt=""
+                width="150px" height="100px"></a>
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ documentofacultad.fecha }}</td>
+          <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">{{ documentofacultad.nombre }}</td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px; vertical-align: middle;">
             <center>
               <span class="label label-success" v-if="documentofacultad.activo=='1'">Activo</span>
@@ -158,22 +176,31 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
-              <a href="#" v-if="documentofacultad.activo=='1'" class="btn bg-navy btn-sm" v-on:click.prevent="bajabanner(documentofacultad)"
-                data-placement="top" data-toggle="tooltip" title="Desactivar documentofacultad"><i
-                  class="fa fa-arrow-circle-down"></i></a>
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update documentos', Model::class)): ?>
+              <a href="#" v-if="documentofacultad.activo=='1'" class="btn bg-navy btn-sm"
+                v-on:click.prevent="bajabanner(documentofacultad)" data-placement="top" data-toggle="tooltip"
+                title="Desactivar documentofacultad"><i class="fa fa-arrow-circle-down"></i></a>
 
-              <a href="#" v-if="documentofacultad.activo=='0'" class="btn btn-success btn-sm" v-on:click.prevent="altabanner(documentofacultad)"
-                data-placement="top" data-toggle="tooltip" title="Activar documentofacultad"><i class="fa fa-check-circle"></i></a>
+              <a href="#" v-if="documentofacultad.activo=='0'" class="btn btn-success btn-sm"
+                v-on:click.prevent="altabanner(documentofacultad)" data-placement="top" data-toggle="tooltip"
+                title="Activar documentofacultad"><i class="fa fa-check-circle"></i></a>
 
 
-              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(documentofacultad)" data-placement="top"
-                data-toggle="tooltip" title="Editar documentofacultad"><i class="fa fa-edit"></i></a>
+              <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(documentofacultad)"
+                data-placement="top" data-toggle="tooltip" title="Editar documentofacultad"><i
+                  class="fa fa-edit"></i></a>
+              <?php endif; ?>
 
-              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarbanner(documentofacultad)" data-placement="top"
-                data-toggle="tooltip" title="Borrar documentofacultad"><i class="fa fa-trash"></i></a>
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete documentos', Model::class)): ?>
+              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarbanner(documentofacultad)"
+                data-placement="top" data-toggle="tooltip" title="Borrar documentofacultad"><i
+                  class="fa fa-trash"></i></a>
+              <?php endif; ?>
 
-              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="getfile(documentofacultad)" data-placement="top"
-                data-toggle="tooltip" title="ver documentofacultad"><i class="fa fa-eye"></i></a>
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('read documentos', Model::class)): ?>
+              <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="getfile(documentofacultad)"
+                data-placement="top" data-toggle="tooltip" title="ver documentofacultad"><i class="fa fa-eye"></i></a>
+              <?php endif; ?>
 
             </center>
           </td>
@@ -223,6 +250,7 @@
     </div>
   </div>
 </div>
+<?php endif; ?>
 
 <form method="post" v-on:submit.prevent="updateBanner(fillDocumentoFacultades.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -233,7 +261,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
               style="font-size: 35px;">&times;</span></button>
           <h4 class="modal-title" id="desEditarTitulo" style="font-weight: bold;text-decoration: underline;">EDITAR
-          EL DOCUMENTO </h4>
+            EL DOCUMENTO </h4>
 
         </div>
         <div class="modal-body">
@@ -245,10 +273,25 @@
 
                 <div class="col-md-12">
                   <div class="form-group">
+                    <label for="facultad_id" class="col-sm-2 control-label">Facultad:*</label>
+                    <div class="col-sm-8">
+                      <select name="facultad_id" id="facultad_id" class="form-control" v-model="fillDocumentoFacultades.facultad_id">
+                        <option value="0">Seleccione una facultad</option>
+                        <option v-for="facultad, key in facultades" v-bind:value="facultad.id">
+                          {{facultad.nombre}} - {{facultad.abreviatura}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12" style="padding-top: 15px;">
+                  <div class="form-group">
                     <label for="txttitulo" class="col-sm-2 control-label">titulo:*</label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="titulo" name="titulo"
-                        placeholder="titulo del documento" maxlength="200" autofocus v-model="fillDocumentoFacultades.titulo">
+                        placeholder="titulo del documento" maxlength="200" autofocus
+                        v-model="fillDocumentoFacultades.titulo">
                     </div>
                   </div>
                 </div>
@@ -257,8 +300,9 @@
                   <div class="form-group" style="padding-top: 15px;">
                     <label for="descripcion" class="col-sm-2 control-label">Descripcion:</label>
                     <div class="col-sm-8">
-                      <textarea name="descripcion" id="descripcion" cols="80" rows="5" v-model="fillDocumentoFacultades.descripcion"
-                        placeholder="descripcion del documento" class="form-control"></textarea>
+                      <textarea name="descripcion" id="descripcion" cols="80" rows="5"
+                        v-model="fillDocumentoFacultades.descripcion" placeholder="descripcion del documento"
+                        class="form-control"></textarea>
                     </div>
                   </div>
                 </div>

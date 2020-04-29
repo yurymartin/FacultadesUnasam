@@ -21,16 +21,18 @@ class GradoAcademicosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct(){
+        $this->middleware(['permission:create grados academicos'],['only' => ['create','store']]);
+        $this->middleware(['permission:read grados academicos'],['only' => ['index1','index']]);
+        $this->middleware(['permission:update grados academicos'],['only' => ['edit','update','altabaja']]);
+        $this->middleware(['permission:delete grados academicos'],['only' => ['delete']]);
+    }
+    
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "gradoacademicos";
-            return view('gradoacademicos.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "gradoacademicos";
+        return view('gradoacademicos.index', compact('modulo'));
     }
 
     public function index(Request $request)

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DepartamentoAcademicos;
+use App\Estilo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -11,22 +12,22 @@ use Validator;
 use Auth;
 use DB;
 use Storage;
-use App\Persona;
-use App\Tipouser;
 use App\User;
 
 class FacultadesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:create facultad'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read facultad'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update facultad'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete facultad'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "facultades";
-            return view('facultades.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "facultades";
+        return view('facultades.index', compact('modulo'));
     }
     /**
      * Display a listing of the resource.
@@ -36,16 +37,20 @@ class FacultadesController extends Controller
 
     public function index(Request $request)
     {
-
         $buscar = $request->busca;
         $facultades = DB::table('facultades')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('id', '=', auth()->user()->facultad_id);
+                }
+            })
             ->where('borrado', '0')
             ->where(function ($query) use ($buscar) {
                 $query->where('nombre', 'like', '%' . $buscar . '%');
                 $query->orWhere('abreviatura', 'like', '%' . $buscar . '%');
             })
             ->orderBy('id')
-            ->paginate(30);
+            ->paginate(10);
 
         $cant_filas = DB::table('facultades')
             ->select(DB::raw('count(*) as filas'))
@@ -85,6 +90,9 @@ class FacultadesController extends Controller
     {
         $nombre = $request->nombre;
         $abreviatura = $request->abreviatura;
+        $telefono = $request->telefono;
+        $direccion = $request->direccion;
+        $email = $request->email;
         $activo = $request->activo;
 
         $result = '1';
@@ -115,17 +123,27 @@ class FacultadesController extends Controller
             $Facultad = new Facultades();
             $Facultad->nombre = $nombre;
             $Facultad->abreviatura = $abreviatura;
+            $Facultad->telefono = $telefono;
+            $Facultad->direccion = $direccion;
+            $Facultad->email = $email;
             $Facultad->activo = $activo;
             $Facultad->borrado = '0';
             $Facultad->save();
+
+            $estilos = new Estilo();
+            $estilos->fondoheader = '#084B8A';
+            $estilos->textoheader = '#ffffff';
+            $estilos->fondofooter = '#084B8A';
+            $estilos->textofooter = '#ffffff';
+            $estilos->fondonavbar = '#004884';
+            $estilos->textonavbar = '#ffffff';
+            $estilos->activo = '1';
+            $estilos->borrado = '0';
+            $estilos->facultad_id = $Facultad->id;
+            $estilos->save();
+
             $msj = 'LA NUEVA FACULTAD FUE REGISTRADA EXITOSAMENTE';
         }
-
-
-
-
-        //Areaunasam::create($request->all());
-
         return response()->json(["result" => $result, 'msj' => $msj, 'selector' => $selector]);
     }
 
@@ -162,6 +180,9 @@ class FacultadesController extends Controller
     {
         $nombre = $request->nombre;
         $abreviatura = $request->abreviatura;
+        $telefono = $request->telefono;
+        $direccion = $request->direccion;
+        $email = $request->email;
 
         $result = '1';
         $msj = '';
@@ -188,6 +209,9 @@ class FacultadesController extends Controller
             $Facultad = Facultades::findOrFail($id);
             $Facultad->nombre = $nombre;
             $Facultad->abreviatura = $abreviatura;
+            $Facultad->telefono = $telefono;
+            $Facultad->direccion = $direccion;
+            $Facultad->email = $email;
             $Facultad->save();
             $msj = 'LA FACULTAD FUE MODIFICADO EXITOSAMENTE';
         }

@@ -9,10 +9,8 @@
                 </div> <!-- /.widget-main-title -->
                 <div class="widget-inner">
                     <div class="our-campus clearfix">
-                        @foreach ($filosofia as $filo)
-                        <p style="font-size: 16px;font-family: 'Times New Roman', Times, serif;text-align: justify">{{$filo->filosofia}}</p> 
-                        @endforeach
-                        
+                        <p style="font-size: 16px;font-family: 'Times New Roman', Times, serif;text-align: justify">
+                            {{$filosofia->filosofia}}</p>
                     </div>
                 </div>
             </div> <!-- /.widget-main -->
@@ -22,9 +20,9 @@
                 <br><br><br><br>
                 <div class="widget-inner text-right">
                     <div class="our-campus clearfix">
-                            @foreach ($filosofia as $logo)
-                            <img src="{{asset('img/descripcionFacultades/'.$logo->imagen)}}" alt="UNASAM" style="width: 350px">  
-                            @endforeach
+                        <a href="{{ asset('/img/descripcionFacultades/'.$logos->imagen)}}" class="fancybox"
+                            rel="gallery1"><img src="{{ asset('/img/descripcionFacultades/'.$logos->imagen)}}"
+                                alt="UNASAM" style="width: 350px"></a>
                     </div>
                 </div>
             </div> <!-- /.widget-main -->

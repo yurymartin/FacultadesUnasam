@@ -21,16 +21,19 @@ class CampoLaboralesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware(['permission:create campolaboral escuelas'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read campolaboral escuelas'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update campolaboral escuelas'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete campolaboral escuelas'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "campolaborales";
-            return view('campolaborales.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "campolaborales";
+        return view('campolaborales.index', compact('modulo'));
     }
 
     public function index(Request $request)
@@ -38,8 +41,14 @@ class CampoLaboralesController extends Controller
         $buscar = $request->busca;
         $campolaborales = DB::table('campolaborales as c')
             ->join('escuelas as e', 'e.id', '=', 'c.escuela_id')
+            ->join('departamentoacademicos as da', 'da.id', '=', 'e.departamentoacademico_id')
             ->select('c.id as idcampo', 'c.titulo', 'c.campolab', 'c.imagen', 'c.fecha', 'c.activo', 'e.id as idesc', 'e.nombre')
             ->where('c.borrado', '=', 0)
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('da.facultad_id', '=', auth()->user()->facultad_id);
+                }
+            })
             ->where(function ($query) use ($buscar) {
                 $query->where('c.titulo', 'like', '%' . $buscar . '%');
                 $query->orWhere('c.campolab', 'like', '%' . $buscar . '%');
@@ -48,8 +57,16 @@ class CampoLaboralesController extends Controller
             ->orderBy('c.id')
             ->paginate(10);
 
-        $escuelas = DB::table('escuelas')
-            ->where('borrado', '=', 0)
+        $escuelas = DB::table('escuelas as e')
+            ->join('departamentoacademicos as da', 'da.id', '=', 'e.departamentoacademico_id')
+            ->select('e.id', 'e.nombre')
+            ->where('e.borrado', '0')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('da.facultad_id', '=', auth()->user()->facultad_id);
+                }
+            })
+            ->where('e.activo', '=', '1')
             ->get();
 
         return [

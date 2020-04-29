@@ -6,13 +6,14 @@
       Volver</a>
   </div>
 
+  <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create autoridades', Model::class)): ?>
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
           class="fa fa-plus-square-o" aria-hidden="true"></i> Nueva Autoridad de la Facultad</button>
     </div>
-
   </div>
+  <?php endif; ?>
 
 </div>
 
@@ -182,6 +183,7 @@
 
 
 
+<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('read autoridades', Model::class)): ?>
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Autoridades de la Facultad</h3>
@@ -240,6 +242,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update autoridades', Model::class)): ?>
               <a href="#" v-if="autoridad.activo=='1'" class="btn bg-navy btn-sm"
                 v-on:click.prevent="bajadocente(autoridad)" data-placement="top" data-toggle="tooltip"
                 title="Desactivar autoridad"><i class="fa fa-arrow-circle-down"></i></a>
@@ -247,11 +250,17 @@
               <a href="#" v-if="autoridad.activo=='0'" class="btn btn-success btn-sm"
                 v-on:click.prevent="altadocente(autoridad)" data-placement="top" data-toggle="tooltip"
                 title="Activar autoridad"><i class="fa fa-check-circle"></i></a>
+              <?php endif; ?>
 
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update autoridades', Model::class)): ?>
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editbanner(autoridad)" data-placement="top"
                 data-toggle="tooltip" title="Editar autoridad"><i class="fa fa-edit"></i></a>
+              <?php endif; ?>
+
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete autoridades', Model::class)): ?>
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrardocente(autoridad)"
-                data-placement="top" data-toggle="tooltip" title="Borrar autoridad"><i class="fa fa-trash"></i></a>
+              data-placement="top" data-toggle="tooltip" title="Borrar autoridad"><i class="fa fa-trash"></i></a>
+              <?php endif; ?>
             </center>
           </td>
         </tr>
@@ -300,6 +309,7 @@
     </div>
   </div>
 </div>
+<?php endif; ?>
 
 <form method="post" v-on:submit.prevent="updateBanner(fillAutoridad.idauto,fillPersona.idper)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"

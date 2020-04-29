@@ -9,7 +9,7 @@ data:{
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
+   tipouserPerfil:'',
    userPerfil:'<?php echo e(Auth::user()->name); ?>',
    mailPerfil:'<?php echo e(Auth::user()->email); ?>',
 
@@ -173,9 +173,12 @@ methods: {
 
         this.newTitulo = '';
         this.newDescripcion = '';
-        this.newFechapublica = '';
+        this.newFechapublicacion = '';
         this.newEstado = '1';
         this.imagen = null;
+        this.newAutor = '';
+        this.escuela_id = '0';
+        this.tema_id = '0';
 
        $(".form-control").css("border","1px solid #d2d6de");
    },

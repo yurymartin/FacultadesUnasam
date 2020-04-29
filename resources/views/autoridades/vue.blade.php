@@ -9,7 +9,7 @@
     subtitle2: false,
     subtitulo2: "",
 
-    tipouserPerfil: '{{ $tipouser->nombre }}',
+    tipouserPerfil: '',
     userPerfil: '{{ Auth::user()->name }}',
     mailPerfil: '{{ Auth::user()->email }}',
 
@@ -179,6 +179,7 @@ methods: {
             this.newGenero = '1';
             this.imagen = null;
             this.gradoacademico_id = '0';
+            this.cargo_id = '0';
 
             $(".form-control").css("border", "1px solid #d2d6de");
         },

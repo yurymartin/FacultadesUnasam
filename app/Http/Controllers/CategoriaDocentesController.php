@@ -20,16 +20,18 @@ class CategoriaDocentesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct(){
+        $this->middleware(['permission:create categoriadocente'],['only' => ['create','store']]);
+        $this->middleware(['permission:read categoriadocente'],['only' => ['index1','index']]);
+        $this->middleware(['permission:update categoriadocente'],['only' => ['edit','update','altabaja']]);
+        $this->middleware(['permission:delete categoriadocente'],['only' => ['delete']]);
+    }
+    
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "categoriadocentes";
-            return view('categoriadocentes.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "categoriadocentes";
+        return view('categoriadocentes.index', compact('modulo'));
     }
 
     public function index(Request $request)

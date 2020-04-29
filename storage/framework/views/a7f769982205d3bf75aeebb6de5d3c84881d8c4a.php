@@ -8,15 +8,9 @@
 			subtitulo: "Inicio",
 			subtitle2:false,
 			subtitulo2: "Principal",
-			
-
-			tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
+			tipouserPerfil:'',
 			userPerfil:'<?php echo e(Auth::user()->name); ?>',
 			mailPerfil:'<?php echo e(Auth::user()->email); ?>',
-
-
-        	
-
 			divloader0:true,
 	        divloader1:false,
 	        divloader2:false,
@@ -28,8 +22,6 @@
 	        divloader8:false,
 	        divloader9:false,
 	        divloader10:false,
-
-
 	        classTitle:'fa fa-home',
 	        classMenu0:'active',
 	        classMenu1:'',
@@ -44,28 +36,16 @@
 	        classMenu10:'',
 	        classMenu11:'',
 	        classMenu12:'',
-
 	        divhome:false,
-
-
-
-
 	        uploadReadyG:true,
 	        archivoGa:null,
-
-
 	        divloaderEdit:false,
-
-	        
-
 
 			},
 			mounted: function () {
 	        this.divloader0=false;
 	        this.divhome=true;
 			$("#divtitulo").show('slow');
-
-	        //$("#modalAlerta").modal('show');
 	    },
 	    methods: {
 	    	

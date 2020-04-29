@@ -16,10 +16,8 @@
                 <div class="widget-main-title">
                     <h1 class="text-center"><strong>INVESTIGACIONES</strong></h1>
                     <p></p>
-                    <p style="font-size: 16px;text-align: justify;font-family: 'Times New Roman', Times, serif">Lorem
-                        ipsum dolor sit, amet consectetur adipisicing
-                        elit. Odio magni inventore voluptas assumenda atque excepturi accusantium natus possimus
-                        nesciunt vitae quo at, necessitatibus animi est molestias nobis ad reiciendis. </p>
+                    <p style="font-size: 16px;text-align: justify;font-family: 'Times New Roman', Times, serif">
+                        La investigación es una actividad orientada a la obtención de nuevos conocimientos y su aplicación para la solución a problemas o interrogantes de carácter científico. La investigación científica es el nombre general que obtiene el complejo proceso en el cual los avances científicos son el resultado de la aplicación del método científico para resolver problemas o tratar de explicar determinadas observaciones.1​ De igual modo la investigación tecnológica emplea el conocimiento científico para el desarrollo de tecnologías blandas o duras, así como la investigación cultural, cuyo objeto de estudio es la cultura, además existe a su vez la investigación técnico-policial y la investigación detectivesca y policial e investigación educativa. </p>
                 </div> <!-- /.widget-main-title -->
                 <p></p>
                 <div class="container">
@@ -63,8 +61,12 @@
                         class="imagen"></a>
                 <p class="blog-list-meta small-text">Autor(es): <?php echo e($rta->autor); ?></p>
                 <p class="blog-list-meta small-text">Fecha Publicacion: <?php echo e($rta->fechapublicacion); ?></p>
-                <p style="font-size: 14px;font-family: 'Times New Roman', Times, serif">
-                    <?php echo e($rta->descripcion); ?></p>
+                <br>
+                <p style="font-size: 14px;font-family: 'Times New Roman', Times, serif;text-align: center">Descripcion:</p>
+                <p style="font-size: 14px;font-family: 'Times New Roman', Times, serif;text-align: justify">
+                    <?php echo e($rta->descripcion); ?>
+
+                </p>
             </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>

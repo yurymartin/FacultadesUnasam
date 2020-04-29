@@ -6,6 +6,7 @@
       Volver</a>
   </div>
 
+  <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create comitestudiantil', Model::class)): ?>
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
@@ -13,6 +14,7 @@
     </div>
 
   </div>
+  <?php endif; ?>
 
 </div>
 
@@ -27,8 +29,8 @@
         <div class="form-group" style="padding-top: 15px;">
           <label for="txttitulo" class="col-sm-2 control-label">Titulo:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txttitulo" name="txttitulo" placeholder="Titulo del comite estudiantil" maxlength="500"
-              v-model="newTitulo">
+            <input type="text" class="form-control" id="txttitulo" name="txttitulo"
+              placeholder="Titulo del comite estudiantil" maxlength="500" v-model="newTitulo">
           </div>
         </div>
       </div>
@@ -37,8 +39,8 @@
         <div class="form-group" style="padding-top: 15px;">
           <label for="txtdescripcion" class="col-sm-2 control-label">Descripción:*</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="txtdescripcion" name="txtdescripcion" placeholder="Descripcion del comite estudiantil"
-              maxlength="500" v-model="newDescripcion">
+            <textarea class="form-control" id="txtdescripcion" name="txtdescripcion"
+              placeholder="Descripcion del comite estudiantil" v-model="newDescripcion" cols="30" rows="5"></textarea>
           </div>
         </div>
       </div>
@@ -99,6 +101,7 @@
 
 
 
+<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('read comitestudiantil', Model::class)): ?>
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Comites Estudiantiles</h3>
@@ -144,6 +147,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update comitestudiantil', Model::class)): ?>
               <a href="#" v-if="comestudiantil.activo=='1'" class="btn bg-navy btn-sm"
                 v-on:click.prevent="bajabanner(comestudiantil)" data-placement="top" data-toggle="tooltip"
                 title="Desactivar banner"><i class="fa fa-arrow-circle-down"></i></a>
@@ -151,13 +155,18 @@
               <a href="#" v-if="comestudiantil.activo=='0'" class="btn btn-success btn-sm"
                 v-on:click.prevent="altabanner(comestudiantil)" data-placement="top" data-toggle="tooltip"
                 title="Activar banner"><i class="fa fa-check-circle"></i></a>
+              <?php endif; ?>
 
-
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update comitestudiantil', Model::class)): ?>
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editGalEscu(comestudiantil)"
                 data-placement="top" data-toggle="tooltip" title="Editar Comite Estudiantil"><i
                   class="fa fa-edit"></i></a>
+              <?php endif; ?>
+
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete comitestudiantil', Model::class)): ?>
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrarbanner(comestudiantil)"
                 data-placement="top" data-toggle="tooltip" title="Borrar banner"><i class="fa fa-trash"></i></a>
+              <?php endif; ?>
             </center>
           </td>
         </tr>
@@ -206,6 +215,7 @@
     </div>
   </div>
 </div>
+<?php endif; ?>
 
 <form method="post" v-on:submit.prevent="updateGalEscuela(fillGalEcuela.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -240,8 +250,8 @@
                   <div class="form-group" style="padding-top: 15px;">
                     <label for="txtdescripcionE" class="col-sm-2 control-label">Descripción:*</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="txtdescripcionE" name="txtdescripcionE"
-                        placeholder="Descripcion del comite estudiantil" maxlength="500" v-model="fillGalEcuela.descripcion">
+                      <textarea class="form-control" id="txtdescripcionE" name="txtdescripcionE"
+                      placeholder="Descripcion del comite estudiantil"v-model="fillGalEcuela.descripcion" cols="30" rows="5"></textarea>
                     </div>
                   </div>
                 </div>
@@ -250,13 +260,13 @@
                   <div class="form-group">
                     <label for="archivo" class="col-sm-2 control-label">Imagen:*</label>
                     <div class="col-sm-8" style="padding-top: 10px;">
-                      <input name="archivo" type="file" id="archivo"  class="archivo form-control" @change="getImage"
+                      <input name="archivo" type="file" id="archivo" class="archivo form-control" @change="getImage"
                         accept=".png, .jpg, .jpeg, .gif, .jpe, .PNG, .JPG, .JPEG, .GIF, .JPE" />
                     </div>
                   </div>
                 </div>
 
-               </div>
+              </div>
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary" id="btnSaveE"><i class="fa fa-floppy-o"

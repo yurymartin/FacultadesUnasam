@@ -21,16 +21,18 @@ class TemasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct(){
+        $this->middleware(['permission:create temainvestigacion'],['only' => ['create','store']]);
+        $this->middleware(['permission:read temainvestigacion'],['only' => ['index1','index']]);
+        $this->middleware(['permission:update temainvestigacion'],['only' => ['edit','update','altabaja']]);
+        $this->middleware(['permission:delete temainvestigacion'],['only' => ['delete']]);
+    }
+    
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "temas";
-            return view('temas.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "temas";
+        return view('temas.index', compact('modulo'));
     }
     public function index(Request $request)
     {

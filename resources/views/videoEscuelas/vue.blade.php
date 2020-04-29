@@ -9,7 +9,7 @@
     subtitle2: false,
     subtitulo2: "",
 
-    tipouserPerfil: '{{ $tipouser->nombre }}',
+    tipouserPerfil: '',
     userPerfil: '{{ Auth::user()->name }}',
     mailPerfil: '{{ Auth::user()->email }}',
 
@@ -150,6 +150,7 @@ methods: {
             $('#titulo').focus();
             this.newTitulo = '';
             this.newDescripcion = '';
+            this.newLink ='';
             this.newFechapubli = '';
             this.newActivo = '1';
             this.imagen = null;

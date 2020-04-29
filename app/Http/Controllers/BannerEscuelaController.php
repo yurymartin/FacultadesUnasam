@@ -18,17 +18,18 @@ use App\User;
 class BannerEscuelaController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware(['permission:create banners escuelas'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read banners escuelas'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update banners escuelas'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete banners escuelas'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "bannersescuelas";
-            return view('bannerescuela.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "bannersescuelas";
+        return view('bannerescuela.index', compact('modulo'));
     }
     public function index(Request $request)
     {
@@ -37,8 +38,15 @@ class BannerEscuelaController extends Controller
 
         $bannersescuelas = DB::table('bannersescuelas as be')
             ->join('escuelas as e', 'e.id', '=', 'be.escuela_id')
+            ->join('departamentoacademicos as da', 'da.id', '=', 'e.departamentoacademico_id')
+            ->join('facultades as f', 'f.id', '=', 'da.facultad_id')
             ->select('be.id', 'be.titulo', 'be.descripcion', 'e.nombre', 'be.imagen', 'be.fechapublica', 'be.activo', 'e.id as idescu')
             ->where('be.borrado', '0')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('da.facultad_id', '=', auth()->user()->facultad_id);
+                }
+            })
             ->where(function ($query) use ($buscar) {
                 $query->where('be.titulo', 'like', '%' . $buscar . '%');
                 $query->orWhere('be.descripcion', 'like', '%' . $buscar . '%');
@@ -47,8 +55,16 @@ class BannerEscuelaController extends Controller
             ->orderBy('be.id', 'desc')
             ->paginate(10);
 
-        $escuelas = Escuela::where('borrado', '0')
-            ->where('activo', '=', '1')
+        $escuelas = DB::table('escuelas as e')
+            ->join('departamentoacademicos as da', 'da.id', '=', 'e.departamentoacademico_id')
+            ->select('e.id','e.nombre')
+            ->where('e.borrado', '0')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('da.facultad_id', '=', auth()->user()->facultad_id);
+                }
+            })
+            ->where('e.activo', '=', '1')
             ->get();
 
         return [

@@ -9,7 +9,7 @@
     subtitle2: false,
     subtitulo2: "",
 
-    tipouserPerfil: '{{ $tipouser->nombre }}',
+    tipouserPerfil: '',
     userPerfil: '{{ Auth::user()->name }}',
     mailPerfil: '{{ Auth::user()->email }}',
 
@@ -146,14 +146,11 @@ methods: {
             this.cancelFormNuevo();
         },
     cancelFormNuevo: function () {
-            $('#Nombress').focus();
+            $('#newDescripcion').focus();
+            this.newDescripcion = '';
             this.newPerfil = '';
-            this.newReseñaHistor = '';
-            this.newMision = '';
-            this.newVision = '';
-            this.newFilosofia = '';
             this.newActivo = '1';
-            this.imagen = null;
+            this.escuela_id = '0';
 
             $(".form-control").css("border", "1px solid #d2d6de");
         },

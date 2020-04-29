@@ -22,12 +22,9 @@ Gestión de los temas de estudio
 
 		@include('vendor.adminlte.layouts.partials.loaders')
 
-		@if(accesoUser([1,2]))
-
 		<template v-if="divprincipal" id="divprincipal">
 			@include('temas.principal')
 		</template>
-		@endif
 
 
 	</div>

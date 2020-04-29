@@ -5,12 +5,14 @@
         aria-hidden="true"></i>
       Volver</a>
   </div>
+  <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create grados academicos', Model::class)): ?>
   <div class="box-body" style="border: 1px solid #3c8dbc;">
     <div class="form-group form-primary">
       <button type="button" class="btn btn-primary" id="btnCrear" @click.prevent="nuevo()"><i
           class="fa fa-plus-square-o" aria-hidden="true"></i>Nuevo Grado Academico</button>
     </div>
   </div>
+  <?php endif; ?>
 </div>
 <div class="box box-success" v-if="divNuevo" style="border: 1px solid #00a65a;">
   <div class="box-header with-border" style="border: 1px solid #00a65a;background-color: #00a65a; color: white;">
@@ -27,7 +29,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
           <label for="txtgrado" class="col-sm-2 control-label">Abreviatura:*</label>
@@ -82,6 +84,7 @@
 
 
 
+<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('read grados academicos', Model::class)): ?>
 <div class="box box-primary" style="border: 1px solid #3c8dbc;">
   <div class="box-header" style="border: 1px solid #3c8dbc;background-color: #3c8dbc; color: white;">
     <h3 class="box-title">Listado de Grados Academicos</h3>
@@ -123,6 +126,7 @@
           </td>
           <td style="border:1px solid #ddd;font-size: 14px; padding: 5px;">
             <center>
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update grados academicos', Model::class)): ?>
               <a href="#" v-if="gradoacademico.activo=='1'" class="btn bg-navy btn-sm"
                 v-on:click.prevent="bajagrados(gradoacademico)" data-placement="top" data-toggle="tooltip"
                 title="Desactivar Grado Academico"><i class="fa fa-arrow-circle-down"></i></a>
@@ -133,9 +137,13 @@
 
               <a href="#" class="btn btn-warning btn-sm" v-on:click.prevent="editgrados(gradoacademico)"
                 data-placement="top" data-toggle="tooltip" title="Editar Grado Academico"><i class="fa fa-edit"></i></a>
+              <?php endif; ?>
 
+              <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete grados academicos', Model::class)): ?>
               <a href="#" class="btn btn-danger btn-sm" v-on:click.prevent="borrargrados(gradoacademico)"
-                data-placement="top" data-toggle="tooltip" title="Borrar grado academico"><i class="fa fa-trash"></i></a>
+                data-placement="top" data-toggle="tooltip" title="Borrar grado academico"><i
+                  class="fa fa-trash"></i></a>
+              <?php endif; ?>
             </center>
           </td>
         </tr>
@@ -184,6 +192,7 @@
     </div>
   </div>
 </div>
+<?php endif; ?>
 
 <form method="post" v-on:submit.prevent="updategrado(fillGrados.id)">
   <div class="modal bs-example-modal-lg" id="modalEditar" tabindex="-1" role="dialog"
@@ -218,8 +227,8 @@
                   <div class="form-group">
                     <label for="txtgrado" class="col-sm-2 control-label">Abreviatura:*</label>
                     <div class="col-sm-2">
-                      <input type="text" class="form-control" id="txtabreviatura" name="txtabreviatura" placeholder="Abreviatura"
-                        maxlength="200" autofocus v-model="fillGrados.abreviatura">
+                      <input type="text" class="form-control" id="txtabreviatura" name="txtabreviatura"
+                        placeholder="Abreviatura" maxlength="200" autofocus v-model="fillGrados.abreviatura">
                     </div>
                   </div>
                 </div>

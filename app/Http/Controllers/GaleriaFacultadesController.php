@@ -21,27 +21,45 @@ class GaleriaFacultadesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware(['permission:create galerias facultad'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read galerias facultad'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update galerias facultad'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete galerias facultad'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "galeriaFacultades";
-            return view('galeriaFacultades.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "galeriaFacultades";
+        return view('galeriaFacultades.index', compact('modulo'));
     }
 
     public function index(Request $request)
     {
         $buscar = $request->busca;
-        $galeriafacultades = GaleriaFacultades::where('borrado', '0')
-            ->where(function ($query) use ($buscar) {
-                $query->where('imagen', 'like', '%' . $buscar . '%');
+
+        $galeriafacultades = DB::table('galeriafacultades as gf')
+            ->join('facultades as f', 'f.id', '=', 'gf.facultad_id')
+            ->select('gf.id', 'gf.imagen', 'gf.descripcion', 'gf.activo', 'gf.borrado', 'gf.facultad_id', 'f.id as idfac', 'f.nombre', 'f.abreviatura')
+            ->where('gf.borrado', '0')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('facultad_id', '=', auth()->user()->facultad_id);
+                }
             })
-            ->orderBy('id')
+            ->where(function ($query) use ($buscar) {
+                $query->where('f.nombre', 'like', '%' . $buscar . '%');
+                $query->orwhere('f.abreviatura', 'like', '%' . $buscar . '%');
+            })
+            ->orderBy('gf.id')
             ->paginate(10);
+
+        $facultades = DB::table('facultades')
+            ->where('activo', '1')
+            ->where('borrado', '0')
+            ->get();
 
         return [
             'pagination' => [
@@ -53,6 +71,7 @@ class GaleriaFacultadesController extends Controller
                 'to' => $galeriafacultades->lastItem(),
             ],
             'galeriafacultades' => $galeriafacultades,
+            'facultades' => $facultades
         ];
     }
 
@@ -74,6 +93,7 @@ class GaleriaFacultadesController extends Controller
      */
     public function store(Request $request)
     {
+        $facultad_id = $request->facultad_id;
         $descripcion = $request->descripcion;
         $img = $request->imagen;
         $estado = $request->activo;
@@ -85,7 +105,11 @@ class GaleriaFacultadesController extends Controller
         $imagen = "";
         $segureImg = 0;
 
-        if ($img == 'null') {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($img == 'null') {
             $result = '0';
             $msj = 'FALTA SELECCIONAR LA IMAGEN PARA LA GALERIA DE LA FACULTAD';
             $selector = 'archivo';
@@ -127,6 +151,7 @@ class GaleriaFacultadesController extends Controller
                 $newdescripcion->descripcion = $descripcion;
                 $newdescripcion->activo = $estado;
                 $newdescripcion->borrado = '0';
+                $newdescripcion->facultad_id = $facultad_id;
                 $newdescripcion->save();
                 $msj = 'LA NUEVA IMAGEN PARA LA GALERIA DE LA FACULTAD FUE REGISTRADA EXITOSAMENTE';
             }
@@ -166,6 +191,7 @@ class GaleriaFacultadesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $facultad_id = $request->facultad_id;
         $descripcion = $request->descripcion;
         $img = $request->imagen;
 
@@ -176,7 +202,11 @@ class GaleriaFacultadesController extends Controller
         $imagen = "";
         $segureImg = 0;
 
-        if ($request->hasFile('imagen')) {
+        if ($facultad_id == '0') {
+            $result = '0';
+            $msj = 'FALTA SELECCIONAR LA FACULTAD';
+            $selector = 'facultad_id';
+        } else if ($request->hasFile('imagen')) {
             $aux = date('d-m-Y') . '-' . date('H-i-s');
             $input  = array('image' => $img);
             $reglas = array('image' => 'required|image|mimes:png,jpg,jpeg,gif,jpe,PNG,JPG,JPEG,GIF,JPE');
@@ -206,11 +236,13 @@ class GaleriaFacultadesController extends Controller
             $editadescripcion = GaleriaFacultades::findOrFail($id);
             $editadescripcion->descripcion = $descripcion;
             $editadescripcion->imagen = $imagen;
+            $editadescripcion->facultad_id = $facultad_id;
             $editadescripcion->save();
             $msj = 'LA IMAGEN PARA LA GALERIA DE LA FACULTAD FUE MODIFICADA EXITOSAMENTE';
         } else {
             $editadescripcion = GaleriaFacultades::findOrFail($id);
             $editadescripcion->descripcion = $descripcion;
+            $editadescripcion->facultad_id = $facultad_id;
             $editadescripcion->save();
             $msj = 'LA IMAGEN PARA LA GALERIA DE LA FACULTAD FUE MODIFICADA EXITOSAMENTE';
         }

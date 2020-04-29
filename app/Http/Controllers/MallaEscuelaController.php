@@ -21,17 +21,19 @@ class MallaEscuelaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware(['permission:create mallas escuelas'], ['only' => ['create', 'store']]);
+        $this->middleware(['permission:read mallas escuelas'], ['only' => ['index1', 'index']]);
+        $this->middleware(['permission:update mallas escuelas'], ['only' => ['edit', 'update', 'altabaja']]);
+        $this->middleware(['permission:delete mallas escuelas'], ['only' => ['delete']]);
+    }
+
     public function index1()
     {
-        if (accesoUser([1, 2])) {
-
-            $idtipouser = Auth::user()->tipouser_id;
-            $tipouser = Tipouser::find($idtipouser);
-            $modulo = "mallaescuelas";
-            return view('mallaescuela.index', compact('tipouser', 'modulo'));
-        } else {
-            return view('adminlte::home');
-        }
+        $modulo = "mallaescuelas";
+        return view('mallaescuela.index', compact('modulo'));
     }
     public function index(Request $request)
     {
@@ -40,7 +42,13 @@ class MallaEscuelaController extends Controller
 
         $mallaescuelas = DB::table('mallas as m')
             ->join('escuelas as e', 'e.id', '=', 'm.escuela_id')
+            ->join('departamentoacademicos as da', 'da.id', '=', 'e.departamentoacademico_id')
             ->select('m.id', 'm.imagen', 'm.numcurricula', 'm.fechaRegistro', 'm.activo', 'e.nombre', 'e.id as idescu')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('da.facultad_id', '=', auth()->user()->facultad_id);
+                }
+            })
             ->where('m.borrado', '0')
             ->where(function ($query) use ($buscar) {
                 $query->where('m.numcurricula', 'like', '%' . $buscar . '%');
@@ -48,8 +56,16 @@ class MallaEscuelaController extends Controller
             ->orderBy('m.id', 'desc')
             ->paginate(10);
 
-        $escuelas = Escuela::where('borrado', '0')
-            ->where('activo', '=', '1')
+        $escuelas = DB::table('escuelas as e')
+            ->join('departamentoacademicos as da', 'da.id', '=', 'e.departamentoacademico_id')
+            ->select('e.id', 'e.nombre')
+            ->where('e.borrado', '0')
+            ->where(function ($query) {
+                if (!auth()->user()->hasRole('super-admin')) {
+                    $query->where('da.facultad_id', '=', auth()->user()->facultad_id);
+                }
+            })
+            ->where('e.activo', '=', '1')
             ->get();
 
         return [

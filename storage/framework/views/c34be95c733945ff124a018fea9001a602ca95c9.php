@@ -6,7 +6,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <html lang="es">
 
 <?php $__env->startSection('htmlheader'); ?>
-    <?php echo $__env->make('adminlte::layouts.partials.htmlheader', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('adminlte::layouts.partials.htmlheader', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php echo $__env->yieldSection(); ?>
 
 <!--
@@ -29,41 +29,30 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
+
 <body class="skin-blue sidebar-mini">
-<div id="app" v-cloak>
-    <div class="wrapper">
-
-    <?php echo $__env->make('adminlte::layouts.partials.mainheader', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-    <?php echo $__env->make('adminlte::layouts.partials.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" style="background-image: url(../img/fondo_gris2.gif);">
-        <?php echo $__env->make('adminlte::layouts.partials.contentheader', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-        <!-- Main content -->
-        <section class="content">
-            <!-- Your Page Content Here -->
-            <?php echo $__env->yieldContent('main-content'); ?>
-        </section><!-- /.content -->
-
-    </div><!-- /.content-wrapper -->
-
-    <?php echo $__env->make('adminlte::layouts.partials.controlsidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-    <?php echo $__env->make('adminlte::layouts.partials.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-</div><!-- ./wrapper -->
-</div>
-
-
-
-<?php $__env->startSection('scripts'); ?>
+    <div id="app" v-cloak>
+        <div class="wrapper">
+            <?php echo $__env->make('adminlte::layouts.partials.mainheader', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <?php echo $__env->make('adminlte::layouts.partials.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper" style="background-image: url(../img/fondo_gris2.gif);">
+                <?php echo $__env->make('adminlte::layouts.partials.contentheader', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                <!-- Main content -->
+                <section class="content">
+                    <!-- Your Page Content Here -->
+                    <?php echo $__env->yieldContent('main-content'); ?>
+                </section><!-- /.content -->
+            </div><!-- /.content-wrapper -->
+            <?php echo $__env->make('adminlte::layouts.partials.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <?php echo $__env->make('adminlte::layouts.partials.controlsidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        </div><!-- ./wrapper -->
+    </div>
+    <?php $__env->startSection('scripts'); ?>
     <?php echo $__env->make('adminlte::layouts.partials.scripts', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-<?php echo $__env->yieldSection(); ?>
-
-
+    <?php echo $__env->yieldSection(); ?>
 </body>
+
 </html>
 
 <?php if($modulo=="facultades"): ?>
@@ -117,14 +106,11 @@ desired effect
 <?php elseif($modulo=="perfiles"): ?>
 <?php echo $__env->make('perfiles.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-<?php elseif($modulo=="investigaciones"): ?>
-<?php echo $__env->make('investigaciones.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
 <?php elseif($modulo=="temas"): ?>
 <?php echo $__env->make('temas.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-<?php elseif($modulo=="libros"): ?>
-<?php echo $__env->make('libros.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php elseif($modulo=="publicaciones"): ?>
+<?php echo $__env->make('publicaciones.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 <?php elseif($modulo=="eventoFacultades"): ?>
 <?php echo $__env->make('eventoFacultades.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
@@ -153,111 +139,23 @@ desired effect
 <?php elseif($modulo=="videoEscuelas"): ?>
 <?php echo $__env->make('videoEscuelas.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-<?php endif; ?>
+<?php elseif($modulo=="usuarios"): ?>
+<?php echo $__env->make('users.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-<script type="text/javascript">
+<?php elseif($modulo=="roles"): ?>
+<?php echo $__env->make('roles.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-function redondear(num) {
-    return +(Math.round(num + "e+2")  + "e-2");
-}
+<?php elseif($modulo=="roles"): ?>
+<?php echo $__env->make('roles.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-function recorrertb(idtb){
+<?php elseif($modulo=="redesfacultades"): ?>
+<?php echo $__env->make('redesfacultades.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-    var cont=1;
-        $("#"+idtb+" tbody tr").each(function (index)
-        {
+<?php elseif($modulo=="redesescuelas"): ?>
+<?php echo $__env->make('redesescuelas.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-            $(this).children("td").each(function (index2)
-            {
-               //alert(index+'-'+index2);
-
-               if(index2==0){
-                  $(this).text(cont);
-                  cont++;
-               }
+<?php elseif($modulo=="tipopublicaciones"): ?>
+<?php echo $__env->make('tipopublicaciones.vue', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 
-            })
-
-        })
-  }
-
-  function isImage(extension)
-{
-    switch(extension.toLowerCase()) 
-    {
-        case 'jpg': case 'gif': case 'png': case 'jpeg': case 'JPG': case 'GIF': case 'PNG': case 'JPEG': case 'jpe': case 'JPE':
-            return true;
-        break;
-        default:
-            return false;
-        break;
-    }
-}
-
-function soloNumeros(e){
-  var key = window.Event ? e.which : e.keyCode
-  return ((key >= 48 && key <= 57) || (key==8) || (key==35) || (key==34) || (key==46));
-}
-
-function noEscribe(e){
-  var key = window.Event ? e.which : e.keyCode
-  return (key==null);
-}
-
-function EscribeLetras(e,ele){
-  var text=$(ele).val();
-  text=text.toUpperCase();
-   var pos=posicionCursor(ele);
-  $(ele).val(text);
-
-  ponCursorEnPos(pos,ele);
-}
-
-
-function ponCursorEnPos(pos,laCaja){  
-    if(typeof document.selection != 'undefined' && document.selection){        //método IE 
-        var tex=laCaja.value; 
-        laCaja.value='';  
-        laCaja.focus(); 
-        var str = document.selection.createRange();  
-        laCaja.value=tex; 
-        str.move("character", pos);  
-        str.moveEnd("character", 0);  
-        str.select(); 
-    } 
-    else if(typeof laCaja.selectionStart != 'undefined'){                    //método estándar 
-        laCaja.setSelectionRange(pos,pos);  
-        //forzar_focus();            //debería ser focus(), pero nos salta el evento y no queremos 
-    } 
-}  
-
-function posicionCursor(element)
-{
-       var tb = element;
-        var cursor = -1;
-
-        // IE
-        if (document.selection && (document.selection != 'undefined'))
-        {
-            var _range = document.selection.createRange();
-            var contador = 0;
-            while (_range.move('character', -1))
-                contador++;
-            cursor = contador;
-        }
-       // FF
-        else if (tb.selectionStart >= 0)
-            cursor = tb.selectionStart;
-
-       return cursor;
-}
-
-function pad (n, length) {
-    var  n = n.toString();
-    while(n.length < length)
-         n = "0" + n;
-    return n;
-}
-
-    </script><?php /**PATH C:\Users\yuri_\OneDrive\Desktop\webFacultades\resources\views/vendor/adminlte/layouts/app.blade.php ENDPATH**/ ?>
+<?php endif; ?><?php /**PATH C:\Users\yuri_\OneDrive\Desktop\webFacultades\resources\views/vendor/adminlte/layouts/app.blade.php ENDPATH**/ ?>

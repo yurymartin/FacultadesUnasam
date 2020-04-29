@@ -9,7 +9,7 @@ data:{
    subtitle2:false,
    subtitulo2:"",
 
-   tipouserPerfil:'<?php echo e($tipouser->nombre); ?>',
+   tipouserPerfil:'',
    userPerfil:'<?php echo e(Auth::user()->name); ?>',
    mailPerfil:'<?php echo e(Auth::user()->email); ?>',
 
@@ -45,10 +45,10 @@ data:{
    divprincipal:false,
 
    organigramafacultades: [],
-   escuelas: [],
+   facultades: [],
    errors:[],
 
-   fillGalEcuela:{'id':'', 'imagen':'', 'fecha':'','estado':'','descripcion':''},
+   fillGalEcuela:{'id':'', 'imagen':'', 'fecha':'','estado':'','descripcion':'','facultad_id':''},
 
    pagination: {
    'total': 0,
@@ -72,10 +72,7 @@ data:{
    newEstado:'1',
    newBorrado:'0',
    imagen : null,
-   
-
-
-
+   facultad_id: '0',
 },
 created:function () {
    this.getBanner(this.thispage);
@@ -127,7 +124,8 @@ methods: {
        axios.get(url).then(response=>{
             this.organigramafacultades= response.data.organigramafacultades.data;
             this.pagination= response.data.pagination;
-            this.escuelas = response.data.escuelas;
+            this.facultades = response.data.facultades;
+
            if(this.organigramafacultades.length==0 && this.thispage!='1'){
                var a = parseInt(this.thispage) ;
                a--;
@@ -161,9 +159,11 @@ methods: {
    cancelFormNuevo: function () {
        $('#txttitulo').focus();
 
+        this.newDescripcion = '';
         this.newFecha = '';
         this.newEstado = '1';
         this.imagen = null;
+        this.facultad_id = '0';
 
        $(".form-control").css("border","1px solid #d2d6de");
    },
@@ -192,6 +192,7 @@ methods: {
             data.append('imagen', this.imagen);
             data.append('descripcion', this.newDescripcion);
             data.append('activo', this.newEstado);
+            data.append('facultad_id', this.facultad_id);
             
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             axios.post(url,data,config).then(response=>{
@@ -254,10 +255,9 @@ methods: {
         this.fillGalEcuela.imagen=organi.imagen;
         this.fillGalEcuela.descripcion=organi.descripcion;
         this.fillGalEcuela.estado=organi.activo;
-        
-        
         this.imagen=null;
-        console.log();
+        this.fillGalEcuela.facultad_id = organi.idfac
+
         $("#modalEditar").modal('show');
         this.$nextTick(function () {
                 $("#txttituloE").focus();
@@ -272,7 +272,8 @@ methods: {
         data.append('imagen', this.imagen);
         data.append('descripcion', this.fillGalEcuela.descripcion);
         data.append('oldImagen', this.fillGalEcuela.imagen);
-        data.append('editEstado', this.fillGalEcuela.estado);        
+        data.append('editEstado', this.fillGalEcuela.estado);    
+        data.append('facultad_id', this.fillGalEcuela.facultad_id);    
         data.append('_method', 'PUT');
 
         const config = { headers: { 'Content-Type': 'multipart/form-data' } };

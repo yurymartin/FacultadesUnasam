@@ -8,12 +8,12 @@
 
         <div class="col-sm-2">
           <input type="text" class="form-control" id="txtDNI" name="txtDNI" placeholder="N° de DNI" maxlength="8"
-            autofocus v-model="newDNI" @keyup.enter="pressNuevoDNI(newDNI)" required
+            autofocus v-model="newDni" @keyup.enter="pressNuevoDNI(newDni)" required
             @keydown="$event.keyCode === 13 ? $event.preventDefault() : false" :disabled="validated == 1"
             onkeypress="return soloNumeros(event);">
         </div>
         <div class="col-sm-8">
-          <a href="#" class="btn btn-success btn-sm" v-on:click.prevent="pressNuevoDNI(newDNI)"><span
+          <a href="#" class="btn btn-success btn-sm" v-on:click.prevent="pressNuevoDNI(newDni)"><span
               class="  fa fa-check-square-o"></span> Validar</a>
         </div>
       </div>
@@ -23,12 +23,9 @@
     </div>
 
     <template v-if="formularioCrear">
-
-
       <div class="col-md-12">
         <hr style="border-top: 3px solid #1b5f43;">
       </div>
-
       <center>
         <h4>Datos Personales del Usuario</h4>
       </center>
@@ -49,26 +46,6 @@
           <div class="col-sm-8">
             <input type="text" class="form-control" id="txtapellidos" name="txtapellidos" placeholder="Apellidos"
               maxlength="225" @keydown="$event.keyCode === 13 ? $event.preventDefault() : false" v-model="newApellidos">
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12" style="padding-top: 15px;">
-        <div class="form-group">
-          <label for="txtdireccion" class="col-sm-2 control-label">Dirección:</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" id="txtdireccion" name="txtdireccion" placeholder="Av. Jr. Psje."
-              maxlength="500" @keydown="$event.keyCode === 13 ? $event.preventDefault() : false" v-model="newDireccion">
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12" style="padding-top: 15px;">
-        <div class="form-group">
-          <label for="txttelefono" class="col-sm-2 control-label">Telefono:</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" id="txttelefono" name="txttelefono" placeholder="Numero"
-              maxlength="500" @keydown="$event.keyCode === 13 ? $event.preventDefault() : false" v-model="newTelefono">
           </div>
         </div>
       </div>
@@ -97,11 +74,11 @@
 
       <div class="col-md-12" style="padding-top: 15px;">
         <div class="form-group">
-          <label for="cbuTipoUser" class="col-sm-2 control-label">Tipo de Usuario:*</label>
+          <label for="cburol" class="col-sm-2 control-label">Tipo de Usuario:*</label>
           <div class="col-sm-4">
-            <select class="form-control" id="cbuTipoUser" name="cbuTipoUser" v-model="newTipoUser">
+            <select class="form-control" id="cburol" name="cburol" v-model="newRol">
               <option disabled value="">Seleccione un Tipo de Usuario</option>
-              <option v-for="tipouser, key in tipousers" v-bind:value="tipouser.id">{{ tipouser.nombre }} </option>
+              <option v-for="rol, key in roles" v-bind:value="rol.id">{{ rol.name }} </option>
             </select>
           </div>
         </div>

@@ -9,7 +9,7 @@
     subtitle2: false,
     subtitulo2: "",
 
-    tipouserPerfil: '{{ $tipouser->nombre }}',
+    tipouserPerfil: '',
     userPerfil: '{{ Auth::user()->name }}',
     mailPerfil: '{{ Auth::user()->email }}',
 
@@ -45,9 +45,10 @@
     divprincipal: false,
 
     descripcionfacultades: [],
+    facultades: [],
     errors: [],
 
-    fillDescripcionFacultades:{'id':'', 'descripcion':'', 'reseñahistor':'', 'mision':'', 'vision':'','imagen':'' ,'filosofia':'','activo':'','borrado':''},
+    fillDescripcionFacultades:{'id':'', 'descripcion':'', 'reseñahistor':'', 'mision':'', 'vision':'','imagen':'' ,'filosofia':'','activo':'','borrado':'','facultad_id':''},
 
     pagination: {
     'total': 0,
@@ -72,6 +73,7 @@
     imagen: null,
     newFilosofia: '',
     newActivo: '',
+    facultad_id: '0',
 },
 created: function () {
     this.getDescripcionFacultades(this.thispage);
@@ -120,6 +122,8 @@ methods: {
         axios.get(url).then(response=> {
             this.descripcionfacultades = response.data.descripcionfacultades.data;
             this.pagination = response.data.pagination;
+            this.facultades = response.data.facultades;
+            
 
         if (this.descripcionfacultades.length == 0 && this.thispage != '1') {
             var a = parseInt(this.thispage);
@@ -157,8 +161,9 @@ methods: {
             this.newMision = '';
             this.newVision = '';
             this.newFilosofia = '';
-            this.newActivo = '1';
+            this.newActivo = '1';            
             this.imagen = null;
+            this.facultad_id = '0';
 
             $(".form-control").css("border", "1px solid #d2d6de");
         },
@@ -193,6 +198,7 @@ methods: {
                 data.append('imagen', this.imagen);
                 data.append('filosofia', this.newFilosofia);
                 data.append('activo', this.newActivo);
+                data.append('facultad_id', this.facultad_id);
                 
             const config = { headers: { 'Content-Type': 'multipart/form-data' } };
             axios.post(url,data,config).then(response=>{
@@ -230,7 +236,7 @@ methods: {
 
                 if (result.value) {
 
-                    var url = 'descripcionfacultad/' + descripcionfacultades.id;
+                    var url = 'descripcionfacultad/' + descripcionfacultades.iddesc;
                      axios.delete(url).then(response => { //eliminamos
 
                 if (response.data.result == '1') {
@@ -248,12 +254,13 @@ methods: {
             },
 
     editbanner: function (descripcionfacultad) {
-        this.fillDescripcionFacultades.id = descripcionfacultad.id;
+        this.fillDescripcionFacultades.id = descripcionfacultad.iddesc;
         this.fillDescripcionFacultades.descripcion = descripcionfacultad.descripcion;
         this.fillDescripcionFacultades.reseñahistor = descripcionfacultad.reseñahistor;
         this.fillDescripcionFacultades.mision = descripcionfacultad.mision;
         this.fillDescripcionFacultades.vision = descripcionfacultad.vision;
         this.fillDescripcionFacultades.filosofia = descripcionfacultad.filosofia;
+        this.fillDescripcionFacultades.facultad_id = descripcionfacultad.idfac
         this.imagen=null;
         
         $("#modalEditar").modal('show');
@@ -271,6 +278,7 @@ methods: {
         data.append('vision', this.fillDescripcionFacultades.vision);
         data.append('imagen', this.imagen);
         data.append('filosofia', this.fillDescripcionFacultades.filosofia);
+        data.append('facultad_id', this.fillDescripcionFacultades.facultad_id);
         data.append('_method', 'PUT');
         
         const config = {headers: {'Content-Type': 'multipart/form-data'}};
@@ -290,7 +298,7 @@ methods: {
         if (response.data.result == '1') {
             
             this.getDescripcionFacultades(this.thispage);
-            this.fillLocal= {'id':'', 'descripcion':'', 'reseñahistor':'', 'mision':'', 'vision':'','imagen':'' ,'filosofia':'','activo':'','borrado':''};
+            this.fillLocal= {'id':'', 'descripcion':'', 'reseñahistor':'', 'mision':'', 'vision':'','imagen':'' ,'filosofia':'','activo':'','borrado':'','facultad_id':''};
             this.errors = [];
             $("#modalEditar").modal('hide');
             toastr.success(response.data.msj);
@@ -315,7 +323,7 @@ bajadocente: function (descripcionfacultades) {
             confirmButtonText: 'Si, Desactivar'
         }).then((result) => {
         if (result.value) {
-            var url = 'descripcionfacultad/altabaja/' + descripcionfacultades.id + '/0';
+            var url = 'descripcionfacultad/altabaja/' + descripcionfacultades.iddesc + '/0';
             axios.get(url).then(response => { //eliminamos
         if (response.data.result == '1') {
             app.getDescripcionFacultades(app.thispage); //listamos
@@ -340,7 +348,7 @@ altadocente: function (descripcionfacultades) {
         confirmButtonText: 'Si, Activar'
     }).then((result) => {
     if (result.value) {
-        var url = 'descripcionfacultad/altabaja/' + descripcionfacultades.id + '/1';
+        var url = 'descripcionfacultad/altabaja/' + descripcionfacultades.iddesc + '/1';
         axios.get(url).then(response => { //eliminamos
     if (response.data.result == '1') {
         app.getDescripcionFacultades(app.thispage); //listamos
