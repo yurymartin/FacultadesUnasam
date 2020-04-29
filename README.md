@@ -1,8 +1,10 @@
-<h5 align="center"><b>SISTEMA DE GESTION DE VENTAS Y COMPRAS PARA LA FARMACIA ANDES</b></h5>
-<p align="justify">El sistema esta desarrollado en php usando el Framework LARAVEL para una farmacia es un sistema para gestionar las ventas de los productos y tambien registrar las compras para el almacen  el sistema utiliza base de datos MYSQL, el sistema tambien controlado el ingreso de usuarios la sistema por medio tipos de usuarios</p>
-<h5 align="center"><b>INTERFAZ DE INGRESO DEL USUARIO AL SISTEMA</b></h5>
-<p align="center"><img src="https://github.com/martinyuri123/-WebApplication-FarmaciaAnita/blob/master/public/img/imagen1.jpg" width="1000px"></p>
-<h5 align="center"><b>DASHBOARD DEL SISTMEA</b></h5>
-<p align="center"><img src="https://github.com/martinyuri123/-WebApplication-FarmaciaAnita/blob/master/public/img/imagen2.jpg" width="1000px"></p>
-<h5 align="center"><b>INTERFAZ DE VENTA DE PRODUCTOS</b></h5>
-<p align="center"><img src="https://github.com/martinyuri123/-WebApplication-FarmaciaAnita/blob/master/public/img/imagen3.jpg" width="1000px"></p>
+<h5 align="center"><b>SISTEMA GESTOR DE CONTENIDO DE PAGINAS WEB PARA LAS FACULTADES DE LA UNASAMA</b></h5>
+<p align="justify">El sistema esta desarrallado en PHP Y VUEJS usando el Framework LARAVEL el sistema es un gestor de contenido para todas la paginas de las facultades de la unasam el sistema tiene un modulo cliente que puede acceder cualquier usuario y el modulo de administrador que solo tiene ingreso aquellas personas que cuentan con un usuario y su tipo de usuario ademas la autenticacion trabaja con roles con este metodo el sistema tiene mejor seguridad y se puede configurar los roles para cada usuario, el sistema trabaja con VUEJS</p>
+<hr><hr>
+<p align="center"><img src="https://github.com/martin1030/FacultadesUnasam/tree/master/public/images/Captura1.png" width="1000px"></p>
+<hr><hr>
+<p align="center"><img src="https://github.com/martin1030/FacultadesUnasam/tree/master/public/images/Captura2.png" width="1000px"></p>
+<hr><hr>
+<p align="center"><img src="https://github.com/martin1030/FacultadesUnasam/tree/master/public/images/Captura3.png" width="1000px"></p>
+<hr><hr>
+<p align="center"><img src="https://github.com/martin1030/FacultadesUnasam/tree/master/public/images/Captura3.png" width="1000px"></p>
